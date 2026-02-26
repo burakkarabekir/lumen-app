@@ -2,13 +2,18 @@ name: iOS CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [main]
   pull_request:
-    branches: [ "main" ]
+    branches: [main]
+  workflow_dispatch:
 
 jobs:
   build-test:
     runs-on: macos-latest
+
+    defaults:
+      run:
+        working-directory: iosApp
 
     steps:
       - name: Checkout
@@ -20,16 +25,18 @@ jobs:
           echo "SCHEME=$SCHEME" >> $GITHUB_ENV
           echo "Using scheme: $SCHEME"
 
-      - name: Build
+      - name: Detect project/workspace
         run: |
           if ls *.xcworkspace 1> /dev/null 2>&1; then
-            FILE=$(ls *.xcworkspace | head -n 1)
-            TYPE=workspace
+            echo "TYPE=workspace" >> $GITHUB_ENV
+            echo "FILE=$(ls *.xcworkspace | head -n 1)" >> $GITHUB_ENV
           else
-            FILE=$(ls *.xcodeproj | head -n 1)
-            TYPE=project
+            echo "TYPE=project" >> $GITHUB_ENV
+            echo "FILE=$(ls *.xcodeproj | head -n 1)" >> $GITHUB_ENV
           fi
 
+      - name: Build
+        run: |
           xcodebuild build-for-testing \
             -scheme "$SCHEME" \
             -$TYPE "$FILE" \
@@ -37,14 +44,6 @@ jobs:
 
       - name: Test
         run: |
-          if ls *.xcworkspace 1> /dev/null 2>&1; then
-            FILE=$(ls *.xcworkspace | head -n 1)
-            TYPE=workspace
-          else
-            FILE=$(ls *.xcodeproj | head -n 1)
-            TYPE=project
-          fi
-
           xcodebuild test-without-building \
             -scheme "$SCHEME" \
             -$TYPE "$FILE" \
