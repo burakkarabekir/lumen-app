@@ -16,9 +16,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,6 +40,7 @@ import com.bksd.core.design_system.theme.LumenTheme
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.journal.presentation.journal.components.CalendarStrip
 import com.bksd.journal.presentation.journal.components.FilterChips
+import com.bksd.journal.presentation.journal.components.JournalEmptyState
 import com.bksd.journal.presentation.journal.components.MomentCard
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -81,43 +84,28 @@ fun JournalScreen(
                 AppTopBar(
                     title = "Journal",
                     style = AppBarStyle.Root,
-                    actions = {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = "Search",
-                            tint = MaterialTheme.colorScheme.onBackground,
-                            modifier = Modifier.size(28.dp).padding(end = 8.dp)
-                        )
-                    }
                 )
             }
         ) {
-            // Calendar Strip
-            CalendarStrip()
-
-            AppDivider()
-
-            // Filter Chips
-            FilterChips(
-                selectedFilter = state.selectedFilter,
-                onFilterSelect = { onAction(JournalAction.OnFilterSelect(it)) },
-                modifier = Modifier.padding(vertical = 12.dp)
-            )
-            AppDivider()
-
-            // Timeline List
             if (state.isLoading) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
                 }
             } else if (state.moments.isEmpty()) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(
-                        text = "No moments found.",
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
+                JournalEmptyState()
             } else {
+                CalendarStrip()
+                AppDivider()
+
+                // Filter Chips
+                FilterChips(
+                    selectedFilter = state.selectedFilter,
+                    onFilterSelect = { onAction(JournalAction.OnFilterSelect(it)) },
+                    modifier = Modifier.padding(vertical = 12.dp)
+                )
+                AppDivider()
+
+                // Timeline List
                 LazyColumn(
                     state = listState,
                     modifier = Modifier.fillMaxSize(),
