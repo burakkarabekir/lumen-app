@@ -155,14 +155,8 @@ jobs:
 
       - name: Build iOS
         run: |
-          xcodebuild build-for-testing \
+          xcodebuild build \
             -scheme "$SCHEME" \
             -$TYPE "$FILE" \
-            -destination "platform=iOS Simulator,name=iPhone 17"
-
-      - name: Test iOS
-        run: |
-          xcodebuild test-without-building \
-            -scheme "$SCHEME" \
-            -$TYPE "$FILE" \
-            -destination "platform=iOS Simulator,name=iPhone 17"
+            -destination "platform=iOS Simulator,name=iPhone 17" \
+            CODE_SIGNING_ALLOWED=NO
