@@ -12,7 +12,7 @@ import kotlin.time.Duration.Companion.days
 class FakeMomentRepository : MomentRepository {
 
     private val now = 1739462400000L // Hardcoded for fake mock data
-
+    private val emptyMoments = mutableListOf<Moment>()
     private val fakeMoments = mutableListOf(
         Moment(
             id = "1",
@@ -59,8 +59,7 @@ class FakeMomentRepository : MomentRepository {
     )
 
     override suspend fun getMoments(): Result<List<Moment>, AppError> {
-        delay(1000) // Simulate network delay
-        return Result.Success(fakeMoments)
+        return Result.Success(emptyMoments)
     }
 
     override suspend fun getMoment(id: String): Result<Moment, AppError> {
