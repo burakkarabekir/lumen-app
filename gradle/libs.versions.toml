@@ -1,0 +1,385 @@
+[versions]
+# ==================== SDK Versions ====================
+android-compileSdk = "36"
+android-minSdk = "26"
+android-targetSdk = "36"
+applicationId = "com.bksd.lumen"
+versionCode = "1"
+versionName = "1.0"
+
+firebase-gitlive = "2.1.0"
+firebase-bom = "33.7.0"
+google-services = "4.4.2"
+
+# ==================== Build Tools ====================
+agp = "9.0.1"
+androidTools = "32.0.0"
+kotlin = "2.3.0"
+ksp = "2.3.2"
+buildkonfig = "0.17.1"
+androidDesugarJdkLibs = "2.1.5"
+
+# ==================== Compose ====================
+composeBom = "2026.01.00"
+compose-multiplatform = "1.10.0"
+compose-multiplatform-alpha = "1.11.0-alpha01"
+compose-icons = "1.7.3"
+
+# ==================== JetBrains Multiplatform ====================
+jetbrains-lifecycle = "2.10.0-alpha07"
+jetbrains-navigation = "2.9.1"
+jetbrains-savedstate = "1.4.0"
+jetbrains-core-bundle = "1.0.1"
+jetbrains-adaptive = "1.2.0"
+
+# ==================== AndroidX ====================
+androidx-activity = "1.12.2"
+androidx-appcompat = "1.7.1"
+androidx-core = "1.17.0"
+androidx-lifecycle-runtime-compose = "2.9.6"
+androidx-lifecycle = "2.10.0"
+androidx-splashscreen = "1.2.0"
+
+# ==================== Data & Storage ====================
+room = "2.8.4"
+sqlite = "2.6.2"
+datastore = "1.2.0"
+
+# ==================== Networking ====================
+ktor = "3.3.3"
+
+# ==================== Dependency Injection ====================
+koin = "4.1.1"
+kotzilla = "1.4.2"
+
+# ==================== Kotlinx ====================
+kotlinx-serialization = "1.9.0"
+kotlinx-coroutines = "1.10.2"
+kotlinx-collections-immutable = "0.4.0"
+kotlinx-datetime = "0.7.1"
+
+# ==================== Permissions ====================
+moko-permissions = "0.20.1"
+
+# ==================== Logging ====================
+kermit = "2.0.8"
+
+# ==================== Testing ====================
+junit = "4.13.2"
+androidx-testExt = "1.3.0"
+androidx-espresso = "3.7.0"
+androidx-runner = "1.7.0"
+
+navigation3 = "1.0.0-alpha06"
+navigation3Lifecycle = "2.10.0-alpha07"
+kotlinStdlib = "2.3.0"
+core = "1.7.0"
+
+coil = "3.3.0"
+coil-network = "3.3.0"
+
+[libraries]
+androidx-lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "androidx-lifecycle" }
+
+insert-koin-koin-android = { module = "io.insert-koin:koin-android" }
+insert-koin-koin-core = { module = "io.insert-koin:koin-core" }
+koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
+
+# ==================== Gradle Plugins ====================
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+android-tools-common = { group = "com.android.tools", name = "common", version.ref = "androidTools" }
+components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose-multiplatform" }
+kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+compose-gradlePlugin = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin" }
+ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+buildkonfig-gradlePlugin = { group = "com.codingfeline.buildkonfig", name = "buildkonfig-gradle-plugin", version.ref = "buildkonfig" }
+buildkonfig-compiler = { group = "com.codingfeline.buildkonfig", name = "buildkonfig-compiler", version.ref = "buildkonfig" }
+room-gradle-plugin = { module = "androidx.room:room-gradle-plugin", version.ref = "room" }
+
+# ==================== Build Tools ====================
+android-desugarJdkLibs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
+
+# ==================== Compose BOM & UI ====================
+androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+
+# ==================== JetBrains Compose Multiplatform ====================
+jetbrains-compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "compose-multiplatform" }
+jetbrains-compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "compose-multiplatform" }
+jetbrains-compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose-multiplatform" }
+jetbrains-compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "compose-multiplatform-alpha" }
+jetbrains-compose-material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref = "compose-icons" }
+jetbrains-compose-material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "compose-icons" }
+jetbrains-compose-backhandler = { module = "org.jetbrains.compose.ui:ui-backhandler", version.ref = "compose-multiplatform" }
+jetbrains-compose-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "jetbrains-navigation" }
+jetbrains-compose-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jetbrains-lifecycle" }
+jetbrains-compose-ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "compose-multiplatform" }
+jetbrains-compose-ui-tooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "compose-multiplatform" }
+
+# ==================== JetBrains Lifecycle ====================
+jetbrains-lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle-runtime-compose" }
+jetbrains-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "jetbrains-lifecycle" }
+jetbrains-lifecycle-viewmodel-savedstate = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "jetbrains-lifecycle" }
+jetbrains-savedstate = { module = "org.jetbrains.androidx.savedstate:savedstate", version.ref = "jetbrains-savedstate" }
+jetbrains-core-bundle = { module = "org.jetbrains.androidx.core:core-bundle", version.ref = "jetbrains-core-bundle" }
+
+# ==================== JetBrains Material3 Adaptive ====================
+jetbrains-adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "jetbrains-adaptive" }
+jetbrains-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-layout", version.ref = "jetbrains-adaptive" }
+jetbrains-adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "jetbrains-adaptive" }
+
+# ==================== AndroidX Core ====================
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
+androidx-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidx-splashscreen" }
+
+# ==================== AndroidX Navigation3 ====================
+jetbrains-navigation3-ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "navigation3" }
+jetbrains-lifecycle-viewmodel-nav3 = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "navigation3Lifecycle" }
+
+# ==================== Room & SQLite ====================
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
+
+# ==================== DataStore ====================
+androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
+
+# ==================== Ktor (Networking) ====================
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
+# ==================== Koin (Dependency Injection) ====================
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-core-viewmodel = { group = "io.insert-koin", name = "koin-core-viewmodel", version.ref = "koin" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
+koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
+koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
+koin-androidx-navigation = { group = "io.insert-koin", name = "koin-androidx-navigation", version.ref = "koin" }
+
+# ==================== Kotzilla (Analytics) ====================
+kotzilla-sdk-compose = { group = "io.kotzilla", name = "kotzilla-sdk-compose", version.ref = "kotzilla" }
+
+# ==================== Kotlinx ====================
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+jetbrains-kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
+
+# ==================== Moko Permissions ====================
+moko-permissions = { module = "dev.icerock.moko:permissions", version.ref = "moko-permissions" }
+moko-permissions-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = "moko-permissions" }
+moko-permissions-notifications = { module = "dev.icerock.moko:permissions-notifications", version.ref = "moko-permissions" }
+moko-permissions-microphone = { module = "dev.icerock.moko:permissions-microphone", version.ref = "moko-permissions" }
+
+# ==================== Logging ====================
+kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
+
+# ==================== Testing ====================
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+junit = { module = "junit:junit", version.ref = "junit" }
+androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-testExt" }
+androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-espresso" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidx-runner" }
+
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinStdlib" }
+androidx-core = { group = "androidx.test", name = "core", version.ref = "core" }
+
+# Coil
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil-network" }
+
+firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase-gitlive" }
+firebase-common = { module = "dev.gitlive:firebase-common", version.ref = "firebase-gitlive" }
+firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebase-gitlive" }
+firebase-storage = { module = "dev.gitlive:firebase-storage", version.ref = "firebase-gitlive" }
+firebase-analytics = { module = "dev.gitlive:firebase-analytics", version.ref = "firebase-gitlive" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
+
+[plugins]
+googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
+# ==================== Convention Plugins ====================
+convention-android-application = { id = "com.bksd.convention.android.application", version = "unspecified" }
+convention-android-application-compose = { id = "com.bksd.convention.android.application.compose", version = "unspecified" }
+convention-cmp-application = { id = "com.bksd.convention.cmp.application", version = "unspecified" }
+convention-kmp-library = { id = "com.bksd.convention.kmp.library", version = "unspecified" }
+convention-cmp-library = { id = "com.bksd.convention.cmp.library", version = "unspecified" }
+convention-cmp-feature = { id = "com.bksd.convention.cmp.feature", version = "unspecified" }
+convention-buildkonfig = { id = "com.bksd.convention.buildkonfig", version = "unspecified" }
+convention-room = { id = "com.bksd.convention.room", version = "unspecified" }
+
+# ==================== Android Plugins ====================
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+android-lint = { id = "com.android.lint", version.ref = "agp" }
+android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
+
+# ==================== Kotlin Plugins ====================
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+# ==================== Compose Plugins ====================
+compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+compose-stability-analyzer = { id = "com.github.skydoves.compose.stability.analyzer", version = "0.7.0" }
+
+# ==================== Build Tools Plugins ====================
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+room = { id = "androidx.room", version.ref = "room" }
+buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
+
+# ==================== Analytics Plugins ====================
+kotzilla = { id = "io.kotzilla.kotzilla-plugin", version.ref = "kotzilla" }
+
+[bundles]
+# ==================== Compose (AndroidX) ====================
+compose = [
+    "jetbrains-compose-material3",
+    "jetbrains-compose-material-icons-core",
+    "jetbrains-compose-material-icons-extended",
+    "jetbrains-compose-backhandler",
+    "jetbrains-compose-viewmodel",
+]
+
+# ==================== Lifecycle ====================
+lifecycle = [
+    "jetbrains-lifecycle-runtime-compose",
+    "jetbrains-lifecycle-viewmodel",
+    "jetbrains-lifecycle-viewmodel-savedstate",
+    "jetbrains-savedstate",
+    "jetbrains-core-bundle"
+]
+
+# ==================== Adaptive UI ====================
+jetbrains-adaptive = [
+    "jetbrains-adaptive",
+    "jetbrains-adaptive-layout",
+    "jetbrains-adaptive-navigation"
+]
+
+androidx-core = [
+    "androidx-core-ktx",
+    "androidx-appcompat",
+    "androidx-activity-compose",
+    "androidx-splashscreen"
+]
+
+# ==================== Navigation ====================
+navigation3 = [
+    "jetbrains-navigation3-ui",
+    "jetbrains-lifecycle-viewmodel-nav3",
+]
+
+# ==================== Data & Storage ====================
+room-runtime = [
+    "androidx-room-runtime",
+    "androidx-sqlite-bundled"
+]
+
+room-all = [
+    "androidx-room-runtime",
+    "androidx-sqlite-bundled",
+    "androidx-room-compiler"
+]
+
+datastore = [
+    "androidx-datastore",
+    "androidx-datastore-preferences"
+]
+
+# ==================== Networking (Ktor) ====================
+ktor-common = [
+    "ktor-client-core",
+    "ktor-client-content-negotiation",
+    "ktor-serialization-kotlinx-json",
+    "ktor-client-auth",
+    "ktor-client-logging"
+]
+
+ktor-android = [
+    "ktor-client-core",
+    "ktor-client-okhttp",
+    "ktor-client-content-negotiation",
+    "ktor-serialization-kotlinx-json",
+    "ktor-client-auth",
+    "ktor-client-logging"
+]
+
+ktor-ios = [
+    "ktor-client-core",
+    "ktor-client-darwin",
+    "ktor-client-content-negotiation",
+    "ktor-serialization-kotlinx-json",
+    "ktor-client-auth",
+    "ktor-client-logging"
+]
+
+# ==================== Dependency Injection (Koin) ====================
+koin-core-bundle = [
+    "koin-core",
+    "koin-core-viewmodel"
+]
+
+koin-compose = [
+    "koin-core",
+    "koin-compose",
+    "koin-compose-viewmodel"
+]
+
+koin-android = [
+    "koin-core",
+    "koin-android",
+    "koin-compose",
+    "koin-compose-viewmodel",
+    "koin-androidx-compose",
+    "koin-androidx-navigation"
+]
+
+# ==================== Permissions ====================
+moko-permissions-core = [
+    "moko-permissions",
+    "moko-permissions-compose"
+]
+
+moko-permissions-all = [
+    "moko-permissions",
+    "moko-permissions-compose",
+    "moko-permissions-notifications"
+]
+
+# ==================== Analytics ====================
+analytics = [
+    "kotzilla-sdk-compose"
+]
+
+# ==================== Testing ====================
+testing-common = [
+    "kotlin-test",
+    "junit"
+]
+
+testing-android = [
+    "androidx-test-ext-junit",
+    "androidx-test-espresso-core",
+    "androidx-test-runner"
+]
+
+testing-full = [
+    "kotlin-test",
+    "kotlin-test-junit",
+    "junit",
+    "androidx-test-ext-junit",
+    "androidx-test-espresso-core",
+    "androidx-test-runner"
+]

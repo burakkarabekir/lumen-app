@@ -1,0 +1,29 @@
+<resources>
+    <string name="journal">Journal</string>
+    <string name="navigate_back">Navigate back</string>
+    <string name="discard">Discard</string>
+    <string name="how_are_you_doing">How are you doing?</string>
+    <string name="confirm">Confirm</string>
+    <string name="selected_mood">Selected Mood</string>
+    <string name="my_mood">My Mood</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="your_data_won_t_be_saved">Your data won\'t be saved.</string>
+    <string name="add_mood">Add mood</string>
+    <string name="add_title">Add title…</string>
+    <string name="add_description">Add Description…</string>
+    <string name="discard_recording">Discard recording?</string>
+    <string name="this_cannot_be_undone">This can\'t be undone.</string>
+    <string name="topic">Topic</string>
+    <string name="remove_topic">Remove topic %s</string>
+
+    <string name="stressed">Stressed</string>
+    <string name="sad">Sad</string>
+    <string name="neutral">Neutral</string>
+    <string name="peaceful">Peaceful</string>
+    <string name="excited">Excited</string>
+    <string name="all_moods">All Moods</string>
+    <string name="all_topics">All Topics</string>
+
+</resources>

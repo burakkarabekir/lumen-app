@@ -1,0 +1,11 @@
+<resources>
+    <string name="home">Home</string>
+    <string name="home_greeting">Hi, </string>
+
+    <!-- Recording Status Messages -->
+    <string name="microphone_permission_denied">Ready to practice?</string>
+    <string name="permission_open_settings">Open Settings</string>
+    <string name="error_couldnt_save_file">Oops, saving the file failed.</string>
+    <string name="error_recording_start">Failed to start recording</string>
+    <string name="error_recording_stop">Failed to stop recording</string>
+</resources>
