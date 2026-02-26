@@ -1,0 +1,120 @@
+name: Mobile CI (Android + iOS)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+
+  # =========================
+  # ANDROID BUILD
+  # =========================
+  android:
+    name: Android Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+
+      - name: Build Android
+        run: ./gradlew assembleDebug
+
+      - name: Run Android Tests
+        run: ./gradlew test
+
+
+  # =========================
+  # iOS BUILD
+  # =========================
+  ios:
+    name: iOS Build & Test
+    runs-on: macos-latest
+
+    defaults:
+      run:
+        working-directory: iosApp
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # JDK is required for Gradle/KMP shared module
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-macos-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-macos
+
+      - name: Cache DerivedData
+        uses: actions/cache@v4
+        with:
+          path: ~/Library/Developer/Xcode/DerivedData
+          key: deriveddata-${{ runner.os }}-${{ hashFiles('iosApp/**/*.xcodeproj/**', 'iosApp/**/*.xcworkspace/**') }}
+          restore-keys: |
+            deriveddata-${{ runner.os }}
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ../gradlew
+
+      - name: Detect scheme
+        run: |
+          SCHEME=$(xcodebuild -list -json | ruby -e "require 'json'; puts JSON.parse(STDIN.read)['project']['schemes'][0]")
+          echo "SCHEME=$SCHEME" >> $GITHUB_ENV
+          echo "Using scheme: $SCHEME"
+
+      - name: Detect project/workspace
+        run: |
+          if ls *.xcworkspace 1> /dev/null 2>&1; then
+            echo "TYPE=workspace" >> $GITHUB_ENV
+            echo "FILE=$(ls *.xcworkspace | head -n 1)" >> $GITHUB_ENV
+          else
+            echo "TYPE=project" >> $GITHUB_ENV
+            echo "FILE=$(ls *.xcodeproj | head -n 1)" >> $GITHUB_ENV
+          fi
+
+      - name: Build iOS
+        run: |
+          xcodebuild build-for-testing \
+            -scheme "$SCHEME" \
+            -$TYPE "$FILE" \
+            -destination "platform=iOS Simulator,name=iPhone 15"
+
+      - name: Test iOS
+        run: |
+          xcodebuild test-without-building \
+            -scheme "$SCHEME" \
+            -$TYPE "$FILE" \
+            -destination "platform=iOS Simulator,name=iPhone 15"
