@@ -28,12 +28,20 @@ jobs:
           filters: |
             android:
               - 'androidApp/**'
-              - 'shared/**'
+              - 'composeApp/**'
+              - 'core/**'
+              - 'feature/**'
+              - 'build-logic/**'
               - '*.gradle*'
               - 'gradle/**'
             ios:
               - 'iosApp/**'
-              - 'shared/**'
+              - 'composeApp/**'
+              - 'core/**'
+              - 'feature/**'
+              - 'build-logic/**'
+              - '*.gradle*'
+              - 'gradle/**'
 
   # =========================
   # ANDROID
