@@ -200,7 +200,7 @@ fun JournalEmptyState(
 
         // Subtitle
         Text(
-            text = "Document your journey with a\nthought, photo, or voice note.",
+            text = "Tap + to capture a thought, a feeling,\nor whatever's on your mind.",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center

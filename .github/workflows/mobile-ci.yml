@@ -107,6 +107,16 @@ jobs:
         run: |
           echo '${{ secrets.IOS_GOOGLE_SERVICES_JSON }}' > GoogleService-Info.plist
 
+      # JDK is required for Gradle/KMP shared module
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ../gradlew
+
       # Cache Gradle (shared module)
       - name: Cache Gradle
         uses: actions/cache@v4
@@ -135,12 +145,12 @@ jobs:
 
       - name: Detect project/workspace
         run: |
-          if ls *.xcworkspace 1> /dev/null 2>&1; then
+          if ls -d *.xcworkspace 1> /dev/null 2>&1; then
             echo "TYPE=workspace" >> $GITHUB_ENV
-            echo "FILE=$(ls *.xcworkspace | head -n 1)" >> $GITHUB_ENV
+            echo "FILE=$(ls -d *.xcworkspace | head -n 1)" >> $GITHUB_ENV
           else
             echo "TYPE=project" >> $GITHUB_ENV
-            echo "FILE=$(ls *.xcodeproj | head -n 1)" >> $GITHUB_ENV
+            echo "FILE=$(ls -d *.xcodeproj | head -n 1)" >> $GITHUB_ENV
           fi
 
       - name: Build iOS
