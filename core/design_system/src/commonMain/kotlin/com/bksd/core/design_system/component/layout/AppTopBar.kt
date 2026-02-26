@@ -55,15 +55,15 @@ fun AppTopBar(
     ) {
             Row(
                 modifier = Modifier
-                    .height(80.dp)
+                    .height(72.dp)
                     .then(
                         if (titleTextAlign == TextAlign.Start) {
                             Modifier
                                 .padding(
-                                    top = 24.dp,
-                                    start = 16.dp,
-                                    end = 16.dp,
-                                    bottom = 12.dp
+                                    top = 16.dp,
+                                    start = 12.dp,
+                                    end = 12.dp,
+                                    bottom = 8.dp
                                 )
                         } else {
                             Modifier
@@ -115,7 +115,7 @@ private fun Preview() {
     AppTheme {
         AppTopBar(
             title = "News List",
-            style = AppBarStyle.Child
+            style = AppBarStyle.Root
         )
     }
 }

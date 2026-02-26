@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.theme.AppTheme
 
-private val DefaultContentPadding = PaddingValues(16.dp)
+private val DefaultContentPadding = PaddingValues(vertical = 8.dp)
 
 @Composable
 fun AppSurface(
@@ -72,6 +72,12 @@ private fun Preview() {
 private fun PreviewDark() {
     AppTheme(darkTheme = true) {
         AppSurface(
+            header = {
+                AppTopBar(
+                    title = "Journal",
+                    style = AppBarStyle.Root,
+                )
+            },
             content = {
                 Text(text = "Test")
             }

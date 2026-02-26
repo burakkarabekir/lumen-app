@@ -38,6 +38,8 @@ import com.bksd.core.design_system.component.layout.AppSurface
 import com.bksd.core.design_system.component.layout.AppTopBar
 import com.bksd.core.design_system.theme.LumenTheme
 import com.bksd.core.presentation.util.ObserveAsEvents
+import com.bksd.journal.domain.model.Moment
+import com.bksd.journal.domain.model.Mood
 import com.bksd.journal.presentation.journal.components.CalendarStrip
 import com.bksd.journal.presentation.journal.components.FilterChips
 import com.bksd.journal.presentation.journal.components.JournalEmptyState
@@ -149,9 +151,16 @@ fun JournalScreen(
 @Preview
 @Composable
 fun Preview() {
-    LumenTheme {
+    LumenTheme(darkTheme = true) {
         JournalScreen(
-            state = JournalState(),
+            state = JournalState(moments = listOf(
+                Moment(
+                    id = "1",
+                    body = "Morning Coffee Run. Got my favorite oat milk latte from the corner shop.",
+                    timestamp = 1739462400000L,
+                    mood = Mood.ENERGETIC,
+                )
+            )),
             onAction = {}
         )
     }
