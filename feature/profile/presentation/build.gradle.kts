@@ -19,10 +19,6 @@ kotlin {
                 implementation(libs.bundles.koin.core.bundle)
                 implementation(libs.bundles.koin.compose)
                 implementation(libs.jetbrains.kotlinx.collections.immutable)
-
-                implementation(libs.jetbrains.compose.material3)
-                implementation(libs.jetbrains.compose.material.icons.core)
-                implementation(libs.jetbrains.compose.material.icons.extended)
             }
         }
     }

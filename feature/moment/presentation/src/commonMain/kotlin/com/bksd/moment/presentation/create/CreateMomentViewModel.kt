@@ -15,12 +15,14 @@ import com.bksd.core.presentation.util.UiText
 import com.bksd.journal.domain.model.Moment
 import com.bksd.moment.domain.usecase.SaveMomentUseCase
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.random.Random
+import kotlin.time.Clock
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -331,7 +333,6 @@ class CreateMomentViewModel(
 
             val dummyId = "moment_${Random.nextInt(10000, 99999)}"
             val dummyUserId = "user_123"
-            val now = 1739462400000L
 
             val uploadedAttachments = currentState.attachments.map { uiModel ->
                 val domainModel = MediaAttachment(
@@ -352,11 +353,11 @@ class CreateMomentViewModel(
             val newMoment = Moment(
                 id = dummyId,
                 body = currentState.body.takeIf { it.isNotBlank() },
-                timestamp = now,
+                createdAt = Clock.System.now(),
                 mood = currentState.selectedMood,
-                tags = currentState.tags,
-                attachments = uploadedAttachments,
-                links = currentState.links,
+                tags = currentState.tags.toPersistentList(),
+                attachments = uploadedAttachments.toPersistentList(),
+                links = currentState.links.toPersistentList(),
                 location = currentState.location?.let {
                     com.bksd.core.domain.location.LocationData(0.0, 0.0, it)
                 }

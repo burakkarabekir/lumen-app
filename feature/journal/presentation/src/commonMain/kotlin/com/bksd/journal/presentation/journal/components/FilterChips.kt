@@ -25,7 +25,7 @@ fun FilterChips(
     onFilterSelect: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val filters = listOf("All Entries", "Photos", "Voice Notes", "Reflections")
+    val filters = listOf("All Entries", "Photos", "Videos", "Voice Notes", "Plain texts")
 
     LazyRow(
         modifier = modifier.fillMaxWidth()

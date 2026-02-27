@@ -67,6 +67,8 @@ internal fun ProfileScreen(
     AppSurface(
         enableScrolling = true,
         centered = true,
+        modifier = Modifier
+            .padding(horizontal = 16.dp),
         header = {
             // ==================== Top Bar ====================
             AppTopBar(

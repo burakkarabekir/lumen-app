@@ -323,6 +323,10 @@ private fun CreateMomentScreen(
                                             }
                                         )
                                     }
+
+                                    MediaType.LINK -> {
+
+                                    }
                                 }
                             }
 

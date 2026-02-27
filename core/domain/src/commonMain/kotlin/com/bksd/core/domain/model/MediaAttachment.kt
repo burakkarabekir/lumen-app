@@ -10,5 +10,5 @@ data class MediaAttachment(
 )
 
 enum class MediaType {
-    PHOTO, AUDIO, VIDEO
+    PHOTO, AUDIO, VIDEO, LINK
 }

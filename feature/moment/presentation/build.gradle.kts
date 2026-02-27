@@ -27,10 +27,6 @@ kotlin {
                 implementation(libs.kotlinx.datetime)
 
                 implementation(libs.jetbrains.kotlinx.collections.immutable)
-
-                implementation(libs.jetbrains.compose.material3)
-                implementation(libs.jetbrains.compose.material.icons.core)
-                implementation(libs.jetbrains.compose.material.icons.extended)
             }
         }
     }

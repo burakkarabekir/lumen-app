@@ -19,6 +19,7 @@ kotlin {
                 implementation(project.dependencies.platform(libs.koin.bom))
                 implementation(libs.insert.koin.koin.core)
                 implementation(libs.kotlinx.datetime)
+                implementation(libs.jetbrains.kotlinx.collections.immutable)
             }
         }
 

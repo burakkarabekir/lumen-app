@@ -2,15 +2,18 @@ package com.bksd.journal.domain.model
 
 import com.bksd.core.domain.location.LocationData
 import com.bksd.core.domain.model.MediaAttachment
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
+import kotlin.time.Instant
 
 data class Moment(
     val id: String,
     val body: String?, // Title removed per Stitch design
-    val timestamp: Long,
+    val createdAt: Instant,
     val mood: Mood,
-    val tags: List<String> = emptyList(),
-    val attachments: List<MediaAttachment> = emptyList(),
-    val links: List<String> = emptyList(),
+    val tags: PersistentList<String> = persistentListOf(),
+    val attachments: PersistentList<MediaAttachment> = persistentListOf(),
+    val links: PersistentList<String> = persistentListOf(),
     val location: LocationData? = null
 )
 
