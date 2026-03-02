@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.TextSnippet
 import androidx.compose.material.icons.filled.Videocam
+import androidx.compose.material.icons.filled.Link
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -35,7 +36,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.extended
-import com.bksd.core.domain.model.MediaType
+import com.bksd.core.domain.model.AudioAttachment
+import com.bksd.core.domain.model.LinkAttachment
+import com.bksd.core.domain.model.PhotoAttachment
+import com.bksd.core.domain.model.VideoAttachment
 import com.bksd.journal.domain.model.Moment
 import com.bksd.journal.domain.model.Mood
 import kotlinx.datetime.TimeZone
@@ -53,7 +57,7 @@ fun MomentCard(
     }
 
     // Determine primary media type for the header icon
-    val primaryType = remember(moment.attachments, moment.links) {
+    val primaryType = remember(moment.attachments) {
         determinePrimaryType(moment)
     }
 
@@ -115,8 +119,8 @@ fun MomentCard(
             val attachments = moment.attachments
             if (attachments.isNotEmpty()) {
                 val primary = attachments.first()
-                when (primary.type) {
-                    MediaType.AUDIO -> {
+                when (primary) {
+                    is AudioAttachment -> {
                         if (!body.isNullOrBlank()) {
                             Spacer(modifier = Modifier.height(8.dp))
                         }
@@ -136,7 +140,7 @@ fun MomentCard(
                         }
                     }
 
-                    MediaType.PHOTO, MediaType.VIDEO -> {
+                    is PhotoAttachment -> {
                         if (body != null && body.length > 40) {
                             Spacer(modifier = Modifier.height(6.dp))
                             Text(
@@ -150,15 +154,41 @@ fun MomentCard(
                             )
                         }
                         Spacer(modifier = Modifier.height(12.dp))
-                        if (primary.type == MediaType.PHOTO) {
-                            PhotoPreview()
-                        } else {
-                            VideoPreview(durationMs = primary.durationMs)
-                        }
+                        PhotoPreview()
                     }
 
-                    MediaType.LINK -> {
+                    is VideoAttachment -> {
+                        if (body != null && body.length > 40) {
+                            Spacer(modifier = Modifier.height(6.dp))
+                            Text(
+                                text = body.drop(40).take(100).trim().let {
+                                    if (body.length > 140) "$it…" else it
+                                },
+                                fontSize = 14.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(12.dp))
+                        VideoPreview(durationMs = primary.durationMs)
+                    }
 
+                    is LinkAttachment -> {
+                        if (body != null) {
+                            Spacer(modifier = Modifier.height(6.dp))
+                            Text(
+                                text = body.drop(40).take(100).trim().let {
+                                    if (body.length > 140) "$it…" else it
+                                },
+                                fontSize = 14.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(12.dp))
+                        LinkPreview(url = primary.url.value)
                     }
                 }
             } else {
@@ -202,6 +232,7 @@ private fun MediaTypeIcon(type: CardMediaType) {
         CardMediaType.PHOTO -> Icons.Default.CameraAlt to Color(0xFF2563EB)
         CardMediaType.VIDEO -> Icons.Default.Videocam to Color(0xFF7C3AED)
         CardMediaType.AUDIO -> Icons.Default.Mic to Color(0xFF9333EA)
+        CardMediaType.LINK -> Icons.Default.Link to Color(0xFF0EA5E9)
         CardMediaType.TEXT -> Icons.Default.TextSnippet to Color(0xFF475569)
     }
 
@@ -221,14 +252,15 @@ private fun MediaTypeIcon(type: CardMediaType) {
     }
 }
 
-private enum class CardMediaType { PHOTO, VIDEO, AUDIO, TEXT }
+private enum class CardMediaType { PHOTO, VIDEO, AUDIO, LINK, TEXT }
 
 private fun determinePrimaryType(moment: Moment): CardMediaType {
     val first = moment.attachments.firstOrNull()
-    return when {
-        first?.type == MediaType.PHOTO -> CardMediaType.PHOTO
-        first?.type == MediaType.VIDEO -> CardMediaType.VIDEO
-        first?.type == MediaType.AUDIO -> CardMediaType.AUDIO
+    return when (first) {
+        is PhotoAttachment -> CardMediaType.PHOTO
+        is VideoAttachment -> CardMediaType.VIDEO
+        is AudioAttachment -> CardMediaType.AUDIO
+        is LinkAttachment -> CardMediaType.LINK
         else -> CardMediaType.TEXT
     }
 }
@@ -349,6 +381,41 @@ private fun AudioPreview(durationMs: Long?) {
             text = if (durationMs != null && durationMs > 0) formatDuration(durationMs) else "0:00",
             fontSize = 12.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+@Composable
+private fun LinkPreview(url: String?) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f))
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .size(36.dp)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = Icons.Default.Link,
+                contentDescription = "Link",
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(20.dp)
+            )
+        }
+        Text(
+            text = url ?: "Unknown Link",
+            fontSize = 14.sp,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }

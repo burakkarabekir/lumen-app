@@ -1,0 +1,13 @@
+<resources>
+    <string name="profile_title">Profile</string>
+    <string name="content_desc_avatar">Avatar</string>
+    <string name="content_desc_edit_avatar">Edit avatar</string>
+    <string name="section_account">ACCOUNT</string>
+    <string name="privacy_security">Privacy &amp; Security</string>
+    <string name="data_export">Data Export</string>
+    <string name="section_preferences">PREFERENCES</string>
+    <string name="app_theme">App Theme</string>
+    <string name="notifications">Notifications</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="member_since_prefix">✓ %s</string>
+</resources>

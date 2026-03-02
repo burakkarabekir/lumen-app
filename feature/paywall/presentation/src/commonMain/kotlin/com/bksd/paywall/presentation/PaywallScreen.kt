@@ -38,6 +38,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.presentation.util.ObserveAsEvents
+import com.bksd.paywall.presentation.Res
+import com.bksd.paywall.presentation.btn_start_trial
+import com.bksd.paywall.presentation.btn_subscribe_now
+import com.bksd.paywall.presentation.content_desc_close
+import com.bksd.paywall.presentation.legal_text
+import com.bksd.paywall.presentation.paywall_subtitle
+import com.bksd.paywall.presentation.paywall_title
+import com.bksd.paywall.presentation.restore
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -81,12 +90,12 @@ internal fun PaywallScreen(
             IconButton(onClick = { onAction(PaywallAction.OnCloseClick) }) {
                 Icon(
                     imageVector = Icons.Default.Close,
-                    contentDescription = "Close",
+                    contentDescription = stringResource(Res.string.content_desc_close),
                     tint = MaterialTheme.colorScheme.onBackground
                 )
             }
             Text(
-                text = "Restore",
+                text = stringResource(Res.string.restore),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
                 modifier = Modifier
@@ -124,7 +133,7 @@ internal fun PaywallScreen(
 
             // ==================== Title & Subtitle ====================
             Text(
-                text = "Unlock Momentum\nPremium",
+                text = stringResource(Res.string.paywall_title),
                 style = MaterialTheme.typography.headlineMedium.copy(
                     fontWeight = FontWeight.Bold
                 ),
@@ -134,7 +143,7 @@ internal fun PaywallScreen(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Elevate your reflection practice with\nadvanced AI tools.",
+                text = stringResource(Res.string.paywall_subtitle),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
                 textAlign = TextAlign.Center,
@@ -183,9 +192,9 @@ internal fun PaywallScreen(
                     )
                 } else {
                     val ctaText = if (state.selectedTier.hasFreeTrial) {
-                        "Start 7-Day Free Trial"
+                        stringResource(Res.string.btn_start_trial)
                     } else {
-                        "Subscribe Now"
+                        stringResource(Res.string.btn_subscribe_now)
                     }
                     Text(
                         text = ctaText,
@@ -199,7 +208,7 @@ internal fun PaywallScreen(
 
             // ==================== Legal Text ====================
             Text(
-                text = "Recurring billing, cancel anytime. By continuing you agree to our Terms and Privacy Policy.",
+                text = stringResource(Res.string.legal_text),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
                 textAlign = TextAlign.Center,

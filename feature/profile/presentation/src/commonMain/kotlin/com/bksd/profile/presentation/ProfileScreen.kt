@@ -36,6 +36,19 @@ import com.bksd.core.design_system.component.layout.AppBarStyle
 import com.bksd.core.design_system.component.layout.AppSurface
 import com.bksd.core.design_system.component.layout.AppTopBar
 import com.bksd.core.presentation.util.ObserveAsEvents
+import com.bksd.profile.presentation.Res
+import com.bksd.profile.presentation.app_theme
+import com.bksd.profile.presentation.content_desc_avatar
+import com.bksd.profile.presentation.content_desc_edit_avatar
+import com.bksd.profile.presentation.data_export
+import com.bksd.profile.presentation.member_since_prefix
+import com.bksd.profile.presentation.notifications
+import com.bksd.profile.presentation.privacy_security
+import com.bksd.profile.presentation.profile_title
+import com.bksd.profile.presentation.section_account
+import com.bksd.profile.presentation.section_preferences
+import com.bksd.profile.presentation.sign_out
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -72,7 +85,7 @@ internal fun ProfileScreen(
         header = {
             // ==================== Top Bar ====================
             AppTopBar(
-                title = "Profile",
+                title = stringResource(Res.string.profile_title),
                 style = AppBarStyle.Root
             )
         }
@@ -91,7 +104,7 @@ internal fun ProfileScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Person,
-                    contentDescription = "Avatar",
+                    contentDescription = stringResource(Res.string.content_desc_avatar),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.size(40.dp)
                 )
@@ -108,7 +121,7 @@ internal fun ProfileScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Edit,
-                    contentDescription = "Edit avatar",
+                    contentDescription = stringResource(Res.string.content_desc_edit_avatar),
                     tint = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier.size(14.dp)
                 )
@@ -131,7 +144,7 @@ internal fun ProfileScreen(
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = "✓ ${state.memberSince}",
+            text = stringResource(Res.string.member_since_prefix, state.memberSince),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.primary
         )
@@ -146,12 +159,12 @@ internal fun ProfileScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         // ==================== ACCOUNT Section ====================
-        SectionHeader("ACCOUNT")
+        SectionHeader(stringResource(Res.string.section_account))
         Spacer(modifier = Modifier.height(8.dp))
 
         ProfileSettingsRow(
             icon = Icons.Default.Lock,
-            label = "Privacy & Security",
+            label = stringResource(Res.string.privacy_security),
             onClick = { onAction(ProfileAction.OnPrivacyClick) }
         )
         HorizontalDivider(
@@ -159,19 +172,19 @@ internal fun ProfileScreen(
         )
         ProfileSettingsRow(
             icon = Icons.Default.Download,
-            label = "Data Export",
+            label = stringResource(Res.string.data_export),
             onClick = { onAction(ProfileAction.OnDataExportClick) }
         )
 
         Spacer(modifier = Modifier.height(20.dp))
 
         // ==================== PREFERENCES Section ====================
-        SectionHeader("PREFERENCES")
+        SectionHeader(stringResource(Res.string.section_preferences))
         Spacer(modifier = Modifier.height(8.dp))
 
         ProfileSettingsRow(
             icon = Icons.Default.Palette,
-            label = "App Theme",
+            label = stringResource(Res.string.app_theme),
             trailingValue = state.currentTheme,
             onClick = { onAction(ProfileAction.OnThemeClick) }
         )
@@ -180,7 +193,7 @@ internal fun ProfileScreen(
         )
         ProfileSettingsRow(
             icon = Icons.Default.Notifications,
-            label = "Notifications",
+            label = stringResource(Res.string.notifications),
             showBadge = state.hasNotificationBadge,
             onClick = { onAction(ProfileAction.OnNotificationsClick) }
         )
@@ -196,7 +209,7 @@ internal fun ProfileScreen(
             )
         } else {
             Text(
-                text = "Sign Out",
+                text = stringResource(Res.string.sign_out),
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
                 color = MaterialTheme.colorScheme.error,
                 textAlign = TextAlign.Center,

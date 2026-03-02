@@ -36,6 +36,17 @@ import com.bksd.core.design_system.theme.LumenBrand600
 import com.bksd.core.design_system.theme.LumenRadius
 import com.bksd.core.design_system.theme.LumenSpacing
 import com.bksd.core.presentation.util.ObserveAsEvents
+import com.bksd.auth.presentation.Res
+import com.bksd.auth.presentation.already_have_account
+import com.bksd.auth.presentation.btn_sign_in
+import com.bksd.auth.presentation.forgot_password
+import com.bksd.auth.presentation.label_email
+import com.bksd.auth.presentation.label_password
+import com.bksd.auth.presentation.no_account_prompt
+import com.bksd.auth.presentation.sign_in_subtitle
+import com.bksd.auth.presentation.sign_up_link
+import com.bksd.auth.presentation.welcome_back
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -84,7 +95,7 @@ internal fun SignInScreen(
         Spacer(modifier = Modifier.weight(1f))
 
         Text(
-            text = "Welcome Back",
+            text = stringResource(Res.string.welcome_back),
             style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
             color = MaterialTheme.colorScheme.onBackground
         )
@@ -92,7 +103,7 @@ internal fun SignInScreen(
         Spacer(modifier = Modifier.height(LumenSpacing.sm))
 
         Text(
-            text = "Continue your journey to clarity.",
+            text = stringResource(Res.string.sign_in_subtitle),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
         )
@@ -102,7 +113,7 @@ internal fun SignInScreen(
         OutlinedTextField(
             value = state.email,
             onValueChange = { onAction(SignInAction.OnEmailChange(it)) },
-            label = { Text("Email") },
+            label = { Text(stringResource(Res.string.label_email)) },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
@@ -121,7 +132,7 @@ internal fun SignInScreen(
         OutlinedTextField(
             value = state.password,
             onValueChange = { onAction(SignInAction.OnPasswordChange(it)) },
-            label = { Text("Password") },
+            label = { Text(stringResource(Res.string.label_password)) },
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password,
@@ -144,7 +155,7 @@ internal fun SignInScreen(
                 onClick = { onAction(SignInAction.OnForgotPasswordClick) }
             ) {
                 Text(
-                    text = "Forgot Password?",
+                    text = stringResource(Res.string.forgot_password),
                     style = MaterialTheme.typography.bodyMedium,
                     color = LumenBrand500
                 )
@@ -181,7 +192,7 @@ internal fun SignInScreen(
                 )
             } else {
                 Text(
-                    text = "Sign In",
+                    text = stringResource(Res.string.btn_sign_in),
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.onPrimary
                 )
@@ -195,12 +206,12 @@ internal fun SignInScreen(
             modifier = Modifier.padding(bottom = LumenSpacing.xl)
         ) {
             Text(
-                text = "Don't have an account?",
+                text = stringResource(Res.string.no_account_prompt),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
             )
             Text(
-                text = " Sign up",
+                text = stringResource(Res.string.sign_up_link),
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                 color = LumenBrand500,
                 modifier = Modifier.clickable { onAction(SignInAction.OnSignUpClick) }

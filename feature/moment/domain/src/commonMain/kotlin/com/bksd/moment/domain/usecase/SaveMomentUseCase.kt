@@ -9,6 +9,6 @@ class SaveMomentUseCase(
     private val repository: MomentRepository
 ) {
     suspend operator fun invoke(moment: Moment): Result<Unit, AppError> {
-        return repository.saveMoment(moment)
+        return Result.Success(Unit) /*repository.saveMoment(moment)*/ // TODO: to deactivate saving moments until we have a better solution for attachments and location
     }
 }

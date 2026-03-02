@@ -41,7 +41,15 @@ import com.bksd.journal.presentation.journal.components.CalendarStrip
 import com.bksd.journal.presentation.journal.components.FilterChips
 import com.bksd.journal.presentation.journal.components.JournalEmptyState
 import com.bksd.journal.presentation.journal.components.MomentCard
+import com.bksd.journal.presentation.Res
+import com.bksd.journal.presentation.all_entries
+import com.bksd.journal.presentation.content_desc_create_moment
+import com.bksd.journal.presentation.journal_title
+import com.bksd.journal.presentation.no_filter_day
+import com.bksd.journal.presentation.no_filter_entries
+import com.bksd.journal.presentation.no_moments_day
 import kotlinx.collections.immutable.persistentListOf
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.time.Clock
 
@@ -85,7 +93,7 @@ fun JournalScreen(
         AppSurface(
             header = {
                 AppTopBar(
-                    title = "Journal",
+                    title = stringResource(Res.string.journal_title),
                     style = AppBarStyle.Root,
                 )
             }
@@ -119,14 +127,14 @@ fun JournalScreen(
                         if (state.filteredMoments.isEmpty()) {
                             // Moments exist for this date, but the filter hiding them
                             val message = when {
-                                state.selectedDate != null && state.selectedFilter != "All Entries" ->
-                                    "No ${state.selectedFilter.lowercase()} on this day."
+                                state.selectedDate != null && state.selectedFilter != stringResource(Res.string.all_entries) ->
+                                    stringResource(Res.string.no_filter_day, state.selectedFilter.lowercase())
 
                                 state.selectedDate != null ->
-                                    "No moments on this day."
+                                    stringResource(Res.string.no_moments_day)
 
                                 else ->
-                                    "No entries for this filter."
+                                    stringResource(Res.string.no_filter_entries)
                             }
                             Box(
                                 modifier = Modifier.fillMaxSize().weight(1f),
@@ -175,7 +183,7 @@ fun JournalScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "Create Moment"
+                    contentDescription = stringResource(Res.string.content_desc_create_moment)
                 )
             }
         }

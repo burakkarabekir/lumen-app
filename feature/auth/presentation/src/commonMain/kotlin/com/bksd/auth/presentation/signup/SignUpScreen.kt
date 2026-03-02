@@ -37,6 +37,18 @@ import com.bksd.core.design_system.theme.LumenBrand600
 import com.bksd.core.design_system.theme.LumenRadius
 import com.bksd.core.design_system.theme.LumenSpacing
 import com.bksd.core.presentation.util.ObserveAsEvents
+import com.bksd.auth.presentation.Res
+import com.bksd.auth.presentation.already_have_account
+import com.bksd.auth.presentation.btn_sign_up
+import com.bksd.auth.presentation.create_your_space
+import com.bksd.auth.presentation.label_email
+import com.bksd.auth.presentation.label_full_name
+import com.bksd.auth.presentation.label_password
+import com.bksd.auth.presentation.password_hint
+import com.bksd.auth.presentation.sign_in_link
+import com.bksd.auth.presentation.sign_up_subtitle
+import com.bksd.auth.presentation.terms_agreement
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -91,7 +103,7 @@ internal fun SignUpScreen(
         Spacer(modifier = Modifier.weight(1f))
 
         Text(
-            text = "Create Your Space",
+            text = stringResource(Res.string.create_your_space),
             style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
             color = MaterialTheme.colorScheme.onBackground
         )
@@ -99,7 +111,7 @@ internal fun SignUpScreen(
         Spacer(modifier = Modifier.height(LumenSpacing.sm))
 
         Text(
-            text = "Start your journey with Momentum.",
+            text = stringResource(Res.string.sign_up_subtitle),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
         )
@@ -109,7 +121,7 @@ internal fun SignUpScreen(
         OutlinedTextField(
             value = state.fullName,
             onValueChange = { onAction(SignUpAction.OnFullNameChange(it)) },
-            label = { Text("Full Name") },
+            label = { Text(stringResource(Res.string.label_full_name)) },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
                 capitalization = KeyboardCapitalization.Words,
@@ -129,7 +141,7 @@ internal fun SignUpScreen(
         OutlinedTextField(
             value = state.email,
             onValueChange = { onAction(SignUpAction.OnEmailChange(it)) },
-            label = { Text("Email") },
+            label = { Text(stringResource(Res.string.label_email)) },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Next
@@ -148,7 +160,7 @@ internal fun SignUpScreen(
         OutlinedTextField(
             value = state.password,
             onValueChange = { onAction(SignUpAction.OnPasswordChange(it)) },
-            label = { Text("Password") },
+            label = { Text(stringResource(Res.string.label_password)) },
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password,
@@ -162,7 +174,7 @@ internal fun SignUpScreen(
             ),
             supportingText = {
                 Text(
-                    text = "Must be at least 8 characters",
+                    text = stringResource(Res.string.password_hint),
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
                 )
             },
@@ -199,7 +211,7 @@ internal fun SignUpScreen(
                 )
             } else {
                 Text(
-                    text = "Sign Up",
+                    text = stringResource(Res.string.btn_sign_up),
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.onPrimary
                 )
@@ -209,7 +221,7 @@ internal fun SignUpScreen(
         Spacer(modifier = Modifier.height(LumenSpacing.lg))
 
         Text(
-            text = "By signing up, you agree to our Terms and Privacy Policy.",
+            text = stringResource(Res.string.terms_agreement),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
             textAlign = TextAlign.Center,
@@ -223,12 +235,12 @@ internal fun SignUpScreen(
             modifier = Modifier.padding(bottom = LumenSpacing.xl)
         ) {
             Text(
-                text = "Already have an account?",
+                text = stringResource(Res.string.already_have_account),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
             )
             Text(
-                text = " Sign In",
+                text = stringResource(Res.string.sign_in_link),
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                 color = LumenBrand500,
                 modifier = Modifier.clickable { onAction(SignUpAction.OnSignInClick) }

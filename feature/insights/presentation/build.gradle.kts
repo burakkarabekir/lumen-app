@@ -7,6 +7,7 @@ kotlin {
         namespace = "com.bksd.insights.presentation"
         compileSdk = 36
         minSdk = 26
+        androidResources.enable = true
     }
     sourceSets {
         commonMain {
@@ -23,4 +24,8 @@ kotlin {
             }
         }
     }
+}
+
+compose.resources {
+    packageOfResClass = "com.bksd.insights.presentation"
 }

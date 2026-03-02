@@ -26,4 +26,17 @@
     <string name="all_moods">All Moods</string>
     <string name="all_topics">All Topics</string>
 
+    <!-- JournalScreen -->
+    <string name="journal_title">Journal</string>
+    <string name="content_desc_create_moment">Create Moment</string>
+    <string name="no_moments_day">No moments on this day.</string>
+    <string name="no_filter_entries">No entries for this filter.</string>
+    <string name="no_filter_day">No %s on this day.</string>
+    <string name="all_entries">All Entries</string>
+
+    <!-- MomentDetailScreen -->
+    <string name="moment_detail_title">Moment</string>
+    <string name="content_desc_back">Back</string>
+    <string name="content_desc_edit">Edit</string>
+    <string name="my_moment_fallback">My Moment</string>
 </resources>

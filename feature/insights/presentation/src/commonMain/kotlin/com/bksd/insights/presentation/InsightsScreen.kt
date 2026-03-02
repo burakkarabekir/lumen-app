@@ -26,6 +26,16 @@ import com.bksd.core.design_system.component.layout.AppBarStyle
 import com.bksd.core.design_system.component.layout.AppSurface
 import com.bksd.core.design_system.component.layout.AppTopBar
 import com.bksd.core.presentation.util.ObserveAsEvents
+import com.bksd.insights.presentation.Res
+import com.bksd.insights.presentation.adjustment
+import com.bksd.insights.presentation.consistency_trend
+import com.bksd.insights.presentation.insights_title
+import com.bksd.insights.presentation.medium_breakdown
+import com.bksd.insights.presentation.mindset_synthesis
+import com.bksd.insights.presentation.peak_activity
+import com.bksd.insights.presentation.power_user_analytics
+import com.bksd.insights.presentation.recurring_theme
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -58,13 +68,13 @@ internal fun InsightsScreen(
         header = {
             // ==================== Top Bar ====================
             AppTopBar(
-                title = "Insights",
+                title = stringResource(Res.string.insights_title),
                 style = AppBarStyle.Root
             )
         }
     ) {
         Text(
-            text = "Power User Analytics",
+            text = stringResource(Res.string.power_user_analytics),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
             modifier = Modifier.padding(start = 16.dp)
@@ -74,7 +84,7 @@ internal fun InsightsScreen(
 
         // ==================== Peak Activity Card ====================
         InsightCard(
-            title = "Peak Activity"
+            title = stringResource(Res.string.peak_activity)
         ) {
             Text(
                 text = "\"${state.peakActivityInsight}\"",
@@ -89,7 +99,7 @@ internal fun InsightsScreen(
         // ==================== Consistency Trend Card ====================
         state.consistencyTrend?.let { trend ->
             InsightCard(
-                title = "Consistency Trend"
+                title = stringResource(Res.string.consistency_trend)
             ) {
                 Text(
                     text = trend.title,
@@ -111,7 +121,7 @@ internal fun InsightsScreen(
         // ==================== Medium Breakdown Card ====================
         state.mediumBreakdown?.let { medium ->
             InsightCard(
-                title = "Medium Breakdown"
+                title = stringResource(Res.string.medium_breakdown)
             ) {
                 Text(
                     text = medium.description,
@@ -145,7 +155,7 @@ internal fun InsightsScreen(
         // ==================== Mindset Synthesis Card ====================
         state.mindsetSynthesis?.let { synthesis ->
             InsightCard(
-                title = "Mindset Synthesis"
+                title = stringResource(Res.string.mindset_synthesis)
             ) {
                 Text(
                     text = synthesis.summary,
@@ -159,11 +169,11 @@ internal fun InsightsScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     SynthesisChip(
-                        label = "Recurring Theme",
+                        label = stringResource(Res.string.recurring_theme),
                         value = synthesis.recurringTheme
                     )
                     SynthesisChip(
-                        label = "Adjustment",
+                        label = stringResource(Res.string.adjustment),
                         value = synthesis.adjustment
                     )
                     SynthesisChip(

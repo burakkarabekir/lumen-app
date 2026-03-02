@@ -35,6 +35,14 @@ import com.bksd.core.design_system.theme.LumenBrand600
 import com.bksd.core.design_system.theme.LumenRadius
 import com.bksd.core.design_system.theme.LumenSpacing
 import com.bksd.core.presentation.util.ObserveAsEvents
+import com.bksd.auth.presentation.Res
+import com.bksd.auth.presentation.back_to_sign_in
+import com.bksd.auth.presentation.btn_send_link
+import com.bksd.auth.presentation.label_email
+import com.bksd.auth.presentation.reset_password_description
+import com.bksd.auth.presentation.reset_password_title
+import com.bksd.auth.presentation.reset_success_message
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -83,7 +91,7 @@ internal fun ResetPasswordScreen(
         Spacer(modifier = Modifier.weight(1f))
 
         Text(
-            text = "Reset Password",
+            text = stringResource(Res.string.reset_password_title),
             style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
             color = MaterialTheme.colorScheme.onBackground
         )
@@ -91,7 +99,7 @@ internal fun ResetPasswordScreen(
         Spacer(modifier = Modifier.height(LumenSpacing.sm))
 
         Text(
-            text = "Enter the email address associated with your Momentum account and we'll send you a secure link to reset your password.",
+            text = stringResource(Res.string.reset_password_description),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
             textAlign = TextAlign.Center
@@ -102,7 +110,7 @@ internal fun ResetPasswordScreen(
         OutlinedTextField(
             value = state.email,
             onValueChange = { onAction(ResetPasswordAction.OnEmailChange(it)) },
-            label = { Text("Email") },
+            label = { Text(stringResource(Res.string.label_email)) },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email,
                 imeAction = ImeAction.Done
@@ -129,7 +137,7 @@ internal fun ResetPasswordScreen(
 
         if (state.isSuccess) {
             Text(
-                text = "Password reset email sent!",
+                text = stringResource(Res.string.reset_success_message),
                 color = LumenBrand500,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(bottom = LumenSpacing.md)
@@ -155,7 +163,7 @@ internal fun ResetPasswordScreen(
                 )
             } else {
                 Text(
-                    text = "Send Link",
+                    text = stringResource(Res.string.btn_send_link),
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.onPrimary
                 )
@@ -169,7 +177,7 @@ internal fun ResetPasswordScreen(
             modifier = Modifier.padding(bottom = LumenSpacing.xl)
         ) {
             Text(
-                text = "Back to Sign In",
+                text = stringResource(Res.string.back_to_sign_in),
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                 color = LumenBrand500,
                 modifier = Modifier.clickable { onAction(ResetPasswordAction.OnBackToSignInClick) }

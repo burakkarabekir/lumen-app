@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -48,75 +48,65 @@ fun AudioPlaybackCard(
     onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Row(
+    AttachmentCardLayout(
+        headerIcon = Icons.Default.Mic,
+        headerTitle = "Voice Record",
+        onDeleteClick = onDeleteClick,
         modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant)
-            .padding(horizontal = 12.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically
     ) {
-        // Play/Pause Button
-        AudioPlaybackButton(
-            playbackState = playbackState,
-            onPlayClick = onPlayClick,
-            onPauseClick = onPauseClick,
-            modifier = Modifier.size(40.dp),
-            colors = IconButtonDefaults.filledIconButtonColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
-            )
-        )
-
-        Spacer(modifier = Modifier.width(12.dp))
-
-        // Visualizer + Time
-        Column(
-            modifier = Modifier.weight(1f)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            VoiceVisualizer(
-                amplitudes = amplitudes,
-                isActive = playbackState == PlaybackState.PLAYING,
-                modifier = Modifier.fillMaxWidth().height(32.dp),
-                style = VisualizerStyle(
-                    barWidth = 3.dp,
-                    barSpacing = 2.dp,
-                    cornerRadius = 2.dp,
-                    minBarHeight = 3.dp
-                ),
-                activeColor = MaterialTheme.colorScheme.primary
+            // Play/Pause Button
+            AudioPlaybackButton(
+                playbackState = playbackState,
+                onPlayClick = onPlayClick,
+                onPauseClick = onPauseClick,
+                modifier = Modifier.size(40.dp),
+                colors = IconButtonDefaults.filledIconButtonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
+                )
             )
 
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
+            Spacer(modifier = Modifier.width(16.dp))
+
+            // Visualizer + Time
+            Column(
+                modifier = Modifier.weight(1f)
             ) {
-                Text(
-                    text = currentPositionFormatted,
-                    fontSize = 11.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                VoiceVisualizer(
+                    amplitudes = amplitudes,
+                    isActive = playbackState == PlaybackState.PLAYING,
+                    modifier = Modifier.fillMaxWidth().height(32.dp),
+                    style = VisualizerStyle(
+                        barWidth = 3.dp,
+                        barSpacing = 2.dp,
+                        cornerRadius = 2.dp,
+                        minBarHeight = 3.dp
+                    ),
+                    activeColor = MaterialTheme.colorScheme.primary
                 )
-                Text(
-                    text = durationFormatted,
-                    fontSize = 11.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = currentPositionFormatted,
+                        fontSize = 11.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = durationFormatted,
+                        fontSize = 11.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
-        }
-
-        Spacer(modifier = Modifier.width(8.dp))
-
-        // Delete Button
-        IconButton(
-            onClick = onDeleteClick,
-            modifier = Modifier.size(36.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Delete,
-                contentDescription = "Delete Recording",
-                tint = MaterialTheme.colorScheme.error,
-                modifier = Modifier.size(20.dp)
-            )
         }
     }
 }

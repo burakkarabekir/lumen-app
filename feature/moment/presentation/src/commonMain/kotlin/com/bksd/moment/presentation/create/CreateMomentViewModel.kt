@@ -3,24 +3,51 @@
 package com.bksd.moment.presentation.create
 
 import androidx.lifecycle.viewModelScope
+import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.Result
 import com.bksd.core.domain.location.LocationProvider
-import com.bksd.core.domain.model.MediaAttachment
+import com.bksd.core.domain.model.Attachment
+import com.bksd.core.domain.model.AttachmentId
+import com.bksd.core.domain.model.DraftAudio
+import com.bksd.core.domain.model.DraftLink
+import com.bksd.core.domain.model.DraftPhoto
+import com.bksd.core.domain.model.DraftVideo
+import com.bksd.core.domain.model.MediaType
 import com.bksd.core.domain.model.PlaybackState
+import com.bksd.core.domain.model.Url
 import com.bksd.core.domain.repository.MediaRepository
 import com.bksd.core.domain.storage.AudioPlayer
 import com.bksd.core.domain.storage.VoiceRecorder
 import com.bksd.core.presentation.util.BaseViewModel
 import com.bksd.core.presentation.util.UiText
+import com.bksd.core.presentation.util.toFormattedTime
 import com.bksd.journal.domain.model.Moment
 import com.bksd.moment.domain.usecase.SaveMomentUseCase
+import com.bksd.moment.presentation.Res
+import com.bksd.moment.presentation.create.mappers.toLocationData
+import com.bksd.moment.presentation.create.mappers.toLocationInfoUiModel
+import com.bksd.moment.presentation.error_attachment_save_failed
+import com.bksd.moment.presentation.error_audio_permission_required
+import com.bksd.moment.presentation.error_camera_permission_denied
+import com.bksd.moment.presentation.error_file_too_large
+import com.bksd.moment.presentation.error_location_fetch_failed
+import com.bksd.moment.presentation.error_location_permission_denied
+import com.bksd.moment.presentation.error_moment_empty
+import com.bksd.moment.presentation.error_moment_save_failed
+import com.bksd.moment.presentation.error_mood_required
+import com.bksd.moment.presentation.error_playback_failed
+import com.bksd.moment.presentation.error_recording_save_failed
+import com.bksd.moment.presentation.error_recording_start_failed
+import com.bksd.moment.presentation.success_moment_saved
+import com.bksd.moment.presentation.timestamp_today_format
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
 import kotlin.random.Random
 import kotlin.time.Clock
 import kotlin.uuid.ExperimentalUuidApi
@@ -34,44 +61,52 @@ class CreateMomentViewModel(
     private val locationProvider: LocationProvider
 ) : BaseViewModel<CreateMomentAction, CreateMomentEvent>() {
 
-    private val _stateFlow = MutableStateFlow(CreateMomentState())
-    val state: StateFlow<CreateMomentState> = _stateFlow.asStateFlow()
+    private var hasLoadedInitialData = false
 
-    init {
-        // Collect voice recorder states
-        viewModelScope.launch {
-            voiceRecorder.isRecording.collect { updateRecordingState() }
+    private val _state = MutableStateFlow(CreateMomentState())
+    val state = _state
+        .onStart {
+            if (!hasLoadedInitialData) {
+                initState()
+                hasLoadedInitialData = true
+            }
         }
-        viewModelScope.launch {
-            voiceRecorder.elapsedMs.collect { updateRecordingState() }
-        }
-        viewModelScope.launch {
-            voiceRecorder.amplitudes.collect { updateRecordingState() }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000L),
+            initialValue = CreateMomentState()
+        )
+
+    fun initState() {
+        val now = Clock.System.now()
+        launch {
+            val formatted = getString(Res.string.timestamp_today_format, now.toFormattedTime())
+            updateState { it.copy(timestampFormatted = formatted) }
         }
 
-        // Collect audio player states
-        viewModelScope.launch {
+        launch { voiceRecorder.isRecording.collect { updateRecordingState() } }
+        launch { voiceRecorder.elapsedMs.collect { updateRecordingState() } }
+        launch { voiceRecorder.amplitudes.collect { updateRecordingState() } }
+        launch {
             audioPlayer.playbackState.collect { playbackState ->
                 updateState { it.copy(playbackState = playbackState) }
             }
         }
-        viewModelScope.launch {
+        launch {
             audioPlayer.playbackAmplitudes.collect { amplitudes ->
                 updateState { it.copy(playbackAmplitudes = amplitudes.toImmutableList()) }
             }
         }
-        viewModelScope.launch {
+        launch {
             audioPlayer.currentPositionMs.collect { positionMs ->
                 updateState { it.copy(playbackPositionFormatted = formatMs(positionMs)) }
             }
         }
-        viewModelScope.launch {
+        launch {
             audioPlayer.durationMs.collect { durationMs ->
                 updateState { it.copy(playbackDurationFormatted = formatMs(durationMs)) }
             }
         }
-
-        fetchLocation()
     }
 
     override fun onCleared() {
@@ -105,23 +140,44 @@ class CreateMomentViewModel(
         return "$minutes:${seconds.toString().padStart(2, '0')}"
     }
 
-    private fun fetchLocation() {
-        if (!locationProvider.hasPermission()) return
+    private fun handleAddLocationClick() {
+        if (locationProvider.hasPermission()) {
+            fetchLocation()
+        } else {
+            sendEvent(CreateMomentEvent.RequestLocationPermission)
+        }
+    }
 
-        viewModelScope.launch {
+    private fun fetchLocation() {
+        updateState { it.copy(isFetchingLocation = true) }
+        launch {
             when (val result = locationProvider.getCurrentLocation()) {
                 is Result.Success -> {
-                    updateState { it.copy(location = result.data.displayName) }
+                    updateState {
+                        it.copy(
+                            location = result.data.toLocationInfoUiModel(),
+                            isFetchingLocation = false
+                        )
+                    }
                 }
 
-                is Result.Error -> { /* Ignore silently */
+                is Result.Error -> {
+                    updateState { it.copy(isFetchingLocation = false) }
+                    val message = if (result.error is AppError.Unknown) {
+                        (result.error as AppError.Unknown).message
+                    } else null
+                    if (message != null) {
+                        sendEvent(CreateMomentEvent.ShowError(UiText.Dynamic(message)))
+                    } else {
+                        sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_location_fetch_failed)))
+                    }
                 }
             }
         }
     }
 
     private fun updateState(transform: (CreateMomentState) -> CreateMomentState) {
-        _stateFlow.update(transform)
+        _state.update(transform)
     }
 
     override fun onAction(action: CreateMomentAction) {
@@ -130,92 +186,96 @@ class CreateMomentViewModel(
             is CreateMomentAction.OnMoodSelect -> updateState { it.copy(selectedMood = action.mood) }
             is CreateMomentAction.OnTagAdd -> {
                 if (action.tag.isNotBlank() && !state.value.tags.contains(action.tag)) {
-                    updateState { it.copy(tags = it.tags + action.tag.trim()) }
+                    updateState { it.copy(tags = (it.tags + action.tag.trim()).toPersistentList()) }
                 }
             }
 
-            is CreateMomentAction.OnTagRemove -> updateState { it.copy(tags = it.tags - action.tag) }
+            is CreateMomentAction.OnTagRemove -> updateState { it.copy(tags = (it.tags - action.tag).toPersistentList()) }
             is CreateMomentAction.OnDateSelect -> updateState { it.copy(selectedDate = action.date) }
             CreateMomentAction.OnBackClick -> sendEvent(CreateMomentEvent.NavigateBack)
             CreateMomentAction.OnSaveClick -> saveMoment()
 
-            // Media Launchers
-            CreateMomentAction.OnCameraClick -> sendEvent(CreateMomentEvent.LaunchCamera)
-            CreateMomentAction.OnVideoClick -> sendEvent(CreateMomentEvent.LaunchVideoPicker)
-            CreateMomentAction.OnFilePickClick -> sendEvent(CreateMomentEvent.LaunchFilePicker)
-
-            // Media Handlers
-            is CreateMomentAction.OnMediaPicked -> handleMediaPicked(action)
+            // Attachments
             is CreateMomentAction.OnRemoveAttachment -> removeAttachment(action.id)
             CreateMomentAction.OnToggleAttachments -> {
                 updateState { it.copy(isAttachmentsExpanded = !it.isAttachmentsExpanded) }
             }
 
-            // Voice Recording — Permission → Bottom Sheet Flow
-            CreateMomentAction.OnMicClick -> {
-                // Request permission first; Screen handles the permission flow
-                sendEvent(CreateMomentEvent.RequestAudioPermission)
+            // Location
+            CreateMomentAction.OnAddLocationClick -> handleAddLocationClick()
+            CreateMomentAction.OnRemoveLocationClick -> updateState { it.copy(location = null) }
+
+            CreateMomentAction.OnLocationPermissionGranted -> fetchLocation()
+            CreateMomentAction.OnLocationPermissionDenied -> {
+                sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_location_permission_denied)))
             }
 
+            // Media
+            CreateMomentAction.OnCameraClick -> sendEvent(CreateMomentEvent.RequestCameraPermission)
+            CreateMomentAction.OnCameraPermissionGranted -> sendEvent(CreateMomentEvent.LaunchCamera)
+            CreateMomentAction.OnCameraPermissionDenied -> {
+                sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_camera_permission_denied)))
+            }
+            CreateMomentAction.OnPhotoClick -> sendEvent(CreateMomentEvent.LaunchPhotoPicker)
+            CreateMomentAction.OnVideoClick -> sendEvent(CreateMomentEvent.LaunchVideoPicker)
+            CreateMomentAction.OnFilePickClick -> sendEvent(CreateMomentEvent.LaunchFilePicker)
+            is CreateMomentAction.OnMediaPicked -> handleMediaPicked(action)
+            CreateMomentAction.OnMicClick -> sendEvent(CreateMomentEvent.RequestAudioPermission)
+
             CreateMomentAction.OnAudioPermissionGranted -> {
-                // Permission granted — show bottom sheet and start recording
-                viewModelScope.launch {
+                launch {
                     audioPlayer.stop()
                     updateState { it.copy(isRecordingSheetVisible = true) }
                     val result = voiceRecorder.startRecording()
                     if (result is Result.Error) {
                         updateState { it.copy(isRecordingSheetVisible = false) }
-                        sendEvent(CreateMomentEvent.ShowError(UiText.Dynamic("Failed to start recording")))
+                        sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_recording_start_failed)))
                     }
                 }
             }
 
             CreateMomentAction.OnAudioPermissionDenied -> {
-                sendEvent(CreateMomentEvent.ShowError(UiText.Dynamic("Microphone permission is required to record audio")))
+                sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_audio_permission_required)))
             }
 
             CreateMomentAction.OnStopRecording -> {
-                viewModelScope.launch {
+                launch {
                     voiceRecorder.stopRecording()
                     updateState { it.copy(isRecordingSheetVisible = false) }
                 }
             }
 
             CreateMomentAction.OnRecordingDone -> {
-                // Stop recording, save as attachment, dismiss sheet
-                viewModelScope.launch {
+                launch {
                     val result = voiceRecorder.stopRecording()
                     if (result is Result.Success) {
-                        val newAttachment = AttachmentUiModel(
+                        val newAttachment = AttachmentUiModel.Audio(
                             id = Uuid.random().toString(),
-                            type = com.bksd.core.domain.model.MediaType.AUDIO,
                             localPath = result.data,
-                            displayName = "Voice Note"
+                            sizeBytes = 0L // TODO: Get size if needed
                         )
                         updateState {
                             it.copy(
-                                attachments = (it.attachments + newAttachment).toImmutableList(),
-                                isAttachmentsExpanded = true,
+                                audioAttachment = newAttachment,
                                 isRecordingSheetVisible = false
                             )
                         }
                     } else {
                         updateState { it.copy(isRecordingSheetVisible = false) }
-                        sendEvent(CreateMomentEvent.ShowError(UiText.Dynamic("Failed to save recording")))
+                        sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_recording_save_failed)))
                     }
                 }
             }
 
             CreateMomentAction.OnCancelRecording -> {
-                viewModelScope.launch {
+                launch {
                     voiceRecorder.cancelRecording()
                     updateState { it.copy(isRecordingSheetVisible = false) }
                 }
             }
 
             CreateMomentAction.OnDismissRecordingSheet -> {
-                // Dismiss triggered by swipe/back — cancel recording
-                viewModelScope.launch {
+                launch {
                     if (voiceRecorder.isRecording.value) {
                         voiceRecorder.cancelRecording()
                     }
@@ -223,18 +283,16 @@ class CreateMomentViewModel(
                 }
             }
 
-            // Audio Playback
             is CreateMomentAction.OnPlayAudio -> {
-                val attachment = state.value.attachments.find { it.id == action.attachmentId }
-                val filePath = attachment?.localPath
+                val filePath = state.value.audioAttachment?.localPath
                 if (filePath != null) {
-                    viewModelScope.launch {
+                    launch {
                         if (audioPlayer.playbackState.value == PlaybackState.PAUSED) {
                             audioPlayer.resume()
                         } else {
                             val result = audioPlayer.play(filePath)
                             if (result is Result.Error) {
-                                sendEvent(CreateMomentEvent.ShowError(UiText.Dynamic("Failed to play recording")))
+                                sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_playback_failed)))
                             }
                         }
                     }
@@ -242,17 +300,16 @@ class CreateMomentViewModel(
             }
 
             CreateMomentAction.OnPauseAudio -> {
-                viewModelScope.launch { audioPlayer.pause() }
+                launch { audioPlayer.pause() }
             }
 
             is CreateMomentAction.OnDeleteRecording -> {
-                viewModelScope.launch {
+                launch {
                     audioPlayer.stop()
-                    removeAttachment(action.attachmentId)
+                    updateState { it.copy(audioAttachment = null) }
                 }
             }
 
-            // Link Actions
             CreateMomentAction.OnLinkClick -> {
                 updateState { it.copy(isLinkSheetVisible = true) }
             }
@@ -263,21 +320,24 @@ class CreateMomentViewModel(
 
             is CreateMomentAction.OnLinkInputChange -> updateState { it.copy(linkInput = action.text) }
             CreateMomentAction.OnAddLink -> {
-                val link = state.value.linkInput.trim()
-                if (link.isNotEmpty() && !state.value.links.contains(link)) {
+                val linkUrl = state.value.linkInput.trim()
+                if (linkUrl.isNotEmpty()) {
+                    val newAttachment = AttachmentUiModel.Link(
+                        id = Uuid.random().toString(),
+                        remoteUrl = linkUrl
+                    )
                     updateState {
                         it.copy(
-                            links = (it.links + link).toImmutableList(),
+                            linkAttachment = newAttachment,
                             linkInput = "",
-                            isLinkSheetVisible = false,
-                            isAttachmentsExpanded = true
+                            isLinkSheetVisible = false
                         )
                     }
                 }
             }
 
             is CreateMomentAction.OnRemoveLink -> {
-                updateState { it.copy(links = (it.links - action.url).toImmutableList()) }
+                updateState { it.copy(linkAttachment = null) }
             }
         }
     }
@@ -285,30 +345,42 @@ class CreateMomentViewModel(
     private fun handleMediaPicked(action: CreateMomentAction.OnMediaPicked) {
         val maxSize = 25 * 1024 * 1024 // 25 MB
         if (action.sizeBytes > maxSize) {
-            sendEvent(CreateMomentEvent.ShowError(UiText.Dynamic("File exceeds 25 MB limit")))
+            sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_file_too_large)))
             return
         }
 
-        val newAttachment = AttachmentUiModel(
-            id = Uuid.random().toString(),
-            type = action.type,
-            localPath = action.path,
-            displayName = "Attached Media"
-        )
-        updateState {
-            it.copy(
-                attachments = (it.attachments + newAttachment).toImmutableList(),
-                isAttachmentsExpanded = true
+        val newAttachment = when (action.type) {
+            MediaType.PHOTO -> AttachmentUiModel.Photo(
+                id = Uuid.random().toString(),
+                localPath = action.path,
+                sizeBytes = action.sizeBytes
             )
+
+            MediaType.VIDEO -> AttachmentUiModel.Video(
+                id = Uuid.random().toString(),
+                localPath = action.path,
+                sizeBytes = action.sizeBytes
+            )
+
+            else -> return // Pickers only return Photo/Video
+        }
+
+        updateState {
+            when (newAttachment) {
+                is AttachmentUiModel.Photo -> it.copy(photoAttachment = newAttachment)
+                is AttachmentUiModel.Video -> it.copy(videoAttachment = newAttachment)
+                else -> it
+            }
         }
     }
 
     private fun removeAttachment(id: String) {
         updateState { state ->
-            val newAttachments = state.attachments.filter { it.id != id }.toImmutableList()
             state.copy(
-                attachments = newAttachments,
-                isAttachmentsExpanded = newAttachments.isNotEmpty() && state.isAttachmentsExpanded
+                photoAttachment = if (state.photoAttachment?.id == id) null else state.photoAttachment,
+                videoAttachment = if (state.videoAttachment?.id == id) null else state.videoAttachment,
+                audioAttachment = if (state.audioAttachment?.id == id) null else state.audioAttachment,
+                linkAttachment = if (state.linkAttachment?.id == id) null else state.linkAttachment
             )
         }
     }
@@ -316,38 +388,65 @@ class CreateMomentViewModel(
     private fun saveMoment() {
         val currentState = state.value
 
-        if (currentState.body.isBlank() && currentState.attachments.isEmpty() && currentState.links.isEmpty()) {
-            sendEvent(CreateMomentEvent.ShowError(UiText.Dynamic("Moment is empty")))
+        val attachmentsToSave = currentState.allAttachments
+
+        if (currentState.body.isBlank() && attachmentsToSave.isEmpty()) {
+            sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_moment_empty)))
             return
         }
         if (currentState.selectedMood == null) {
-            sendEvent(CreateMomentEvent.ShowError(UiText.Dynamic("Please select a mood")))
+            sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_mood_required)))
             return
         }
 
         updateState { it.copy(isSaving = true) }
 
-        viewModelScope.launch {
-            // Stop any ongoing playback before saving
-            audioPlayer.stop()
+        launch {
+            if (audioPlayer.playbackState.value != PlaybackState.STOPPED) {
+                audioPlayer.stop()
+            }
 
             val dummyId = "moment_${Random.nextInt(10000, 99999)}"
             val dummyUserId = "user_123"
 
-            val uploadedAttachments = currentState.attachments.map { uiModel ->
-                val domainModel = MediaAttachment(
-                    id = uiModel.id,
-                    type = uiModel.type,
-                    localPath = uiModel.localPath
-                )
+            val uploadedAttachments = mutableListOf<Attachment>()
 
-                if (domainModel.localPath != null) {
-                    when (val result =
-                        mediaRepository.uploadAttachment(domainModel, dummyUserId, dummyId)) {
-                        is Result.Success -> result.data
-                        is Result.Error -> domainModel
+            for (uiModel in attachmentsToSave) {
+                val draft = when (uiModel) {
+                    is AttachmentUiModel.Photo -> DraftPhoto(
+                        AttachmentId(uiModel.id),
+                        uiModel.localPath ?: uiModel.remoteUrl.orEmpty(),
+                        uiModel.sizeBytes
+                    )
+
+                    is AttachmentUiModel.Video -> DraftVideo(
+                        AttachmentId(uiModel.id),
+                        uiModel.localPath ?: uiModel.remoteUrl.orEmpty(),
+                        uiModel.durationMs,
+                        uiModel.sizeBytes
+                    )
+
+                    is AttachmentUiModel.Audio -> DraftAudio(
+                        AttachmentId(uiModel.id),
+                        uiModel.localPath ?: uiModel.remoteUrl.orEmpty(),
+                        uiModel.durationMs,
+                        uiModel.sizeBytes
+                    )
+
+                    is AttachmentUiModel.Link -> DraftLink(
+                        AttachmentId(uiModel.id),
+                        Url(uiModel.remoteUrl)
+                    )
+                }
+
+                when (val result = mediaRepository.uploadAttachment(draft, dummyUserId, dummyId)) {
+                    is Result.Success -> uploadedAttachments.add(result.data)
+                    is Result.Error -> {
+                        updateState { it.copy(isSaving = false) }
+                        sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_attachment_save_failed)))
+                        return@launch
                     }
-                } else domainModel
+                }
             }
 
             val newMoment = Moment(
@@ -357,10 +456,7 @@ class CreateMomentViewModel(
                 mood = currentState.selectedMood,
                 tags = currentState.tags.toPersistentList(),
                 attachments = uploadedAttachments.toPersistentList(),
-                links = currentState.links.toPersistentList(),
-                location = currentState.location?.let {
-                    com.bksd.core.domain.location.LocationData(0.0, 0.0, it)
-                }
+                location = currentState.location?.toLocationData()
             )
 
             val result = saveMomentUseCase(newMoment)
@@ -369,11 +465,11 @@ class CreateMomentViewModel(
 
             when (result) {
                 is Result.Error -> {
-                    sendEvent(CreateMomentEvent.ShowError(UiText.Dynamic("Failed to save moment")))
+                    sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_moment_save_failed)))
                 }
 
                 is Result.Success -> {
-                    sendEvent(CreateMomentEvent.ShowSaveSuccess(UiText.Dynamic("Moment saved!")))
+                    sendEvent(CreateMomentEvent.ShowSaveSuccess(UiText.Resource(Res.string.success_moment_saved)))
                     sendEvent(CreateMomentEvent.NavigateBack)
                 }
             }

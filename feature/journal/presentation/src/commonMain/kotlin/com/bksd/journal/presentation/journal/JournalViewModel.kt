@@ -2,7 +2,10 @@ package com.bksd.journal.presentation.journal
 
 import androidx.lifecycle.viewModelScope
 import com.bksd.core.domain.error.Result
-import com.bksd.core.domain.model.MediaType
+import com.bksd.core.domain.model.AudioAttachment
+import com.bksd.core.domain.model.LinkAttachment
+import com.bksd.core.domain.model.PhotoAttachment
+import com.bksd.core.domain.model.VideoAttachment
 import com.bksd.core.presentation.util.BaseViewModel
 import com.bksd.core.presentation.util.UiText
 import com.bksd.journal.domain.model.Moment
@@ -65,7 +68,7 @@ class JournalViewModel(
 
     private fun loadMomentsByDate(date: LocalDate) {
         _state.update { it.copy(selectedDate = date, selectedFilter = FILTER_ALL) }
-        viewModelScope.launch {
+        launch {
             when (val result = getMomentsByDateUseCase(date)) {
                 is Result.Error -> {
                     val errorText = UiText.Dynamic(result.error.toString())
@@ -91,22 +94,22 @@ class JournalViewModel(
         val filtered = when (_state.value.selectedFilter) {
             FILTER_PHOTOS -> moments.filter { moment ->
                 moment.attachments
-                    .any { it.type == MediaType.PHOTO }
+                    .any { it is PhotoAttachment }
             }
 
             FILTER_VIDEOS -> moments.filter { moment ->
                 moment.attachments
-                    .any { it.type == MediaType.VIDEO }
+                    .any { it is VideoAttachment }
             }
 
             FILTER_VOICE_NOTES -> moments.filter { moment ->
                 moment.attachments
-                    .any { it.type == MediaType.AUDIO }
+                    .any { it is AudioAttachment }
             }
 
             FILTER_LINKS -> moments.filter { moment ->
                 moment.attachments
-                    .any { it.type == MediaType.LINK }
+                    .any { it is LinkAttachment }
             }
 
             else -> moments // "All Entries"

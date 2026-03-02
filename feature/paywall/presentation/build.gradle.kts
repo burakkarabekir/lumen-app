@@ -7,6 +7,7 @@ kotlin {
         namespace = "com.bksd.paywall.presentation"
         compileSdk = 36
         minSdk = 26
+        androidResources.enable = true
     }
     sourceSets {
         commonMain {
@@ -22,4 +23,8 @@ kotlin {
             }
         }
     }
+}
+
+compose.resources {
+    packageOfResClass = "com.bksd.paywall.presentation"
 }

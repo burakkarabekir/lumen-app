@@ -2,8 +2,11 @@ package com.bksd.journal.data
 
 import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.Result
-import com.bksd.core.domain.model.MediaAttachment
-import com.bksd.core.domain.model.MediaType
+import com.bksd.core.domain.model.AttachmentId
+import com.bksd.core.domain.model.AudioAttachment
+import com.bksd.core.domain.model.LinkAttachment
+import com.bksd.core.domain.model.PhotoAttachment
+import com.bksd.core.domain.model.Url
 import com.bksd.journal.domain.model.Moment
 import com.bksd.journal.domain.model.Mood
 import com.bksd.journal.domain.repository.MomentRepository
@@ -26,10 +29,9 @@ class FakeMomentRepository : MomentRepository {
             mood = Mood.CALM,
             tags = persistentListOf("herbal tea"),
             attachments = persistentListOf(
-                MediaAttachment(
-                    id = "a1",
-                    type = MediaType.LINK,
-                    remoteUrl = "audio_url_placeholder"
+                LinkAttachment(
+                    id = AttachmentId("a1"),
+                    url = Url("www.google.com")
                 )
             )
         ),
@@ -54,10 +56,9 @@ class FakeMomentRepository : MomentRepository {
             mood = Mood.CALM,
             tags = persistentListOf("health"),
             attachments = persistentListOf(
-                MediaAttachment(
-                    id = "p1",
-                    type = MediaType.PHOTO,
-                    remoteUrl = "photo_url_placeholder"
+                PhotoAttachment(
+                    id = AttachmentId("p1"),
+                    remoteUrl = Url("photo_url_placeholder")
                 )
             )
         ),
@@ -68,17 +69,16 @@ class FakeMomentRepository : MomentRepository {
             mood = Mood.INSPIRED,
             tags = persistentListOf("voice", "update"),
             attachments = persistentListOf(
-                MediaAttachment(
-                    id = "a1",
-                    type = MediaType.AUDIO,
-                    remoteUrl = "audio_url_placeholder"
+                AudioAttachment(
+                    id = AttachmentId("a1"),
+                    remoteUrl = Url("audio_url_placeholder"),
+                    durationMs = 0L
                 )
             )
         )
     )
 
     override suspend fun getMoments(date: LocalDate): Result<List<Moment>, AppError> {
-        delay(100) // Simulate network delay
         val filtered = fakeMoments.filter { moment ->
             val momentDate = moment.createdAt.toLocalDateTime(TimeZone.currentSystemDefault()).date
             momentDate == date
@@ -87,7 +87,6 @@ class FakeMomentRepository : MomentRepository {
     }
 
     override suspend fun getMoment(id: String): Result<Moment, AppError> {
-        delay(500)
         val moment = fakeMoments.find { it.id == id }
         return if (moment != null) {
             Result.Success(moment)
@@ -97,7 +96,6 @@ class FakeMomentRepository : MomentRepository {
     }
 
     override suspend fun saveMoment(moment: Moment): Result<Unit, AppError> {
-        delay(1000)
         val existingIndex = fakeMoments.indexOfFirst { it.id == moment.id }
         if (existingIndex != -1) {
             fakeMoments[existingIndex] = moment

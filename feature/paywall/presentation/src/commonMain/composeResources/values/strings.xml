@@ -1,0 +1,9 @@
+<resources>
+    <string name="content_desc_close">Close</string>
+    <string name="restore">Restore</string>
+    <string name="paywall_title">Unlock Momentum\nPremium</string>
+    <string name="paywall_subtitle">Elevate your reflection practice with\nadvanced AI tools.</string>
+    <string name="btn_start_trial">Start 7-Day Free Trial</string>
+    <string name="btn_subscribe_now">Subscribe Now</string>
+    <string name="legal_text">Recurring billing, cancel anytime. By continuing you agree to our Terms and Privacy Policy.</string>
+</resources>

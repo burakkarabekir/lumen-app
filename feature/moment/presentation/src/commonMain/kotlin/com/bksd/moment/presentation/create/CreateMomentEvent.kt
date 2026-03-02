@@ -9,6 +9,8 @@ sealed interface CreateMomentEvent {
 
     // Permission
     data object RequestAudioPermission : CreateMomentEvent
+    data object RequestCameraPermission : CreateMomentEvent
+    data object RequestLocationPermission : CreateMomentEvent
 
     // Launchers
     data object LaunchCamera : CreateMomentEvent

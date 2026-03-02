@@ -44,6 +44,12 @@ import com.bksd.core.design_system.theme.LumenBrand700
 import com.bksd.core.design_system.theme.LumenRadius
 import com.bksd.core.design_system.theme.LumenSpacing
 import com.bksd.core.presentation.util.ObserveAsEvents
+import com.bksd.onboarding.presentation.Res
+import com.bksd.onboarding.presentation.app_name_momentum
+import com.bksd.onboarding.presentation.btn_get_started
+import com.bksd.onboarding.presentation.btn_next
+import com.bksd.onboarding.presentation.skip
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -91,14 +97,14 @@ internal fun OnboardingScreen(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "Momentum",
+                text = stringResource(Res.string.app_name_momentum),
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onBackground,
             )
             if (!state.isLastStep) {
                 TextButton(onClick = { onAction(OnboardingAction.Skip) }) {
                     Text(
-                        text = "Skip",
+                        text = stringResource(Res.string.skip),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
                     )
@@ -222,7 +228,7 @@ internal fun OnboardingScreen(
             ),
         ) {
             Text(
-                text = if (state.isLastStep) "Get Started" else "Next",
+                text = if (state.isLastStep) stringResource(Res.string.btn_get_started) else stringResource(Res.string.btn_next),
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.onPrimary,
             )

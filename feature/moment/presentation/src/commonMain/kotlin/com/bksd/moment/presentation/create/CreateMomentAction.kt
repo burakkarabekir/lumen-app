@@ -14,6 +14,11 @@ sealed interface CreateMomentAction {
     data object OnBackClick : CreateMomentAction
 
     // Media & Location Actions
+    data object OnAddLocationClick : CreateMomentAction
+    data object OnRemoveLocationClick : CreateMomentAction
+    data object OnLocationPermissionGranted : CreateMomentAction
+    data object OnLocationPermissionDenied : CreateMomentAction
+    
     data object OnMicClick : CreateMomentAction
     data object OnStopRecording : CreateMomentAction
     data object OnRecordingDone : CreateMomentAction
@@ -22,6 +27,9 @@ sealed interface CreateMomentAction {
     data object OnAudioPermissionGranted : CreateMomentAction
     data object OnAudioPermissionDenied : CreateMomentAction
     data object OnCameraClick : CreateMomentAction
+    data object OnCameraPermissionGranted : CreateMomentAction
+    data object OnCameraPermissionDenied : CreateMomentAction
+    data object OnPhotoClick : CreateMomentAction
     data object OnVideoClick : CreateMomentAction
     data object OnFilePickClick : CreateMomentAction
     data class OnMediaPicked(val path: String, val type: MediaType, val sizeBytes: Long) :

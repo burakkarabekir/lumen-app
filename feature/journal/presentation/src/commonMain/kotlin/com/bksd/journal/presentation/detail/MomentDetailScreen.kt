@@ -23,6 +23,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -33,6 +35,12 @@ import com.bksd.core.design_system.component.layout.AppSurface
 import com.bksd.core.design_system.component.layout.AppTopBar
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.journal.presentation.journal.components.MoodTag
+import com.bksd.journal.presentation.Res
+import com.bksd.journal.presentation.content_desc_back
+import com.bksd.journal.presentation.content_desc_edit
+import com.bksd.journal.presentation.moment_detail_title
+import com.bksd.journal.presentation.my_moment_fallback
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -43,6 +51,7 @@ fun MomentDetailRoot(
     onNavigateToEdit: (String) -> Unit,
 ) {
     val viewModel = koinViewModel<MomentDetailViewModel>(parameters = { parametersOf(momentId) })
+    val state by viewModel.state.collectAsState()
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
             is MomentDetailEvent.NavigateBack -> onNavigateBack()
@@ -54,12 +63,11 @@ fun MomentDetailRoot(
     }
 
     MomentDetailScreen(
-        state = viewModel._state,
+        state = state,
         onAction = viewModel::onAction
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MomentDetailScreen(
     state: MomentDetailState,
@@ -68,17 +76,17 @@ fun MomentDetailScreen(
     AppSurface(
         header = {
             AppTopBar(
-                title = "Moment",
+                title = stringResource(Res.string.moment_detail_title),
                 style = AppBarStyle.Root,
                 titleContent = {
                     IconButton(onClick = { onAction(MomentDetailAction.OnNavigateBack) }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(Res.string.content_desc_back)
                         )
                     }
                     Text(
-                        text = "Moment",
+                        text = stringResource(Res.string.moment_detail_title),
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.ExtraBold),
                         modifier = Modifier.padding(start = 8.dp)
                     )
@@ -86,7 +94,7 @@ fun MomentDetailScreen(
                 actions = {
                     if (state.moment != null) {
                         IconButton(onClick = { onAction(MomentDetailAction.OnEditClick) }) {
-                            Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit")
+                            Icon(imageVector = Icons.Default.Edit, contentDescription = stringResource(Res.string.content_desc_edit))
                         }
                     }
                 }
@@ -122,7 +130,7 @@ fun MomentDetailScreen(
                     val displayText =
                         safeBody.take(50).let { if (safeBody.length > 50) "$it..." else it }
                     Text(
-                        text = displayText.ifEmpty { "My Moment" },
+                        text = displayText.ifEmpty { stringResource(Res.string.my_moment_fallback) },
                         fontSize = 32.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onBackground
@@ -171,8 +179,15 @@ fun MomentDetailScreen(
                                 ),
                             contentAlignment = Alignment.Center
                         ) {
+                            val primary = attachments.first()
+                            val typeName = when (primary) {
+                                is com.bksd.core.domain.model.PhotoAttachment -> "PHOTO"
+                                is com.bksd.core.domain.model.VideoAttachment -> "VIDEO"
+                                is com.bksd.core.domain.model.AudioAttachment -> "AUDIO"
+                                is com.bksd.core.domain.model.LinkAttachment -> "LINK"
+                            }
                             Text(
-                                text = "[${attachments.first().type.name} Preview]",
+                                text = "[$typeName Preview]",
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }

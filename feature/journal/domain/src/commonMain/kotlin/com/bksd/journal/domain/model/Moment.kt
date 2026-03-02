@@ -1,7 +1,7 @@
 package com.bksd.journal.domain.model
 
 import com.bksd.core.domain.location.LocationData
-import com.bksd.core.domain.model.MediaAttachment
+import com.bksd.core.domain.model.Attachment
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlin.time.Instant
@@ -12,8 +12,7 @@ data class Moment(
     val createdAt: Instant,
     val mood: Mood,
     val tags: PersistentList<String> = persistentListOf(),
-    val attachments: PersistentList<MediaAttachment> = persistentListOf(),
-    val links: PersistentList<String> = persistentListOf(),
+    val attachments: PersistentList<Attachment> = persistentListOf(),
     val location: LocationData? = null
 )
 

@@ -1,0 +1,10 @@
+<resources>
+    <string name="insights_title">Insights</string>
+    <string name="power_user_analytics">Power User Analytics</string>
+    <string name="peak_activity">Peak Activity</string>
+    <string name="consistency_trend">Consistency Trend</string>
+    <string name="medium_breakdown">Medium Breakdown</string>
+    <string name="mindset_synthesis">Mindset Synthesis</string>
+    <string name="recurring_theme">Recurring Theme</string>
+    <string name="adjustment">Adjustment</string>
+</resources>

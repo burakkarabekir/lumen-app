@@ -10,5 +10,11 @@
 	</array>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Ready to practice? We just need microphone access to get started.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Momentum uses the camera to capture photos for your moments.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Momentum needs access to your photo library to attach media to your moments.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Momentum uses your location to geotag your moments.</string>
 </dict>
 </plist>
