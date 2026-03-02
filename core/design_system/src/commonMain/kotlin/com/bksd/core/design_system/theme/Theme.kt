@@ -208,7 +208,7 @@ val LightColorScheme = lightColorScheme(
 val DarkColorScheme = darkColorScheme(
     primary = LumenBrand500,
     onPrimary = LumenBase0,
-    primaryContainer = LumenBrand900,
+    primaryContainer = LumenBrand400,
     onPrimaryContainer = LumenBrand300,
 
     secondary = LumenBase400,

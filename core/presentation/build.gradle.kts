@@ -16,6 +16,7 @@ kotlin {
                 api(projects.core.designSystem)
 
                 implementation(libs.kotlin.stdlib)
+                implementation(libs.kotlinx.datetime)
                 implementation(libs.coil.compose)
 
                 implementation(libs.bundles.jetbrains.adaptive)
@@ -25,11 +26,14 @@ kotlin {
                 implementation(libs.moko.permissions)
                 implementation(libs.moko.permissions.compose)
                 implementation(libs.moko.permissions.microphone)
+                implementation(libs.moko.permissions.location)
+                implementation(libs.moko.permissions.camera)
             }
         }
         androidMain {
             dependencies {
                 implementation(libs.androidx.activity.compose)
+                implementation("com.google.android.gms:play-services-location:21.3.0")
             }
         }
     }

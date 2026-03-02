@@ -1,6 +1,7 @@
 package com.bksd.core.design_system.component.layout
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -41,7 +42,7 @@ fun AppTopBar(
     modifier: Modifier = Modifier,
     navigationIcon: (@Composable () -> Unit)? = {},
     actions: (@Composable RowScope.() -> Unit)? = {},
-    showDivider: Boolean = true,
+    showDivider: Boolean = false,
 
     ) {
     val titleTextAlign = when (style) {
@@ -53,58 +54,60 @@ fun AppTopBar(
         modifier = modifier.fillMaxWidth(),
         color = MaterialTheme.colorScheme.surface,
     ) {
-            Row(
-                modifier = Modifier
-                    .height(72.dp)
-                    .then(
-                        if (titleTextAlign == TextAlign.Start) {
-                            Modifier
-                                .padding(
-                                    top = 16.dp,
-                                    start = 12.dp,
-                                    end = 12.dp,
-                                    bottom = 8.dp
-                                )
-                        } else {
-                            Modifier
-                        }
-                    ),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                when (style) {
-                    AppBarStyle.Root -> Unit // no nav icon
-                    AppBarStyle.Child -> navigationIcon?.invoke()
-                }
-                if (title != null) {
-                    Text(
-                        text = title,
-                        style = when (style) {
-                            AppBarStyle.Root -> MaterialTheme.typography.headlineLarge
-                            AppBarStyle.Child -> MaterialTheme.typography.titleMedium
-                        },
-                        textAlign = titleTextAlign,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier
-                            .weight(1f)
-                    )
-                    if (titleTextAlign == TextAlign.Center) {
-                        Spacer(modifier = Modifier.width(32.dp))
+            Column {
+                Row(
+                    modifier = Modifier
+                        .height(64.dp)
+                        .then(
+                            if (titleTextAlign == TextAlign.Start) {
+                                Modifier
+                                    .padding(
+                                        top = 16.dp,
+                                        start = 12.dp,
+                                        end = 12.dp,
+                                        bottom = 8.dp
+                                    )
+                            } else {
+                                Modifier
+                            }
+                        ),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    when (style) {
+                        AppBarStyle.Root -> Unit // no nav icon
+                        AppBarStyle.Child -> navigationIcon?.invoke()
                     }
-                } else {
-                    titleContent?.invoke()
-                }
+                    if (title != null) {
+                        Text(
+                            text = title,
+                            style = when (style) {
+                                AppBarStyle.Root -> MaterialTheme.typography.headlineLarge
+                                AppBarStyle.Child -> MaterialTheme.typography.headlineSmall
+                            },
+                            textAlign = titleTextAlign,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier
+                                .weight(1f)
+                        )
+                        if (titleTextAlign == TextAlign.Center) {
+                            Spacer(modifier = Modifier.width(48.dp))
+                        }
+                    } else {
+                        titleContent?.invoke()
+                    }
 
-                actions?.let {
-                    Row(
-                        horizontalArrangement = Arrangement.End,
-                        verticalAlignment = Alignment.CenterVertically,
-                        content = it
-                    )
+                    actions?.let {
+                        Row(
+                            horizontalArrangement = Arrangement.End,
+                            verticalAlignment = Alignment.CenterVertically,
+                            content = it
+                        )
+                    }
                 }
+                if (showDivider || style == AppBarStyle.Child) AppDivider()
             }
-        if (showDivider) AppDivider()
     }
 }
 

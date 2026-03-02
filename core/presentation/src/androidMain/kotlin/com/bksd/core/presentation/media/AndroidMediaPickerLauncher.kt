@@ -10,6 +10,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import com.bksd.core.domain.model.MediaType
+import androidx.core.content.FileProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 
@@ -28,16 +37,22 @@ actual class MediaPickerLauncher(
 @Composable
 actual fun rememberMediaPickerLauncher(onResult: (MediaPickResult) -> Unit): MediaPickerLauncher {
     val context = LocalContext.current
+    var tempCameraFilePath by rememberSaveable { mutableStateOf<String?>(null) }
+    val coroutineScope = rememberCoroutineScope()
 
     val photoPicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia()
     ) { uri ->
         uri?.let {
-            val file = copyUriToTempFile(context, it)
-            if (file != null) {
-                onResult(MediaPickResult.Success(file.absolutePath, MediaType.PHOTO, file.length()))
-            } else {
-                onResult(MediaPickResult.Error("Failed to process photo"))
+            coroutineScope.launch(Dispatchers.IO) {
+                val file = copyUriToTempFile(context, it)
+                withContext(Dispatchers.Main) {
+                    if (file != null) {
+                        onResult(MediaPickResult.Success(file.absolutePath, MediaType.PHOTO, file.length()))
+                    } else {
+                        onResult(MediaPickResult.Error("Failed to process photo"))
+                    }
+                }
             }
         } ?: onResult(MediaPickResult.Cancelled)
     }
@@ -46,31 +61,57 @@ actual fun rememberMediaPickerLauncher(onResult: (MediaPickResult) -> Unit): Med
         contract = ActivityResultContracts.PickVisualMedia()
     ) { uri ->
         uri?.let {
-            val file = copyUriToTempFile(context, it)
-            if (file != null) {
-                onResult(MediaPickResult.Success(file.absolutePath, MediaType.VIDEO, file.length()))
-            } else {
-                onResult(MediaPickResult.Error("Failed to process video"))
+            coroutineScope.launch(Dispatchers.IO) {
+                val file = copyUriToTempFile(context, it)
+                withContext(Dispatchers.Main) {
+                    if (file != null) {
+                        onResult(MediaPickResult.Success(file.absolutePath, MediaType.VIDEO, file.length()))
+                    } else {
+                        onResult(MediaPickResult.Error("Failed to process video"))
+                    }
+                }
             }
         } ?: onResult(MediaPickResult.Cancelled)
+    }
+
+    val cameraPicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) { success ->
+        if (success && tempCameraFilePath != null) {
+            val file = File(tempCameraFilePath!!)
+            if (file.exists()) {
+                onResult(MediaPickResult.Success(file.absolutePath, MediaType.PHOTO, file.length()))
+            } else {
+                onResult(MediaPickResult.Error("Camera capture failed or file not found"))
+            }
+        } else {
+            // Clean up empty file if user cancelled
+            tempCameraFilePath?.let { File(it).delete() }
+            onResult(MediaPickResult.Cancelled)
+        }
+        tempCameraFilePath = null
     }
 
     val filePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri ->
         uri?.let {
-            val file = copyUriToTempFile(context, it)
-            if (file != null) {
-                val type = if (context.contentResolver.getType(it)?.startsWith("video") == true) {
-                    MediaType.VIDEO
-                } else if (context.contentResolver.getType(it)?.startsWith("audio") == true) {
-                    MediaType.AUDIO
-                } else {
-                    MediaType.PHOTO // fallback
+            coroutineScope.launch(Dispatchers.IO) {
+                val file = copyUriToTempFile(context, it)
+                withContext(Dispatchers.Main) {
+                    if (file != null) {
+                        val type = if (context.contentResolver.getType(it)?.startsWith("video") == true) {
+                            MediaType.VIDEO
+                        } else if (context.contentResolver.getType(it)?.startsWith("audio") == true) {
+                            MediaType.AUDIO
+                        } else {
+                            MediaType.PHOTO // fallback
+                        }
+                        onResult(MediaPickResult.Success(file.absolutePath, type, file.length()))
+                    } else {
+                        onResult(MediaPickResult.Error("Failed to process file"))
+                    }
                 }
-                onResult(MediaPickResult.Success(file.absolutePath, type, file.length()))
-            } else {
-                onResult(MediaPickResult.Error("Failed to process file"))
             }
         } ?: onResult(MediaPickResult.Cancelled)
     }
@@ -88,9 +129,15 @@ actual fun rememberMediaPickerLauncher(onResult: (MediaPickResult) -> Unit): Med
                 filePicker.launch(type)
             },
             onLaunchCamera = {
-                // To implement camera capture properly, we need a FileProvider URI
-                // For this architecture demo, we'll return an error indicating it needs setup
-                onResult(MediaPickResult.Error("Camera capture requires FileProvider setup in Manifest"))
+                try {
+                    val fileName = "camera_capture_${System.currentTimeMillis()}.jpg"
+                    val file = File(context.cacheDir, fileName)
+                    tempCameraFilePath = file.absolutePath
+                    val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+                    cameraPicker.launch(uri)
+                } catch (e: Exception) {
+                    onResult(MediaPickResult.Error("Failed to launch camera: ${e.message}"))
+                }
             }
         )
     }

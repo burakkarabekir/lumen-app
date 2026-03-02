@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
+import android.location.LocationManager
+import android.os.Build
 import androidx.core.content.ContextCompat
 import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.Result
@@ -13,7 +15,11 @@ import com.bksd.core.domain.location.LocationData
 import com.bksd.core.domain.location.LocationProvider
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import com.google.android.gms.tasks.CancellationTokenSource
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 import java.util.Locale
 import kotlin.coroutines.resume
 
@@ -29,6 +35,20 @@ class AndroidLocationProvider(
         Geocoder(context, Locale.getDefault())
     }
 
+    private val locationManager: LocationManager by lazy {
+        context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    }
+
+    private fun isLocationEnabled(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            locationManager.isLocationEnabled
+        } else {
+            val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+            val isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+            isGpsEnabled || isNetworkEnabled
+        }
+    }
+
     override fun hasPermission(): Boolean {
         return ContextCompat.checkSelfPermission(
             context,
@@ -42,53 +62,85 @@ class AndroidLocationProvider(
 
     @SuppressLint("MissingPermission")
     override suspend fun getCurrentLocation(): Result<LocationData, AppError> {
+        if (!isLocationEnabled()) {
+            return Result.Error(AppError.Unknown("Location services are disabled on this device. Please turn them on in Settings."))
+        }
+
         if (!hasPermission()) {
             return Result.Error(AppError.Unknown("Location permission denied"))
         }
 
-        return suspendCancellableCoroutine { continuation ->
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location: Location? ->
-                    if (location != null) {
-                        val displayName = getCityState(location.latitude, location.longitude)
-                        continuation.resume(
-                            Result.Success(
-                                LocationData(
-                                    latitude = location.latitude,
-                                    longitude = location.longitude,
-                                    displayName = displayName
-                                )
-                            )
-                        )
-                    } else {
-                        continuation.resume(Result.Error(AppError.Unknown("Location unavailable")))
-                    }
+        val locationResult = suspendCancellableCoroutine<Result<Location, AppError>> { continuation ->
+            val cancellationTokenSource = CancellationTokenSource()
+
+            continuation.invokeOnCancellation {
+                cancellationTokenSource.cancel()
+            }
+
+            fusedLocationClient.getCurrentLocation(
+                Priority.PRIORITY_HIGH_ACCURACY,
+                cancellationTokenSource.token
+            ).addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    continuation.resume(Result.Success(location))
+                } else {
+                    continuation.resume(Result.Error(AppError.Unknown("Location unavailable")))
                 }
-                .addOnFailureListener { e ->
-                    continuation.resume(
-                        Result.Error(
-                            AppError.Unknown(
-                                e.message ?: "Location error"
-                            )
+            }.addOnFailureListener { e ->
+                continuation.resume(
+                    Result.Error(
+                        AppError.Unknown(
+                            e.message ?: "Location error"
                         )
                     )
-                }
+                )
+            }
+        }
+
+        return when (locationResult) {
+            is Result.Success -> {
+                val location = locationResult.data
+                val displayName = getCityState(location.latitude, location.longitude)
+                Result.Success(
+                    LocationData(
+                        latitude = location.latitude,
+                        longitude = location.longitude,
+                        displayName = displayName
+                    )
+                )
+            }
+            is Result.Error -> Result.Error(locationResult.error)
         }
     }
 
-    private fun getCityState(lat: Double, lon: Double): String? {
-        return try {
-            val addresses = geocoder.getFromLocation(lat, lon, 1)
-            if (!addresses.isNullOrEmpty()) {
-                val address = addresses[0]
-                val city = address.locality ?: address.subAdminArea
-                val state = address.adminArea
-                if (city != null && state != null) {
-                    "$city, $state"
-                } else city ?: state
-            } else null
-        } catch (e: Exception) {
-            null
+    private suspend fun getCityState(lat: Double, lon: Double): String? {
+        return withContext(Dispatchers.IO) {
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    suspendCancellableCoroutine { cont ->
+                        geocoder.getFromLocation(lat, lon, 1) { addresses ->
+                            cont.resume(formatAddress(addresses))
+                        }
+                    }
+                } else {
+                    @Suppress("DEPRECATION")
+                    val addresses = geocoder.getFromLocation(lat, lon, 1)
+                    formatAddress(addresses.orEmpty())
+                }
+            } catch (e: Exception) {
+                null
+            }
+        }
+    }
+
+    private fun formatAddress(addresses: List<android.location.Address>): String? {
+        if (addresses.isEmpty()) return null
+        val address = addresses[0]
+        val city = address.locality ?: address.subAdminArea
+        val state = address.adminArea
+        return when {
+            city != null && state != null -> "$city, $state"
+            else -> city ?: state
         }
     }
 }

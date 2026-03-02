@@ -2,17 +2,24 @@ package com.bksd.core.presentation.permission
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
+import android.content.Context
+import android.content.Intent
+import android.provider.Settings
 import dev.icerock.moko.permissions.PermissionsController
 import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
 import dev.icerock.moko.permissions.DeniedAlwaysException
 import dev.icerock.moko.permissions.DeniedException
 import dev.icerock.moko.permissions.compose.BindEffect
+import dev.icerock.moko.permissions.location.LOCATION
 import dev.icerock.moko.permissions.microphone.RECORD_AUDIO
+import dev.icerock.moko.permissions.camera.CAMERA
 import dev.icerock.moko.permissions.Permission as MokoPermission
 import dev.icerock.moko.permissions.PermissionState as MokoPermissionState
 
 actual class PermissionController(
-    private val mokoController: PermissionsController
+    private val mokoController: PermissionsController,
+    private val context: Context
 ) {
     actual suspend fun checkPermission(permission: Permission): PermissionState {
         return mokoController
@@ -34,11 +41,19 @@ actual class PermissionController(
     actual fun openAppSettings() {
         mokoController.openAppSettings()
     }
+
+    actual fun openLocationSettings() {
+        context.startActivity(
+            Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        )
+    }
 }
 
 @Composable
 actual fun rememberPermissionController(): PermissionController {
     val factory = rememberPermissionsControllerFactory()
+    val context = LocalContext.current
     val mokoController = remember {
         factory.createPermissionsController()
     }
@@ -46,12 +61,14 @@ actual fun rememberPermissionController(): PermissionController {
     BindEffect(mokoController)
 
     return remember {
-        PermissionController(mokoController)
+        PermissionController(mokoController, context)
     }
 }
 
 private fun Permission.toMoko(): MokoPermission = when (this) {
     Permission.RECORD_AUDIO -> MokoPermission.RECORD_AUDIO
+    Permission.LOCATION -> MokoPermission.LOCATION
+    Permission.CAMERA -> MokoPermission.CAMERA
 }
 
 private fun MokoPermissionState.toAppState(): PermissionState = when (this) {

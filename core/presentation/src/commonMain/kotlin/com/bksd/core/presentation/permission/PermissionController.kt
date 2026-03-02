@@ -24,6 +24,12 @@ expect class PermissionController {
      * Use this when permission is [PermissionState.PERMANENTLY_DENIED].
      */
     fun openAppSettings()
+
+    /**
+     * Opens the system location settings screen where the user can enable location services.
+     * Use this when location permission is granted but device location services are disabled.
+     */
+    fun openLocationSettings()
 }
 
 /**

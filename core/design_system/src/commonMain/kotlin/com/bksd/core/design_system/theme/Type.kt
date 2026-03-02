@@ -43,6 +43,14 @@ val Manrope
         ),
     )
 
+val Typography.labelAttachmentBar: TextStyle
+    @Composable get() = TextStyle(
+        fontFamily = Manrope,
+        fontWeight = FontWeight.Light,
+        fontSize = 10.sp,
+        lineHeight = 10.sp
+    )
+
 val Typography.labelXSmall: TextStyle
     @Composable get() = TextStyle(
         fontFamily = Manrope,

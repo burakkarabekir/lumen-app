@@ -30,6 +30,7 @@ class IosLocationProvider : LocationProvider {
 
     init {
         locationManager.delegate = locationDelegate
+        locationManager.desiredAccuracy = platform.CoreLocation.kCLLocationAccuracyHundredMeters
     }
 
     override fun hasPermission(): Boolean {
@@ -39,6 +40,10 @@ class IosLocationProvider : LocationProvider {
     }
 
     override suspend fun getCurrentLocation(): Result<LocationData, AppError> {
+        if (!CLLocationManager.locationServicesEnabled()) {
+            return Result.Error(AppError.Unknown("Location services are disabled on this device. Please turn them on in Settings."))
+        }
+
         if (!hasPermission()) {
             return Result.Error(AppError.Unknown("Location permission denied"))
         }

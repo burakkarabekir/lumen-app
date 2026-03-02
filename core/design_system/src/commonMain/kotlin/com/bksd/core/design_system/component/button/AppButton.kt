@@ -50,7 +50,7 @@ fun AppButton(
             ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
-                disabledContainerColor = MaterialTheme.colorScheme.disabledFill,
+                disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
                 disabledContentColor = MaterialTheme.colorScheme.textDisabled
             )
         }
@@ -93,7 +93,7 @@ fun AppButton(
     }
 
     val defaultBorderStroke = BorderStroke(
-        width = 1.dp,
+        width = .5.dp,
         color = MaterialTheme.colorScheme.disabledOutline
     )
 
@@ -170,6 +170,21 @@ fun AppPrimaryButtonPreview() {
             text = "Hello world!",
             onClick = {},
             style = AppButtonStyle.PRIMARY
+        )
+    }
+}
+
+@Composable
+@Preview
+fun AppPrimaryButtonDisabledPreview() {
+    AppTheme(
+        darkTheme = true
+    ) {
+        AppButton(
+            text = "Hello world!",
+            onClick = {},
+            style = AppButtonStyle.PRIMARY,
+            enabled = false
         )
     }
 }
