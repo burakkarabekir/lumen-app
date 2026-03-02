@@ -144,7 +144,6 @@ fun NavigationRoot(
                     entry<Route.CreateMoment> {
                         CreateMomentRoot(
                             onNavigateBack = { navigator.goBack() },
-                            onShowSnackbar = { println("CreateMoment Snackbar: $it") }
                         )
                     }
                     entry<Route.Paywall> {
