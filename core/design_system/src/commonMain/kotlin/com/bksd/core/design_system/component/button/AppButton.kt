@@ -85,7 +85,7 @@ fun AppButton(
         AppButtonStyle.TEXT -> {
             ButtonDefaults.buttonColors(
                 containerColor = Color.Transparent,
-                contentColor = MaterialTheme.colorScheme.tertiary,
+                contentColor = MaterialTheme.colorScheme.error,
                 disabledContainerColor = Color.Transparent,
                 disabledContentColor = MaterialTheme.colorScheme.textDisabled
             )
