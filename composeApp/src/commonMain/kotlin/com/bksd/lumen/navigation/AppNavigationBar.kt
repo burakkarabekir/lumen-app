@@ -25,7 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavKey
-import com.bksd.core.design_system.theme.LumenTheme
+import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.labelXSmall
 import com.bksd.lumen.navigation.route.Route
 
@@ -108,7 +108,7 @@ fun AppNavigationBar(
 @Preview
 @Composable
 fun Preview() {
-    LumenTheme {
+    AppTheme {
         AppNavigationBar(
             selectedKey = Route.Main.Journal,
             onSelectKey = {}
@@ -119,7 +119,7 @@ fun Preview() {
 @Preview
 @Composable
 fun PreviewDark() {
-    LumenTheme(darkTheme = true) {
+    AppTheme(darkTheme = true) {
         AppNavigationBar(
             selectedKey = Route.Main.Journal,
             onSelectKey = {}

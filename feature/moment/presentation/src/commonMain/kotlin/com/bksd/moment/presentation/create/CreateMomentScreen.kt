@@ -59,7 +59,7 @@ import com.bksd.core.design_system.component.layout.AppBarStyle
 import com.bksd.core.design_system.component.layout.AppScaffold
 import com.bksd.core.design_system.component.layout.AppSurface
 import com.bksd.core.design_system.component.layout.AppTopBar
-import com.bksd.core.design_system.theme.LumenTheme
+import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.presentation.media.MediaPickResult
 import com.bksd.core.presentation.media.rememberMediaPickerLauncher
 import com.bksd.core.presentation.permission.LocationSettingsResolver
@@ -632,7 +632,7 @@ fun CreateMomentScreenPreview() {
 @Preview
 @Composable
 fun CreateMomentScreenDarkPreview() {
-    LumenTheme(darkTheme = true) {
+    AppTheme(darkTheme = true) {
         CreateMomentScreen(
             state = CreateMomentState(),
             snackbarHostState = SnackbarHostState(),

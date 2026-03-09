@@ -35,7 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.Res
 import com.bksd.core.design_system.sparkle
-import com.bksd.core.design_system.theme.LumenTheme
+import com.bksd.core.design_system.theme.AppTheme
 import org.jetbrains.compose.resources.vectorResource
 import kotlin.math.PI
 import kotlin.math.cos
@@ -211,7 +211,7 @@ fun JournalEmptyState(
 @Preview
 @Composable
 fun PreviewJournalEmptyState() {
-    LumenTheme {
+    AppTheme {
         JournalEmptyState()
     }
 }

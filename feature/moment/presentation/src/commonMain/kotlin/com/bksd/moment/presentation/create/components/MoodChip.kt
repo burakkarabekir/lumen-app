@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bksd.core.design_system.theme.LumenTheme
+import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.journal.domain.model.Mood
 
 @Composable
@@ -53,7 +53,7 @@ fun MoodChip(
 @Preview
 @Composable
 private fun Preview() {
-    LumenTheme {
+    AppTheme {
         MoodChip(
             mood = Mood.INSPIRED,
             isSelected = true,

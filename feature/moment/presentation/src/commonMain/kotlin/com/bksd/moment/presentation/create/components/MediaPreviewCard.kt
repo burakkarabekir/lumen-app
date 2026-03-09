@@ -9,10 +9,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.VideoChat
-import androidx.compose.material.icons.filled.VideoFile
-import androidx.compose.material.icons.filled.VideoLabel
-import androidx.compose.material.icons.filled.VideoStable
 import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -22,9 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bksd.core.design_system.theme.LumenTheme
-import com.bksd.core.design_system.theme.textDisabled
-import com.bksd.core.design_system.theme.textPlaceholder
+import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.domain.model.MediaType
 
 @Composable
@@ -79,7 +73,7 @@ fun MediaPreviewCard(
 @Preview
 @Composable
 private fun PreviewPhoto() {
-    LumenTheme {
+    AppTheme {
         MediaPreviewCard(
             type = MediaType.PHOTO,
             onRemoveClick = {}
@@ -90,7 +84,7 @@ private fun PreviewPhoto() {
 @Preview
 @Composable
 private fun PreviewVideo() {
-    LumenTheme(darkTheme = true) {
+    AppTheme(darkTheme = true) {
         MediaPreviewCard(
             type = MediaType.VIDEO,
             onRemoveClick = {}

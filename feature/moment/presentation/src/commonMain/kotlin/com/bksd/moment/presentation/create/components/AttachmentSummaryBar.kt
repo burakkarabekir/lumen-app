@@ -3,19 +3,15 @@ package com.bksd.moment.presentation.create.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AttachFile
 import androidx.compose.material.icons.filled.Attachment
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -30,10 +26,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bksd.core.design_system.theme.LumenTheme
+import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.labelAttachmentBar
-import com.bksd.core.design_system.theme.labelXSmall
-import com.bksd.core.domain.model.MediaType
 import com.bksd.moment.presentation.create.AttachmentUiModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -124,7 +118,7 @@ fun AttachmentSummaryBar(
 @Preview(showBackground = true)
 @Composable
 fun AttachmentSummaryBarPreview() {
-    LumenTheme {
+    AppTheme {
         AttachmentSummaryBar(
             attachments = persistentListOf(
                 AttachmentUiModel.Photo(id = "1"),
@@ -139,7 +133,7 @@ fun AttachmentSummaryBarPreview() {
 @Preview(showBackground = true)
 @Composable
 fun AttachmentSummaryBarExpandedPreview() {
-    LumenTheme(darkTheme = true) {
+    AppTheme(darkTheme = true) {
         AttachmentSummaryBar(
             attachments = persistentListOf(
                 AttachmentUiModel.Photo(id = "1"),

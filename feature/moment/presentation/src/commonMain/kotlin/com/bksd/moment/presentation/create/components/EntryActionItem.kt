@@ -21,7 +21,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bksd.core.design_system.theme.LumenTheme
+import com.bksd.core.design_system.theme.AppTheme
 
 @Composable
 fun EntryActionItem(
@@ -65,7 +65,7 @@ fun EntryActionItem(
 @Preview
 @Composable
 private fun Preview() {
-    LumenTheme {
+    AppTheme {
         EntryActionItem(
             icon = Icons.Default.Mic,
             label = "Mic",

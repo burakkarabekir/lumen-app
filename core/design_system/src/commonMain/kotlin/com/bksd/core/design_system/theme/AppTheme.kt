@@ -14,7 +14,7 @@ fun AppTheme(
 }
 
 @Composable
-fun LumenTheme(
+private fun LumenTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
