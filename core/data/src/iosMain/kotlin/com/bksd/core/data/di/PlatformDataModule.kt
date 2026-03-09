@@ -3,6 +3,7 @@ package com.bksd.core.data.di
 import com.bksd.core.data.location.IosLocationProvider
 import com.bksd.core.data.media.IosAudioPlayer
 import com.bksd.core.data.media.IosVoiceRecorder
+import com.bksd.core.data.storage.createPlatformDataStore
 import com.bksd.core.domain.location.LocationProvider
 import com.bksd.core.domain.storage.AudioPlayer
 import com.bksd.core.domain.storage.VoiceRecorder
@@ -13,5 +14,5 @@ actual val platformDataModule: Module = module {
     single<VoiceRecorder> { IosVoiceRecorder() }
     single<AudioPlayer> { IosAudioPlayer() }
     single<LocationProvider> { IosLocationProvider() }
+    single { createPlatformDataStore() }
 }
-

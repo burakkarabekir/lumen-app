@@ -4,8 +4,12 @@ import com.bksd.core.data.logging.KermitLogger
 import com.bksd.core.data.remote.firebase.FirebaseAuthDataSource
 import com.bksd.core.data.remote.firebase.FirebaseStorageDataSource
 import com.bksd.core.data.repository.MediaRepositoryImpl
+import com.bksd.core.data.theme.ThemeRepositoryImpl
 import com.bksd.core.domain.logging.AppLogger
 import com.bksd.core.domain.repository.MediaRepository
+import com.bksd.core.domain.theme.GetAppThemeUseCase
+import com.bksd.core.domain.theme.SetAppThemeUseCase
+import com.bksd.core.domain.theme.ThemeRepository
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -17,4 +21,9 @@ val coreDataModule = module {
     singleOf(::FirebaseAuthDataSource)
     singleOf(::FirebaseStorageDataSource)
     singleOf(::MediaRepositoryImpl) bind MediaRepository::class
+
+    // Theme
+    singleOf(::ThemeRepositoryImpl) bind ThemeRepository::class
+    singleOf(::GetAppThemeUseCase)
+    singleOf(::SetAppThemeUseCase)
 }

@@ -12,6 +12,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(projects.core.domain)
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.coil.compose)
                 implementation(libs.coil.network.ktor)

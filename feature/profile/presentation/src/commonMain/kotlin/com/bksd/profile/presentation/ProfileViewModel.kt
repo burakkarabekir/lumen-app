@@ -8,12 +8,11 @@ import kotlinx.coroutines.flow.update
 
 /**
  * ViewModel for the User Profile screen.
- * Populates state with fake data for Phase 2 (UI-first development).
- * Sign-out triggers a navigation event.
+ * Does NOT own theme state — theme is controlled via [ThemeController] + [LocalThemeController].
  */
 class ProfileViewModel : BaseViewModel<ProfileAction, ProfileEvent>() {
 
-    private val _stateFlow = MutableStateFlow(createFakeState())
+    private val _stateFlow = MutableStateFlow(createInitialState())
     val state: StateFlow<ProfileState> = _stateFlow.asStateFlow()
 
     override fun onAction(action: ProfileAction) {
@@ -22,7 +21,7 @@ class ProfileViewModel : BaseViewModel<ProfileAction, ProfileEvent>() {
             ProfileAction.OnUpgradeClick -> {
                 sendEvent(ProfileEvent.NavigateToPaywall)
             }
-            // These actions are placeholders for future implementation
+            // Placeholders for future implementation
             ProfileAction.OnPrivacyClick,
             ProfileAction.OnDataExportClick,
             ProfileAction.OnThemeClick,
@@ -44,13 +43,12 @@ class ProfileViewModel : BaseViewModel<ProfileAction, ProfileEvent>() {
         }
     }
 
-    private fun createFakeState(): ProfileState = ProfileState(
+    private fun createInitialState(): ProfileState = ProfileState(
         displayName = "Alex Morgan",
         role = "Product Manager",
         memberSince = "Member since 2023",
         avatarUrl = null,
-        currentTheme = "Dark Mode",
         hasNotificationBadge = true,
-        isSigningOut = false
+        isSigningOut = false,
     )
 }

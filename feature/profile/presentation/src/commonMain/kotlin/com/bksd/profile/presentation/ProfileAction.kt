@@ -2,6 +2,7 @@ package com.bksd.profile.presentation
 
 /**
  * User intents for the Profile screen.
+ * Theme-related actions are NOT here — theme is controlled via [ThemeController].
  */
 sealed interface ProfileAction {
     data object OnSignOutClick : ProfileAction

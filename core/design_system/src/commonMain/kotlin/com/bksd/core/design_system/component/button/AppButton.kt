@@ -153,7 +153,7 @@ fun AppButton(
                 leadingIcon?.invoke()
                 Text(
                     text = text,
-                    style = MaterialTheme.typography.titleSmall
+                    style = MaterialTheme.typography.titleSmall,
                 )
             }
         }

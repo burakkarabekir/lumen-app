@@ -1,4 +1,4 @@
-package com.bksd.profile.presentation
+package com.bksd.profile.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,8 +24,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.profile.presentation.Res
+import com.bksd.profile.presentation.momentum_pro_description
+import com.bksd.profile.presentation.momentum_pro_title
+import com.bksd.profile.presentation.upgrade_button
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * Momentum Pro upgrade promotion card matching the Stitch design.
@@ -39,7 +46,7 @@ fun MomentumProCard(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surface)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -57,13 +64,13 @@ fun MomentumProCard(
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = "Momentum Pro",
+                text = stringResource(Res.string.momentum_pro_title),
                 style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
                 color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "Unlock advanced AI insights, unlimited cloud storage, and exclusive themes.",
+                text = stringResource(Res.string.momentum_pro_description),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                 lineHeight = 18.sp
@@ -85,7 +92,7 @@ fun MomentumProCard(
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
-                    text = "Upgrade",
+                    text = stringResource(Res.string.upgrade_button),
                     style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
                     color = MaterialTheme.colorScheme.onPrimary
                 )
@@ -97,5 +104,21 @@ fun MomentumProCard(
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun MomentumProCardDarkPreview() {
+    AppTheme(darkTheme = true) {
+        MomentumProCard(onUpgradeClick = {})
+    }
+}
+
+@Preview
+@Composable
+private fun MomentumProCardLightPreview() {
+    AppTheme(darkTheme = false) {
+        MomentumProCard(onUpgradeClick = {})
     }
 }

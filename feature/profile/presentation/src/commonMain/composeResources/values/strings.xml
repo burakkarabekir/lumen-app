@@ -10,4 +10,11 @@
     <string name="notifications">Notifications</string>
     <string name="sign_out">Sign Out</string>
     <string name="member_since_prefix">✓ %s</string>
+    <string name="momentum_pro_title">Momentum Pro</string>
+    <string name="momentum_pro_description">Unlock advanced AI insights, unlimited cloud storage, and exclusive themes.</string>
+    <string name="upgrade_button">Upgrade</string>
+    <string name="theme_selector_title">App Theme</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
 </resources>
