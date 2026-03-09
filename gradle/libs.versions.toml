@@ -12,7 +12,7 @@ firebase-bom = "34.10.0"
 google-services = "4.4.4"
 
 # ==================== Build Tools ====================
-agp = "9.0.1"
+agp = "9.1.0"
 androidTools = "32.0.1"
 kotlin = "2.3.10"
 ksp = "2.3.2"
