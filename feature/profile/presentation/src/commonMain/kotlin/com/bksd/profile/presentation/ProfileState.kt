@@ -11,6 +11,7 @@ data class ProfileState(
     val role: String = "",
     val memberSince: String = "",
     val avatarUrl: String? = null,
+    val isAvatarLoading: Boolean = false,
     val hasNotificationBadge: Boolean = false,
     val isSigningOut: Boolean = false,
 )

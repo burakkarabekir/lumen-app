@@ -3,6 +3,7 @@ package com.bksd.core.data.di
 import com.bksd.core.data.location.AndroidLocationProvider
 import com.bksd.core.data.media.AndroidAudioPlayer
 import com.bksd.core.data.media.AndroidVoiceRecorder
+import com.bksd.core.data.storage.PlatformFileStorage
 import com.bksd.core.data.storage.createDataStore
 import com.bksd.core.domain.location.LocationProvider
 import com.bksd.core.domain.storage.AudioPlayer
@@ -16,4 +17,5 @@ actual val platformDataModule: Module = module {
     single<AudioPlayer> { AndroidAudioPlayer() }
     single<LocationProvider> { AndroidLocationProvider(androidContext()) }
     single { createDataStore(androidContext()) }
+    single { PlatformFileStorage(androidContext()) }
 }

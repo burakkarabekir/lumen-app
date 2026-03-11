@@ -6,5 +6,6 @@ package com.bksd.core.presentation.permission
 enum class Permission {
     RECORD_AUDIO,
     LOCATION,
-    CAMERA
+    CAMERA,
+    GALLERY
 }

@@ -28,6 +28,7 @@ kotlin {
                 implementation(libs.moko.permissions.microphone)
                 implementation(libs.moko.permissions.location)
                 implementation(libs.moko.permissions.camera)
+                implementation(libs.moko.permissions.gallery)
             }
         }
         androidMain {

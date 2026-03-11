@@ -34,7 +34,7 @@ fun AppScaffold(
                 SnackbarHost(
                     hostState = it,
                     modifier = Modifier
-                        .padding(bottom = 24.dp)
+                        .padding(bottom = 124.dp)
                 )
 
             }

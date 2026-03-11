@@ -17,4 +17,8 @@
     <string name="theme_system">System</string>
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
+    <string name="error_permission_denied">Permission denied. Please enable in system settings.</string>
+    <string name="action_open_settings">Settings</string>
+    <string name="error_avatar_update_failed">Update failed: %s</string>
+    <string name="permission_gallery_denied">Permission to access photos and videos is required"</string>
 </resources>

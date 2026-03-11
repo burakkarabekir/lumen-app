@@ -15,11 +15,15 @@ kotlin {
                 implementation(projects.core.domain)
                 implementation(projects.core.presentation)
                 implementation(projects.core.designSystem)
+
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.bundles.lifecycle)
                 implementation(libs.bundles.koin.core.bundle)
                 implementation(libs.bundles.koin.compose)
                 implementation(libs.jetbrains.kotlinx.collections.immutable)
+
+                // Image loading for profile picture
+                implementation(libs.coil.compose)
             }
         }
     }

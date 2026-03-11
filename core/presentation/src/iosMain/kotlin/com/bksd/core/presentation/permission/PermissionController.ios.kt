@@ -4,9 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import dev.icerock.moko.permissions.DeniedAlwaysException
 import dev.icerock.moko.permissions.DeniedException
+import dev.icerock.moko.permissions.camera.CAMERA
+import dev.icerock.moko.permissions.gallery.GALLERY
 import dev.icerock.moko.permissions.location.LOCATION
 import dev.icerock.moko.permissions.microphone.RECORD_AUDIO
-import dev.icerock.moko.permissions.camera.CAMERA
 import dev.icerock.moko.permissions.Permission as MokoPermission
 import dev.icerock.moko.permissions.PermissionState as MokoPermissionState
 import dev.icerock.moko.permissions.ios.PermissionsController as IosPermissionsController
@@ -51,6 +52,7 @@ private fun Permission.toMoko(): MokoPermission = when (this) {
     Permission.RECORD_AUDIO -> MokoPermission.RECORD_AUDIO
     Permission.LOCATION -> MokoPermission.LOCATION
     Permission.CAMERA -> MokoPermission.CAMERA
+    Permission.GALLERY -> MokoPermission.GALLERY
 }
 
 private fun MokoPermissionState.toAppState(): PermissionState = when (this) {

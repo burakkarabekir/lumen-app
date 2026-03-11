@@ -1,19 +1,20 @@
 package com.bksd.core.presentation.permission
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
 import android.content.Context
 import android.content.Intent
 import android.provider.Settings
-import dev.icerock.moko.permissions.PermissionsController
-import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import dev.icerock.moko.permissions.DeniedAlwaysException
 import dev.icerock.moko.permissions.DeniedException
+import dev.icerock.moko.permissions.PermissionsController
+import dev.icerock.moko.permissions.camera.CAMERA
 import dev.icerock.moko.permissions.compose.BindEffect
+import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
+import dev.icerock.moko.permissions.gallery.GALLERY
 import dev.icerock.moko.permissions.location.LOCATION
 import dev.icerock.moko.permissions.microphone.RECORD_AUDIO
-import dev.icerock.moko.permissions.camera.CAMERA
 import dev.icerock.moko.permissions.Permission as MokoPermission
 import dev.icerock.moko.permissions.PermissionState as MokoPermissionState
 
@@ -69,6 +70,7 @@ private fun Permission.toMoko(): MokoPermission = when (this) {
     Permission.RECORD_AUDIO -> MokoPermission.RECORD_AUDIO
     Permission.LOCATION -> MokoPermission.LOCATION
     Permission.CAMERA -> MokoPermission.CAMERA
+    Permission.GALLERY -> MokoPermission.GALLERY
 }
 
 private fun MokoPermissionState.toAppState(): PermissionState = when (this) {

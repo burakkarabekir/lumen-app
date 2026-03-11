@@ -1,6 +1,12 @@
 package com.bksd.profile.presentation.components
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,11 +14,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.profile.presentation.Res
 import com.bksd.profile.presentation.content_desc_avatar
@@ -35,11 +44,15 @@ fun ProfileHeader(
     displayName: String,
     role: String,
     memberSince: String,
+    avatarUrl: String? = null,
+    isAvatarLoading: Boolean = false,
     onEditAvatarClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Avatar circle
@@ -48,21 +61,50 @@ fun ProfileHeader(
                 modifier = Modifier
                     .size(100.dp)
                     .clip(CircleShape)
+                    // The trick to creating the cutout effect is defining a border matching the background
+                    .border(2.dp, MaterialTheme.colorScheme.surfaceContainerHigh, CircleShape)
                     .background(MaterialTheme.colorScheme.surfaceVariant),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    imageVector = Icons.Default.Person,
-                    contentDescription = stringResource(Res.string.content_desc_avatar),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(48.dp)
-                )
+                AnimatedContent(
+                    targetState = Pair(isAvatarLoading, avatarUrl),
+                    transitionSpec = {
+                        fadeIn(animationSpec = tween(300)) togetherWith fadeOut(
+                            animationSpec = tween(
+                                300
+                            )
+                        )
+                    },
+                    label = "AvatarTransition"
+                ) { (loading, url) ->
+                    if (loading) {
+                        CircularProgressIndicator(
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(36.dp),
+                            strokeWidth = 3.dp
+                        )
+                    } else if (url != null) {
+                        AsyncImage(
+                            model = url,
+                            contentDescription = stringResource(Res.string.content_desc_avatar),
+                            modifier = Modifier.size(100.dp)
+                        )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = stringResource(Res.string.content_desc_avatar),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(48.dp)
+                        )
+                    }
+                }
             }
             // Edit badge
             Box(
                 modifier = Modifier
                     .size(28.dp)
                     .offset(x = 2.dp, y = 2.dp)
+                    .border(1.dp, MaterialTheme.colorScheme.surfaceContainerHigh, CircleShape)
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.primary)
                     .clickable { onEditAvatarClick() },
