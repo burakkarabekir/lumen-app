@@ -1,5 +1,6 @@
-package com.bksd.core.domain.repository
+package com.bksd.profile.domain.usecase
 
+import com.bksd.profile.domain.repository.ProfileRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetProfileAvatarUseCase(

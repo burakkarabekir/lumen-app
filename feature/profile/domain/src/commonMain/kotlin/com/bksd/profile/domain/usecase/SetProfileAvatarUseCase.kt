@@ -1,4 +1,6 @@
-package com.bksd.core.domain.repository
+package com.bksd.profile.domain.usecase
+
+import com.bksd.profile.domain.repository.ProfileRepository
 
 class SetProfileAvatarUseCase(
     private val repository: ProfileRepository

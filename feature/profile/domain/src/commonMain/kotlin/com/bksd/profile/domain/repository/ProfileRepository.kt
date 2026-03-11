@@ -1,4 +1,4 @@
-package com.bksd.core.domain.repository
+package com.bksd.profile.domain.repository
 
 import kotlinx.coroutines.flow.Flow
 

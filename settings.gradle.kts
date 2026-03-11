@@ -51,6 +51,8 @@ include(":feature:auth:presentation")
 
 include(":feature:insights:presentation")
 
+include(":feature:profile:data")
+include(":feature:profile:domain")
 include(":feature:profile:presentation")
 
 include(":feature:paywall:presentation")

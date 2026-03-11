@@ -1,11 +1,11 @@
-package com.bksd.core.data.repository
+package com.bksd.profile.data.repository
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.bksd.core.data.storage.PlatformFileStorage
-import com.bksd.core.domain.repository.ProfileRepository
+import com.bksd.profile.domain.repository.ProfileRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlin.random.Random

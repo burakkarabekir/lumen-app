@@ -1,8 +1,8 @@
 package com.bksd.profile.presentation
 
 import androidx.lifecycle.viewModelScope
-import com.bksd.core.domain.repository.GetProfileAvatarUseCase
-import com.bksd.core.domain.repository.SetProfileAvatarUseCase
+import com.bksd.profile.domain.usecase.GetProfileAvatarUseCase
+import com.bksd.profile.domain.usecase.SetProfileAvatarUseCase
 import com.bksd.core.presentation.util.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

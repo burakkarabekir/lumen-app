@@ -34,6 +34,8 @@ kotlin {
 
             implementation(projects.feature.insights.presentation)
 
+            implementation(projects.feature.profile.data)
+            implementation(projects.feature.profile.domain)
             implementation(projects.feature.profile.presentation)
 
             implementation(projects.feature.paywall.presentation)

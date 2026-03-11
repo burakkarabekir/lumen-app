@@ -3,6 +3,7 @@
 package com.bksd.moment.presentation.create
 
 import androidx.lifecycle.viewModelScope
+import com.bksd.auth.domain.AuthRepository
 import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.Result
 import com.bksd.core.domain.location.LocationProvider
@@ -48,7 +49,6 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import org.jetbrains.compose.resources.getString
-import kotlin.random.Random
 import kotlin.time.Clock
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -58,7 +58,8 @@ class CreateMomentViewModel(
     private val mediaRepository: MediaRepository,
     private val voiceRecorder: VoiceRecorder,
     private val audioPlayer: AudioPlayer,
-    private val locationProvider: LocationProvider
+    private val locationProvider: LocationProvider,
+    private val authRepository: AuthRepository
 ) : BaseViewModel<CreateMomentAction, CreateMomentEvent>() {
 
     private var hasLoadedInitialData = false
@@ -406,8 +407,13 @@ class CreateMomentViewModel(
                 audioPlayer.stop()
             }
 
-            val dummyId = "moment_${Random.nextInt(10000, 99999)}"
-            val dummyUserId = "user_123"
+            val userId = authRepository.getSignedInUserId()
+            if (userId == null) {
+                updateState { it.copy(isSaving = false) }
+                sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_moment_save_failed)))
+                return@launch
+            }
+            val momentId = Uuid.random().toString()
 
             val uploadedAttachments = mutableListOf<Attachment>()
 
@@ -439,7 +445,7 @@ class CreateMomentViewModel(
                     )
                 }
 
-                when (val result = mediaRepository.uploadAttachment(draft, dummyUserId, dummyId)) {
+                when (val result = mediaRepository.uploadAttachment(draft, userId, momentId)) {
                     is Result.Success -> uploadedAttachments.add(result.data)
                     is Result.Error -> {
                         updateState { it.copy(isSaving = false) }
@@ -450,7 +456,7 @@ class CreateMomentViewModel(
             }
 
             val newMoment = Moment(
-                id = dummyId,
+                id = momentId,
                 body = currentState.body.takeIf { it.isNotBlank() },
                 createdAt = Clock.System.now(),
                 mood = currentState.selectedMood,

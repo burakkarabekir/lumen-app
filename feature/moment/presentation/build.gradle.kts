@@ -17,6 +17,7 @@ kotlin {
                 implementation(projects.core.designSystem)
                 api(projects.feature.moment.domain)
                 api(projects.feature.journal.domain)
+                implementation(projects.feature.auth.domain)
 
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.bundles.jetbrains.adaptive)

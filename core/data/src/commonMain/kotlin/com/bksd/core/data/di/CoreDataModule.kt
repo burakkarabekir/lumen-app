@@ -2,15 +2,12 @@ package com.bksd.core.data.di
 
 import com.bksd.core.data.logging.KermitLogger
 import com.bksd.core.data.remote.firebase.FirebaseAuthDataSource
+import com.bksd.core.data.remote.firebase.FirebaseFirestoreDataSource
 import com.bksd.core.data.remote.firebase.FirebaseStorageDataSource
 import com.bksd.core.data.repository.MediaRepositoryImpl
-import com.bksd.core.data.repository.ProfileRepositoryImpl
 import com.bksd.core.data.theme.ThemeRepositoryImpl
 import com.bksd.core.domain.logging.AppLogger
-import com.bksd.core.domain.repository.GetProfileAvatarUseCase
 import com.bksd.core.domain.repository.MediaRepository
-import com.bksd.core.domain.repository.ProfileRepository
-import com.bksd.core.domain.repository.SetProfileAvatarUseCase
 import com.bksd.core.domain.theme.GetAppThemeUseCase
 import com.bksd.core.domain.theme.SetAppThemeUseCase
 import com.bksd.core.domain.theme.ThemeRepository
@@ -24,16 +21,11 @@ val coreDataModule = module {
 
     single<AppLogger> { KermitLogger }
     singleOf(::FirebaseAuthDataSource)
+    singleOf(::FirebaseFirestoreDataSource)
     singleOf(::FirebaseStorageDataSource)
     singleOf(::MediaRepositoryImpl) bind MediaRepository::class
 
-    // Theme
     singleOf(::ThemeRepositoryImpl) bind ThemeRepository::class
     factoryOf(::GetAppThemeUseCase)
     factoryOf(::SetAppThemeUseCase)
-
-    // Profile
-    singleOf(::ProfileRepositoryImpl) bind ProfileRepository::class
-    factoryOf(::GetProfileAvatarUseCase)
-    factoryOf(::SetProfileAvatarUseCase)
 }

@@ -35,8 +35,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.paywall.presentation.Res
 import com.bksd.paywall.presentation.btn_start_trial
@@ -46,6 +48,7 @@ import com.bksd.paywall.presentation.legal_text
 import com.bksd.paywall.presentation.paywall_subtitle
 import com.bksd.paywall.presentation.paywall_title
 import com.bksd.paywall.presentation.restore
+import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -258,5 +261,24 @@ private fun FeatureRow(
                 lineHeight = 18.sp
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun PreviewPaywallScreen() {
+    AppTheme {
+        PaywallScreen(
+            state = PaywallState(
+                features = persistentListOf(
+                    PaywallFeature("Unlimited Journals", "Create as many journals as you want without any restrictions."),
+                    PaywallFeature("Exclusive Prompts", "Get access to a library of exclusive journaling prompts updated monthly."),
+                    PaywallFeature("Advanced Analytics", "Gain insights into your journaling habits and trends over time."),
+                ),
+                selectedTier = BillingTier.MONTHLY,
+                isProcessing = false
+            ),
+            onAction = {}
+        )
     }
 }

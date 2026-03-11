@@ -12,6 +12,8 @@ import com.bksd.moment.domain.di.momentDomainModule
 import com.bksd.moment.presentation.di.momentPresentationModule
 import com.bksd.onboarding.presentation.di.onboardingPresentationModule
 import com.bksd.paywall.presentation.di.paywallPresentationModule
+import com.bksd.profile.data.di.profileDataModule
+import com.bksd.profile.domain.di.profileDomainModule
 import com.bksd.profile.presentation.di.profilePresentationModule
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
@@ -34,6 +36,8 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             momentDomainModule,
             momentPresentationModule,
             insightsPresentationModule,
+            profileDataModule,
+            profileDomainModule,
             profilePresentationModule,
             paywallPresentationModule
         )

@@ -12,7 +12,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(projects.core.domain)
+                implementation(projects.feature.profile.domain)
                 implementation(projects.core.presentation)
                 implementation(projects.core.designSystem)
 
@@ -22,8 +22,8 @@ kotlin {
                 implementation(libs.bundles.koin.compose)
                 implementation(libs.jetbrains.kotlinx.collections.immutable)
 
-                // Image loading for profile picture
                 implementation(libs.coil.compose)
+                implementation(libs.bundles.datastore)
             }
         }
     }
