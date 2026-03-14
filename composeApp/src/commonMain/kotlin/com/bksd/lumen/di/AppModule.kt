@@ -1,5 +1,6 @@
 package com.bksd.lumen.di
 
+import com.bksd.lumen.main.MainViewModel
 import com.bksd.lumen.theme.ThemeViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -12,4 +13,5 @@ val appModule = module {
         CoroutineScope(SupervisorJob() + Dispatchers.Default)
     }
     viewModelOf(::ThemeViewModel)
+    viewModelOf(::MainViewModel)
 }

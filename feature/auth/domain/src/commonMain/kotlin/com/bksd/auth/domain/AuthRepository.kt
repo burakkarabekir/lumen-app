@@ -2,6 +2,7 @@ package com.bksd.auth.domain
 
 import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.Result
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Domain-layer interface for authentication operations.
@@ -12,4 +13,5 @@ interface AuthRepository {
     suspend fun resetPassword(email: String): Result<Unit, AppError>
     suspend fun signOut(): Result<Unit, AppError>
     fun getSignedInUserId(): String?
+    val authState: Flow<Boolean>
 }

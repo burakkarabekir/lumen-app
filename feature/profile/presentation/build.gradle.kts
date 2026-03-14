@@ -13,6 +13,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(projects.feature.profile.domain)
+                implementation(projects.feature.auth.domain)
                 implementation(projects.core.presentation)
                 implementation(projects.core.designSystem)
 

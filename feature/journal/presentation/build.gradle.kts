@@ -23,6 +23,7 @@ kotlin {
                 implementation(libs.bundles.koin.compose)
                 implementation(libs.jetbrains.compose.backhandler)
                 implementation(libs.kotlinx.datetime)
+                implementation(libs.coil.compose)
 
                 implementation(libs.jetbrains.kotlinx.collections.immutable)
                 implementation(libs.moko.permissions)

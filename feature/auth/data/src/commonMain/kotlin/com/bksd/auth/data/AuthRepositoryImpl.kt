@@ -4,17 +4,20 @@ import com.bksd.auth.domain.AuthRepository
 import com.bksd.core.data.remote.firebase.FirebaseAuthDataSource
 import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.Result
+import com.bksd.core.domain.storage.SessionStorage
+import kotlinx.coroutines.flow.Flow
 
-/**
- * Implementation of [AuthRepository] using the generic [FirebaseAuthDataSource].
- * This acts as a pure boundary preventing Firebase SDKs from leaking into the feature layer.
- */
 class AuthRepositoryImpl(
-    private val firebaseAuthDataSource: FirebaseAuthDataSource
+    private val firebaseAuthDataSource: FirebaseAuthDataSource,
+    private val sessionStorage: SessionStorage
 ) : AuthRepository {
 
     override suspend fun signIn(email: String, password: String): Result<Unit, AppError> {
-        return firebaseAuthDataSource.signIn(email, password)
+        val result = firebaseAuthDataSource.signIn(email, password)
+        if (result is Result.Success) {
+            sessionStorage.set(true)
+        }
+        return result
     }
 
     override suspend fun signUp(
@@ -25,8 +28,11 @@ class AuthRepositoryImpl(
         val signUpResult = firebaseAuthDataSource.signUp(email, password)
         if (signUpResult is Result.Error) return signUpResult
 
-        // After successful sign up, update the profile name immediately
-        return firebaseAuthDataSource.updateDisplayName(fullName)
+        val updateResult = firebaseAuthDataSource.updateDisplayName(fullName)
+        if (updateResult is Result.Success) {
+            sessionStorage.set(true)
+        }
+        return updateResult
     }
 
     override suspend fun resetPassword(email: String): Result<Unit, AppError> {
@@ -34,10 +40,17 @@ class AuthRepositoryImpl(
     }
 
     override suspend fun signOut(): Result<Unit, AppError> {
-        return firebaseAuthDataSource.signOut()
+        val result = firebaseAuthDataSource.signOut()
+        if (result is Result.Success) {
+            sessionStorage.set(false)
+        }
+        return result
     }
 
     override fun getSignedInUserId(): String? {
         return firebaseAuthDataSource.getSignedInUserId()
     }
+
+    override val authState: Flow<Boolean>
+        get() = firebaseAuthDataSource.authState
 }

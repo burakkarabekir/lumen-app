@@ -43,5 +43,11 @@ class ProfileRepositoryImpl(
         val fileName = "avatar_$uniqueSuffix.$extension"
         return fileStorage.saveImage(bytes, fileName)
     }
+
+    override suspend fun clearUserData() {
+        dataStore.edit { prefs ->
+            prefs.remove(avatarUrlKey)
+        }
+    }
 }
 

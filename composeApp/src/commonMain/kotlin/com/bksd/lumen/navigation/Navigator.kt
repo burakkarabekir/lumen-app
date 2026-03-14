@@ -32,6 +32,17 @@ class Navigator(
         }
     }
 
+    /**
+     * Clears all backstacks and forcibly starts a new stack at the given top-level route.
+     * Useful for unrecoverable actions like Sign In or Sign Out where returning is invalid.
+     */
+    fun clearBackstackAndNavigate(route: NavKey) {
+        state.backStacks.values.forEach { it.clear() }
+        state.topLevelRoute = route
+        state.backStacks[route]?.add(route)
+        logger.debug("Cleared all backstacks and navigated to top-level route: $route")
+    }
+
     // ==================== Main Tab Navigation ====================
 
     fun navigateToJournal() = navigate(Route.Main.Journal)
