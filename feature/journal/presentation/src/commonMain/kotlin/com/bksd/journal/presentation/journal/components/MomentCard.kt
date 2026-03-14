@@ -287,7 +287,7 @@ private fun PhotoPreview() {
 }
 
 @Composable
-private fun VideoPreview(durationMs: Long?) {
+internal fun VideoPreview(durationMs: Long?) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -386,7 +386,7 @@ private fun AudioPreview(durationMs: Long?) {
 }
 
 @Composable
-private fun LinkPreview(url: String?) {
+internal fun LinkPreview(url: String?) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
