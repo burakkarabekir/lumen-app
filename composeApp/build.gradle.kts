@@ -38,6 +38,7 @@ kotlin {
             implementation(projects.feature.profile.domain)
             implementation(projects.feature.profile.presentation)
 
+            implementation(projects.feature.paywall.domain)
             implementation(projects.feature.paywall.presentation)
 
             implementation(libs.bundles.compose)

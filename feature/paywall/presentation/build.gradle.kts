@@ -15,6 +15,7 @@ kotlin {
                 implementation(projects.core.domain)
                 implementation(projects.core.presentation)
                 implementation(projects.core.designSystem)
+                implementation(projects.feature.paywall.domain)
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.bundles.lifecycle)
                 implementation(libs.bundles.koin.core.bundle)

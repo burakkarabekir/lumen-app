@@ -11,6 +11,7 @@ import com.bksd.journal.presentation.di.journalPresentationModule
 import com.bksd.moment.domain.di.momentDomainModule
 import com.bksd.moment.presentation.di.momentPresentationModule
 import com.bksd.onboarding.presentation.di.onboardingPresentationModule
+import com.bksd.paywall.domain.di.paywallDomainModule
 import com.bksd.paywall.presentation.di.paywallPresentationModule
 import com.bksd.profile.data.di.profileDataModule
 import com.bksd.profile.domain.di.profileDomainModule
@@ -39,6 +40,7 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             profileDataModule,
             profileDomainModule,
             profilePresentationModule,
+            paywallDomainModule,
             paywallPresentationModule
         )
     }

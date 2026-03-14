@@ -55,4 +55,5 @@ include(":feature:profile:data")
 include(":feature:profile:domain")
 include(":feature:profile:presentation")
 
+include(":feature:paywall:domain")
 include(":feature:paywall:presentation")

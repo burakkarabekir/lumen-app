@@ -18,6 +18,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AutoAwesome
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
@@ -33,21 +35,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.PreviewAppTheme
 import com.bksd.core.presentation.util.ObserveAsEvents
-import com.bksd.paywall.presentation.Res
-import com.bksd.paywall.presentation.btn_start_trial
-import com.bksd.paywall.presentation.btn_subscribe_now
-import com.bksd.paywall.presentation.content_desc_close
-import com.bksd.paywall.presentation.legal_text
-import com.bksd.paywall.presentation.paywall_subtitle
-import com.bksd.paywall.presentation.paywall_title
-import com.bksd.paywall.presentation.restore
+import com.bksd.paywall.presentation.components.FeatureRow
+import com.bksd.paywall.presentation.components.HeroCard
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -82,7 +80,6 @@ internal fun PaywallScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        // ==================== Header ====================
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -99,8 +96,11 @@ internal fun PaywallScreen(
             }
             Text(
                 text = stringResource(Res.string.restore),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
+                style = MaterialTheme.typography.labelMedium.copy(
+                    fontWeight = FontWeight.Medium,
+                    letterSpacing = 1.sp
+                ),
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
                 modifier = Modifier
                     .clickable { onAction(PaywallAction.OnRestoreClick) }
                     .padding(horizontal = 12.dp, vertical = 8.dp)
@@ -111,77 +111,39 @@ internal fun PaywallScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp),
+                .padding(horizontal = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // ==================== Branding Icon ====================
-            Box(
-                modifier = Modifier
-                    .size(56.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Star,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(28.dp)
-                )
-            }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            // ==================== Title & Subtitle ====================
-            Text(
-                text = stringResource(Res.string.paywall_title),
-                style = MaterialTheme.typography.headlineMedium.copy(
-                    fontWeight = FontWeight.Bold
-                ),
-                color = MaterialTheme.colorScheme.onBackground,
-                textAlign = TextAlign.Center,
-                lineHeight = 34.sp
-            )
             Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(Res.string.paywall_subtitle),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
-                textAlign = TextAlign.Center,
-                lineHeight = 22.sp
-            )
 
-            Spacer(modifier = Modifier.height(28.dp))
+            HeroCard()
 
-            // ==================== Features List ====================
+            Spacer(modifier = Modifier.height(32.dp))
+
             state.features.forEach { feature ->
                 FeatureRow(feature = feature)
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(20.dp))
             }
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // ==================== Pricing Tiers ====================
-            BillingTier.entries.forEach { tier ->
+            state.tiers.forEach { tier ->
                 PricingTierCard(
                     tier = tier,
-                    isSelected = state.selectedTier == tier,
+                    isSelected = state.selectedTier?.id == tier.id,
                     onSelect = { onAction(PaywallAction.OnSelectTier(tier)) }
                 )
                 Spacer(modifier = Modifier.height(10.dp))
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
-            // ==================== CTA Button ====================
             Button(
                 onClick = { onAction(PaywallAction.OnSubscribeClick) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(52.dp),
-                shape = RoundedCornerShape(26.dp),
+                    .height(56.dp),
+                shape = RoundedCornerShape(28.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary
                 ),
@@ -189,19 +151,21 @@ internal fun PaywallScreen(
             ) {
                 if (state.isProcessing) {
                     CircularProgressIndicator(
-                        modifier = Modifier.size(20.dp),
+                        modifier = Modifier.size(22.dp),
                         color = MaterialTheme.colorScheme.onPrimary,
                         strokeWidth = 2.dp
                     )
                 } else {
-                    val ctaText = if (state.selectedTier.hasFreeTrial) {
+                    val ctaText = if (state.selectedTier?.hasFreeTrial == true) {
                         stringResource(Res.string.btn_start_trial)
                     } else {
                         stringResource(Res.string.btn_subscribe_now)
                     }
                     Text(
                         text = ctaText,
-                        style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Bold
+                        ),
                         color = MaterialTheme.colorScheme.onPrimary
                     )
                 }
@@ -209,13 +173,14 @@ internal fun PaywallScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // ==================== Legal Text ====================
             Text(
                 text = stringResource(Res.string.legal_text),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
-                textAlign = TextAlign.Center,
-                lineHeight = 16.sp
+                style = MaterialTheme.typography.labelSmall.copy(
+                    letterSpacing = 0.5.sp,
+                    lineHeight = 16.sp
+                ),
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.35f),
+                textAlign = TextAlign.Center
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -223,59 +188,48 @@ internal fun PaywallScreen(
     }
 }
 
-@Composable
-private fun FeatureRow(
-    feature: PaywallFeature,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.Top
-    ) {
-        Box(
-            modifier = Modifier
-                .size(28.dp)
-                .clip(RoundedCornerShape(6.dp))
-                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = Icons.Default.Star,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(16.dp)
-            )
-        }
-        Spacer(modifier = Modifier.width(12.dp))
-        Column {
-            Text(
-                text = feature.title,
-                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
-                color = MaterialTheme.colorScheme.onBackground
-            )
-            Spacer(modifier = Modifier.height(2.dp))
-            Text(
-                text = feature.description,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
-                lineHeight = 18.sp
-            )
-        }
-    }
-}
-
 @Preview
 @Composable
-fun PreviewPaywallScreen() {
-    AppTheme {
+private fun PaywallScreenPreview() {
+    val yearlyTier = BillingTierUi(
+        id = "yearly",
+        displayName = "Yearly Access",
+        price = "$79.99",
+        period = "/yr",
+        subtitle = "7-DAY FREE TRIAL",
+        monthlyBreakdown = "$6.66 per month",
+        isPopularChoice = true,
+        hasFreeTrial = true
+    )
+
+    PreviewAppTheme(darkTheme = true) {
         PaywallScreen(
             state = PaywallState(
                 features = persistentListOf(
-                    PaywallFeature("Unlimited Journals", "Create as many journals as you want without any restrictions."),
-                    PaywallFeature("Exclusive Prompts", "Get access to a library of exclusive journaling prompts updated monthly."),
-                    PaywallFeature("Advanced Analytics", "Gain insights into your journaling habits and trends over time."),
+                    PaywallFeatureUi(
+                        "Unlimited Multimedia",
+                        "Rich entries with high-resolution photos and voice recordings."
+                    ),
+                    PaywallFeatureUi(
+                        "AI Weekly Summaries",
+                        "Personalized reflection insights delivered every Sunday morning."
+                    ),
+                    PaywallFeatureUi(
+                        "Advanced Analytics",
+                        "Visualize your emotional journey and mood trends over time."
+                    )
                 ),
-                selectedTier = BillingTier.MONTHLY,
+                tiers = persistentListOf(
+                    yearlyTier,
+                    BillingTierUi(
+                        id = "monthly",
+                        displayName = "Monthly",
+                        price = "$9.99",
+                        period = "/mo",
+                        subtitle = "Standard access"
+                    )
+                ),
+                selectedTier = yearlyTier,
                 isProcessing = false
             ),
             onAction = {}
