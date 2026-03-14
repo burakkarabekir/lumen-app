@@ -4,9 +4,17 @@ import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.Result
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class FirebaseAuthDataSource {
     private val auth by lazy { Firebase.auth }
+
+    val authState: Flow<Boolean> = flow {
+        auth.authStateChanged.collect { user ->
+            emit(user != null)
+        }
+    }
 
     suspend fun signIn(email: String, password: String): Result<Unit, AppError> {
         return try {
