@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import com.bksd.auth.domain.usecase.SignOutUseCase
 import com.bksd.core.domain.error.Result
 import com.bksd.core.presentation.util.BaseViewModel
-import com.bksd.profile.domain.usecase.ClearUserDataUseCase
 import com.bksd.profile.domain.usecase.GetProfileAvatarUseCase
 import com.bksd.profile.domain.usecase.SetProfileAvatarUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +16,6 @@ class ProfileViewModel(
     private val getProfileAvatarUseCase: GetProfileAvatarUseCase,
     private val setProfileAvatarUseCase: SetProfileAvatarUseCase,
     private val signOutUseCase: SignOutUseCase,
-    private val clearUserDataUseCase: ClearUserDataUseCase
 ) : BaseViewModel<ProfileAction, ProfileEvent>() {
 
     private var hasLoadedInitialData = false
@@ -74,12 +72,11 @@ class ProfileViewModel(
     private fun handleSignOut() {
         _state.update { it.copy(isSigningOut = true) }
         launch {
-            when (signOutUseCase()) {
-                is Result.Success -> {
-                    clearUserDataUseCase()
-                    sendEvent(ProfileEvent.SignOutSuccess)
-                }
-                is Result.Error -> _state.update { it.copy(isSigningOut = false) }
+            val result = signOutUseCase()
+            _state.update { it.copy(isSigningOut = false) }
+            when (result) {
+                is Result.Success -> sendEvent(ProfileEvent.SignOutSuccess)
+                is Result.Error -> sendEvent(ProfileEvent.SignOutError(result.error.toString()))
             }
         }
     }

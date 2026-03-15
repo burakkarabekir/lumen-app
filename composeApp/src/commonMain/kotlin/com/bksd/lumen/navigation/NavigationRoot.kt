@@ -116,7 +116,9 @@ fun NavigationRoot(
                     }
                     entry<Route.Main.Profile> {
                         ProfileRoot(
-                            onNavigateToSignIn = { navigator.navigateToSignIn() },
+                            onNavigateToSignIn = {
+                                navigator.clearBackstackAndNavigate(Route.Auth.SignIn)
+                            },
                             onNavigateToPaywall = { navigator.navigateToPaywall() }
                         )
                     }

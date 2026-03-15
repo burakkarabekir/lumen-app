@@ -6,6 +6,10 @@ import com.bksd.core.domain.error.Result
 
 class SignOutUseCase(private val repository: AuthRepository) {
     suspend operator fun invoke(): Result<Unit, AppError> {
-        return repository.signOut()
+        val result = repository.signOut()
+        if (result is Result.Success) {
+            repository.clearUserData()
+        }
+        return result
     }
 }

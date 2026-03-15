@@ -75,6 +75,12 @@ fun ProfileRoot(
                     snackbarHostState.showSnackbar(msg)
                 }
             }
+
+            is ProfileEvent.SignOutError -> {
+                scope.launch {
+                    snackbarHostState.showSnackbar(event.message)
+                }
+            }
         }
     }
 
