@@ -5,7 +5,7 @@ import com.bksd.core.data.remote.firebase.FirebaseAuthDataSource
 import com.bksd.core.data.remote.firebase.FirebaseFirestoreDataSource
 import com.bksd.core.data.remote.firebase.FirebaseStorageDataSource
 import com.bksd.core.data.repository.MediaRepositoryImpl
-import com.bksd.core.data.storage.DataStoreSessionStorage
+import com.bksd.core.data.storage.FirebaseSessionStorage
 import com.bksd.core.data.theme.ThemeRepositoryImpl
 import com.bksd.core.domain.logging.AppLogger
 import com.bksd.core.domain.repository.MediaRepository
@@ -26,7 +26,7 @@ val coreDataModule = module {
     singleOf(::FirebaseFirestoreDataSource)
     singleOf(::FirebaseStorageDataSource)
     singleOf(::MediaRepositoryImpl) bind MediaRepository::class
-    singleOf(::DataStoreSessionStorage) bind SessionStorage::class
+    singleOf(::FirebaseSessionStorage) bind SessionStorage::class
 
     singleOf(::ThemeRepositoryImpl) bind ThemeRepository::class
     factoryOf(::GetAppThemeUseCase)

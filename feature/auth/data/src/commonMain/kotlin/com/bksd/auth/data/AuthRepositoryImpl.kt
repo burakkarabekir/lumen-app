@@ -4,20 +4,16 @@ import com.bksd.auth.domain.AuthRepository
 import com.bksd.core.data.remote.firebase.FirebaseAuthDataSource
 import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.Result
-import com.bksd.core.domain.storage.SessionStorage
+import com.bksd.profile.domain.repository.ProfileRepository
 import kotlinx.coroutines.flow.Flow
 
 class AuthRepositoryImpl(
     private val firebaseAuthDataSource: FirebaseAuthDataSource,
-    private val sessionStorage: SessionStorage
+    private val profileRepository: ProfileRepository,
 ) : AuthRepository {
 
     override suspend fun signIn(email: String, password: String): Result<Unit, AppError> {
-        val result = firebaseAuthDataSource.signIn(email, password)
-        if (result is Result.Success) {
-            sessionStorage.set(true)
-        }
-        return result
+        return firebaseAuthDataSource.signIn(email, password)
     }
 
     override suspend fun signUp(
@@ -27,12 +23,7 @@ class AuthRepositoryImpl(
     ): Result<Unit, AppError> {
         val signUpResult = firebaseAuthDataSource.signUp(email, password)
         if (signUpResult is Result.Error) return signUpResult
-
-        val updateResult = firebaseAuthDataSource.updateDisplayName(fullName)
-        if (updateResult is Result.Success) {
-            sessionStorage.set(true)
-        }
-        return updateResult
+        return firebaseAuthDataSource.updateDisplayName(fullName)
     }
 
     override suspend fun resetPassword(email: String): Result<Unit, AppError> {
@@ -40,11 +31,11 @@ class AuthRepositoryImpl(
     }
 
     override suspend fun signOut(): Result<Unit, AppError> {
-        val result = firebaseAuthDataSource.signOut()
-        if (result is Result.Success) {
-            sessionStorage.set(false)
-        }
-        return result
+        return firebaseAuthDataSource.signOut()
+    }
+
+    override suspend fun clearUserData() {
+        profileRepository.clearUserData()
     }
 
     override fun getSignedInUserId(): String? {

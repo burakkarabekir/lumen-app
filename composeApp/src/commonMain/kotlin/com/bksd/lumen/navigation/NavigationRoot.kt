@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -19,23 +21,54 @@ import com.bksd.auth.presentation.resetpassword.ResetPasswordRoot
 import com.bksd.auth.presentation.signin.SignInRoot
 import com.bksd.auth.presentation.signup.SignUpRoot
 import com.bksd.core.design_system.component.layout.AppScaffold
+import com.bksd.core.domain.storage.SessionStorage
+import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.insights.presentation.InsightsRoot
 import com.bksd.journal.presentation.detail.MomentDetailRoot
 import com.bksd.journal.presentation.journal.JournalRoot
+import com.bksd.lumen.main.MainEvent
+import com.bksd.lumen.main.MainViewModel
 import com.bksd.lumen.navigation.route.Route
 import com.bksd.lumen.navigation.route.Route.Companion.shouldShowBottomBar
 import com.bksd.moment.presentation.create.CreateMomentRoot
 import com.bksd.onboarding.presentation.OnboardingRoot
 import com.bksd.paywall.presentation.PaywallRoot
 import com.bksd.profile.presentation.ProfileRoot
+import kotlinx.collections.immutable.toImmutableSet
+import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun NavigationRoot(
-    navigator: Navigator,
-    navigationState: NavigationState,
     modifier: Modifier = Modifier,
 ) {
+    val mainViewModel = koinViewModel<MainViewModel>()
+    val mainState by mainViewModel.state.collectAsState()
+    val sessionStorage = koinInject<SessionStorage>()
+
+    val navigationState = rememberNavigationState(
+        startRoute = Route.Main.Journal,
+        topLevelRoutes = remember { TOP_LEVEL_DESTINATIONS.keys.toImmutableSet() }
+    )
+
+    val navigator = koinInject<Navigator> { parametersOf(navigationState) }
     val snackbarHostState = remember { SnackbarHostState() }
+
+    remember {
+        if (!sessionStorage.isLoggedIn()) {
+            navigator.clearBackstackAndNavigate(Route.Auth.SignIn)
+        }
+        true
+    }
+
+    ObserveAsEvents(mainViewModel.events) { event ->
+        when (event) {
+            is MainEvent.OnSessionExpired -> {
+                navigator.clearBackstackAndNavigate(Route.Auth.SignIn)
+            }
+        }
+    }
 
     AppScaffold(
         snackbarHostState = snackbarHostState,
