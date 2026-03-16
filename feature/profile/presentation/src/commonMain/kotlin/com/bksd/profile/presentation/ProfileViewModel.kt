@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.bksd.auth.domain.usecase.SignOutUseCase
 import com.bksd.core.domain.error.Result
 import com.bksd.core.presentation.util.BaseViewModel
-import com.bksd.profile.domain.usecase.GetProfileAvatarUseCase
+import com.bksd.profile.domain.usecase.GetUserProfileUseCase
 import com.bksd.profile.domain.usecase.SetProfileAvatarUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
 class ProfileViewModel(
-    private val getProfileAvatarUseCase: GetProfileAvatarUseCase,
+    private val getUserProfileUseCase: GetUserProfileUseCase,
     private val setProfileAvatarUseCase: SetProfileAvatarUseCase,
     private val signOutUseCase: SignOutUseCase,
 ) : BaseViewModel<ProfileAction, ProfileEvent>() {
@@ -24,7 +24,7 @@ class ProfileViewModel(
     val state = _state
         .onStart {
             if (!hasLoadedInitialData) {
-                observeAvatar()
+                loadUserProfile()
                 hasLoadedInitialData = true
             }
         }
@@ -34,10 +34,18 @@ class ProfileViewModel(
             initialValue = ProfileState()
         )
 
-    private fun observeAvatar() {
+    private fun loadUserProfile() {
         launch {
-            getProfileAvatarUseCase().collect { url ->
-                _state.update { it.copy(avatarUrl = url, isAvatarLoading = false) }
+            val profile = getUserProfileUseCase()
+            _state.update {
+                it.copy(
+                    name = profile.displayName,
+                    photoUrl = profile.photoUrl,
+                    jobTitle = profile.jobTitle,
+                    joinYear = profile.joinYear,
+                    isPremium = profile.isPremium,
+                    isProfileLoading = false
+                )
             }
         }
     }
@@ -52,10 +60,10 @@ class ProfileViewModel(
                 _state.update { it.copy(isAvatarLoading = true) }
                 launch {
                     try {
-                        setProfileAvatarUseCase(action.bytes, action.mimeType)
+                        val downloadUrl = setProfileAvatarUseCase(action.bytes, action.mimeType)
+                        _state.update { it.copy(photoUrl = downloadUrl, isAvatarLoading = false) }
                     } catch (e: Exception) {
                         sendEvent(ProfileEvent.PermissionError(e.message ?: "Unknown error"))
-                    } finally {
                         _state.update { it.copy(isAvatarLoading = false) }
                     }
                 }

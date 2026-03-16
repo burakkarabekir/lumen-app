@@ -19,6 +19,7 @@ kotlin {
                 implementation(project.dependencies.platform(libs.koin.bom))
                 implementation(libs.bundles.koin.core.bundle)
                 implementation(libs.bundles.datastore)
+                implementation(libs.kotlinx.serialization.json)
             }
         }
         androidMain {

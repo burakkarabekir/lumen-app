@@ -131,10 +131,11 @@ internal fun ProfileScreen(
         ) {
             // ==================== Header (Avatar + Identity) ====================
             ProfileHeader(
-                displayName = state.displayName,
-                role = state.role,
-                memberSince = state.memberSince,
-                avatarUrl = state.avatarUrl,
+                name = state.name,
+                jobTitle = state.jobTitle,
+                joinYear = state.joinYear,
+                isPremium = state.isPremium,
+                avatarUrl = state.photoUrl,
                 isAvatarLoading = state.isAvatarLoading,
                 onEditAvatarClick = { onAction(ProfileAction.OnUploadPictureClick) },
                 modifier = Modifier.padding(16.dp)
@@ -217,9 +218,10 @@ private fun ProfileScreenDarkPreview() {
     PreviewAppTheme(darkTheme = true) {
         ProfileScreen(
             state = ProfileState(
-                displayName = "Alex Morgan",
-                role = "Product Manager",
-                memberSince = "Member since 2023",
+                name = "Alex Morgan",
+                jobTitle = "Product Manager",
+                joinYear = "2023",
+                isPremium = true,
                 hasNotificationBadge = true,
             ),
             snackbarHostState = SnackbarHostState(),
@@ -234,9 +236,10 @@ private fun ProfileScreenLightPreview() {
     PreviewAppTheme(darkTheme = false) {
         ProfileScreen(
             state = ProfileState(
-                displayName = "Alex Morgan",
-                role = "Product Manager",
-                memberSince = "Member since 2023",
+                name = "Alex Morgan",
+                jobTitle = "Product Manager",
+                joinYear = "2023",
+                isPremium = false,
                 hasNotificationBadge = true,
             ),
             snackbarHostState = SnackbarHostState(),

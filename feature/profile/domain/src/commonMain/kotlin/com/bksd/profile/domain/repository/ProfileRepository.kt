@@ -1,10 +1,10 @@
 package com.bksd.profile.domain.repository
 
+import com.bksd.profile.domain.model.UserProfile
 import kotlinx.coroutines.flow.Flow
 
 interface ProfileRepository {
-    fun observeAvatarUrl(): Flow<String?>
-    suspend fun setAvatarUrl(url: String?)
-    suspend fun saveAvatarImage(bytes: ByteArray, mimeType: String?): String
+    suspend fun getUserProfile(): UserProfile
+    suspend fun uploadAvatar(bytes: ByteArray, mimeType: String?): String
     suspend fun clearUserData()
 }
