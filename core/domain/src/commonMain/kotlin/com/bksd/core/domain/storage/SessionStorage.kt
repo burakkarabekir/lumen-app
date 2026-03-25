@@ -5,4 +5,6 @@ import kotlinx.coroutines.flow.Flow
 interface SessionStorage {
     fun observeAuthState(): Flow<Boolean>
     fun isLoggedIn(): Boolean
+    suspend fun setRememberMe(enabled: Boolean)
+    fun isRememberMeEnabled(): Flow<Boolean>
 }

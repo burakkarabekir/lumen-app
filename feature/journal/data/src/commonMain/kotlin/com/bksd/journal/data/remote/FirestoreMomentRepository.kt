@@ -3,6 +3,7 @@ package com.bksd.journal.data.remote
 import com.bksd.core.data.remote.firebase.FirebaseAuthDataSource
 import com.bksd.core.data.remote.firebase.FirebaseFirestoreDataSource
 import com.bksd.core.domain.error.AppError
+import com.bksd.core.domain.error.NetworkErrorType
 import com.bksd.core.domain.error.Result
 import com.bksd.journal.domain.model.Moment
 import com.bksd.journal.domain.repository.MomentRepository
@@ -16,20 +17,22 @@ class FirestoreMomentRepository(
     private val authDataSource: FirebaseAuthDataSource
 ) : MomentRepository {
 
-    private fun momentsCollectionPath(): String {
-        val userId = authDataSource.getSignedInUserId()
-            ?: throw IllegalStateException("User not signed in")
+    private fun momentsCollectionPath(): String? {
+        val userId = authDataSource.getSignedInUserId() ?: return null
         return "users/$userId/moments"
     }
 
     override suspend fun getMoments(date: LocalDate): Result<List<Moment>, AppError> {
+        val collectionPath = momentsCollectionPath()
+            ?: return Result.Error(AppError.Network(NetworkErrorType.UNAUTHORIZED))
+
         val tz = TimeZone.currentSystemDefault()
         val startMs = date.atStartOfDayIn(tz).toEpochMilliseconds()
         val endMs = date.atStartOfDayIn(tz).plus(1.days).toEpochMilliseconds()
 
         return when (
             val result = firestoreDataSource.queryDocuments(
-                collectionPath = momentsCollectionPath(),
+                collectionPath = collectionPath,
                 field = "createdAtMs",
                 greaterThanOrEqual = startMs,
                 lessThan = endMs,
@@ -42,9 +45,12 @@ class FirestoreMomentRepository(
     }
 
     override suspend fun getMoment(id: String): Result<Moment, AppError> {
+        val collectionPath = momentsCollectionPath()
+            ?: return Result.Error(AppError.Network(NetworkErrorType.UNAUTHORIZED))
+
         return when (
             val result = firestoreDataSource.getDocument(
-                collectionPath = momentsCollectionPath(),
+                collectionPath = collectionPath,
                 documentId = id,
                 deserializer = MomentDto.serializer()
             )
@@ -62,9 +68,12 @@ class FirestoreMomentRepository(
     }
 
     override suspend fun saveMoment(moment: Moment): Result<Unit, AppError> {
+        val collectionPath = momentsCollectionPath()
+            ?: return Result.Error(AppError.Network(NetworkErrorType.UNAUTHORIZED))
+
         val dto = moment.toDto()
         return firestoreDataSource.setDocument(
-            collectionPath = momentsCollectionPath(),
+            collectionPath = collectionPath,
             documentId = moment.id,
             data = dto,
             serializer = MomentDto.serializer()
