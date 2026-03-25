@@ -38,7 +38,12 @@ kotlin {
                 implementation(libs.ktor.client.okhttp)
                 implementation(libs.koin.android)
                 implementation(project.dependencies.platform(libs.firebase.bom))
-                implementation("com.google.android.gms:play-services-location:21.3.0")
+                implementation(libs.google.firebase.auth)
+                implementation(libs.kotlinx.coroutines.play.services)
+                implementation(libs.play.services.location)
+                implementation(libs.androidx.credentials)
+                implementation(libs.androidx.credentials.play.services.auth)
+                implementation(libs.googleid)
             }
         }
 
