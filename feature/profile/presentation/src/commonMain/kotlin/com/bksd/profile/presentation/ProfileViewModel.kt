@@ -36,16 +36,23 @@ class ProfileViewModel(
 
     private fun loadUserProfile() {
         launch {
-            val profile = getUserProfileUseCase()
-            _state.update {
-                it.copy(
-                    name = profile.displayName,
-                    photoUrl = profile.photoUrl,
-                    jobTitle = profile.jobTitle,
-                    joinYear = profile.joinYear,
-                    isPremium = profile.isPremium,
-                    isProfileLoading = false
-                )
+            when (val result = getUserProfileUseCase()) {
+                is Result.Success -> {
+                    val profile = result.data
+                    _state.update {
+                        it.copy(
+                            name = profile.displayName,
+                            photoUrl = profile.photoUrl,
+                            jobTitle = profile.jobTitle,
+                            joinYear = profile.joinYear,
+                            isPremium = profile.isPremium,
+                            isProfileLoading = false
+                        )
+                    }
+                }
+                is Result.Error -> {
+                    _state.update { it.copy(isProfileLoading = false) }
+                }
             }
         }
     }
@@ -59,12 +66,14 @@ class ProfileViewModel(
             is ProfileAction.OnPictureSelected -> {
                 _state.update { it.copy(isAvatarLoading = true) }
                 launch {
-                    try {
-                        val downloadUrl = setProfileAvatarUseCase(action.bytes, action.mimeType)
-                        _state.update { it.copy(photoUrl = downloadUrl, isAvatarLoading = false) }
-                    } catch (e: Exception) {
-                        sendEvent(ProfileEvent.PermissionError(e.message ?: "Unknown error"))
-                        _state.update { it.copy(isAvatarLoading = false) }
+                    when (val result = setProfileAvatarUseCase(action.bytes, action.mimeType)) {
+                        is Result.Success -> {
+                            _state.update { it.copy(photoUrl = result.data, isAvatarLoading = false) }
+                        }
+                        is Result.Error -> {
+                            sendEvent(ProfileEvent.PermissionError(result.error.toString()))
+                            _state.update { it.copy(isAvatarLoading = false) }
+                        }
                     }
                 }
             }

@@ -3,6 +3,8 @@ package com.bksd.profile.data.repository
 import com.bksd.core.data.remote.firebase.FirebaseAuthDataSource
 import com.bksd.core.data.remote.firebase.FirebaseFirestoreDataSource
 import com.bksd.core.data.remote.firebase.FirebaseStorageDataSource
+import com.bksd.core.domain.error.AppError
+import com.bksd.core.domain.error.NetworkErrorType
 import com.bksd.core.domain.error.Result
 import com.bksd.profile.data.dto.UserProfileDto
 import com.bksd.profile.domain.model.UserProfile
@@ -15,8 +17,10 @@ class ProfileRepositoryImpl(
     private val storageDataSource: FirebaseStorageDataSource,
 ) : ProfileRepository {
 
-    override suspend fun getUserProfile(): UserProfile {
-        val uid = firebaseAuthDataSource.getSignedInUserId().orEmpty()
+    override suspend fun getUserProfile(): Result<UserProfile, AppError> {
+        val uid = firebaseAuthDataSource.getSignedInUserId()
+            ?: return Result.Error(AppError.Network(NetworkErrorType.UNAUTHORIZED))
+
         val displayName = firebaseAuthDataSource.getDisplayName().orEmpty()
         val photoUrl = firebaseAuthDataSource.getPhotoUrl()
 
@@ -29,18 +33,20 @@ class ProfileRepositoryImpl(
             is Result.Error -> UserProfileDto()
         }
 
-        return UserProfile(
-            displayName = displayName,
-            photoUrl = photoUrl,
-            jobTitle = dto.jobTitle,
-            joinYear = dto.joinYear,
-            isPremium = dto.isPremium
+        return Result.Success(
+            UserProfile(
+                displayName = displayName,
+                photoUrl = photoUrl,
+                jobTitle = dto.jobTitle,
+                joinYear = dto.joinYear,
+                isPremium = dto.isPremium
+            )
         )
     }
 
-    override suspend fun uploadAvatar(bytes: ByteArray, mimeType: String?): String {
+    override suspend fun uploadAvatar(bytes: ByteArray, mimeType: String?): Result<String, AppError> {
         val uid = firebaseAuthDataSource.getSignedInUserId()
-            ?: throw IllegalStateException("User not signed in")
+            ?: return Result.Error(AppError.Network(NetworkErrorType.UNAUTHORIZED))
 
         val extension = when (mimeType) {
             "image/png" -> "png"
@@ -56,9 +62,9 @@ class ProfileRepositoryImpl(
             is Result.Success -> {
                 val downloadUrl = result.data
                 firebaseAuthDataSource.updatePhotoUrl(downloadUrl)
-                downloadUrl
+                Result.Success(downloadUrl)
             }
-            is Result.Error -> throw Exception(result.error.toString())
+            is Result.Error -> Result.Error(result.error)
         }
     }
 
