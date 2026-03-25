@@ -38,13 +38,16 @@ class Navigator(
      */
     fun clearBackstackAndNavigate(route: NavKey) {
         val isTopLevel = route in state.backStacks.keys
-        state.backStacks.forEach { (key, stack) ->
-            stack.clear()
-            stack.add(key)
-        }
         if (isTopLevel) {
+            state.backStacks.forEach { (key, stack) ->
+                stack.clear()
+                stack.add(key)
+            }
             state.topLevelRoute = route
         } else {
+            state.backStacks.forEach { (_, stack) ->
+                stack.clear()
+            }
             state.topLevelRoute = state.startRoute
             state.backStacks[state.startRoute]?.add(route)
         }
@@ -61,7 +64,7 @@ class Navigator(
 
     // ==================== Auth Navigation ====================
 
-    fun navigateToSignIn() = navigate(Route.Auth.SignIn)
+    fun navigateToSignIn() = clearBackstackAndNavigate(Route.Auth.SignIn)
 
     fun navigateToSignUp() = navigate(Route.Auth.SignUp)
 

@@ -10,9 +10,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.entryProvider
@@ -21,7 +24,6 @@ import com.bksd.auth.presentation.resetpassword.ResetPasswordRoot
 import com.bksd.auth.presentation.signin.SignInRoot
 import com.bksd.auth.presentation.signup.SignUpRoot
 import com.bksd.core.design_system.component.layout.AppScaffold
-import com.bksd.core.domain.storage.SessionStorage
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.insights.presentation.InsightsRoot
 import com.bksd.journal.presentation.detail.MomentDetailRoot
@@ -45,7 +47,8 @@ fun NavigationRoot(
 ) {
     val mainViewModel = koinViewModel<MainViewModel>()
     val mainState by mainViewModel.state.collectAsState()
-    val sessionStorage = koinInject<SessionStorage>()
+
+    if (!mainState.isReady) return
 
     val navigationState = rememberNavigationState(
         startRoute = Route.Main.Journal,
@@ -55,11 +58,13 @@ fun NavigationRoot(
     val navigator = koinInject<Navigator> { parametersOf(navigationState) }
     val snackbarHostState = remember { SnackbarHostState() }
 
-    remember {
-        if (!sessionStorage.isLoggedIn()) {
+    var navigationReady by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        if (!mainState.isLoggedIn) {
             navigator.clearBackstackAndNavigate(Route.Auth.SignIn)
         }
-        true
+        navigationReady = true
     }
 
     ObserveAsEvents(mainViewModel.events) { event ->
@@ -69,6 +74,8 @@ fun NavigationRoot(
             }
         }
     }
+
+    if (!navigationReady) return
 
     AppScaffold(
         snackbarHostState = snackbarHostState,
@@ -149,9 +156,7 @@ fun NavigationRoot(
                     }
                     entry<Route.Main.Profile> {
                         ProfileRoot(
-                            onNavigateToSignIn = {
-                                navigator.clearBackstackAndNavigate(Route.Auth.SignIn)
-                            },
+                            onNavigateToSignIn = { navigator.navigateToSignIn() },
                             onNavigateToPaywall = { navigator.navigateToPaywall() }
                         )
                     }
