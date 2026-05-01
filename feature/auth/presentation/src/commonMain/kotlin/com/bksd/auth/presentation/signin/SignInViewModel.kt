@@ -1,8 +1,6 @@
 package com.bksd.auth.presentation.signin
 
 import com.bksd.auth.domain.usecase.SignInUseCase
-import com.bksd.auth.domain.usecase.SignInWithAppleUseCase
-import com.bksd.auth.domain.usecase.SignInWithGoogleUseCase
 import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.AuthErrorType
 import com.bksd.core.domain.error.Result
@@ -14,8 +12,6 @@ import kotlinx.coroutines.flow.StateFlow
 
 class SignInViewModel(
     private val signInUseCase: SignInUseCase,
-    private val signInWithGoogleUseCase: SignInWithGoogleUseCase,
-    private val signInWithAppleUseCase: SignInWithAppleUseCase,
     private val sessionStorage: SessionStorage,
 ) : BaseViewModel<SignInAction, SignInEvent>() {
 
@@ -40,7 +36,6 @@ class SignInViewModel(
                 _state.copy(rememberMe = action.enabled)
 
             SignInAction.OnSignInClick -> signIn()
-            is SignInAction.OnGoogleSignInClick -> signInWithGoogle(action.platformContext)
             SignInAction.OnSignUpClick -> sendEvent(SignInEvent.NavigateToSignUp)
             SignInAction.OnForgotPasswordClick -> sendEvent(SignInEvent.NavigateToForgotPassword)
         }
@@ -65,22 +60,6 @@ class SignInViewModel(
                     sendEvent(SignInEvent.SignInSuccess)
                 }
             }
-        }
-    }
-
-    private fun signInWithGoogle(platformContext: Any?) {
-        if (_state.isLoading || _state.isSocialLoading) return
-        _state = _state.copy(isSocialLoading = true, error = null)
-        launch {
-            handleSocialSignInResult(signInWithGoogleUseCase(platformContext))
-        }
-    }
-
-    private fun signInWithApple(platformContext: Any?) {
-        if (_state.isLoading || _state.isSocialLoading) return
-        _state = _state.copy(isSocialLoading = true, error = null)
-        launch {
-            handleSocialSignInResult(signInWithAppleUseCase(platformContext))
         }
     }
 

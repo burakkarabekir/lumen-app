@@ -30,14 +30,6 @@ class AuthRepositoryImpl(
         return firebaseAuthDataSource.resetPassword(email)
     }
 
-    override suspend fun signInWithGoogle(platformContext: Any?): Result<Unit, AppError> {
-        return firebaseAuthDataSource.signInWithGoogle(platformContext)
-    }
-
-    override suspend fun signInWithApple(platformContext: Any?): Result<Unit, AppError> {
-        return firebaseAuthDataSource.signInWithApple(platformContext)
-    }
-
     override suspend fun signOut(): Result<Unit, AppError> {
         return firebaseAuthDataSource.signOut()
     }

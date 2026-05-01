@@ -1,6 +1,5 @@
 package com.bksd.core.data.remote.firebase
 
-import com.bksd.core.data.auth.SocialAuthProvider
 import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.Result
 import dev.gitlive.firebase.Firebase
@@ -8,9 +7,7 @@ import dev.gitlive.firebase.auth.auth
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class FirebaseAuthDataSource(
-    private val socialAuthProvider: SocialAuthProvider,
-) {
+class FirebaseAuthDataSource {
     private val auth by lazy { Firebase.auth }
 
     val authState: Flow<Boolean> = flow {
@@ -109,15 +106,6 @@ class FirebaseAuthDataSource(
             Result.Error(mapFirebaseError(e))
         }
     }
-
-    suspend fun signInWithGoogle(platformContext: Any?): Result<Unit, AppError> {
-        return socialAuthProvider.signInWithGoogle(platformContext)
-    }
-
-    suspend fun signInWithApple(platformContext: Any?): Result<Unit, AppError> {
-        return socialAuthProvider.signInWithApple(platformContext)
-    }
-
     private fun mapFirebaseError(e: Exception): AppError {
         val errorMessage = e.message ?: "Unknown authentication error"
         println("[FirebaseAuth] updatePhotoUrl: error=$errorMessage")

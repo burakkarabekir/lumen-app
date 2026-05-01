@@ -3,9 +3,7 @@ package com.bksd.auth.presentation.signin
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -31,7 +29,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -61,7 +58,6 @@ import com.bksd.core.design_system.theme.LumenBrand600
 import com.bksd.core.design_system.theme.LumenRadius
 import com.bksd.core.design_system.theme.LumenSpacing
 import com.bksd.core.presentation.util.ObserveAsEvents
-import com.bksd.core.presentation.util.platformContext
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -99,7 +95,6 @@ internal fun SignInScreen(
     onAction: (SignInAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val platformContext = platformContext()
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -232,36 +227,6 @@ internal fun SignInScreen(
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             }
-        }
-
-        Spacer(modifier = Modifier.height(LumenSpacing.xl))
-
-        SocialLoginDivider()
-
-        Spacer(modifier = Modifier.height(LumenSpacing.xl))
-
-        Box(
-            modifier = Modifier
-                .size(48.dp)
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.outline,
-                    shape = RoundedCornerShape(LumenRadius.md)
-                )
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null,
-                    enabled = !state.isLoading && !state.isSocialLoading,
-                    onClick = { onAction(SignInAction.OnGoogleSignInClick(platformContext)) }
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = vectorResource(Res.drawable.ic_google),
-                contentDescription = stringResource(Res.string.btn_google),
-                modifier = Modifier.size(24.dp),
-                tint = Color.Unspecified,
-            )
         }
 
         Spacer(modifier = Modifier.weight(1f))
