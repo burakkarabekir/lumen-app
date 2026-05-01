@@ -4,7 +4,7 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "com.bksd.lumen.shared"
         compileSdk = 37
         minSdk = 26

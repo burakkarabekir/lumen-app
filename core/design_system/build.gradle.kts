@@ -3,7 +3,7 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "com.bksd.core.design_system"
         compileSdk = 37
         minSdk = 26

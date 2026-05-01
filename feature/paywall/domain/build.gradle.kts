@@ -3,7 +3,7 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "com.bksd.paywall.domain"
         compileSdk = 37
         minSdk = 26
