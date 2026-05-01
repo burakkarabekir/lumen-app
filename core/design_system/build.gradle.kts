@@ -5,7 +5,7 @@ plugins {
 kotlin {
     androidLibrary {
         namespace = "com.bksd.core.design_system"
-        compileSdk = 36
+        compileSdk = 37
         minSdk = 26
         androidResources.enable = true
     }

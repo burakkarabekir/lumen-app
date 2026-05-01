@@ -5,7 +5,7 @@ plugins {
 kotlin {
     androidLibrary {
         namespace = "com.bksd.core.presentation"
-        compileSdk = 36
+        compileSdk = 37
         minSdk = 26
         androidResources.enable = true
     }
@@ -34,7 +34,7 @@ kotlin {
         androidMain {
             dependencies {
                 implementation(libs.androidx.activity.compose)
-                implementation("com.google.android.gms:play-services-location:21.3.0")
+                implementation(libs.play.services.location)
             }
         }
     }

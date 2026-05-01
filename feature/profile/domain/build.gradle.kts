@@ -5,7 +5,7 @@ plugins {
 kotlin {
     androidLibrary {
         namespace = "com.bksd.profile.domain"
-        compileSdk = 36
+        compileSdk = 37
         minSdk = 26
     }
     sourceSets {
