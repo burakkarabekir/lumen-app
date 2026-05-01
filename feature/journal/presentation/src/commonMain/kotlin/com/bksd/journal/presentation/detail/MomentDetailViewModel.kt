@@ -5,16 +5,13 @@ import com.bksd.core.domain.error.Result
 import com.bksd.core.presentation.util.BaseViewModel
 import com.bksd.core.presentation.util.UiText
 import com.bksd.journal.domain.usecase.GetMomentUseCase
-import com.bksd.journal.presentation.journal.JournalState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.todayIn
-import kotlin.time.Clock
 
 class MomentDetailViewModel(
     private val getMomentUseCase: GetMomentUseCase,
@@ -23,11 +20,24 @@ class MomentDetailViewModel(
 
     private var hasLoadedInitialData = false
 
-    private val _state = MutableStateFlow(MomentDetailState())
-    val state = _state
+    private val isLoading = MutableStateFlow(true)
+    private val error = MutableStateFlow<UiText?>(null)
+    private val momentState = MutableStateFlow<com.bksd.journal.domain.model.Moment?>(null)
+
+    val state: StateFlow<MomentDetailState> = combine(
+        isLoading,
+        momentState,
+        error
+    ) { loading, moment, err ->
+        MomentDetailState(
+            isLoading = loading,
+            moment = moment,
+            error = err
+        )
+    }
         .onStart {
             if (!hasLoadedInitialData) {
-                loadMoment(momentId)
+                loadMoment()
                 hasLoadedInitialData = true
             }
         }
@@ -41,26 +51,28 @@ class MomentDetailViewModel(
         when (action) {
             is MomentDetailAction.OnNavigateBack -> sendEvent(MomentDetailEvent.NavigateBack)
             is MomentDetailAction.OnEditClick -> {
-                state.value.moment?.let {
+                momentState.value?.let {
                     sendEvent(MomentDetailEvent.NavigateToEdit(it.id))
                 }
             }
         }
     }
 
-    private fun loadMoment(id: String) {
-        _state.update { it.copy(isLoading = true, error = null) }
+    private fun loadMoment() {
+        isLoading.update { true }
+        error.update { null }
         launch {
-            when (val result = getMomentUseCase(id)) {
+            when (val result = getMomentUseCase(momentId)) {
                 is Result.Error -> {
                     val errorText = UiText.Dynamic(result.error.toString())
-                    _state.update { it.copy(isLoading = false, error = errorText) }
+                    error.update { errorText }
+                    isLoading.update { false }
                     sendEvent(MomentDetailEvent.ShowError(errorText))
                 }
 
                 is Result.Success -> {
-                    _state.update { it.copy(  isLoading = false,
-                        moment = result.data) }
+                    momentState.update { result.data }
+                    isLoading.update { false }
                 }
             }
         }

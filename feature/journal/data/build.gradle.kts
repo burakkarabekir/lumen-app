@@ -16,6 +16,7 @@ kotlin {
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.jetbrains.kotlinx.collections.immutable)
                 implementation(libs.firebase.firestore)
+                implementation(libs.kermit)
             }
         }
 

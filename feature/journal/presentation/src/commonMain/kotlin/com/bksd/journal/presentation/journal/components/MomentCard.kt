@@ -16,11 +16,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.TextSnippet
 import androidx.compose.material.icons.filled.Videocam
-import androidx.compose.material.icons.filled.Link
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -42,18 +42,17 @@ import com.bksd.core.domain.model.PhotoAttachment
 import com.bksd.core.domain.model.VideoAttachment
 import com.bksd.journal.domain.model.Moment
 import com.bksd.journal.domain.model.Mood
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
-import kotlin.time.Instant
+import com.bksd.journal.presentation.util.MomentFormatter
 
 @Composable
 fun MomentCard(
     moment: Moment,
+    formatter: MomentFormatter,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val formattedTime = remember(moment.createdAt) {
-        formatTimestamp(moment.createdAt)
+        formatter.formatTime(moment.createdAt)
     }
 
     // Determine primary media type for the header icon
@@ -118,14 +117,13 @@ fun MomentCard(
             // Media preview — between title and body text per design
             val attachments = moment.attachments
             if (attachments.isNotEmpty()) {
-                val primary = attachments.first()
-                when (primary) {
+                when (val primary = attachments.first()) {
                     is AudioAttachment -> {
                         if (!body.isNullOrBlank()) {
                             Spacer(modifier = Modifier.height(8.dp))
                         }
                         Spacer(modifier = Modifier.height(8.dp))
-                        AudioPreview(durationMs = primary.durationMs)
+                        AudioPreview(durationMs = primary.durationMs, formatter = formatter)
                         // Body text shown below audio as quote
                         if (body != null && body.length > 40) {
                             Spacer(modifier = Modifier.height(12.dp))
@@ -171,7 +169,7 @@ fun MomentCard(
                             )
                         }
                         Spacer(modifier = Modifier.height(12.dp))
-                        VideoPreview(durationMs = primary.durationMs)
+                        VideoPreview(durationMs = primary.durationMs, formatter = formatter)
                     }
 
                     is LinkAttachment -> {
@@ -287,7 +285,7 @@ private fun PhotoPreview() {
 }
 
 @Composable
-internal fun VideoPreview(durationMs: Long?) {
+internal fun VideoPreview(durationMs: Long?, formatter: MomentFormatter) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -321,7 +319,7 @@ internal fun VideoPreview(durationMs: Long?) {
                     .padding(horizontal = 6.dp, vertical = 2.dp)
             ) {
                 Text(
-                    text = formatDuration(durationMs),
+                    text = formatter.formatDuration(durationMs),
                     fontSize = 11.sp,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -331,7 +329,7 @@ internal fun VideoPreview(durationMs: Long?) {
 }
 
 @Composable
-private fun AudioPreview(durationMs: Long?) {
+private fun AudioPreview(durationMs: Long?, formatter: MomentFormatter) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -378,7 +376,7 @@ private fun AudioPreview(durationMs: Long?) {
 
         // Duration
         Text(
-            text = if (durationMs != null && durationMs > 0) formatDuration(durationMs) else "0:00",
+            text = if (durationMs != null && durationMs > 0) formatter.formatDuration(durationMs) else "0:00",
             fontSize = 12.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -449,25 +447,4 @@ fun MoodTag(mood: Mood) {
             color = textColor
         )
     }
-}
-
-// -- Utilities --
-
-private fun formatTimestamp(instant: Instant): String {
-    return try {
-        val local = instant.toLocalDateTime(TimeZone.currentSystemDefault())
-        val hour = if (local.hour % 12 == 0) 12 else local.hour % 12
-        val amPm = if (local.hour < 12) "AM" else "PM"
-        val minute = local.minute.toString().padStart(2, '0')
-        "$hour:$minute $amPm"
-    } catch (_: Exception) {
-        ""
-    }
-}
-
-private fun formatDuration(ms: Long): String {
-    val totalSeconds = ms / 1000
-    val minutes = totalSeconds / 60
-    val seconds = totalSeconds % 60
-    return "$minutes:${seconds.toString().padStart(2, '0')}"
 }

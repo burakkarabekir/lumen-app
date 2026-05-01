@@ -13,14 +13,18 @@ import com.bksd.core.domain.storage.SessionStorage
 import com.bksd.core.domain.theme.GetAppThemeUseCase
 import com.bksd.core.domain.theme.SetAppThemeUseCase
 import com.bksd.core.domain.theme.ThemeRepository
+import kotlinx.datetime.TimeZone
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import kotlin.time.Clock
 
 val coreDataModule = module {
     includes(platformDataModule)
 
+    single<Clock> { Clock.System }
+    single { TimeZone.currentSystemDefault() }
     single<AppLogger> { KermitLogger }
     singleOf(::FirebaseAuthDataSource)
     singleOf(::FirebaseFirestoreDataSource)

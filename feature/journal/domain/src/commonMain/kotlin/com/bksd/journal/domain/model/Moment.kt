@@ -2,18 +2,17 @@ package com.bksd.journal.domain.model
 
 import com.bksd.core.domain.location.LocationData
 import com.bksd.core.domain.model.Attachment
-import kotlinx.collections.immutable.PersistentList
-import kotlinx.collections.immutable.persistentListOf
 import kotlin.time.Instant
 
 data class Moment(
     val id: String,
-    val body: String?, // Title removed per Stitch design
+    val body: String?,
     val createdAt: Instant,
     val mood: Mood,
-    val tags: PersistentList<String> = persistentListOf(),
-    val attachments: PersistentList<Attachment> = persistentListOf(),
-    val location: LocationData? = null
+    val tags: List<String> = emptyList(),
+    val attachments: List<Attachment> = emptyList(),
+    val location: LocationData? = null,
+    val pendingSync: Boolean = false
 )
 
 enum class Mood(val label: String, val emoji: String) {

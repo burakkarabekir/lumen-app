@@ -460,8 +460,8 @@ class CreateMomentViewModel(
                 body = currentState.body.takeIf { it.isNotBlank() },
                 createdAt = Clock.System.now(),
                 mood = currentState.selectedMood,
-                tags = currentState.tags.toPersistentList(),
-                attachments = uploadedAttachments.toPersistentList(),
+                tags = currentState.tags.toList(),
+                attachments = uploadedAttachments.toList(),
                 location = currentState.location?.toLocationData()
             )
 

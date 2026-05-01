@@ -35,21 +35,22 @@ import com.bksd.core.design_system.component.layout.AppSurface
 import com.bksd.core.design_system.component.layout.AppTopBar
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.presentation.util.ObserveAsEvents
+import com.bksd.journal.domain.model.JournalFilter
 import com.bksd.journal.domain.model.Moment
 import com.bksd.journal.domain.model.Mood
 import com.bksd.journal.presentation.Res
-import com.bksd.journal.presentation.all_entries
 import com.bksd.journal.presentation.content_desc_create_moment
 import com.bksd.journal.presentation.journal.components.CalendarStrip
 import com.bksd.journal.presentation.journal.components.FilterChips
-import com.bksd.journal.presentation.journal.components.JournalEmptyState
 import com.bksd.journal.presentation.journal.components.MomentCard
 import com.bksd.journal.presentation.journal_title
 import com.bksd.journal.presentation.no_filter_day
-import com.bksd.journal.presentation.no_filter_entries
 import com.bksd.journal.presentation.no_moments_day
+import com.bksd.journal.presentation.util.MomentFormatter
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.datetime.todayIn
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.time.Clock
 
@@ -59,6 +60,10 @@ fun JournalRoot(
     onNavigateToCreate: () -> Unit,
 ) {
     val viewModel = koinViewModel<JournalViewModel>()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val formatter = koinInject<MomentFormatter>()
+    val timeZone = koinInject<kotlinx.datetime.TimeZone>()
+
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
             is JournalEvent.NavigateToDetail -> onNavigateToDetail(event.momentId)
@@ -69,10 +74,10 @@ fun JournalRoot(
         }
     }
 
-    val state by viewModel.state.collectAsStateWithLifecycle()
-
     JournalScreen(
         state = state,
+        formatter = formatter,
+        timeZone = timeZone,
         onAction = viewModel::onAction
     )
 }
@@ -80,6 +85,8 @@ fun JournalRoot(
 @Composable
 fun JournalScreen(
     state: JournalState,
+    formatter: MomentFormatter,
+    timeZone: kotlinx.datetime.TimeZone,
     onAction: (JournalAction) -> Unit
 ) {
     val listState = rememberLazyListState()
@@ -111,57 +118,55 @@ fun JournalScreen(
                 else -> {
                     CalendarStrip(
                         selectedDate = state.selectedDate,
+                        timeZone = timeZone,
                         onDateSelect = { onAction(JournalAction.OnDateSelect(it)) }
                     )
+
+                    AppDivider()
+                    FilterChips(
+                        selectedFilter = state.selectedFilter,
+                        onFilterSelect = { onAction(JournalAction.OnFilterSelect(it)) },
+                        modifier = Modifier.padding(vertical = 12.dp)
+                    )
+                    AppDivider()
+
                     if (state.moments.isEmpty()) {
-                        JournalEmptyState()
+                        val message = when {
+                            state.selectedFilter != JournalFilter.ALL ->
+                                stringResource(
+                                    Res.string.no_filter_day,
+                                    stringResource(state.selectedFilter.labelRes).lowercase()
+                                )
+
+                            else ->
+                                stringResource(Res.string.no_moments_day)
+                        }
+                        Box(
+                            modifier = Modifier.fillMaxSize().weight(1f),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = message,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
                     } else {
-                        AppDivider()
-                        FilterChips(
-                            selectedFilter = state.selectedFilter,
-                            onFilterSelect = { onAction(JournalAction.OnFilterSelect(it)) },
-                            modifier = Modifier.padding(vertical = 12.dp)
-                        )
-                        AppDivider()
-
-                        if (state.filteredMoments.isEmpty()) {
-                            // Moments exist for this date, but the filter hiding them
-                            val message = when {
-                                state.selectedDate != null && state.selectedFilter != stringResource(Res.string.all_entries) ->
-                                    stringResource(Res.string.no_filter_day, state.selectedFilter.lowercase())
-
-                                state.selectedDate != null ->
-                                    stringResource(Res.string.no_moments_day)
-
-                                else ->
-                                    stringResource(Res.string.no_filter_entries)
-                            }
-                            Box(
-                                modifier = Modifier.fillMaxSize().weight(1f),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(
-                                    text = message,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    style = MaterialTheme.typography.bodyMedium
+                        LazyColumn(
+                            state = listState,
+                            modifier = Modifier.fillMaxSize().weight(1f),
+                            contentPadding = PaddingValues(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            items(state.moments, key = { it.id }) { moment ->
+                                MomentCard(
+                                    moment = moment,
+                                    formatter = formatter,
+                                    onClick = { onAction(JournalAction.OnMomentClick(moment.id)) }
                                 )
                             }
-                        } else {
-                            LazyColumn(
-                                state = listState,
-                                modifier = Modifier.fillMaxSize().weight(1f),
-                                contentPadding = PaddingValues(16.dp),
-                                verticalArrangement = Arrangement.spacedBy(16.dp)
-                            ) {
-                                items(state.filteredMoments, key = { it.id }) { moment ->
-                                    MomentCard(
-                                        moment = moment,
-                                        onClick = { onAction(JournalAction.OnMomentClick(moment.id)) }
-                                    )
-                                }
-                                item {
-                                    Spacer(modifier = Modifier.height(128.dp))
-                                }
+                            item {
+                                Spacer(modifier = Modifier.height(128.dp))
                             }
                         }
                     }
@@ -193,6 +198,10 @@ fun JournalScreen(
 @Preview
 @Composable
 fun Preview() {
+    val mockFormatter = object : MomentFormatter {
+        override fun formatTime(instant: kotlin.time.Instant) = "12:00 PM"
+        override fun formatDuration(ms: Long) = "1:23"
+    }
     AppTheme(darkTheme = true) {
         JournalScreen(
             state = JournalState(
@@ -204,8 +213,11 @@ fun Preview() {
                     mood = Mood.ENERGETIC,
                 )
                 ),
-                filteredMoments = persistentListOf()
+                isLoading = false,
+                selectedDate = Clock.System.todayIn(kotlinx.datetime.TimeZone.currentSystemDefault())
             ),
+            formatter = mockFormatter,
+            timeZone = kotlinx.datetime.TimeZone.currentSystemDefault(),
             onAction = {}
         )
     }

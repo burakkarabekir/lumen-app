@@ -1,15 +1,15 @@
 package com.bksd.core.presentation.util
 
-import kotlin.time.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Instant
 
 /**
  * Formats an [Instant] to a localized "HH:MM AM/PM" string.
  * Example output: "4:30 PM"
  */
-fun Instant.toFormattedTime(): String {
-    val localTime = this.toLocalDateTime(TimeZone.currentSystemDefault())
+fun Instant.toFormattedTime(timeZone: TimeZone = TimeZone.currentSystemDefault()): String {
+    val localTime = this.toLocalDateTime(timeZone)
     
     // Convert 24-hour hour to 12-hour format
     val hour = when {

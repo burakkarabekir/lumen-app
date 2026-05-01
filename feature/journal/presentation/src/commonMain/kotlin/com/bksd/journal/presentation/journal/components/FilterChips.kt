@@ -18,20 +18,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bksd.journal.domain.model.JournalFilter
+import com.bksd.journal.presentation.journal.labelRes
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun FilterChips(
-    selectedFilter: String,
-    onFilterSelect: (String) -> Unit,
+    selectedFilter: JournalFilter,
+    onFilterSelect: (JournalFilter) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val filters = listOf("All Entries", "Photos", "Videos", "Voice Notes", "Plain texts")
-
     LazyRow(
         modifier = modifier.fillMaxWidth()
     ) {
         item { Spacer(modifier = Modifier.width(16.dp)) }
-        items(filters) { filter ->
+        items(JournalFilter.entries.toList()) { filter ->
             val isSelected = filter == selectedFilter
 
             Surface(
@@ -47,7 +48,7 @@ fun FilterChips(
                 shape = RoundedCornerShape(20.dp)
             ) {
                 Text(
-                    text = filter,
+                    text = stringResource(filter.labelRes),
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                     color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
                     fontSize = 14.sp

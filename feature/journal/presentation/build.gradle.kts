@@ -24,6 +24,12 @@ kotlin {
                 implementation(libs.moko.permissions.microphone)
             }
         }
+        commonTest {
+            dependencies {
+                implementation(libs.kotlin.test)
+                implementation(libs.kotlinx.coroutines.test)
+            }
+        }
     }
 }
 

@@ -36,10 +36,11 @@ import kotlin.time.Clock
 @Composable
 fun CalendarStrip(
     selectedDate: LocalDate?,
+    timeZone: TimeZone,
     onDateSelect: (LocalDate) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val today = remember { Clock.System.todayIn(TimeZone.currentSystemDefault()) }
+    val today = remember { Clock.System.todayIn(timeZone) }
     val effectiveSelected = selectedDate ?: today
 
     // Generate dates: 4 past days + today + 3 future days
