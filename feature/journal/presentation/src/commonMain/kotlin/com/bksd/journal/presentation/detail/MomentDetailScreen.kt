@@ -5,19 +5,21 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -27,20 +29,32 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.SubcomposeAsyncImage
 import com.bksd.core.design_system.component.layout.AppBarStyle
 import com.bksd.core.design_system.component.layout.AppSurface
 import com.bksd.core.design_system.component.layout.AppTopBar
+import com.bksd.core.domain.model.AudioAttachment
+import com.bksd.core.domain.model.LinkAttachment
+import com.bksd.core.domain.model.PhotoAttachment
+import com.bksd.core.domain.model.VideoAttachment
 import com.bksd.core.presentation.util.ObserveAsEvents
-import com.bksd.journal.presentation.journal.components.MoodTag
 import com.bksd.journal.presentation.Res
 import com.bksd.journal.presentation.content_desc_back
 import com.bksd.journal.presentation.content_desc_edit
+import com.bksd.journal.presentation.journal.components.AudioPreview
+import com.bksd.journal.presentation.journal.components.LinkPreview
+import com.bksd.journal.presentation.journal.components.MoodTag
+import com.bksd.journal.presentation.journal.components.VideoPreview
 import com.bksd.journal.presentation.moment_detail_title
 import com.bksd.journal.presentation.my_moment_fallback
+import com.bksd.journal.presentation.util.MomentFormatter
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -51,6 +65,7 @@ fun MomentDetailRoot(
     onNavigateToEdit: (String) -> Unit,
 ) {
     val viewModel = koinViewModel<MomentDetailViewModel>(parameters = { parametersOf(momentId) })
+    val formatter = koinInject<MomentFormatter>()
     val state by viewModel.state.collectAsState()
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
@@ -64,6 +79,7 @@ fun MomentDetailRoot(
 
     MomentDetailScreen(
         state = state,
+        formatter = formatter,
         onAction = viewModel::onAction
     )
 }
@@ -71,6 +87,7 @@ fun MomentDetailRoot(
 @Composable
 fun MomentDetailScreen(
     state: MomentDetailState,
+    formatter: MomentFormatter,
     onAction: (MomentDetailAction) -> Unit
 ) {
     AppSurface(
@@ -169,27 +186,28 @@ fun MomentDetailScreen(
                     // Media
                     val attachments = moment.attachments
                     if (attachments.isNotEmpty()) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(160.dp)
-                                .background(
-                                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
-                                    RoundedCornerShape(12.dp)
-                                ),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            val primary = attachments.first()
-                            val typeName = when (primary) {
-                                is com.bksd.core.domain.model.PhotoAttachment -> "PHOTO"
-                                is com.bksd.core.domain.model.VideoAttachment -> "VIDEO"
-                                is com.bksd.core.domain.model.AudioAttachment -> "AUDIO"
-                                is com.bksd.core.domain.model.LinkAttachment -> "LINK"
+                        when (val primary = attachments.first()) {
+                            is PhotoAttachment -> {
+                                DetailPhotoPreview(url = primary.remoteUrl.value)
                             }
-                            Text(
-                                text = "[$typeName Preview]",
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
+
+                            is VideoAttachment -> {
+                                VideoPreview(
+                                    durationMs = primary.durationMs,
+                                    formatter = formatter
+                                )
+                            }
+
+                            is AudioAttachment -> {
+                                AudioPreview(
+                                    durationMs = primary.durationMs,
+                                    formatter = formatter
+                                )
+                            }
+
+                            is LinkAttachment -> {
+                                LinkPreview(url = primary.url.value)
+                            }
                         }
                         Spacer(modifier = Modifier.height(24.dp))
                     }
@@ -211,4 +229,51 @@ fun MomentDetailScreen(
             }
         }
     }
+}
+
+@Composable
+private fun DetailPhotoPreview(url: String) {
+    SubcomposeAsyncImage(
+        model = url,
+        contentDescription = "Photo",
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .aspectRatio(4f / 3f),
+        contentScale = ContentScale.Crop,
+        loading = {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(4f / 3f)
+                    .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f)),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(28.dp),
+                    strokeWidth = 2.dp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
+                )
+            }
+        },
+        error = {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(4f / 3f)
+                    .background(
+                        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
+                        RoundedCornerShape(16.dp)
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.CameraAlt,
+                    contentDescription = "Photo placeholder",
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),
+                    modifier = Modifier.size(48.dp)
+                )
+            }
+        }
+    )
 }

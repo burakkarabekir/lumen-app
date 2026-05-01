@@ -10,18 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CameraAlt
-import androidx.compose.material.icons.filled.Link
-import androidx.compose.material.icons.filled.Mic
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.TextSnippet
-import androidx.compose.material.icons.filled.Videocam
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,19 +18,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bksd.core.design_system.theme.extended
 import com.bksd.core.domain.model.AudioAttachment
 import com.bksd.core.domain.model.LinkAttachment
 import com.bksd.core.domain.model.PhotoAttachment
 import com.bksd.core.domain.model.VideoAttachment
 import com.bksd.journal.domain.model.Moment
-import com.bksd.journal.domain.model.Mood
 import com.bksd.journal.presentation.util.MomentFormatter
 
 @Composable
@@ -152,7 +138,7 @@ fun MomentCard(
                             )
                         }
                         Spacer(modifier = Modifier.height(12.dp))
-                        PhotoPreview()
+                        PhotoPreview(url = primary.remoteUrl.value)
                     }
 
                     is VideoAttachment -> {
@@ -219,232 +205,5 @@ fun MomentCard(
                 }
             }
         }
-    }
-}
-
-// -- Media type icon circle in header --
-
-@Composable
-private fun MediaTypeIcon(type: CardMediaType) {
-    val (icon, bgColor) = when (type) {
-        CardMediaType.PHOTO -> Icons.Default.CameraAlt to Color(0xFF2563EB)
-        CardMediaType.VIDEO -> Icons.Default.Videocam to Color(0xFF7C3AED)
-        CardMediaType.AUDIO -> Icons.Default.Mic to Color(0xFF9333EA)
-        CardMediaType.LINK -> Icons.Default.Link to Color(0xFF0EA5E9)
-        CardMediaType.TEXT -> Icons.Default.TextSnippet to Color(0xFF475569)
-    }
-
-    Box(
-        modifier = Modifier
-            .size(32.dp)
-            .clip(CircleShape)
-            .background(bgColor.copy(alpha = 0.2f)),
-        contentAlignment = Alignment.Center
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = type.name,
-            tint = bgColor,
-            modifier = Modifier.size(16.dp)
-        )
-    }
-}
-
-private enum class CardMediaType { PHOTO, VIDEO, AUDIO, LINK, TEXT }
-
-private fun determinePrimaryType(moment: Moment): CardMediaType {
-    val first = moment.attachments.firstOrNull()
-    return when (first) {
-        is PhotoAttachment -> CardMediaType.PHOTO
-        is VideoAttachment -> CardMediaType.VIDEO
-        is AudioAttachment -> CardMediaType.AUDIO
-        is LinkAttachment -> CardMediaType.LINK
-        else -> CardMediaType.TEXT
-    }
-}
-
-// -- Media previews --
-
-@Composable
-private fun PhotoPreview() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(160.dp)
-            .clip(RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f)),
-        contentAlignment = Alignment.Center
-    ) {
-        Icon(
-            imageVector = Icons.Default.CameraAlt,
-            contentDescription = "Photo",
-            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),
-            modifier = Modifier.size(36.dp)
-        )
-    }
-}
-
-@Composable
-internal fun VideoPreview(durationMs: Long?, formatter: MomentFormatter) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(160.dp)
-            .clip(RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f)),
-        contentAlignment = Alignment.Center
-    ) {
-        Box(
-            modifier = Modifier
-                .size(48.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = Icons.Default.PlayArrow,
-                contentDescription = "Play Video",
-                tint = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier.size(28.dp)
-            )
-        }
-
-        if (durationMs != null && durationMs > 0) {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(8.dp)
-                    .clip(RoundedCornerShape(4.dp))
-                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.85f))
-                    .padding(horizontal = 6.dp, vertical = 2.dp)
-            ) {
-                Text(
-                    text = formatter.formatDuration(durationMs),
-                    fontSize = 11.sp,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun AudioPreview(durationMs: Long?, formatter: MomentFormatter) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f))
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        // Play icon
-        Box(
-            modifier = Modifier
-                .size(36.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primary),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = Icons.Default.PlayArrow,
-                contentDescription = "Play Audio",
-                tint = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier.size(20.dp)
-            )
-        }
-
-        // Waveform placeholder bars
-        Row(
-            modifier = Modifier.weight(1f),
-            horizontalArrangement = Arrangement.spacedBy(2.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            val barHeights =
-                listOf(8, 14, 20, 12, 24, 16, 10, 22, 14, 8, 18, 12, 20, 10, 16, 24, 12, 8, 14, 10)
-            barHeights.forEach { h ->
-                Box(
-                    modifier = Modifier
-                        .width(3.dp)
-                        .height(h.dp)
-                        .clip(RoundedCornerShape(1.5.dp))
-                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.5f))
-                )
-            }
-        }
-
-        // Duration
-        Text(
-            text = if (durationMs != null && durationMs > 0) formatter.formatDuration(durationMs) else "0:00",
-            fontSize = 12.sp,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-    }
-}
-
-@Composable
-internal fun LinkPreview(url: String?) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f))
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .size(36.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = Icons.Default.Link,
-                contentDescription = "Link",
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(20.dp)
-            )
-        }
-        Text(
-            text = url ?: "Unknown Link",
-            fontSize = 14.sp,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-    }
-}
-
-// -- Mood tag --
-
-@Composable
-fun MoodTag(mood: Mood) {
-    val extendedColors = MaterialTheme.colorScheme.extended
-    val (backgroundColor, textColor) = when (mood) {
-        Mood.ENERGETIC -> extendedColors.emotionJoyBg to extendedColors.emotionJoy
-        Mood.REFLECTIVE -> extendedColors.emotionSurpriseBg to extendedColors.emotionSurprise
-        Mood.CALM -> extendedColors.emotionCalmBg to extendedColors.emotionCalm
-        Mood.TIRED -> extendedColors.emotionSadnessBg to extendedColors.emotionSadness
-        Mood.INSPIRED -> extendedColors.emotionGratitudeBg to extendedColors.emotionGratitude
-    }
-
-    Row(
-        modifier = Modifier
-            .clip(RoundedCornerShape(8.dp))
-            .background(backgroundColor)
-            .padding(horizontal = 8.dp, vertical = 4.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(text = mood.emoji, fontSize = 12.sp)
-        Text(
-            text = mood.label,
-            fontSize = 10.sp,
-            fontWeight = FontWeight.Bold,
-            color = textColor
-        )
     }
 }
