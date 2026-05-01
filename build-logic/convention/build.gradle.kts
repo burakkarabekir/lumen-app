@@ -69,5 +69,13 @@ gradlePlugin {
             id = "com.bksd.convention.room"
             implementationClass = "RoomConventionPlugin"
         }
+        register("kmpDomain") {
+            id = "com.bksd.convention.kmp.domain"
+            implementationClass = "KmpDomainConventionPlugin"
+        }
+        register("kmpData") {
+            id = "com.bksd.convention.kmp.data"
+            implementationClass = "KmpDataConventionPlugin"
+        }
     }
 }

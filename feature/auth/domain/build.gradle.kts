@@ -1,20 +1,17 @@
 plugins {
-    alias(libs.plugins.convention.kmp.library)
+    alias(libs.plugins.convention.kmp.domain)
 }
 
 kotlin {
     android {
         namespace = "com.bksd.auth.domain"
-        compileSdk = 37
-        minSdk = 26
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
     }
     sourceSets {
         commonMain {
             dependencies {
                 implementation(projects.core.domain)
-                implementation(libs.kotlin.stdlib)
-                implementation(libs.kotlinx.coroutines.core)
-                implementation(libs.bundles.koin.core.bundle)
             }
         }
     }

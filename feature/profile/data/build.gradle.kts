@@ -1,30 +1,23 @@
 plugins {
-    alias(libs.plugins.convention.kmp.library)
+    alias(libs.plugins.convention.kmp.data)
 }
 
 kotlin {
     android {
         namespace = "com.bksd.profile.data"
-        compileSdk = 37
-        minSdk = 26
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
     }
     sourceSets {
         commonMain {
             dependencies {
-                implementation(libs.kotlin.stdlib)
-                implementation(projects.core.data)
-                implementation(projects.core.domain)
                 implementation(projects.feature.profile.domain)
-                
-                implementation(project.dependencies.platform(libs.koin.bom))
-                implementation(libs.bundles.koin.core.bundle)
                 implementation(libs.bundles.datastore)
-                implementation(libs.kotlinx.serialization.json)
             }
         }
         androidMain {
             dependencies {
-                implementation(libs.insert.koin.koin.android)
+                implementation(libs.koin.android)
             }
         }
     }

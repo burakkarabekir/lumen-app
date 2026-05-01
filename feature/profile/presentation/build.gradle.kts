@@ -1,12 +1,12 @@
 plugins {
-    alias(libs.plugins.convention.cmp.library)
+    alias(libs.plugins.convention.cmp.feature)
 }
 
 kotlin {
     android {
         namespace = "com.bksd.profile.presentation"
-        compileSdk = 37
-        minSdk = 26
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
         androidResources.enable = true
     }
     sourceSets {
@@ -14,14 +14,6 @@ kotlin {
             dependencies {
                 implementation(projects.feature.profile.domain)
                 implementation(projects.feature.auth.domain)
-                implementation(projects.core.presentation)
-                implementation(projects.core.designSystem)
-
-                implementation(libs.kotlin.stdlib)
-                implementation(libs.bundles.lifecycle)
-                implementation(libs.bundles.koin.core.bundle)
-                implementation(libs.bundles.koin.compose)
-                implementation(libs.jetbrains.kotlinx.collections.immutable)
 
                 implementation(libs.coil.compose)
                 implementation(libs.bundles.datastore)

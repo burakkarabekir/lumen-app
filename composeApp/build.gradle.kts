@@ -1,13 +1,12 @@
 plugins {
     alias(libs.plugins.convention.cmp.application)
-    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
     android {
         namespace = "com.bksd.lumen.shared"
-        compileSdk = 37
-        minSdk = 26
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
         androidResources.enable = true
     }
     sourceSets {

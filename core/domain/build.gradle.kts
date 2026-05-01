@@ -1,33 +1,18 @@
 plugins {
-    alias(libs.plugins.convention.kmp.library)
+    alias(libs.plugins.convention.kmp.domain)
 }
 
 kotlin {
     android {
         namespace = "com.bksd.core.domain"
-        compileSdk = 37
-        minSdk = 26
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
     }
     sourceSets {
         commonMain {
             dependencies {
-                implementation(libs.kotlin.stdlib)
-                implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.kotlinx.datetime)
-                implementation(libs.koin.core)
-                implementation(libs.jetbrains.kotlinx.collections.immutable)
-            }
-        }
-
-        androidMain {
-            dependencies {
-            }
-        }
-
-        iosMain {
-            dependencies {
             }
         }
     }
-
 }

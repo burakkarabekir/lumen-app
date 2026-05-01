@@ -1,22 +1,17 @@
 plugins {
-    alias(libs.plugins.convention.kmp.library)
+    alias(libs.plugins.convention.kmp.data)
 }
 
 kotlin {
     android {
         namespace = "com.bksd.moment.data"
-        compileSdk = 37
-        minSdk = 26
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
     }
     sourceSets {
         commonMain {
             dependencies {
-                implementation(libs.kotlin.stdlib)
-                implementation(projects.core.data)
-                implementation(projects.core.domain)
                 implementation(projects.feature.moment.domain)
-                implementation(project.dependencies.platform(libs.koin.bom))
-                implementation(libs.insert.koin.koin.core)
                 implementation(libs.kotlinx.datetime)
             }
         }

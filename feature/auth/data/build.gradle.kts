@@ -1,24 +1,18 @@
 plugins {
-    alias(libs.plugins.convention.kmp.library)
+    alias(libs.plugins.convention.kmp.data)
 }
 
 kotlin {
     android {
         namespace = "com.bksd.auth.data"
-        compileSdk = 37
-        minSdk = 26
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
     }
     sourceSets {
         commonMain {
             dependencies {
-                implementation(projects.core.domain)
-                implementation(projects.core.data)
                 implementation(projects.feature.auth.domain)
                 implementation(projects.feature.profile.domain)
-
-                implementation(libs.kotlin.stdlib)
-                implementation(libs.kotlinx.coroutines.core)
-                implementation(libs.bundles.koin.core.bundle)
             }
         }
     }

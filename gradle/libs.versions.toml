@@ -231,6 +231,8 @@ convention-cmp-library = { id = "com.bksd.convention.cmp.library", version = "un
 convention-cmp-feature = { id = "com.bksd.convention.cmp.feature", version = "unspecified" }
 convention-buildkonfig = { id = "com.bksd.convention.buildkonfig", version = "unspecified" }
 convention-room = { id = "com.bksd.convention.room", version = "unspecified" }
+convention-kmp-domain = { id = "com.bksd.convention.kmp.domain", version = "unspecified" }
+convention-kmp-data = { id = "com.bksd.convention.kmp.data", version = "unspecified" }
 
 # ==================== Android Plugins ====================
 android-application = { id = "com.android.application", version.ref = "agp" }

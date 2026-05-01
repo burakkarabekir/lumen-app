@@ -5,8 +5,8 @@ plugins {
 kotlin {
     android {
         namespace = "com.bksd.core.presentation"
-        compileSdk = 37
-        minSdk = 26
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
         androidResources.enable = true
     }
     sourceSets {
@@ -15,7 +15,6 @@ kotlin {
                 api(projects.core.domain)
                 api(projects.core.designSystem)
 
-                implementation(libs.kotlin.stdlib)
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.coil.compose)
 
