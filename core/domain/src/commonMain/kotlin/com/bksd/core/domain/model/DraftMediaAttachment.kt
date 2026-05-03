@@ -17,7 +17,6 @@ data class DraftAudio(
     override val id: AttachmentId,
     val localUri: String,
     val durationMs: Long,
-    val sizeBytes: Long
 ) : DraftAttachment
 
 data class DraftLink(

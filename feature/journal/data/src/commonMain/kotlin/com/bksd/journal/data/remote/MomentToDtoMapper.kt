@@ -28,29 +28,25 @@ class MomentToDtoMapper : Mapper<Moment, MomentDto> {
     )
 
     private fun Attachment.toDto(): AttachmentDto = when (this) {
-        is PhotoAttachment -> AttachmentDto(
+        is PhotoAttachment -> AttachmentDto.Photo(
             id = id.value,
-            type = "PHOTO",
             remoteUrl = remoteUrl.value
         )
 
-        is VideoAttachment -> AttachmentDto(
+        is VideoAttachment -> AttachmentDto.Video(
             id = id.value,
-            type = "VIDEO",
             remoteUrl = remoteUrl.value,
             durationMs = durationMs
         )
 
-        is AudioAttachment -> AttachmentDto(
+        is AudioAttachment -> AttachmentDto.Audio(
             id = id.value,
-            type = "AUDIO",
             remoteUrl = remoteUrl.value,
             durationMs = durationMs
         )
 
-        is LinkAttachment -> AttachmentDto(
+        is LinkAttachment -> AttachmentDto.Link(
             id = id.value,
-            type = "LINK",
             url = url.value
         )
     }

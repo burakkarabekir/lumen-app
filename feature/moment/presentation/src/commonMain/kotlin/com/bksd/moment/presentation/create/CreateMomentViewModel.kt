@@ -252,12 +252,13 @@ class CreateMomentViewModel(
 
             CreateMomentAction.OnRecordingDone -> {
                 launch {
+                    val duration = voiceRecorder.elapsedMs.value
                     val result = voiceRecorder.stopRecording()
                     if (result is Result.Success) {
                         val newAttachment = AttachmentUiModel.Audio(
                             id = Uuid.random().toString(),
                             localPath = result.data,
-                            sizeBytes = 0L // TODO: Get size if needed
+                            durationMs = duration,
                         )
                         updateState {
                             it.copy(
@@ -440,7 +441,6 @@ class CreateMomentViewModel(
                         AttachmentId(uiModel.id),
                         uiModel.localPath ?: uiModel.remoteUrl.orEmpty(),
                         uiModel.durationMs,
-                        uiModel.sizeBytes
                     )
 
                     is AttachmentUiModel.Link -> DraftLink(

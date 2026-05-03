@@ -15,7 +15,6 @@ import com.bksd.core.design_system.paused
 import com.bksd.core.design_system.playing
 import com.bksd.core.design_system.stopped
 import com.bksd.core.design_system.theme.AppTheme
-import com.bksd.core.design_system.util.defaultShadow
 import com.bksd.core.presentation.model.PlaybackState
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -35,7 +34,7 @@ fun AudioPlaybackButton(
             PlaybackState.PAUSED,
             PlaybackState.STOPPED -> onPlayClick
         },
-        modifier = modifier.defaultShadow(),
+        modifier = modifier,
         colors = colors,
     ) {
         Icon(
@@ -53,7 +52,7 @@ fun AudioPlaybackButton(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun Preview() {
     AppTheme {
@@ -69,7 +68,7 @@ private fun Preview() {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun PreviewDark() {
     AppTheme(darkTheme = true) {

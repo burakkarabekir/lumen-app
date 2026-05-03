@@ -38,7 +38,7 @@ class EntityToDomainMapper(
             createdAt = Instant.fromEpochMilliseconds(input.createdAtMs),
             mood = Mood.entries.find { it.name == input.mood } ?: Mood.CALM,
             tags = tagsList,
-            attachments = attachmentDtos.mapNotNull { it.toAttachment() },
+            attachments = attachmentDtos.map { it.toAttachment() },
             location = if (input.locationLatitude != null && input.locationLongitude != null) {
                 LocationData(
                     latitude = input.locationLatitude,
@@ -50,32 +50,30 @@ class EntityToDomainMapper(
         )
     }
 
-    private fun AttachmentDto.toAttachment(): Attachment? {
+    private fun AttachmentDto.toAttachment(): Attachment {
         val attachmentId = AttachmentId(id)
-        return when (type) {
-            "PHOTO" -> PhotoAttachment(
+        return when (this) {
+            is AttachmentDto.Photo -> PhotoAttachment(
                 id = attachmentId,
-                remoteUrl = Url(remoteUrl ?: "")
+                remoteUrl = Url(remoteUrl)
             )
 
-            "VIDEO" -> VideoAttachment(
+            is AttachmentDto.Video -> VideoAttachment(
                 id = attachmentId,
-                remoteUrl = Url(remoteUrl ?: ""),
-                durationMs = durationMs ?: 0L
+                remoteUrl = Url(remoteUrl),
+                durationMs = durationMs
             )
 
-            "AUDIO" -> AudioAttachment(
+            is AttachmentDto.Audio -> AudioAttachment(
                 id = attachmentId,
-                remoteUrl = Url(remoteUrl ?: ""),
-                durationMs = durationMs ?: 0L
+                remoteUrl = Url(remoteUrl),
+                durationMs = durationMs
             )
 
-            "LINK" -> LinkAttachment(
+            is AttachmentDto.Link -> LinkAttachment(
                 id = attachmentId,
-                url = Url(url ?: "")
+                url = Url(url)
             )
-
-            else -> null
         }
     }
 }

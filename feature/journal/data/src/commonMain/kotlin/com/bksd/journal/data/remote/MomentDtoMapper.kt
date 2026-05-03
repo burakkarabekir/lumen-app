@@ -21,7 +21,7 @@ class MomentDtoMapper : Mapper<MomentDto, Moment> {
         createdAt = Instant.fromEpochMilliseconds(input.createdAtMs),
         mood = Mood.entries.find { it.name == input.mood } ?: Mood.CALM,
         tags = input.tags,
-        attachments = input.attachments.mapNotNull { it.toAttachment() },
+        attachments = input.attachments.map { it.toAttachment() },
         location = input.location?.toLocationData()
     )
 
@@ -31,32 +31,30 @@ class MomentDtoMapper : Mapper<MomentDto, Moment> {
         displayName = displayName
     )
 
-    private fun AttachmentDto.toAttachment(): Attachment? {
+    private fun AttachmentDto.toAttachment(): Attachment {
         val attachmentId = AttachmentId(id)
-        return when (type) {
-            "PHOTO" -> PhotoAttachment(
+        return when (this) {
+            is AttachmentDto.Photo -> PhotoAttachment(
                 id = attachmentId,
-                remoteUrl = Url(remoteUrl ?: "")
+                remoteUrl = Url(remoteUrl)
             )
 
-            "VIDEO" -> VideoAttachment(
+            is AttachmentDto.Video -> VideoAttachment(
                 id = attachmentId,
-                remoteUrl = Url(remoteUrl ?: ""),
-                durationMs = durationMs ?: 0L
+                remoteUrl = Url(remoteUrl),
+                durationMs = durationMs
             )
 
-            "AUDIO" -> AudioAttachment(
+            is AttachmentDto.Audio -> AudioAttachment(
                 id = attachmentId,
-                remoteUrl = Url(remoteUrl ?: ""),
-                durationMs = durationMs ?: 0L
+                remoteUrl = Url(remoteUrl),
+                durationMs = durationMs
             )
 
-            "LINK" -> LinkAttachment(
+            is AttachmentDto.Link -> LinkAttachment(
                 id = attachmentId,
-                url = Url(url ?: "")
+                url = Url(url)
             )
-
-            else -> null
         }
     }
 }

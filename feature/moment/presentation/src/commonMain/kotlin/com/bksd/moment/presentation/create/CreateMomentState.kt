@@ -1,7 +1,6 @@
 package com.bksd.moment.presentation.create
 
 import androidx.compose.runtime.Stable
-import com.bksd.core.domain.location.LocationData
 import com.bksd.core.domain.model.MediaType
 import com.bksd.core.domain.model.PlaybackState
 import com.bksd.journal.domain.model.Mood
@@ -82,7 +81,6 @@ sealed interface AttachmentUiModel {
         val localPath: String? = null,
         val remoteUrl: String? = null,
         val durationMs: Long = 0L,
-        val sizeBytes: Long = 0L,
         override val displayName: String = "Voice Note",
         override val isUploading: Boolean = false
     ) : AttachmentUiModel {

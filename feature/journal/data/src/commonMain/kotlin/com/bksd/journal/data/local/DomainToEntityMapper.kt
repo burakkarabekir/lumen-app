@@ -28,20 +28,26 @@ class DomainToEntityMapper(
     )
 
     private fun Attachment.toAttachmentDto(): AttachmentDto = when (this) {
-        is PhotoAttachment -> AttachmentDto(
-            id = id.value, type = "PHOTO", remoteUrl = remoteUrl.value
+        is PhotoAttachment -> AttachmentDto.Photo(
+            id = id.value,
+            remoteUrl = remoteUrl.value
         )
 
-        is VideoAttachment -> AttachmentDto(
-            id = id.value, type = "VIDEO", remoteUrl = remoteUrl.value, durationMs = durationMs
+        is VideoAttachment -> AttachmentDto.Video(
+            id = id.value,
+            remoteUrl = remoteUrl.value,
+            durationMs = durationMs
         )
 
-        is AudioAttachment -> AttachmentDto(
-            id = id.value, type = "AUDIO", remoteUrl = remoteUrl.value, durationMs = durationMs
+        is AudioAttachment -> AttachmentDto.Audio(
+            id = id.value,
+            remoteUrl = remoteUrl.value,
+            durationMs = durationMs
         )
 
-        is LinkAttachment -> AttachmentDto(
-            id = id.value, type = "LINK", url = url.value
+        is LinkAttachment -> AttachmentDto.Link(
+            id = id.value,
+            url = url.value
         )
     }
 }

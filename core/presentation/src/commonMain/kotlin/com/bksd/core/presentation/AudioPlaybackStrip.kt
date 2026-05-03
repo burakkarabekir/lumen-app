@@ -2,6 +2,7 @@ package com.bksd.core.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -19,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,34 +30,8 @@ import com.bksd.core.design_system.component.visualizer.VoiceVisualizer
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.domain.model.PlaybackState
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
-/**
- * Shared audio playback strip with two visual modes.
- *
- * **[AudioPlaybackMode.STANDARD]** — Used on detail and create screens.
- * Renders a full-width visualizer with position and duration labels below.
- * ```
- * [▶/⏸]  ║▌║▌▌║▌║║▌▌║▌║
- *          0:45              1:23
- * ```
- *
- * **[AudioPlaybackMode.COMPACT]** — Used in list items.
- * Pill-shaped container with play button and duration/position text.
- * ```
- * ( [▶]  2:14 ) or ( [⏸]  0:42 )
- * ```
- *
- * @param playbackState Current state of the audio player.
- * @param amplitudes Normalized amplitude samples (0f..1f) for the visualizer.
- *        Only used in [AudioPlaybackMode.STANDARD]. Ignored in COMPACT.
- * @param durationFormatted Pre-formatted total duration string (e.g. "1:23").
- * @param onPlayClick Callback when play is tapped.
- * @param onPauseClick Callback when pause is tapped.
- * @param modifier Layout modifier.
- * @param mode Visual mode — [AudioPlaybackMode.STANDARD] or [AudioPlaybackMode.COMPACT].
- * @param currentPositionFormatted Pre-formatted current position (e.g. "0:45").
- *        Shown in both modes. In COMPACT, displayed when playing or paused.
- */
 @Composable
 fun AudioPlaybackStrip(
     playbackState: PlaybackState,
@@ -102,7 +78,9 @@ private fun StandardStrip(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min),
         verticalAlignment = Alignment.CenterVertically
     ) {
         AudioPlaybackButton(
@@ -122,7 +100,9 @@ private fun StandardStrip(
             VoiceVisualizer(
                 amplitudes = amplitudes,
                 isActive = playbackState == PlaybackState.PLAYING,
-                modifier = Modifier.fillMaxWidth().height(32.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(32.dp),
                 style = StandardVisualizerStyle,
                 activeColor = MaterialTheme.colorScheme.primary
             )
@@ -164,7 +144,7 @@ private fun CompactStrip(
             .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f))
             .padding(6.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         AudioPlaybackButton(
             playbackState = playbackState,
@@ -183,27 +163,40 @@ private fun CompactStrip(
             currentPositionFormatted
         }
 
-        Text(
-            text = displayText,
-            fontSize = 15.sp,
-            fontWeight = FontWeight.Medium,
-            color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(end = 12.dp)
-        )
+        Box(
+            modifier = Modifier.padding(end = 12.dp),
+            contentAlignment = Alignment.CenterStart
+        ) {
+            // Invisible text to maintain fixed max width of the container
+            Text(
+                text = durationFormatted,
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color.Transparent
+            )
+            // Visible text
+            Text(
+                text = displayText,
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        }
     }
 }
 
-
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun Preview() {
     AppTheme {
-        CompactStrip(
+        AudioPlaybackStrip(
             PlaybackState.PLAYING,
+            amplitudes = persistentListOf(),
+            mode = AudioPlaybackMode.COMPACT,
             currentPositionFormatted = "1:45",
-            durationFormatted = "",
-            {},
-            {}
+            durationFormatted = "5:00",
+            onPlayClick = {},
+            onPauseClick = {}
         )
     }
 }
@@ -212,12 +205,13 @@ private fun Preview() {
 @Composable
 private fun PreviewDark() {
     AppTheme(darkTheme = true) {
-        CompactStrip(
+        AudioPlaybackStrip(
             PlaybackState.STOPPED,
+            amplitudes = persistentListOf(),
             currentPositionFormatted = "1:45",
             durationFormatted = "5:00",
-            {},
-            {}
+            onPlayClick = {},
+            onPauseClick = {}
         )
     }
 }

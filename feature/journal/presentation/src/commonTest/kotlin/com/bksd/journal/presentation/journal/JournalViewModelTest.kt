@@ -2,6 +2,8 @@ package com.bksd.journal.presentation.journal
 
 import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.Result
+import com.bksd.core.domain.model.PlaybackState
+import com.bksd.core.domain.storage.AudioPlayer
 import com.bksd.journal.domain.model.Moment
 import com.bksd.journal.domain.model.Mood
 import com.bksd.journal.domain.repository.MomentRepository
@@ -9,6 +11,7 @@ import com.bksd.journal.domain.usecase.GetMomentsByDateUseCase
 import com.bksd.journal.domain.usecase.SyncMomentsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -35,6 +38,19 @@ class JournalViewModelTest {
     }
     private val testTimeZone = TimeZone.UTC
 
+    private val fakeAudioPlayer = object : AudioPlayer {
+        override val playbackState = MutableStateFlow(PlaybackState.STOPPED)
+        override val currentPositionMs = MutableStateFlow(0L)
+        override val durationMs = MutableStateFlow(0L)
+        override val playbackAmplitudes = MutableStateFlow(emptyList<Float>())
+        override suspend fun play(filePath: String): Result<Unit, AppError> = Result.Success(Unit)
+        override suspend fun pause() {}
+        override suspend fun resume() {}
+        override suspend fun stop() {}
+        override suspend fun seekTo(positionMs: Long) {}
+        override fun release() {}
+    }
+
     @BeforeTest
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
@@ -48,7 +64,7 @@ class JournalViewModelTest {
                 Moment(
                     id = "1",
                     body = null,
-                    createdAt = Clock.System.now(),
+                    createdAt = testClock.now(),
                     mood = Mood.REFLECTIVE
                 )
             )
@@ -64,7 +80,8 @@ class JournalViewModelTest {
             getMomentsByDateUseCase = getMomentsUseCase,
             syncMomentsUseCase = syncMomentsUseCase,
             clock = testClock,
-            timeZone = testTimeZone
+            timeZone = testTimeZone,
+            audioPlayer = fakeAudioPlayer
         )
     }
 
