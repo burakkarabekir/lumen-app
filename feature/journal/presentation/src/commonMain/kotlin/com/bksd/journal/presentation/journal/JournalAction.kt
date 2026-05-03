@@ -8,4 +8,6 @@ sealed interface JournalAction {
     data class OnFilterSelect(val filter: JournalFilter) : JournalAction
     data class OnDateSelect(val date: LocalDate) : JournalAction
     data object OnCreateNewClick : JournalAction
+    data class OnAudioPlayClick(val momentId: String, val audioUrl: String) : JournalAction
+    data object OnAudioPauseClick : JournalAction
 }

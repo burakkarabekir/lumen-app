@@ -34,6 +34,8 @@ import com.bksd.core.design_system.component.layout.AppBarStyle
 import com.bksd.core.design_system.component.layout.AppSurface
 import com.bksd.core.design_system.component.layout.AppTopBar
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.domain.model.AudioAttachment
+import com.bksd.core.domain.model.PlaybackState
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.journal.domain.model.JournalFilter
 import com.bksd.journal.domain.model.Moment
@@ -162,6 +164,23 @@ fun JournalScreen(
                                 MomentCard(
                                     moment = moment,
                                     formatter = formatter,
+                                    audioPlaybackState = if (state.playingAudioMomentId == moment.id) state.audioPlaybackState else PlaybackState.STOPPED,
+                                    audioCurrentPosition = if (state.playingAudioMomentId == moment.id && state.audioCurrentPositionMs > 0)
+                                        formatter.formatDuration(state.audioCurrentPositionMs) else "0:00",
+                                    onAudioPlayClick = {
+                                        val audioUrl =
+                                            moment.attachments.filterIsInstance<AudioAttachment>()
+                                                .firstOrNull()?.remoteUrl?.value
+                                        if (audioUrl != null) {
+                                            onAction(
+                                                JournalAction.OnAudioPlayClick(
+                                                    moment.id,
+                                                    audioUrl
+                                                )
+                                            )
+                                        }
+                                    },
+                                    onAudioPauseClick = { onAction(JournalAction.OnAudioPauseClick) },
                                     onClick = { onAction(JournalAction.OnMomentClick(moment.id)) }
                                 )
                             }

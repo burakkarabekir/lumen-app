@@ -17,6 +17,7 @@ kotlin {
 
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.coil.compose)
+                implementation(libs.jetbrains.kotlinx.collections.immutable)
 
                 implementation(libs.bundles.jetbrains.adaptive)
                 implementation(libs.bundles.lifecycle)

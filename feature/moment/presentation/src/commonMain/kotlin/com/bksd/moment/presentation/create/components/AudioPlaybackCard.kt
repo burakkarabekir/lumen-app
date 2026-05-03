@@ -1,41 +1,25 @@
 package com.bksd.moment.presentation.create.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Mic
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.bksd.core.design_system.component.visualizer.VisualizerStyle
-import com.bksd.core.design_system.component.visualizer.VoiceVisualizer
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.domain.model.PlaybackState
-import com.bksd.core.presentation.AudioPlaybackButton
+import com.bksd.core.presentation.AudioPlaybackMode
+import com.bksd.core.presentation.AudioPlaybackStrip
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 /**
  * Post-recording playback card with play/pause button, waveform visualizer
  * showing playback progress, duration, and a delete action.
+ *
+ * Wraps [AudioPlaybackStrip] in STANDARD mode with an [AttachmentCardLayout]
+ * header providing the delete action.
  */
 @Composable
 fun AudioPlaybackCard(
@@ -54,60 +38,16 @@ fun AudioPlaybackCard(
         onDeleteClick = onDeleteClick,
         modifier = modifier
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Play/Pause Button
-            AudioPlaybackButton(
-                playbackState = playbackState,
-                onPlayClick = onPlayClick,
-                onPauseClick = onPauseClick,
-                modifier = Modifier.size(40.dp),
-                colors = IconButtonDefaults.filledIconButtonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary
-                )
-            )
-
-            Spacer(modifier = Modifier.width(16.dp))
-
-            // Visualizer + Time
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
-                VoiceVisualizer(
-                    amplitudes = amplitudes,
-                    isActive = playbackState == PlaybackState.PLAYING,
-                    modifier = Modifier.fillMaxWidth().height(32.dp),
-                    style = VisualizerStyle(
-                        barWidth = 3.dp,
-                        barSpacing = 2.dp,
-                        cornerRadius = 2.dp,
-                        minBarHeight = 3.dp
-                    ),
-                    activeColor = MaterialTheme.colorScheme.primary
-                )
-
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = currentPositionFormatted,
-                        fontSize = 11.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Text(
-                        text = durationFormatted,
-                        fontSize = 11.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-        }
+        AudioPlaybackStrip(
+            playbackState = playbackState,
+            amplitudes = amplitudes,
+            durationFormatted = durationFormatted,
+            onPlayClick = onPlayClick,
+            onPauseClick = onPauseClick,
+            mode = AudioPlaybackMode.STANDARD,
+            currentPositionFormatted = currentPositionFormatted,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)
+        )
     }
 }
 

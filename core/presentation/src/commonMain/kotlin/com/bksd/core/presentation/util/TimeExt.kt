@@ -27,7 +27,7 @@ fun Instant.toFormattedTime(timeZone: TimeZone = TimeZone.currentSystemDefault()
 /**
  * Formats a duration in milliseconds to "M:SS" (e.g., "1:23").
  */
-fun formatDuration(ms: Long): String {
+fun durationToText(ms: Long): String {
     val totalSeconds = ms / 1000
     val minutes = totalSeconds / 60
     val seconds = totalSeconds % 60

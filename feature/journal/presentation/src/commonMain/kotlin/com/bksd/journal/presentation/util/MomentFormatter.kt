@@ -1,5 +1,6 @@
 package com.bksd.journal.presentation.util
 
+import com.bksd.core.presentation.util.durationToText
 import com.bksd.core.presentation.util.toFormattedTime
 import kotlinx.datetime.TimeZone
 import kotlin.time.Instant
@@ -17,6 +18,6 @@ class DefaultMomentFormatter(
     }
 
     override fun formatDuration(ms: Long): String {
-        return formatDuration(ms)
+        return durationToText(ms)
     }
 }

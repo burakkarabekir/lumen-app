@@ -4,6 +4,7 @@ package com.bksd.journal.presentation.journal
 
 import androidx.lifecycle.viewModelScope
 import com.bksd.core.domain.error.Result
+import com.bksd.core.domain.storage.AudioPlayer
 import com.bksd.core.presentation.util.BaseViewModel
 import com.bksd.core.presentation.util.UiText
 import com.bksd.journal.domain.model.JournalFilter
@@ -29,7 +30,8 @@ class JournalViewModel(
     private val getMomentsByDateUseCase: GetMomentsByDateUseCase,
     private val syncMomentsUseCase: SyncMomentsUseCase,
     private val clock: Clock,
-    private val timeZone: TimeZone
+    private val timeZone: TimeZone,
+    private val audioPlayer: AudioPlayer
 ) : BaseViewModel<JournalAction, JournalEvent>() {
 
     private var hasLoadedInitialData = false
@@ -41,20 +43,33 @@ class JournalViewModel(
     private val isSyncing = MutableStateFlow(false)
     private val error = MutableStateFlow<UiText?>(null)
 
+    private val playingAudioMomentId = MutableStateFlow<String?>(null)
+
     val state: StateFlow<JournalState> = combine(
-        selectedDate.flatMapLatest { date -> getMomentsByDateUseCase(date) },
-        selectedFilter,
-        selectedDate,
-        isSyncing,
-        error
-    ) { moments, filter, date, syncing, err ->
-        JournalState(
-            moments = moments.applyFilter(filter).toPersistentList(),
-            isLoading = false,
-            isSyncing = syncing,
-            error = err,
-            selectedFilter = filter,
-            selectedDate = date
+        combine(
+            selectedDate.flatMapLatest { date -> getMomentsByDateUseCase(date) },
+            selectedFilter,
+            selectedDate,
+            isSyncing,
+            error
+        ) { moments, filter, date, syncing, err ->
+            JournalState(
+                moments = moments.applyFilter(filter).toPersistentList(),
+                isLoading = false,
+                isSyncing = syncing,
+                error = err,
+                selectedFilter = filter,
+                selectedDate = date
+            )
+        },
+        playingAudioMomentId,
+        audioPlayer.playbackState,
+        audioPlayer.currentPositionMs
+    ) { baseState, playingId, playbackState, positionMs ->
+        baseState.copy(
+            playingAudioMomentId = playingId,
+            audioPlaybackState = playbackState,
+            audioCurrentPositionMs = positionMs
         )
     }
         .onStart {
@@ -81,6 +96,14 @@ class JournalViewModel(
                 selectedDate.update { action.date }
                 syncFromRemote(action.date)
             }
+            is JournalAction.OnAudioPlayClick -> {
+                playingAudioMomentId.update { action.momentId }
+                launch { audioPlayer.play(action.audioUrl) }
+            }
+
+            JournalAction.OnAudioPauseClick -> {
+                launch { audioPlayer.pause() }
+            }
         }
     }
 
@@ -100,5 +123,10 @@ class JournalViewModel(
             }
             isSyncing.update { false }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        audioPlayer.release()
     }
 }

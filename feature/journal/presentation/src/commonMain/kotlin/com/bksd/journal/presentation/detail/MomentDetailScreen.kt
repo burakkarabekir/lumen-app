@@ -41,6 +41,7 @@ import com.bksd.core.design_system.component.layout.AppTopBar
 import com.bksd.core.domain.model.AudioAttachment
 import com.bksd.core.domain.model.LinkAttachment
 import com.bksd.core.domain.model.PhotoAttachment
+import com.bksd.core.domain.model.PlaybackState
 import com.bksd.core.domain.model.VideoAttachment
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.journal.presentation.Res
@@ -200,8 +201,12 @@ fun MomentDetailScreen(
 
                             is AudioAttachment -> {
                                 AudioPreview(
-                                    durationMs = primary.durationMs,
-                                    formatter = formatter
+                                    playbackState = PlaybackState.STOPPED,
+                                    currentPositionFormatted = "0:00",
+                                    durationFormatted = if (primary.durationMs != null && primary.durationMs > 0)
+                                        formatter.formatDuration(primary.durationMs) else "0:00",
+                                    onPlayClick = {},
+                                    onPauseClick = {}
                                 )
                             }
 

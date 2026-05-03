@@ -26,16 +26,23 @@ import androidx.compose.ui.unit.sp
 import com.bksd.core.domain.model.AudioAttachment
 import com.bksd.core.domain.model.LinkAttachment
 import com.bksd.core.domain.model.PhotoAttachment
+import com.bksd.core.domain.model.PlaybackState
 import com.bksd.core.domain.model.VideoAttachment
+import com.bksd.core.presentation.AudioPlaybackMode
 import com.bksd.journal.domain.model.Moment
 import com.bksd.journal.presentation.util.MomentFormatter
+
 
 @Composable
 fun MomentCard(
     moment: Moment,
     formatter: MomentFormatter,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    audioPlaybackState: PlaybackState = PlaybackState.STOPPED,
+    audioCurrentPosition: String = "0:00",
+    onAudioPlayClick: () -> Unit = {},
+    onAudioPauseClick: () -> Unit = {},
 ) {
     val formattedTime = remember(moment.createdAt) {
         formatter.formatTime(moment.createdAt)
@@ -109,7 +116,15 @@ fun MomentCard(
                             Spacer(modifier = Modifier.height(8.dp))
                         }
                         Spacer(modifier = Modifier.height(8.dp))
-                        AudioPreview(durationMs = primary.durationMs, formatter = formatter)
+                        AudioPreview(
+                            playbackState = audioPlaybackState,
+                            currentPositionFormatted = audioCurrentPosition,
+                            mode = AudioPlaybackMode.COMPACT,
+                            durationFormatted = if (primary.durationMs > 0)
+                                formatter.formatDuration(primary.durationMs) else "0:00",
+                            onPlayClick = onAudioPlayClick,
+                            onPauseClick = onAudioPauseClick
+                        )
                         // Body text shown below audio as quote
                         if (body != null && body.length > 40) {
                             Spacer(modifier = Modifier.height(12.dp))
