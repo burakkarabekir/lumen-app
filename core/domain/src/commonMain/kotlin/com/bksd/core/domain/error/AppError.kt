@@ -4,6 +4,7 @@ sealed interface AppError {
     data class Network(val type: NetworkErrorType) : AppError
     data class Auth(val type: AuthErrorType) : AppError
     data class Media(val type: MediaErrorType) : AppError
+    data class Location(val type: LocationErrorType) : AppError
     data class Unknown(val message: String) : AppError
 }
 
@@ -32,4 +33,10 @@ enum class AuthErrorType {
     WEAK_PASSWORD,
     SOCIAL_LOGIN_CANCELLED,
     SOCIAL_LOGIN_FAILED
+}
+
+enum class LocationErrorType {
+    SERVICES_DISABLED,
+    PERMISSION_DENIED,
+    UNAVAILABLE
 }

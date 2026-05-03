@@ -5,6 +5,7 @@ package com.bksd.moment.presentation.create
 import androidx.lifecycle.viewModelScope
 import com.bksd.auth.domain.AuthRepository
 import com.bksd.core.domain.error.AppError
+import com.bksd.core.domain.error.LocationErrorType
 import com.bksd.core.domain.error.Result
 import com.bksd.core.domain.location.LocationProvider
 import com.bksd.core.domain.model.Attachment
@@ -33,6 +34,7 @@ import com.bksd.moment.presentation.error_camera_permission_denied
 import com.bksd.moment.presentation.error_file_too_large
 import com.bksd.moment.presentation.error_location_fetch_failed
 import com.bksd.moment.presentation.error_location_permission_denied
+import com.bksd.moment.presentation.error_location_services_disabled
 import com.bksd.moment.presentation.error_moment_empty
 import com.bksd.moment.presentation.error_moment_save_failed
 import com.bksd.moment.presentation.error_mood_required
@@ -164,14 +166,16 @@ class CreateMomentViewModel(
 
                 is Result.Error -> {
                     updateState { it.copy(isFetchingLocation = false) }
-                    val message = if (result.error is AppError.Unknown) {
-                        (result.error as AppError.Unknown).message
-                    } else null
-                    if (message != null) {
-                        sendEvent(CreateMomentEvent.ShowError(UiText.Dynamic(message)))
-                    } else {
-                        sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_location_fetch_failed)))
+                    val errorText = when (val error = result.error) {
+                        is AppError.Location -> when (error.type) {
+                            LocationErrorType.SERVICES_DISABLED -> UiText.Resource(Res.string.error_location_services_disabled)
+                            LocationErrorType.PERMISSION_DENIED -> UiText.Resource(Res.string.error_location_permission_denied)
+                            LocationErrorType.UNAVAILABLE -> UiText.Resource(Res.string.error_location_fetch_failed)
+                        }
+
+                        else -> UiText.Resource(Res.string.error_location_fetch_failed)
                     }
+                    sendEvent(CreateMomentEvent.ShowError(errorText))
                 }
             }
         }

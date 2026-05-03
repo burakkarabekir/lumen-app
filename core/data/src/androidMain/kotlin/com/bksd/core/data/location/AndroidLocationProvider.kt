@@ -10,6 +10,7 @@ import android.location.LocationManager
 import android.os.Build
 import androidx.core.content.ContextCompat
 import com.bksd.core.domain.error.AppError
+import com.bksd.core.domain.error.LocationErrorType
 import com.bksd.core.domain.error.Result
 import com.bksd.core.domain.location.LocationData
 import com.bksd.core.domain.location.LocationProvider
@@ -63,14 +64,32 @@ class AndroidLocationProvider(
     @SuppressLint("MissingPermission")
     override suspend fun getCurrentLocation(): Result<LocationData, AppError> {
         if (!isLocationEnabled()) {
-            return Result.Error(AppError.Unknown("Location services are disabled on this device. Please turn them on in Settings."))
+            return Result.Error(AppError.Location(LocationErrorType.SERVICES_DISABLED))
         }
 
         if (!hasPermission()) {
-            return Result.Error(AppError.Unknown("Location permission denied"))
+            return Result.Error(AppError.Location(LocationErrorType.PERMISSION_DENIED))
         }
 
-        val locationResult = suspendCancellableCoroutine<Result<Location, AppError>> { continuation ->
+        val location = requestCurrentLocation() ?: requestLastLocation()
+
+        if (location == null) {
+            return Result.Error(AppError.Location(LocationErrorType.UNAVAILABLE))
+        }
+
+        val displayName = getCityState(location.latitude, location.longitude)
+        return Result.Success(
+            LocationData(
+                latitude = location.latitude,
+                longitude = location.longitude,
+                displayName = displayName
+            )
+        )
+    }
+
+    @SuppressLint("MissingPermission")
+    private suspend fun requestCurrentLocation(): Location? {
+        return suspendCancellableCoroutine { continuation ->
             val cancellationTokenSource = CancellationTokenSource()
 
             continuation.invokeOnCancellation {
@@ -81,35 +100,23 @@ class AndroidLocationProvider(
                 Priority.PRIORITY_HIGH_ACCURACY,
                 cancellationTokenSource.token
             ).addOnSuccessListener { location: Location? ->
-                if (location != null) {
-                    continuation.resume(Result.Success(location))
-                } else {
-                    continuation.resume(Result.Error(AppError.Unknown("Location unavailable")))
-                }
-            }.addOnFailureListener { e ->
-                continuation.resume(
-                    Result.Error(
-                        AppError.Unknown(
-                            e.message ?: "Location error"
-                        )
-                    )
-                )
+                continuation.resume(location)
+            }.addOnFailureListener {
+                continuation.resume(null)
             }
         }
+    }
 
-        return when (locationResult) {
-            is Result.Success -> {
-                val location = locationResult.data
-                val displayName = getCityState(location.latitude, location.longitude)
-                Result.Success(
-                    LocationData(
-                        latitude = location.latitude,
-                        longitude = location.longitude,
-                        displayName = displayName
-                    )
-                )
-            }
-            is Result.Error -> Result.Error(locationResult.error)
+    @SuppressLint("MissingPermission")
+    private suspend fun requestLastLocation(): Location? {
+        return suspendCancellableCoroutine { continuation ->
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location: Location? ->
+                    continuation.resume(location)
+                }
+                .addOnFailureListener {
+                    continuation.resume(null)
+                }
         }
     }
 

@@ -1,6 +1,7 @@
 package com.bksd.core.data.location
 
 import com.bksd.core.domain.error.AppError
+import com.bksd.core.domain.error.LocationErrorType
 import com.bksd.core.domain.error.Result
 import com.bksd.core.domain.location.LocationData
 import com.bksd.core.domain.location.LocationProvider
@@ -41,11 +42,11 @@ class IosLocationProvider : LocationProvider {
 
     override suspend fun getCurrentLocation(): Result<LocationData, AppError> {
         if (!CLLocationManager.locationServicesEnabled()) {
-            return Result.Error(AppError.Unknown("Location services are disabled on this device. Please turn them on in Settings."))
+            return Result.Error(AppError.Location(LocationErrorType.SERVICES_DISABLED))
         }
 
         if (!hasPermission()) {
-            return Result.Error(AppError.Unknown("Location permission denied"))
+            return Result.Error(AppError.Location(LocationErrorType.PERMISSION_DENIED))
         }
 
         return suspendCancellableCoroutine { continuation ->
@@ -88,7 +89,7 @@ class IosLocationProvider : LocationProvider {
             } else {
                 val cont = continuation
                 continuation = null
-                cont?.resume(Result.Error(AppError.Unknown("No location received")))
+                cont?.resume(Result.Error(AppError.Location(LocationErrorType.UNAVAILABLE)))
             }
         }
 
@@ -98,7 +99,7 @@ class IosLocationProvider : LocationProvider {
         ) {
             val cont = continuation
             continuation = null
-            cont?.resume(Result.Error(AppError.Unknown(didFailWithError.localizedDescription)))
+            cont?.resume(Result.Error(AppError.Location(LocationErrorType.UNAVAILABLE)))
         }
     }
 }

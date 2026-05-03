@@ -26,6 +26,7 @@
     <!-- ViewModel errors -->
     <string name="error_location_fetch_failed">Failed to fetch location</string>
     <string name="error_location_permission_denied">Location permission denied.</string>
+    <string name="error_location_services_disabled">Location services are disabled. Please enable them in Settings.</string>
     <string name="error_recording_start_failed">Failed to start recording</string>
     <string name="error_audio_permission_required">Microphone permission is required to record audio</string>
     <string name="error_recording_save_failed">Failed to save recording</string>
