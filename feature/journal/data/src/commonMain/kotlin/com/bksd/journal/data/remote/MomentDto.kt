@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class MomentDto(
     val id: String,
+    val title: String,
     val body: String? = null,
     val createdAtMs: Long,
     val mood: String,

@@ -36,6 +36,17 @@ class MediatorMomentRepository(
             .map { entities -> entities.map { entityToDomain.map(it) } }
     }
 
+    override fun observeMomentsByRange(
+        startDate: LocalDate,
+        endDate: LocalDate
+    ): Flow<List<Moment>> {
+        val startMs = startDate.atStartOfDayIn(timeZone).toEpochMilliseconds()
+        val endMs = endDate.atStartOfDayIn(timeZone).plus(1.days).toEpochMilliseconds()
+
+        return momentDao.observeByDateRange(startMs, endMs)
+            .map { entities -> entities.map { entityToDomain.map(it) } }
+    }
+
     override suspend fun syncMoments(date: LocalDate): Result<Unit, AppError> {
         return when (val result = remoteDataSource.fetchMoments(date)) {
             is Result.Success -> {

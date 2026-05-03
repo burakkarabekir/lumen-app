@@ -16,6 +16,7 @@ class DomainToEntityMapper(
 
     override fun map(input: Moment): MomentEntity = MomentEntity(
         id = input.id,
+        title = input.title,
         body = input.body,
         createdAtMs = input.createdAt.toEpochMilliseconds(),
         mood = input.mood.name,

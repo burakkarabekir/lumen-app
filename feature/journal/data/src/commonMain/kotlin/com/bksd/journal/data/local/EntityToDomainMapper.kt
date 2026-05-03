@@ -34,6 +34,7 @@ class EntityToDomainMapper(
 
         return Moment(
             id = input.id,
+            title = input.title,
             body = input.body,
             createdAt = Instant.fromEpochMilliseconds(input.createdAtMs),
             mood = Mood.entries.find { it.name == input.mood } ?: Mood.CALM,

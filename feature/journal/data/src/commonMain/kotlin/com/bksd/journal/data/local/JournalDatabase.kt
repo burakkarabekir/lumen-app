@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
 
-@Database(entities = [MomentEntity::class], version = 1)
+@Database(entities = [MomentEntity::class], version = 2)
 @ConstructedBy(JournalDatabaseConstructor::class)
 abstract class JournalDatabase : RoomDatabase() {
     abstract fun momentDao(): MomentDao

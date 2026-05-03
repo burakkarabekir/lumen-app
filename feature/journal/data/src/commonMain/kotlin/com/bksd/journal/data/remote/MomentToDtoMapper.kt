@@ -13,6 +13,7 @@ class MomentToDtoMapper : Mapper<Moment, MomentDto> {
 
     override fun map(input: Moment): MomentDto = MomentDto(
         id = input.id,
+        title = input.title,
         body = input.body,
         createdAtMs = input.createdAt.toEpochMilliseconds(),
         mood = input.mood.name,

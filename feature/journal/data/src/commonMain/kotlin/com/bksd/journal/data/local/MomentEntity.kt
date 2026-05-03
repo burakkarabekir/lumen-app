@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "moments")
 data class MomentEntity(
     @PrimaryKey val id: String,
+    val title: String,
     val body: String?,
     val createdAtMs: Long,
     val mood: String,

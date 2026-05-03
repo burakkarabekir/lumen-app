@@ -17,6 +17,7 @@ class MomentDtoMapper : Mapper<MomentDto, Moment> {
 
     override fun map(input: MomentDto): Moment = Moment(
         id = input.id,
+        title = input.title,
         body = input.body,
         createdAt = Instant.fromEpochMilliseconds(input.createdAtMs),
         mood = Mood.entries.find { it.name == input.mood } ?: Mood.CALM,
