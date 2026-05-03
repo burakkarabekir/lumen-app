@@ -409,6 +409,34 @@ private fun CreateMomentScreen(
                         }
                     }
 
+                    // Title Input
+                    TextField(
+                        value = state.title,
+                        onValueChange = { onAction(CreateMomentAction.OnTitleChange(it)) },
+                        placeholder = {
+                            Text(
+                                text = "Title",
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                            )
+                        },
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            cursorColor = MaterialTheme.colorScheme.primary
+                        ),
+                        textStyle = TextStyle(
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            lineHeight = 32.sp
+                        ),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
                     // Body Input
                     TextField(
                         value = state.body,
@@ -433,7 +461,7 @@ private fun CreateMomentScreen(
                             lineHeight = 28.sp
                         ),
                         modifier = Modifier.fillMaxWidth()
-                            .defaultMinSize(minHeight = 200.dp)
+                            .defaultMinSize(minHeight = 150.dp)
                     )
 
                     Spacer(modifier = Modifier.height(24.dp))

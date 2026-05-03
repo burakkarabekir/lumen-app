@@ -5,6 +5,7 @@ import com.bksd.journal.domain.model.Mood
 import kotlinx.datetime.LocalDate
 
 sealed interface CreateMomentAction {
+    data class OnTitleChange(val title: String) : CreateMomentAction
     data class OnBodyChange(val body: String) : CreateMomentAction
     data class OnMoodSelect(val mood: Mood) : CreateMomentAction
     data class OnTagAdd(val tag: String) : CreateMomentAction

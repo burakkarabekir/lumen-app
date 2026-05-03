@@ -187,6 +187,7 @@ class CreateMomentViewModel(
 
     override fun onAction(action: CreateMomentAction) {
         when (action) {
+            is CreateMomentAction.OnTitleChange -> updateState { it.copy(title = action.title) }
             is CreateMomentAction.OnBodyChange -> updateState { it.copy(body = action.body) }
             is CreateMomentAction.OnMoodSelect -> updateState { it.copy(selectedMood = action.mood) }
             is CreateMomentAction.OnTagAdd -> {
@@ -461,6 +462,7 @@ class CreateMomentViewModel(
 
             val newMoment = Moment(
                 id = momentId,
+                title = currentState.title.trim().takeIf { it.isNotBlank() } ?: "Untitled",
                 body = currentState.body.takeIf { it.isNotBlank() },
                 createdAt = Clock.System.now(),
                 mood = currentState.selectedMood,

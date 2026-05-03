@@ -11,6 +11,7 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.datetime.LocalDate
 
 data class CreateMomentState(
+    val title: String = "",
     val body: String = "",
     val selectedMood: Mood? = null,
     val tags: PersistentList<String> = persistentListOf(),
