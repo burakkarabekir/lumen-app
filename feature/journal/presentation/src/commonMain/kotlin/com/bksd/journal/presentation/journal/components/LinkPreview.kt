@@ -63,7 +63,7 @@ internal fun LinkPreview(url: String) {
 
 @Preview
 @Composable
-private fun Preview() {
+private fun LinkPreviewPreview() {
     AppTheme {
         LinkPreview("www.test.link")
     }
@@ -71,7 +71,7 @@ private fun Preview() {
 
 @Preview
 @Composable
-private fun PreviewDark() {
+private fun LinkPreviewPreviewDark() {
     AppTheme(darkTheme = true) {
         LinkPreview("www.test.link")
     }

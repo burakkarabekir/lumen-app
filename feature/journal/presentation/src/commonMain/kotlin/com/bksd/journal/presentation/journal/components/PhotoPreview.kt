@@ -75,7 +75,7 @@ private fun PhotoPlaceholder() {
 
 @Preview
 @Composable
-private fun Preview() {
+private fun PhotoPreviewPreview() {
     AppTheme {
         PhotoPreview("")
     }
@@ -83,7 +83,7 @@ private fun Preview() {
 
 @Preview
 @Composable
-private fun PreviewDark() {
+private fun PhotoPreviewPreviewDark() {
     AppTheme(darkTheme = true) {
         PhotoPreview("")
     }

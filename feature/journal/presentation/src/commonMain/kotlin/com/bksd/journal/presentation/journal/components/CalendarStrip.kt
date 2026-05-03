@@ -33,6 +33,16 @@ import kotlinx.datetime.plus
 import kotlinx.datetime.todayIn
 import kotlin.time.Clock
 
+private const val PAST_DAYS = 14
+private const val FUTURE_DAYS = 3
+
+/**
+ * Horizontally scrollable date strip that dynamically centers around [selectedDate].
+ *
+ * The strip generates a window of dates from [PAST_DAYS] before to [FUTURE_DAYS]
+ * after the selected date, capped at today for the future boundary. This allows
+ * the strip to follow the user as they scroll through the journal feed to any date.
+ */
 @Composable
 fun CalendarStrip(
     selectedDate: LocalDate?,
@@ -43,21 +53,28 @@ fun CalendarStrip(
     val today = remember { Clock.System.todayIn(timeZone) }
     val effectiveSelected = selectedDate ?: today
 
-    // Generate dates: 4 past days + today + 3 future days
-    val dates = remember(today) {
-        (-4..3).map { offset ->
-            if (offset < 0) today.minus(-offset, DateTimeUnit.DAY)
-            else today.plus(offset, DateTimeUnit.DAY)
-        }
+    // Dynamic window centered on the selected date, capped at today + FUTURE_DAYS
+    val dates = remember(effectiveSelected, today) {
+        val futureCap = today.plus(FUTURE_DAYS, DateTimeUnit.DAY)
+        val rangeStart = effectiveSelected.minus(PAST_DAYS, DateTimeUnit.DAY)
+        val rangeEnd = minOf(
+            effectiveSelected.plus(FUTURE_DAYS, DateTimeUnit.DAY),
+            futureCap
+        )
+
+        generateSequence(rangeStart) { it.plus(1, DateTimeUnit.DAY) }
+            .takeWhile { it <= rangeEnd }
+            .toList()
     }
 
-    // Auto-scroll to selected date (today by default, index 4)
+    // Position the selected date near the center of the visible area
     val listState = rememberLazyListState()
     val selectedIndex = remember(effectiveSelected, dates) {
         dates.indexOf(effectiveSelected).coerceAtLeast(0)
     }
     LaunchedEffect(selectedIndex) {
-        listState.animateScrollToItem(maxOf(0, selectedIndex - 1))
+        // Offset by ~3 so the selected date appears center-ish, not at the edge
+        listState.animateScrollToItem(maxOf(0, selectedIndex - 3))
     }
 
     LazyRow(
@@ -66,7 +83,7 @@ fun CalendarStrip(
         verticalAlignment = Alignment.CenterVertically
     ) {
         item { Spacer(modifier = Modifier.width(16.dp)) }
-        items(dates) { date ->
+        items(dates, key = { it.toEpochDays() }) { date ->
             val isSelected = date == effectiveSelected
             val isToday = date == today
             val isFuture = date > today
@@ -75,7 +92,7 @@ fun CalendarStrip(
                 .take(3)
                 .lowercase()
                 .replaceFirstChar { it.uppercase() }
-            val dayOfMonth = date.dayOfMonth.toString()
+            val dayOfMonth = date.day.toString()
 
             Box(
                 modifier = Modifier

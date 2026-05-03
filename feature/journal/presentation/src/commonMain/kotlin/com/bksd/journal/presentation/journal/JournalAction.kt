@@ -10,4 +10,6 @@ sealed interface JournalAction {
     data object OnCreateNewClick : JournalAction
     data class OnAudioPlayClick(val momentId: String, val audioUrl: String) : JournalAction
     data object OnAudioPauseClick : JournalAction
+    data object OnLoadMoreDays : JournalAction
+    data class OnVisibleDateChanged(val date: LocalDate) : JournalAction
 }

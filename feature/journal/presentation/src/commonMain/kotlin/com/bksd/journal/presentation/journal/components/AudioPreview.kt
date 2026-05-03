@@ -30,7 +30,7 @@ internal fun AudioPreview(
 
 @Preview
 @Composable
-private fun Preview() {
+private fun AudioPreviewPreview() {
     AppTheme {
         AudioPreview(
             playbackState = PlaybackState.PLAYING,
@@ -44,7 +44,7 @@ private fun Preview() {
 
 @Preview
 @Composable
-private fun PreviewDark() {
+private fun AudioPreviewPreviewDark() {
     AppTheme(darkTheme = true) {
         AudioPreview(
             playbackState = PlaybackState.PAUSED,

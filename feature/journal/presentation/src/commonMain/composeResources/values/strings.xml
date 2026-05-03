@@ -49,4 +49,10 @@
     <string name="attachments_section">ATTACHMENTS</string>
     <string name="voice_reflection">Voice Reflection</string>
     <string name="mood_of_the_moment">Mood of the moment</string>
+
+    <!-- Day Section Headers -->
+    <string name="section_today">Today</string>
+    <string name="section_yesterday">Yesterday</string>
+    <string name="section_days_ago">%1$s days ago</string>
+    <string name="section_weeks_ago">%1$s weeks ago</string>
 </resources>

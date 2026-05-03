@@ -71,7 +71,7 @@ internal fun VideoPreview(durationMs: Long?, formatter: MomentFormatter) {
 
 @Preview
 @Composable
-private fun Preview() {
+private fun VideoPreviewPreview() {
     AppTheme {
         VideoPreview(
             durationMs = 2L,
@@ -82,7 +82,7 @@ private fun Preview() {
 
 @Preview
 @Composable
-private fun PreviewDark() {
+private fun VideoPreviewPreviewDark() {
     AppTheme(darkTheme = true) {
         VideoPreview(
             durationMs = 1L,
