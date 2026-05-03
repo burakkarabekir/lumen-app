@@ -8,6 +8,7 @@ import kotlinx.datetime.LocalDate
 
 interface MomentRepository {
     fun observeMoments(date: LocalDate): Flow<List<Moment>>
+    fun observeMomentsByRange(startDate: LocalDate, endDate: LocalDate): Flow<List<Moment>>
     suspend fun syncMoments(date: LocalDate): Result<Unit, AppError>
     suspend fun getMoment(id: String): Result<Moment, AppError>
     suspend fun saveMoment(moment: Moment): Result<Unit, AppError>

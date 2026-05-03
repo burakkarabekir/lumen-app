@@ -6,6 +6,7 @@ import kotlin.time.Instant
 
 data class Moment(
     val id: String,
+    val title: String,
     val body: String?,
     val createdAt: Instant,
     val mood: Mood,

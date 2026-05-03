@@ -7,7 +7,7 @@ import com.bksd.core.domain.storage.AudioPlayer
 import com.bksd.journal.domain.model.Moment
 import com.bksd.journal.domain.model.Mood
 import com.bksd.journal.domain.repository.MomentRepository
-import com.bksd.journal.domain.usecase.GetMomentsByDateUseCase
+import com.bksd.journal.domain.usecase.GetMomentsByRangeUseCase
 import com.bksd.journal.domain.usecase.SyncMomentsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -30,7 +30,7 @@ class JournalViewModelTest {
     private val testDispatcher = UnconfinedTestDispatcher()
 
     private lateinit var viewModel: JournalViewModel
-    private lateinit var getMomentsUseCase: GetMomentsByDateUseCase
+    private lateinit var getMomentsByRangeUseCase: GetMomentsByRangeUseCase
     private lateinit var syncMomentsUseCase: SyncMomentsUseCase
 
     private val testClock = object : Clock {
@@ -57,6 +57,9 @@ class JournalViewModelTest {
 
         val fakeRepository = object : MomentRepository {
             override fun observeMoments(date: LocalDate) = flowOf(emptyList<Moment>())
+            override fun observeMomentsByRange(startDate: LocalDate, endDate: LocalDate) =
+                flowOf(emptyList<Moment>())
+
             override suspend fun syncMoments(date: LocalDate): Result<Unit, AppError> =
                 Result.Success(Unit)
 
@@ -73,11 +76,11 @@ class JournalViewModelTest {
                 Result.Success(Unit)
         }
 
-        getMomentsUseCase = GetMomentsByDateUseCase(fakeRepository)
+        getMomentsByRangeUseCase = GetMomentsByRangeUseCase(fakeRepository)
         syncMomentsUseCase = SyncMomentsUseCase(fakeRepository)
 
         viewModel = JournalViewModel(
-            getMomentsByDateUseCase = getMomentsUseCase,
+            getMomentsByRangeUseCase = getMomentsByRangeUseCase,
             syncMomentsUseCase = syncMomentsUseCase,
             clock = testClock,
             timeZone = testTimeZone,
