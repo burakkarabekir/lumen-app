@@ -16,7 +16,7 @@ class BuildKonfigConventionPlugin : Plugin<Project> {
             }
 
             extensions.configure<BuildKonfigExtension> {
-                packageName = target.pathToPackageName()
+                packageName.set(target.pathToPackageName())
                 defaultConfigs {
                     val configProperties = Properties()
                     val configFile = rootProject.file("config.properties")
