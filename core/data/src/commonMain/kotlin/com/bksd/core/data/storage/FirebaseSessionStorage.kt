@@ -20,6 +20,9 @@ class FirebaseSessionStorage(
     override fun isLoggedIn(): Boolean =
         firebaseAuthDataSource.getSignedInUserId() != null
 
+    override fun getProfilePhotoUrl(): String? =
+        firebaseAuthDataSource.getPhotoUrl()
+
     override suspend fun setRememberMe(enabled: Boolean) {
         dataStore.edit { preferences ->
             preferences[REMEMBER_ME] = enabled

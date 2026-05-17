@@ -5,7 +5,6 @@ import com.bksd.core.domain.error.NetworkErrorType
 import com.bksd.core.domain.error.Result
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.firestore.firestore
-import dev.gitlive.firebase.firestore.where
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerializationStrategy
 
@@ -78,6 +77,40 @@ class FirebaseFirestoreDataSource {
             Result.Success(items)
         } catch (e: Exception) {
             println("[Firestore] queryDocuments: $collectionPath -> error=${e.message}")
+            Result.Error(mapFirestoreError(e))
+        }
+    }
+
+    /**
+     * Fetches a page of documents ordered by [orderByField] descending.
+     * Uses Firestore limit for pagination. Offset is achieved by skipping
+     * documents on the client side when needed.
+     */
+    suspend fun <T : Any> queryDocumentsPaged(
+        collectionPath: String,
+        orderByField: String,
+        limit: Int,
+        offset: Int,
+        deserializer: DeserializationStrategy<T>
+    ): Result<List<T>, AppError> {
+        println("[Firestore] queryDocumentsPaged: $collectionPath, orderBy=$orderByField, limit=$limit, offset=$offset")
+        return try {
+            // Fetch offset + limit to skip `offset` items client-side.
+            // For small offsets this is efficient. For very large datasets,
+            // cursor-based pagination should be used instead.
+            val fetchCount = offset + limit
+            val snapshot = firestore
+                .collection(collectionPath)
+                .orderBy(orderByField, dev.gitlive.firebase.firestore.Direction.DESCENDING)
+                .limit(fetchCount)
+                .get()
+            val items = snapshot.documents
+                .drop(offset)
+                .map { it.data(deserializer) }
+            println("[Firestore] queryDocumentsPaged: $collectionPath -> ${items.size} items (fetched $fetchCount, dropped $offset)")
+            Result.Success(items)
+        } catch (e: Exception) {
+            println("[Firestore] queryDocumentsPaged: $collectionPath -> error=${e.message}")
             Result.Error(mapFirestoreError(e))
         }
     }
