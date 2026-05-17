@@ -45,6 +45,7 @@ import com.bksd.moment.presentation.success_moment_saved
 import com.bksd.moment.presentation.timestamp_today_format
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
@@ -189,7 +190,17 @@ class CreateMomentViewModel(
         when (action) {
             is CreateMomentAction.OnTitleChange -> updateState { it.copy(title = action.title) }
             is CreateMomentAction.OnBodyChange -> updateState { it.copy(body = action.body) }
-            is CreateMomentAction.OnMoodSelect -> updateState { it.copy(selectedMood = action.mood) }
+            is CreateMomentAction.OnMoodSelect -> {
+                updateState { state ->
+                    val currentMoods = state.selectedMoods
+                    val newMoods = if (action.mood in currentMoods) {
+                        (currentMoods - action.mood).toPersistentSet()
+                    } else {
+                        (currentMoods + action.mood).toPersistentSet()
+                    }
+                    state.copy(selectedMoods = newMoods)
+                }
+            }
             is CreateMomentAction.OnTagAdd -> {
                 if (action.tag.isNotBlank() && !state.value.tags.contains(action.tag)) {
                     updateState { it.copy(tags = (it.tags + action.tag.trim()).toPersistentList()) }
@@ -205,6 +216,9 @@ class CreateMomentViewModel(
             is CreateMomentAction.OnRemoveAttachment -> removeAttachment(action.id)
             CreateMomentAction.OnToggleAttachments -> {
                 updateState { it.copy(isAttachmentsExpanded = !it.isAttachmentsExpanded) }
+            }
+            CreateMomentAction.OnToggleMoodSection -> {
+                updateState { it.copy(isMoodSectionExpanded = !it.isMoodSectionExpanded) }
             }
 
             // Location
@@ -401,7 +415,7 @@ class CreateMomentViewModel(
             sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_moment_empty)))
             return
         }
-        if (currentState.selectedMood == null) {
+        if (currentState.selectedMoods.isEmpty()) {
             sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_mood_required)))
             return
         }
@@ -465,7 +479,7 @@ class CreateMomentViewModel(
                 title = currentState.title.trim().takeIf { it.isNotBlank() } ?: "Untitled",
                 body = currentState.body.takeIf { it.isNotBlank() },
                 createdAt = Clock.System.now(),
-                mood = currentState.selectedMood,
+                moods = currentState.selectedMoods.toList(),
                 tags = currentState.tags.toList(),
                 attachments = uploadedAttachments.toList(),
                 location = currentState.location?.toLocationData()

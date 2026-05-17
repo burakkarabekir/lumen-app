@@ -6,14 +6,16 @@ import com.bksd.core.domain.model.PlaybackState
 import com.bksd.journal.domain.model.Mood
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.PersistentSet
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.datetime.LocalDate
 
 data class CreateMomentState(
     val title: String = "",
     val body: String = "",
-    val selectedMood: Mood? = null,
+    val selectedMoods: PersistentSet<Mood> = persistentSetOf(),
     val tags: PersistentList<String> = persistentListOf(),
     val location: LocationInfoUiModel? = null,
     val isFetchingLocation: Boolean = false,
@@ -22,6 +24,7 @@ data class CreateMomentState(
 
     // Media capabilities
     val isAttachmentsExpanded: Boolean = true,
+    val isMoodSectionExpanded: Boolean = false,
     
     // Explicit slots to enforce 1 per type
     val photoAttachment: AttachmentUiModel.Photo? = null,

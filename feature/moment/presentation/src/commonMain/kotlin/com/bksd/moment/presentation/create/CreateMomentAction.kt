@@ -38,6 +38,7 @@ sealed interface CreateMomentAction {
 
     data class OnRemoveAttachment(val id: String) : CreateMomentAction
     data object OnToggleAttachments : CreateMomentAction
+    data object OnToggleMoodSection : CreateMomentAction
 
     // Audio Playback Actions
     data class OnPlayAudio(val attachmentId: String) : CreateMomentAction

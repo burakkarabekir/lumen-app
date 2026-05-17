@@ -23,6 +23,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.Mic
@@ -614,14 +616,35 @@ private fun CreateMomentScreen(
                         horizontalArrangement = Arrangement.spacedBy(6.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Mood.entries.forEach { mood ->
+                        val collapsedVisibleCount = 7
+                        val allMoods = Mood.entries
+                        val visibleMoods =
+                            if (state.isMoodSectionExpanded) allMoods else allMoods.take(
+                                collapsedVisibleCount
+                            )
+                        visibleMoods.forEach { mood ->
                             MoodChip(
                                 mood = mood,
-                                isSelected = state.selectedMood == mood,
+                                isSelected = mood in state.selectedMoods,
                                 onClick = { onAction(CreateMomentAction.OnMoodSelect(mood)) }
                             )
                         }
-                    } // End FlowRow
+                        Box(
+                            modifier = Modifier
+                                .size(36.dp)
+                                .clip(CircleShape)
+                                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
+                                .clickable { onAction(CreateMomentAction.OnToggleMoodSection) },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = if (state.isMoodSectionExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
+                    }
                 } // End scrollable column content
 
                 // Sticky Bottom Save Button
@@ -634,7 +657,7 @@ private fun CreateMomentScreen(
                 ) {
                     AppButton(
                         onClick = { onAction(CreateMomentAction.OnSaveClick) },
-                        enabled = state.body.isNotEmpty() && state.body.isNotBlank() && state.selectedMood != null,
+                        enabled = state.body.isNotEmpty() && state.body.isNotBlank() && state.selectedMoods.isNotEmpty(),
                         style = AppButtonStyle.PRIMARY,
                         isLoading = state.isSaving,
                         text = stringResource(Res.string.save_moment),
