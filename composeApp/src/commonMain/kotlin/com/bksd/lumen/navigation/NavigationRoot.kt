@@ -164,8 +164,7 @@ fun NavigationRoot(
                     entry<Route.MomentDetail> { backStackEntry ->
                         MomentDetailRoot(
                             momentId = backStackEntry.momentId,
-                            onNavigateBack = navigator::goBack,
-                            onNavigateToEdit = {}
+                            onNavigateBack = navigator::goBack
                         )
                     }
                     entry<Route.CreateMoment> {

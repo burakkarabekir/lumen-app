@@ -59,7 +59,7 @@ fun AppNavigationBar(
                                     .then(
                                         if (isSelected) {
                                             Modifier.background(
-                                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                                                color = MaterialTheme.colorScheme.primary,
                                                 shape = CircleShape
                                             )
                                         } else Modifier
