@@ -3,15 +3,10 @@ package com.bksd.core.presentation.permission
 import android.content.Context
 import android.content.Intent
 import android.provider.Settings
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
 import dev.icerock.moko.permissions.DeniedAlwaysException
 import dev.icerock.moko.permissions.DeniedException
 import dev.icerock.moko.permissions.PermissionsController
 import dev.icerock.moko.permissions.camera.CAMERA
-import dev.icerock.moko.permissions.compose.BindEffect
-import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
 import dev.icerock.moko.permissions.gallery.GALLERY
 import dev.icerock.moko.permissions.location.LOCATION
 import dev.icerock.moko.permissions.microphone.RECORD_AUDIO
@@ -51,20 +46,6 @@ actual class PermissionController(
     }
 }
 
-@Composable
-actual fun rememberPermissionController(): PermissionController {
-    val factory = rememberPermissionsControllerFactory()
-    val context = LocalContext.current
-    val mokoController = remember {
-        factory.createPermissionsController()
-    }
-
-    BindEffect(mokoController)
-
-    return remember {
-        PermissionController(mokoController, context)
-    }
-}
 
 private fun Permission.toMoko(): MokoPermission = when (this) {
     Permission.RECORD_AUDIO -> MokoPermission.RECORD_AUDIO

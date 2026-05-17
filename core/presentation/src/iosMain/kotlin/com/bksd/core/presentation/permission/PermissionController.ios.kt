@@ -1,7 +1,5 @@
 package com.bksd.core.presentation.permission
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import dev.icerock.moko.permissions.DeniedAlwaysException
 import dev.icerock.moko.permissions.DeniedException
 import dev.icerock.moko.permissions.camera.CAMERA
@@ -41,12 +39,6 @@ actual class PermissionController(
     }
 }
 
-@Composable
-actual fun rememberPermissionController(): PermissionController {
-    return remember {
-        PermissionController(IosPermissionsController())
-    }
-}
 
 private fun Permission.toMoko(): MokoPermission = when (this) {
     Permission.RECORD_AUDIO -> MokoPermission.RECORD_AUDIO
