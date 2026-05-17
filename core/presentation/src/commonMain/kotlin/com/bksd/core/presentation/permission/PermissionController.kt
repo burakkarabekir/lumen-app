@@ -1,7 +1,5 @@
 package com.bksd.core.presentation.permission
 
-import androidx.compose.runtime.Composable
-
 /**
  * Platform-agnostic permission controller for requesting runtime permissions.
  *
@@ -32,8 +30,3 @@ expect class PermissionController {
     fun openLocationSettings()
 }
 
-/**
- * Creates and remembers a [PermissionController] instance scoped to the composition.
- */
-@Composable
-expect fun rememberPermissionController(): PermissionController

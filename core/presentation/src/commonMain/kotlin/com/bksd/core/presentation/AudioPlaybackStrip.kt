@@ -77,6 +77,13 @@ private fun StandardStrip(
     onPauseClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val standardVisualizerStyle = VisualizerStyle(
+        barWidth = 3.dp,
+        barSpacing = 2.dp,
+        cornerRadius = 2.dp,
+        minBarHeight = 3.dp
+    )
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -103,7 +110,7 @@ private fun StandardStrip(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(32.dp),
-                style = StandardVisualizerStyle,
+                style = standardVisualizerStyle,
                 activeColor = MaterialTheme.colorScheme.primary
             )
 
@@ -216,11 +223,3 @@ private fun PreviewDark() {
     }
 }
 
-// ────────────────────────── Styles ──────────────────────────
-
-private val StandardVisualizerStyle = VisualizerStyle(
-    barWidth = 3.dp,
-    barSpacing = 2.dp,
-    cornerRadius = 2.dp,
-    minBarHeight = 3.dp
-)
