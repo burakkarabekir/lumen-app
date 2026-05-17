@@ -10,13 +10,6 @@ import com.bksd.core.design_system.theme.buttonGradientPressed
 import com.bksd.core.design_system.theme.primary90
 import com.bksd.core.design_system.theme.primary95
 
-data class BubbleFabColor(
-    val primary: Brush,
-    val primaryPressed: Brush,
-    val outerCircle: Brush,
-    val innerCircle: Brush,
-)
-
 @Composable
 fun rememberBubbleFabColor(
     primary: Brush = MaterialTheme.colorScheme.buttonGradient,

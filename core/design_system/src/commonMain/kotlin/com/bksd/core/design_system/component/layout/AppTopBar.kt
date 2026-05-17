@@ -29,10 +29,6 @@ import com.bksd.core.design_system.navigate_back
 import com.bksd.core.design_system.theme.AppTheme
 import org.jetbrains.compose.resources.stringResource
 
-sealed class AppBarStyle {
-    data object Root : AppBarStyle()
-    data object Child : AppBarStyle()
-}
 
 @Composable
 fun AppTopBar(

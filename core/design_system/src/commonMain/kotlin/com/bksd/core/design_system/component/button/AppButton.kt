@@ -27,14 +27,6 @@ import com.bksd.core.design_system.theme.textDisabled
 import com.bksd.core.design_system.theme.textSecondary
 
 
-enum class AppButtonStyle {
-    PRIMARY,
-    DESTRUCTIVE_PRIMARY,
-    SECONDARY,
-    DESTRUCTIVE_SECONDARY,
-    TEXT
-}
-
 @Composable
 fun AppButton(
     text: String,

@@ -38,9 +38,7 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.Res
 import com.bksd.core.design_system.add_new_entry
 import com.bksd.core.design_system.cancel_recording
@@ -54,20 +52,6 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import kotlin.math.roundToInt
 
-/**
- * Configuration for SpeakingFab behavior and appearance.
- *
- * @param cancelButtonOffset Horizontal offset for the cancel button from the FAB center
- * @param cancelThreshold Multiplier for the drag distance threshold to trigger cancellation (0.0-1.0)
- * @param cancelIconSize Size of the cancel icon
- * @param fabSize Size of the main FAB button
- */
-data class SpeakingFabConfig(
-    val cancelButtonOffset: Dp = (-100).dp,
-    val cancelThreshold: Float = 0.8f,
-    val cancelIconSize: Dp = 48.dp,
-    val fabSize: Dp = 56.dp
-)
 
 /**
  * A floating action button with drag-to-cancel functionality for voice recording.
