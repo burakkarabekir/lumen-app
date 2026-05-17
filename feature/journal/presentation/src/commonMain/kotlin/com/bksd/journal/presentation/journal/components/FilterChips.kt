@@ -31,7 +31,6 @@ fun FilterChips(
     LazyRow(
         modifier = modifier.fillMaxWidth()
     ) {
-        item { Spacer(modifier = Modifier.width(16.dp)) }
         items(JournalFilter.entries.toList()) { filter ->
             val isSelected = filter == selectedFilter
 
