@@ -20,7 +20,7 @@ class MomentDtoMapper : Mapper<MomentDto, Moment> {
         title = input.title,
         body = input.body,
         createdAt = Instant.fromEpochMilliseconds(input.createdAtMs),
-        mood = Mood.entries.find { it.name == input.mood } ?: Mood.CALM,
+        moods = input.moods.mapNotNull { name -> Mood.entries.find { it.name == name } },
         tags = input.tags,
         attachments = input.attachments.map { it.toAttachment() },
         location = input.location?.toLocationData()

@@ -5,15 +5,10 @@ import com.bksd.core.data.remote.firebase.FirebaseFirestoreDataSource
 import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.NetworkErrorType
 import com.bksd.core.domain.error.Result
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.atStartOfDayIn
-import kotlin.time.Duration.Companion.days
 
 class FirestoreMomentRemoteDataSource(
     private val firestoreDataSource: FirebaseFirestoreDataSource,
     private val authDataSource: FirebaseAuthDataSource,
-    private val timeZone: TimeZone
 ) {
 
     private fun momentsCollectionPath(): String? {
@@ -21,18 +16,20 @@ class FirestoreMomentRemoteDataSource(
         return "users/$userId/moments"
     }
 
-    suspend fun fetchMoments(date: LocalDate): Result<List<MomentDto>, AppError> {
+    /**
+     * Fetches a page of moments ordered by createdAtMs descending.
+     * @param limit Number of items to fetch.
+     * @param offset Number of items to skip.
+     */
+    suspend fun fetchMomentsPaged(limit: Int, offset: Int): Result<List<MomentDto>, AppError> {
         val collectionPath = momentsCollectionPath()
             ?: return Result.Error(AppError.Network(NetworkErrorType.UNAUTHORIZED))
 
-        val startMs = date.atStartOfDayIn(timeZone).toEpochMilliseconds()
-        val endMs = date.atStartOfDayIn(timeZone).plus(1.days).toEpochMilliseconds()
-
-        return firestoreDataSource.queryDocuments(
+        return firestoreDataSource.queryDocumentsPaged(
             collectionPath = collectionPath,
-            field = "createdAtMs",
-            greaterThanOrEqual = startMs,
-            lessThan = endMs,
+            orderByField = "createdAtMs",
+            limit = limit,
+            offset = offset,
             deserializer = MomentDto.serializer()
         )
     }
@@ -57,6 +54,16 @@ class FirestoreMomentRemoteDataSource(
             documentId = dto.id,
             data = dto,
             serializer = MomentDto.serializer()
+        )
+    }
+
+    suspend fun deleteMoment(id: String): Result<Unit, AppError> {
+        val collectionPath = momentsCollectionPath()
+            ?: return Result.Error(AppError.Network(NetworkErrorType.UNAUTHORIZED))
+
+        return firestoreDataSource.deleteDocument(
+            collectionPath = collectionPath,
+            documentId = id
         )
     }
 }

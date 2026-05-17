@@ -13,42 +13,27 @@ import com.bksd.journal.domain.model.Moment
 import com.bksd.journal.domain.repository.MomentRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.atStartOfDayIn
-import kotlin.time.Duration.Companion.days
 
 class MediatorMomentRepository(
     private val momentDao: MomentDao,
     private val remoteDataSource: FirestoreMomentRemoteDataSource,
-    private val timeZone: TimeZone,
     private val dtoToDomain: MomentDtoMapper,
     private val domainToDto: MomentToDtoMapper,
     private val entityToDomain: EntityToDomainMapper,
     private val domainToEntity: DomainToEntityMapper
 ) : MomentRepository {
 
-    override fun observeMoments(date: LocalDate): Flow<List<Moment>> {
-        val startMs = date.atStartOfDayIn(timeZone).toEpochMilliseconds()
-        val endMs = date.atStartOfDayIn(timeZone).plus(1.days).toEpochMilliseconds()
-
-        return momentDao.observeByDateRange(startMs, endMs)
+    override fun observeMomentsPaged(limit: Int, offset: Int): Flow<List<Moment>> {
+        return momentDao.observePaged(limit, offset)
             .map { entities -> entities.map { entityToDomain.map(it) } }
     }
 
-    override fun observeMomentsByRange(
-        startDate: LocalDate,
-        endDate: LocalDate
-    ): Flow<List<Moment>> {
-        val startMs = startDate.atStartOfDayIn(timeZone).toEpochMilliseconds()
-        val endMs = endDate.atStartOfDayIn(timeZone).plus(1.days).toEpochMilliseconds()
-
-        return momentDao.observeByDateRange(startMs, endMs)
-            .map { entities -> entities.map { entityToDomain.map(it) } }
-    }
-
-    override suspend fun syncMoments(date: LocalDate): Result<Unit, AppError> {
-        return when (val result = remoteDataSource.fetchMoments(date)) {
+    /**
+     * Fetches [limit] moments from Firestore starting at [offset],
+     * ordered by createdAtMs descending, and upserts them into Room.
+     */
+    override suspend fun syncMomentsPaged(limit: Int, offset: Int): Result<Unit, AppError> {
+        return when (val result = remoteDataSource.fetchMomentsPaged(limit, offset)) {
             is Result.Success -> {
                 val entities = result.data.map { dto ->
                     domainToEntity.map(dtoToDomain.map(dto))
@@ -100,6 +85,19 @@ class MediatorMomentRepository(
             is Result.Error -> {
                 // Local write persists, remote sync failed — data is still saved locally
                 Logger.w(TAG) { "Remote sync failed for moment ${moment.id}: ${result.error}" }
+                Result.Success(Unit)
+            }
+        }
+    }
+    override suspend fun deleteMoment(id: String): Result<Unit, AppError> {
+        // Delete locally first (offline-first)
+        momentDao.deleteById(id)
+
+        // Attempt remote delete
+        return when (val result = remoteDataSource.deleteMoment(id)) {
+            is Result.Success -> Result.Success(Unit)
+            is Result.Error -> {
+                Logger.w(TAG) { "Remote delete failed for moment $id: ${result.error}" }
                 Result.Success(Unit)
             }
         }

@@ -9,7 +9,7 @@ data class MomentDto(
     val title: String,
     val body: String? = null,
     val createdAtMs: Long,
-    val mood: String,
+    val moods: List<String> = emptyList(),
     val tags: List<String> = emptyList(),
     val location: LocationDto? = null,
     val attachments: List<AttachmentDto> = emptyList()

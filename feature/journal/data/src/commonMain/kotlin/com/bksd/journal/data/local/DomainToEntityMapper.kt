@@ -19,7 +19,7 @@ class DomainToEntityMapper(
         title = input.title,
         body = input.body,
         createdAtMs = input.createdAt.toEpochMilliseconds(),
-        mood = input.mood.name,
+        moods = json.encodeToString(input.moods.map { it.name }),
         tags = json.encodeToString(input.tags),
         locationLatitude = input.location?.latitude,
         locationLongitude = input.location?.longitude,

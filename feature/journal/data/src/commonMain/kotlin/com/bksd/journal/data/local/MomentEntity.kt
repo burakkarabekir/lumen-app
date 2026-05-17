@@ -9,7 +9,7 @@ data class MomentEntity(
     val title: String,
     val body: String?,
     val createdAtMs: Long,
-    val mood: String,
+    val moods: String,
     val tags: String,
     val locationLatitude: Double?,
     val locationLongitude: Double?,

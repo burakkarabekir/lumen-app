@@ -16,7 +16,7 @@ class MomentToDtoMapper : Mapper<Moment, MomentDto> {
         title = input.title,
         body = input.body,
         createdAtMs = input.createdAt.toEpochMilliseconds(),
-        mood = input.mood.name,
+        moods = input.moods.map { it.name },
         tags = input.tags,
         location = input.location?.toDto(),
         attachments = input.attachments.map { it.toDto() }

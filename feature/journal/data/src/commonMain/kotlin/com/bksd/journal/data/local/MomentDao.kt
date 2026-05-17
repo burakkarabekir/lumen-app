@@ -11,6 +11,9 @@ interface MomentDao {
     @Query("SELECT * FROM moments WHERE createdAtMs >= :startMs AND createdAtMs < :endMs ORDER BY createdAtMs DESC")
     fun observeByDateRange(startMs: Long, endMs: Long): Flow<List<MomentEntity>>
 
+    @Query("SELECT * FROM moments ORDER BY createdAtMs DESC LIMIT :limit OFFSET :offset")
+    fun observePaged(limit: Int, offset: Int): Flow<List<MomentEntity>>
+
     @Query("SELECT * FROM moments WHERE id = :id")
     suspend fun getById(id: String): MomentEntity?
 

@@ -32,12 +32,21 @@ class EntityToDomainMapper(
             emptyList()
         }
 
+        val moodsList: List<Mood> = try {
+            val names: List<String> = json.decodeFromString(input.moods)
+            names.mapNotNull { name -> Mood.entries.find { it.name == name } }
+        } catch (_: Exception) {
+            // Backward compat: try parsing as a single mood string
+            val singleMood = Mood.entries.find { it.name == input.moods }
+            if (singleMood != null) listOf(singleMood) else emptyList()
+        }
+
         return Moment(
             id = input.id,
             title = input.title,
             body = input.body,
             createdAt = Instant.fromEpochMilliseconds(input.createdAtMs),
-            mood = Mood.entries.find { it.name == input.mood } ?: Mood.CALM,
+            moods = moodsList,
             tags = tagsList,
             attachments = attachmentDtos.map { it.toAttachment() },
             location = if (input.locationLatitude != null && input.locationLongitude != null) {
