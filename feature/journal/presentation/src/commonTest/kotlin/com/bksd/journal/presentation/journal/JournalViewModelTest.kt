@@ -4,10 +4,13 @@ import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.Result
 import com.bksd.core.domain.model.PlaybackState
 import com.bksd.core.domain.storage.AudioPlayer
+import com.bksd.core.domain.storage.SessionStorage
+import com.bksd.journal.domain.model.JournalFilter
 import com.bksd.journal.domain.model.Moment
 import com.bksd.journal.domain.model.Mood
 import com.bksd.journal.domain.repository.MomentRepository
-import com.bksd.journal.domain.usecase.GetMomentsByRangeUseCase
+import com.bksd.journal.domain.usecase.DeleteMomentUseCase
+import com.bksd.journal.domain.usecase.GetPagedMomentsUseCase
 import com.bksd.journal.domain.usecase.SyncMomentsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -30,8 +33,9 @@ class JournalViewModelTest {
     private val testDispatcher = UnconfinedTestDispatcher()
 
     private lateinit var viewModel: JournalViewModel
-    private lateinit var getMomentsByRangeUseCase: GetMomentsByRangeUseCase
+    private lateinit var getPagedMomentsUseCase: GetPagedMomentsUseCase
     private lateinit var syncMomentsUseCase: SyncMomentsUseCase
+    private lateinit var deleteMomentUseCase: DeleteMomentUseCase
 
     private val testClock = object : Clock {
         override fun now() = kotlin.time.Instant.parse("2024-05-01T10:00:00Z")
@@ -51,40 +55,53 @@ class JournalViewModelTest {
         override fun release() {}
     }
 
+    private val fakeSessionStorage = object : SessionStorage {
+        override fun observeAuthState() = flowOf(true)
+        override fun isLoggedIn() = true
+        override fun getProfilePhotoUrl(): String? = null
+        override suspend fun setRememberMe(enabled: Boolean) {}
+        override fun isRememberMeEnabled() = flowOf(false)
+    }
+
     @BeforeTest
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
 
         val fakeRepository = object : MomentRepository {
-            override fun observeMoments(date: LocalDate) = flowOf(emptyList<Moment>())
-            override fun observeMomentsByRange(startDate: LocalDate, endDate: LocalDate) =
+            override fun observeMomentsPaged(limit: Int, offset: Int) =
                 flowOf(emptyList<Moment>())
 
-            override suspend fun syncMoments(date: LocalDate): Result<Unit, AppError> =
+            override suspend fun syncMomentsPaged(limit: Int, offset: Int): Result<Unit, AppError> =
                 Result.Success(Unit)
 
             override suspend fun getMoment(id: String): Result<Moment, AppError> = Result.Success(
                 Moment(
                     id = "1",
+                    title = "Test Moment",
                     body = null,
                     createdAt = testClock.now(),
-                    mood = Mood.REFLECTIVE
+                    moods = listOf(Mood.REFLECTIVE)
                 )
             )
 
             override suspend fun saveMoment(moment: Moment): Result<Unit, AppError> =
                 Result.Success(Unit)
+
+            override suspend fun deleteMoment(id: String): Result<Unit, AppError> =
+                Result.Success(Unit)
         }
 
-        getMomentsByRangeUseCase = GetMomentsByRangeUseCase(fakeRepository)
+        getPagedMomentsUseCase = GetPagedMomentsUseCase(fakeRepository)
         syncMomentsUseCase = SyncMomentsUseCase(fakeRepository)
 
         viewModel = JournalViewModel(
-            getMomentsByRangeUseCase = getMomentsByRangeUseCase,
+            getPagedMomentsUseCase = getPagedMomentsUseCase,
             syncMomentsUseCase = syncMomentsUseCase,
+            sessionStorage = fakeSessionStorage,
             clock = testClock,
             timeZone = testTimeZone,
-            audioPlayer = fakeAudioPlayer
+            audioPlayer = fakeAudioPlayer,
+            deleteMomentUseCase = deleteMomentUseCase
         )
     }
 
@@ -94,15 +111,20 @@ class JournalViewModelTest {
     }
 
     @Test
-    fun testInitialState_selectedDateIsCorrect() {
+    fun testInitialState_visibleDateIsCorrect() {
         val expectedDate = LocalDate(2024, 5, 1)
-        assertEquals(expectedDate, viewModel.state.value.selectedDate)
+        assertEquals(expectedDate, viewModel.state.value.visibleDate)
     }
 
     @Test
-    fun testOnDateSelect_updatesState() {
-        val newDate = LocalDate(2024, 5, 1)
-        viewModel.onAction(JournalAction.OnDateSelect(newDate))
-        assertEquals(newDate, viewModel.state.value.selectedDate)
+    fun testOnFilterSelect_updatesState() {
+        viewModel.onAction(JournalAction.OnFilterSelect(JournalFilter.PHOTOS))
+        assertEquals(JournalFilter.PHOTOS, viewModel.state.value.selectedFilter)
+    }
+
+    @Test
+    fun testOnSearchQueryChange_updatesState() {
+        viewModel.onAction(JournalAction.OnSearchQueryChange("test query"))
+        assertEquals("test query", viewModel.state.value.searchQuery)
     }
 }
