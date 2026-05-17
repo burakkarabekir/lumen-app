@@ -137,6 +137,7 @@ internal fun ProfileScreen(
                 isPremium = state.isPremium,
                 avatarUrl = state.photoUrl,
                 isAvatarLoading = state.isAvatarLoading,
+                onAvatarClick = { /* Already on profile screen */ },
                 onEditAvatarClick = { onAction(ProfileAction.OnUploadPictureClick) },
                 modifier = Modifier.padding(16.dp)
             )
