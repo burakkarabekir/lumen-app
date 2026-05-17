@@ -31,6 +31,7 @@ dependencyResolutionManagement {
 
 include(":composeApp")
 include(":androidApp")
+include(":iosApp")
 include(":core:presentation")
 include(":core:domain")
 include(":core:design_system")
