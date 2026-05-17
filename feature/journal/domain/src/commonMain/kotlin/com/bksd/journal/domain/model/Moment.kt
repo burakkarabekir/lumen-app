@@ -9,7 +9,7 @@ data class Moment(
     val title: String,
     val body: String?,
     val createdAt: Instant,
-    val mood: Mood,
+    val moods: List<Mood> = emptyList(),
     val tags: List<String> = emptyList(),
     val attachments: List<Attachment> = emptyList(),
     val location: LocationData? = null,
@@ -17,9 +17,19 @@ data class Moment(
 )
 
 enum class Mood(val label: String, val emoji: String) {
+    HAPPY("Happy", "😊"),
+    CALM("Calm", "🧘"),
     INSPIRED("Inspired", "✨"),
-    CALM("Calm", "😊"),
-    REFLECTIVE("Reflective", "🤔"),
     ENERGETIC("Energetic", "⚡"),
-    TIRED("Tired", "😫")
+    REFLECTIVE("Reflective", "🤔"),
+    GRATEFUL("Grateful", "🙏"),
+    CREATIVE("Creative", "🎨"),
+    FOCUSED("Focused", "🎯"),
+    TIRED("Tired", "😫"),
+    ANXIOUS("Anxious", "😰"),
+    ROMANTIC("Romantic", "💕"),
+    MELANCHOLIC("Melancholic", "🌧️"),
+    PROUD("Proud", "🏆"),
+    HOPEFUL("Hopeful", "🌱"),
+    NOSTALGIC("Nostalgic", "📷")
 }

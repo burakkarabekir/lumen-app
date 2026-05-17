@@ -1,15 +1,15 @@
 package com.bksd.journal.domain.di
 
+import com.bksd.journal.domain.usecase.DeleteMomentUseCase
 import com.bksd.journal.domain.usecase.GetMomentUseCase
-import com.bksd.journal.domain.usecase.GetMomentsByDateUseCase
-import com.bksd.journal.domain.usecase.GetMomentsByRangeUseCase
+import com.bksd.journal.domain.usecase.GetPagedMomentsUseCase
 import com.bksd.journal.domain.usecase.SyncMomentsUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 val journalDomainModule = module {
-    factoryOf(::GetMomentsByDateUseCase)
-    factoryOf(::GetMomentsByRangeUseCase)
+    factoryOf(::GetPagedMomentsUseCase)
     factoryOf(::GetMomentUseCase)
+    factoryOf(::DeleteMomentUseCase)
     factoryOf(::SyncMomentsUseCase)
 }
