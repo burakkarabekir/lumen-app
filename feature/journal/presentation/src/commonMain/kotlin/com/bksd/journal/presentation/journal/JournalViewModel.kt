@@ -116,6 +116,12 @@ class JournalViewModel(
                     }
                 }
             }
+
+            is JournalAction.OnEditMoment -> {
+                sendEvent(JournalEvent.NavigateToDetail(action.id))
+            }
+
+            is JournalAction.OnFavoriteToggle -> Unit
         }
     }
 

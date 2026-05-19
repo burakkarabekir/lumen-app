@@ -206,6 +206,14 @@ fun JournalScreen(
                                         }
                                     },
                                     onAudioPauseClick = { onAction(JournalAction.OnAudioPauseClick) },
+                                    onEditClick = { onAction(JournalAction.OnEditMoment(moment.id)) },
+                                    onFavoriteToggleClick = {
+                                        onAction(
+                                            JournalAction.OnFavoriteToggle(
+                                                moment.id
+                                            )
+                                        )
+                                    },
                                     onDeleteClick = { onAction(JournalAction.OnDeleteMoment(moment.id)) },
                                     onClick = { onAction(JournalAction.OnMomentClick(moment.id)) }
                                 )

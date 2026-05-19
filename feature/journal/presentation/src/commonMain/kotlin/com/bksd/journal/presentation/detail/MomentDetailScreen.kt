@@ -4,7 +4,6 @@ package com.bksd.journal.presentation.detail
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
@@ -22,8 +20,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.IosShare
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -34,19 +32,17 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bksd.core.design_system.component.layout.AppBarStyle
+import com.bksd.core.design_system.component.layout.AppTopBar
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.domain.location.LocationData
 import com.bksd.core.presentation.util.ObserveAsEvents
@@ -54,7 +50,6 @@ import com.bksd.journal.domain.model.Moment
 import com.bksd.journal.domain.model.Mood
 import com.bksd.journal.presentation.Res
 import com.bksd.journal.presentation.detail.components.DetailBottomActionBar
-import com.bksd.journal.presentation.detail.components.DetailHeroSection
 import com.bksd.journal.presentation.detail.components.DetailJournalEntryCard
 import com.bksd.journal.presentation.detail.components.MomentDetailMetadataRow
 import com.bksd.journal.presentation.journal.components.MoodTag
@@ -92,29 +87,45 @@ fun MomentDetailRoot(
     )
 }
 
-private val HeroHeight = 280.dp
-private const val TITLE_COLLAPSE_THRESHOLD_FACTOR = 0.6f
-private const val TOOLBAR_SHOW_THRESHOLD = 0.85f
-
 @Composable
 fun MomentDetailScreen(
     state: MomentDetailState,
     formatter: MomentFormatter,
     onAction: (MomentDetailAction) -> Unit
 ) {
-    val scrollState = rememberScrollState()
-    val density = LocalDensity.current
-    val heroHeightPx = with(density) { HeroHeight.toPx() }
-    val collapseThreshold = heroHeightPx * TITLE_COLLAPSE_THRESHOLD_FACTOR
-
-    val titleCollapseProgress by remember {
-        derivedStateOf {
-            (scrollState.value / collapseThreshold).coerceIn(0f, 1f)
-        }
-    }
-
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
+        topBar = {
+            AppTopBar(
+                title = state.moment?.title?.ifEmpty {
+                    stringResource(Res.string.my_moment_fallback)
+                },
+                style = AppBarStyle.Child,
+                navigationIcon = {
+                    IconButton(
+                        onClick = { onAction(MomentDetailAction.OnNavigateBack) }
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = null
+                        )
+                    }
+                },
+                actions = {
+                    if (!state.isEditing) {
+                        IconButton(
+                            onClick = { onAction(MomentDetailAction.OnShareClick) }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.IosShare,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                    }
+                }
+            )
+        },
         bottomBar = {
             if (state.moment != null) {
                 DetailBottomActionBar(
@@ -123,116 +134,46 @@ fun MomentDetailScreen(
                     onDeleteClick = { onAction(MomentDetailAction.OnDeleteClick) },
                     onEditClick = { onAction(MomentDetailAction.OnEditClick) },
                     onSaveClick = { onAction(MomentDetailAction.OnSaveChanges) },
-                    onShareClick = { onAction(MomentDetailAction.OnShareClick) },
+                    onFavoriteClick = { onAction(MomentDetailAction.OnFavoriteToggle) },
                     modifier = Modifier.wrapContentWidth(align = Alignment.CenterHorizontally)
                 )
             }
         }
     ) { paddingValues ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = paddingValues.calculateBottomPadding())
-        ) {
-            when {
-                state.isLoading -> {
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center),
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
-
-                state.error != null -> {
-                    Text(
-                        text = state.error.asString(),
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(horizontal = 24.dp)
-                    )
-                }
-
-                state.moment != null -> {
-                    MomentDetailContent(
-                        state = state,
-                        moment = state.moment,
-                        formatter = formatter,
-                        titleCollapseProgressFn = { titleCollapseProgress },
-                        onAction = onAction,
-                        modifier = Modifier.verticalScroll(scrollState)
-                    )
-
-                    CollapsedToolbar(
-                        title = state.moment.title.ifEmpty { stringResource(Res.string.my_moment_fallback) },
-                        progressFn = { titleCollapseProgress },
-                        showMenuIcon = !state.isEditing,
-                        onBackClick = { onAction(MomentDetailAction.OnNavigateBack) },
-                        onMenuClick = { onAction(MomentDetailAction.OnMenuClick) }
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun CollapsedToolbar(
-    title: String,
-    progressFn: () -> Float,
-    showMenuIcon: Boolean,
-    onBackClick: () -> Unit,
-    onMenuClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val toolbarHeightPx = with(LocalDensity.current) { 64.dp.toPx() }
-
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .graphicsLayer {
-                val progress = progressFn()
-                val toolbarAlpha =
-                    ((progress - TOOLBAR_SHOW_THRESHOLD) / (1f - TOOLBAR_SHOW_THRESHOLD))
-                        .coerceIn(0f, 1f)
-                alpha = toolbarAlpha
-                translationY = (1f - toolbarAlpha) * -toolbarHeightPx * 0.3f
-            }
-            .background(MaterialTheme.colorScheme.surface)
-            .statusBarsPadding()
-            .height(64.dp)
-            .padding(horizontal = 16.dp),
-        contentAlignment = Alignment.CenterStart
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = onBackClick) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurface
+        when {
+            state.isLoading -> {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .wrapContentWidth(Alignment.CenterHorizontally)
+                        .padding(paddingValues),
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
 
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 1,
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 8.dp)
-            )
+            state.error != null -> {
+                Text(
+                    text = state.error.asString(),
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .padding(horizontal = 24.dp)
+                        .wrapContentWidth(Alignment.CenterHorizontally)
+                )
+            }
 
-            if (showMenuIcon) {
-                IconButton(onClick = onMenuClick) {
-                    Icon(
-                        imageVector = Icons.Default.MoreVert,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurface
-                    )
-                }
+            state.moment != null -> {
+                MomentDetailContent(
+                    state = state,
+                    moment = state.moment,
+                    formatter = formatter,
+                    onAction = onAction,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .verticalScroll(rememberScrollState())
+                )
             }
         }
     }
@@ -243,18 +184,10 @@ private fun MomentDetailContent(
     state: MomentDetailState,
     moment: Moment,
     formatter: MomentFormatter,
-    titleCollapseProgressFn: () -> Float,
     onAction: (MomentDetailAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier.fillMaxSize()) {
-        DetailHeroSection(
-            heroHeight = HeroHeight,
-            showMenuIcon = !state.isEditing,
-            onBackClick = { onAction(MomentDetailAction.OnNavigateBack) },
-            onMenuClick = { onAction(MomentDetailAction.OnMenuClick) }
-        )
-
+    Column(modifier = modifier) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -310,14 +243,7 @@ private fun MomentDetailContent(
                     text = moment.title.ifEmpty { stringResource(Res.string.my_moment_fallback) },
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.graphicsLayer {
-                        val progress = titleCollapseProgressFn()
-                        alpha = 1f - progress
-                        scaleX = 1f - (progress * 0.15f)
-                        scaleY = 1f - (progress * 0.15f)
-                        translationY = -progress * 40f
-                    }
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
 

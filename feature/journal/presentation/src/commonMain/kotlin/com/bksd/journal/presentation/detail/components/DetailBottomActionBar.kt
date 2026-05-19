@@ -16,14 +16,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.IosShare
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -32,7 +28,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bksd.core.design_system.component.button.AppButton
+import com.bksd.core.design_system.component.button.AppButtonStyle
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.journal.presentation.Res
+import com.bksd.journal.presentation.edit
+import com.bksd.journal.presentation.save_changes
+import org.jetbrains.compose.resources.stringResource
 
 private val BarShape = RoundedCornerShape(32.dp)
 private val ButtonShape = RoundedCornerShape(22.dp)
@@ -45,7 +47,7 @@ fun DetailBottomActionBar(
     onDeleteClick: () -> Unit,
     onEditClick: () -> Unit,
     onSaveClick: () -> Unit,
-    onShareClick: () -> Unit,
+    onFavoriteClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val sideSlotWidth by animateDpAsState(
@@ -73,7 +75,7 @@ fun DetailBottomActionBar(
     ) {
         Row(
             modifier = Modifier
-                .padding(horizontal = 40.dp)
+                .padding(horizontal = 64.dp)
                 .fillMaxWidth()
                 .height(56.dp)
                 .clip(BarShape)
@@ -114,42 +116,27 @@ fun DetailBottomActionBar(
                     .background(MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.15f))
             )
 
-            // Center: Edit / Save Changes button — fills remaining space
-            Button(
+            AppButton(
+                text = when {
+                    isEditing -> stringResource(Res.string.save_changes)
+                    else -> stringResource(Res.string.edit)
+                },
                 onClick = if (isEditing) onSaveClick else onEditClick,
                 enabled = !isSaving,
+                isLoading = isSaving,
                 modifier = Modifier
                     .weight(1f)
-                    .height(44.dp)
                     .padding(horizontal = 4.dp),
-                shape = ButtonShape,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                )
-            ) {
-                if (isSaving) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(18.dp),
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        strokeWidth = 2.dp
-                    )
-                } else {
+                style = AppButtonStyle.PRIMARY,
+                cornerRadius = 24.dp,
+                leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Edit,
                         contentDescription = null,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(16.dp)
                     )
                 }
-                Text(
-                    text = when {
-                        isSaving -> "Saving…"
-                        isEditing -> "Save Changes"
-                        else -> "Edit"
-                    },
-                    modifier = Modifier.padding(start = 8.dp),
-                    style = MaterialTheme.typography.labelLarge
-                )
-            }
+            )
 
             // Right divider
             Box(
@@ -160,7 +147,7 @@ fun DetailBottomActionBar(
                     .background(MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.15f))
             )
 
-            // Right slot: Share icon
+            // Right slot: Favorite icon
             Box(
                 modifier = Modifier
                     .width(sideSlotWidth)
@@ -168,9 +155,9 @@ fun DetailBottomActionBar(
                 contentAlignment = Alignment.Center
             ) {
                 if (sideSlotWidth > 0.dp) {
-                    IconButton(onClick = onShareClick) {
+                    IconButton(onClick = onFavoriteClick) {
                         Icon(
-                            imageVector = Icons.Default.IosShare,
+                            imageVector = Icons.Default.FavoriteBorder,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(22.dp)
@@ -192,7 +179,7 @@ private fun DetailBottomActionBarPreview() {
             onDeleteClick = {},
             onEditClick = {},
             onSaveClick = {},
-            onShareClick = {}
+            onFavoriteClick = {}
         )
     }
 }
@@ -207,7 +194,7 @@ private fun DetailBottomActionBarEditPreview() {
             onDeleteClick = {},
             onEditClick = {},
             onSaveClick = {},
-            onShareClick = {}
+            onFavoriteClick = {}
         )
     }
 }

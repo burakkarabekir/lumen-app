@@ -84,6 +84,7 @@ class MomentDetailViewModel(
             MomentDetailAction.OnCancelEdit -> exitEditMode()
             MomentDetailAction.OnDeleteClick -> handleDelete()
             MomentDetailAction.OnShareClick -> Unit
+            MomentDetailAction.OnFavoriteToggle -> Unit
             MomentDetailAction.OnToggleBodyExpand -> isBodyExpanded.update { !it }
             is MomentDetailAction.OnTitleChange -> editTitle.update { action.title }
             is MomentDetailAction.OnBodyChange -> editBody.update { action.body }

@@ -62,4 +62,8 @@
     <string name="section_yesterday">Yesterday</string>
     <string name="section_days_ago">%1$s days ago</string>
     <string name="section_weeks_ago">%1$s weeks ago</string>
+
+    <string name="edit_entry">Edit Entry</string>
+    <string name="add_favorite">Add Favorite</string>
+    <string name="remove_favorite">Remove Favorite</string>
 </resources>

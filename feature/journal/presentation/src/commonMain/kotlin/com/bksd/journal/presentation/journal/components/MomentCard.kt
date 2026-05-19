@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.bksd.journal.presentation.journal.components
 
 import androidx.compose.animation.animateContentSize
@@ -7,7 +9,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,8 +24,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreHoriz
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -43,7 +44,6 @@ import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -82,29 +82,23 @@ fun MomentCard(
     audioCurrentPosition: String = "0:00",
     onAudioPlayClick: () -> Unit = {},
     onAudioPauseClick: () -> Unit = {},
+    onEditClick: () -> Unit = {},
+    onFavoriteToggleClick: () -> Unit = {},
     onDeleteClick: () -> Unit = {},
-    onMoreClick: () -> Unit = {},
 ) {
     val formattedDate = remember(moment.createdAt) {
         formatCardDate(moment.createdAt, timeZone)
     }
 
     val hasMoods = moment.moods.isNotEmpty()
-    var swipeState by remember { mutableStateOf(SwipeState.NONE) }
-    val transition = updateTransition(targetState = swipeState, label = "SwipeReveal")
+    var moodPanelExpanded by remember { mutableStateOf(false) }
+    val transition = updateTransition(targetState = moodPanelExpanded, label = "MoodReveal")
 
-    // ── Mood colors for the strip (use vibrant text color, not pastel bg) ──
     val extendedColors = MaterialTheme.colorScheme.extended
     val moodColorList = remember(moment.moods, extendedColors) {
         moment.moods.map { moodColors(it, extendedColors).second.copy(alpha = 0.5f) }
     }
     val primaryMoodColor = moodColorList.firstOrNull() ?: Color.Transparent
-
-    // ── Animated properties (unified ease-in-out curve) ──
-    // All properties share the same tween spec for perfectly synchronized phasing:
-    //   Phase 1 (0–30%):  Slow start — acknowledges the user's touch
-    //   Phase 2 (30–70%): Rapid change — panel expands, tags fade in
-    //   Phase 3 (70–100%): Smooth deceleration — blur & gradient settle
 
     val panelWidth by transition.animateDp(
         transitionSpec = {
@@ -114,17 +108,7 @@ fun MomentCard(
             )
         },
         label = "PanelWidth"
-    ) { state -> if (state == SwipeState.MOODS) MomentCardDefaults.PANEL_EXPANDED_WIDTH_DP.dp else 0.dp }
-
-    val actionPanelWidth by transition.animateDp(
-        transitionSpec = {
-            tween(
-                durationMillis = MomentCardDefaults.REVEAL_DURATION_MS,
-                easing = MomentCardDefaults.RevealEasing
-            )
-        },
-        label = "ActionPanelWidth"
-    ) { state -> if (state == SwipeState.ACTIONS) MomentCardDefaults.ACTION_PANEL_WIDTH_DP.dp else 0.dp }
+    ) { expanded -> if (expanded) MomentCardDefaults.PANEL_EXPANDED_WIDTH_DP.dp else 0.dp }
 
     val contentBlur by transition.animateDp(
         transitionSpec = {
@@ -134,7 +118,7 @@ fun MomentCard(
             )
         },
         label = "ContentBlur"
-    ) { state -> if (state != SwipeState.NONE) 6.dp else 0.dp }
+    ) { expanded -> if (expanded) 6.dp else 0.dp }
 
     val gradientAlpha by transition.animateFloat(
         transitionSpec = {
@@ -144,7 +128,7 @@ fun MomentCard(
             )
         },
         label = "GradientAlpha"
-    ) { state -> if (state == SwipeState.MOODS) 0.15f else 0f }
+    ) { expanded -> if (expanded) 0.15f else 0f }
 
     val revealProgress by transition.animateFloat(
         transitionSpec = {
@@ -154,7 +138,9 @@ fun MomentCard(
             )
         },
         label = "RevealProgress"
-    ) { state -> if (state == SwipeState.MOODS) 1f else 0f }
+    ) { expanded -> if (expanded) 1f else 0f }
+
+    var isActionsSheetVisible by remember { mutableStateOf(false) }
 
     Box(
         modifier = modifier
@@ -167,22 +153,6 @@ fun MomentCard(
                     easing = MomentCardDefaults.RevealEasing
                 )
             )
-            .then(
-                Modifier.pointerInput(Unit) {
-                    var startState = SwipeState.NONE
-                    detectHorizontalDragGestures(
-                        onDragStart = { startState = swipeState }
-                    ) { _, dragAmount ->
-                        if (dragAmount > MomentCardDefaults.DRAG_THRESHOLD) {
-                            if (startState == SwipeState.ACTIONS) swipeState = SwipeState.NONE
-                            else if (hasMoods) swipeState = SwipeState.MOODS
-                        } else if (dragAmount < -MomentCardDefaults.DRAG_THRESHOLD) {
-                            swipeState = if (startState == SwipeState.MOODS) SwipeState.NONE
-                            else SwipeState.ACTIONS
-                        }
-                    }
-                }
-            )
     ) {
         Row(
             modifier = Modifier
@@ -191,18 +161,13 @@ fun MomentCard(
                 .padding(2.dp)
                 .clip(RoundedCornerShape(14.dp))
         ) {
-            // ── 1. Mood Color Strip (pinned left, always visible) ──
             if (hasMoods) {
                 MoodColorStrip(
                     colors = moodColorList.toPersistentList(),
-                    onClick = {
-                        swipeState =
-                            if (swipeState == SwipeState.MOODS) SwipeState.NONE else SwipeState.MOODS
-                    }
+                    onClick = { moodPanelExpanded = !moodPanelExpanded }
                 )
             }
 
-            // ── 2. Expandable Mood Panel ──
             if (hasMoods && panelWidth > 0.dp) {
                 MoodRevealPanel(
                     moods = moment.moods,
@@ -211,7 +176,6 @@ fun MomentCard(
                 )
             }
 
-            // ── 3. Card Content (blurred when mood panel is expanded) ──
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -275,20 +239,11 @@ fun MomentCard(
                 AppDivider()
                 CardFooter(
                     formattedDate = formattedDate,
-                    onMoreClick = onMoreClick
-                )
-            }
-
-            // ── 4. Quick Action Panel (revealed from right) ──
-            if (actionPanelWidth > 0.dp) {
-                ActionRevealPanel(
-                    panelWidth = actionPanelWidth,
-                    onDeleteClick = onDeleteClick
+                    onMoreClick = { isActionsSheetVisible = true }
                 )
             }
         }
 
-        // ── 5. Gradient wash overlay (drawWithCache avoids recomposition) ──
         if (gradientAlpha > 0f) {
             val density = LocalDensity.current
             val gradientEndX = with(density) {
@@ -312,10 +267,15 @@ fun MomentCard(
             )
         }
     }
-}
 
-private enum class SwipeState {
-    NONE, MOODS, ACTIONS
+    if (isActionsSheetVisible) {
+        MomentActionsSheet(
+            onDismiss = { isActionsSheetVisible = false },
+            onEditClick = onEditClick,
+            onFavoriteClick = onFavoriteToggleClick,
+            onDeleteClick = onDeleteClick
+        )
+    }
 }
 
 @Composable
@@ -386,34 +346,6 @@ private fun MoodRevealPanel(
                     overflow = TextOverflow.Ellipsis
                 )
             }
-        }
-    }
-}
-
-@Composable
-private fun ActionRevealPanel(
-    panelWidth: Dp,
-    onDeleteClick: () -> Unit
-) {
-    Box(
-        modifier = Modifier
-            .width(panelWidth)
-            .fillMaxHeight()
-            .clipToBounds(),
-        contentAlignment = Alignment.Center
-    ) {
-        IconButton(
-            onClick = onDeleteClick,
-            modifier = Modifier
-                .padding(horizontal = 12.dp)
-                .size(48.dp)
-                .background(MaterialTheme.colorScheme.errorContainer, RoundedCornerShape(12.dp))
-        ) {
-            Icon(
-                imageVector = Icons.Default.Delete,
-                contentDescription = "Delete Moment",
-                tint = MaterialTheme.colorScheme.onErrorContainer
-            )
         }
     }
 }
