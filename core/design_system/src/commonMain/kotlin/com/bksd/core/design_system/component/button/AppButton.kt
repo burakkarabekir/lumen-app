@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.destructiveSecondaryOutline
@@ -35,6 +36,7 @@ fun AppButton(
     style: AppButtonStyle = AppButtonStyle.PRIMARY,
     enabled: Boolean = true,
     isLoading: Boolean = false,
+    cornerRadius: Dp = 12.dp,
     leadingIcon: @Composable (() -> Unit)? = null,
 ) {
     val colors = when (style) {
@@ -116,7 +118,7 @@ fun AppButton(
         colors = colors,
         enabled = enabled && !isLoading,
         border = border,
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(cornerRadius),
     ) {
         Box(
             contentAlignment = Alignment.Center,

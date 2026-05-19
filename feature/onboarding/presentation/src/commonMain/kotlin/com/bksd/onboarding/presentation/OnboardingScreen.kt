@@ -19,8 +19,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -36,19 +34,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bksd.core.design_system.component.button.AppButton
+import com.bksd.core.design_system.component.button.AppButtonStyle
 import com.bksd.core.design_system.theme.LumenBase500
 import com.bksd.core.design_system.theme.LumenBase900
 import com.bksd.core.design_system.theme.LumenBrand500
-import com.bksd.core.design_system.theme.LumenBrand600
 import com.bksd.core.design_system.theme.LumenBrand700
 import com.bksd.core.design_system.theme.LumenRadius
 import com.bksd.core.design_system.theme.LumenSpacing
 import com.bksd.core.presentation.util.ObserveAsEvents
-import com.bksd.onboarding.presentation.Res
-import com.bksd.onboarding.presentation.app_name_momentum
-import com.bksd.onboarding.presentation.btn_get_started
-import com.bksd.onboarding.presentation.btn_next
-import com.bksd.onboarding.presentation.skip
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -79,7 +73,7 @@ internal fun OnboardingScreen(
     onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val step = onboardingSteps[state.currentStep]
+    onboardingSteps[state.currentStep]
 
     Column(
         modifier = modifier
@@ -211,7 +205,10 @@ internal fun OnboardingScreen(
         )
 
         // Next / Get Started button
-        Button(
+        AppButton(
+            text = if (state.isLastStep) stringResource(Res.string.btn_get_started) else stringResource(
+                Res.string.btn_next
+            ),
             onClick = {
                 if (state.isLastStep) {
                     onAction(OnboardingAction.Complete)
@@ -222,17 +219,8 @@ internal fun OnboardingScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
-            shape = RoundedCornerShape(LumenRadius.full),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = LumenBrand600,
-            ),
-        ) {
-            Text(
-                text = if (state.isLastStep) stringResource(Res.string.btn_get_started) else stringResource(Res.string.btn_next),
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onPrimary,
-            )
-        }
+            style = AppButtonStyle.PRIMARY
+        )
 
         Spacer(modifier = Modifier.height(LumenSpacing.xxxl))
     }

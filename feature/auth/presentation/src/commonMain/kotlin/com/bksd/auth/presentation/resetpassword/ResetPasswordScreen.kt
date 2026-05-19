@@ -12,9 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -29,12 +26,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.bksd.core.design_system.theme.LumenBase600
-import com.bksd.core.design_system.theme.LumenBrand500
-import com.bksd.core.design_system.theme.LumenBrand600
-import com.bksd.core.design_system.theme.LumenRadius
-import com.bksd.core.design_system.theme.LumenSpacing
-import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.auth.presentation.Res
 import com.bksd.auth.presentation.back_to_sign_in
 import com.bksd.auth.presentation.btn_send_link
@@ -42,6 +33,13 @@ import com.bksd.auth.presentation.label_email
 import com.bksd.auth.presentation.reset_password_description
 import com.bksd.auth.presentation.reset_password_title
 import com.bksd.auth.presentation.reset_success_message
+import com.bksd.core.design_system.component.button.AppButton
+import com.bksd.core.design_system.component.button.AppButtonStyle
+import com.bksd.core.design_system.theme.LumenBase600
+import com.bksd.core.design_system.theme.LumenBrand500
+import com.bksd.core.design_system.theme.LumenRadius
+import com.bksd.core.design_system.theme.LumenSpacing
+import com.bksd.core.presentation.util.ObserveAsEvents
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -144,31 +142,16 @@ internal fun ResetPasswordScreen(
             )
         }
 
-        Button(
+        AppButton(
+            text = stringResource(Res.string.btn_send_link),
             onClick = { onAction(ResetPasswordAction.OnSubmitClick) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
             enabled = state.isSubmitEnabled,
-            shape = RoundedCornerShape(LumenRadius.full),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = LumenBrand600,
-                disabledContainerColor = LumenBrand600.copy(alpha = 0.5f)
-            )
-        ) {
-            if (state.isLoading) {
-                CircularProgressIndicator(
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.padding(LumenSpacing.sm)
-                )
-            } else {
-                Text(
-                    text = stringResource(Res.string.btn_send_link),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-            }
-        }
+            isLoading = state.isLoading,
+            style = AppButtonStyle.PRIMARY
+        )
 
         Spacer(modifier = Modifier.weight(1f))
 

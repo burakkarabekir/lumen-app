@@ -12,9 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -31,12 +28,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.bksd.core.design_system.theme.LumenBase600
-import com.bksd.core.design_system.theme.LumenBrand500
-import com.bksd.core.design_system.theme.LumenBrand600
-import com.bksd.core.design_system.theme.LumenRadius
-import com.bksd.core.design_system.theme.LumenSpacing
-import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.auth.presentation.Res
 import com.bksd.auth.presentation.already_have_account
 import com.bksd.auth.presentation.btn_sign_up
@@ -48,6 +39,13 @@ import com.bksd.auth.presentation.password_hint
 import com.bksd.auth.presentation.sign_in_link
 import com.bksd.auth.presentation.sign_up_subtitle
 import com.bksd.auth.presentation.terms_agreement
+import com.bksd.core.design_system.component.button.AppButton
+import com.bksd.core.design_system.component.button.AppButtonStyle
+import com.bksd.core.design_system.theme.LumenBase600
+import com.bksd.core.design_system.theme.LumenBrand500
+import com.bksd.core.design_system.theme.LumenRadius
+import com.bksd.core.design_system.theme.LumenSpacing
+import com.bksd.core.presentation.util.ObserveAsEvents
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -192,31 +190,16 @@ internal fun SignUpScreen(
             )
         }
 
-        Button(
+        AppButton(
+            text = stringResource(Res.string.btn_sign_up),
             onClick = { onAction(SignUpAction.OnSignUpClick) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
             enabled = state.isSubmitEnabled,
-            shape = RoundedCornerShape(LumenRadius.full),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = LumenBrand600,
-                disabledContainerColor = LumenBrand600.copy(alpha = 0.5f)
-            )
-        ) {
-            if (state.isLoading) {
-                CircularProgressIndicator(
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.padding(LumenSpacing.sm)
-                )
-            } else {
-                Text(
-                    text = stringResource(Res.string.btn_sign_up),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-            }
-        }
+            isLoading = state.isLoading,
+            style = AppButtonStyle.PRIMARY
+        )
 
         Spacer(modifier = Modifier.height(LumenSpacing.lg))
 

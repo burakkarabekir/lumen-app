@@ -1,7 +1,6 @@
 package com.bksd.auth.presentation.signin
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,16 +10,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -31,7 +24,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -39,27 +31,24 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bksd.auth.presentation.Res
-import com.bksd.auth.presentation.btn_google
 import com.bksd.auth.presentation.btn_sign_in
 import com.bksd.auth.presentation.forgot_password
-import com.bksd.auth.presentation.ic_google
 import com.bksd.auth.presentation.label_email
 import com.bksd.auth.presentation.label_password
 import com.bksd.auth.presentation.no_account_prompt
 import com.bksd.auth.presentation.remember_me
 import com.bksd.auth.presentation.sign_in_subtitle
 import com.bksd.auth.presentation.sign_up_link
-import com.bksd.auth.presentation.signin.components.SocialLoginDivider
 import com.bksd.auth.presentation.welcome_back
+import com.bksd.core.design_system.component.button.AppButton
+import com.bksd.core.design_system.component.button.AppButtonStyle
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.LumenBase600
 import com.bksd.core.design_system.theme.LumenBrand500
-import com.bksd.core.design_system.theme.LumenBrand600
 import com.bksd.core.design_system.theme.LumenRadius
 import com.bksd.core.design_system.theme.LumenSpacing
 import com.bksd.core.presentation.util.ObserveAsEvents
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.resources.vectorResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -203,31 +192,16 @@ internal fun SignInScreen(
             )
         }
 
-        Button(
+        AppButton(
+            text = stringResource(Res.string.btn_sign_in),
             onClick = { onAction(SignInAction.OnSignInClick) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
             enabled = state.isSubmitEnabled,
-            shape = RoundedCornerShape(LumenRadius.full),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = LumenBrand600,
-                disabledContainerColor = LumenBrand600.copy(alpha = 0.5f)
-            )
-        ) {
-            if (state.isLoading) {
-                CircularProgressIndicator(
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.padding(LumenSpacing.sm)
-                )
-            } else {
-                Text(
-                    text = stringResource(Res.string.btn_sign_in),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-            }
-        }
+            isLoading = state.isLoading,
+            style = AppButtonStyle.PRIMARY
+        )
 
         Spacer(modifier = Modifier.weight(1f))
 
