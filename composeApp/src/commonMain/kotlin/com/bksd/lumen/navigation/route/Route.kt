@@ -42,7 +42,7 @@ sealed interface Route : NavKey {
 
     // ==================== Detail / Sub-screen Routes ====================
     @Serializable
-    data class MomentDetail(val momentId: String) : Route
+    data class MomentDetail(val momentId: String, val isEditing: Boolean = false) : Route
 
     @Serializable
     data object CreateMoment : Route

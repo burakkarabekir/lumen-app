@@ -16,5 +16,16 @@
 	<string>Momentum needs access to your photo library to attach media to your moments.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Momentum uses your location to geotag your moments.</string>
+	<key>GIDClientID</key>
+	<string>139243147783-mah7de39ha7a6ko3qj5ouasj1r3uqj0s.apps.googleusercontent.com</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.139243147783-mah7de39ha7a6ko3qj5ouasj1r3uqj0s</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

@@ -30,6 +30,11 @@ class BuildKonfigConventionPlugin : Plugin<Project> {
                             "Missing API_KEY property in config.properties"
                         )*/
                     buildConfigField(FieldSpec.Type.STRING, "API_KEY", apiKey)
+
+                    val supabaseUrl = configProperties.getProperty("SUPABASE_URL") ?: ""
+                    val supabaseAnonKey = configProperties.getProperty("SUPABASE_ANON_KEY") ?: ""
+                    buildConfigField(FieldSpec.Type.STRING, "SUPABASE_URL", supabaseUrl)
+                    buildConfigField(FieldSpec.Type.STRING, "SUPABASE_ANON_KEY", supabaseAnonKey)
                 }
             }
         }

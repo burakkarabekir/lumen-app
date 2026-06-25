@@ -8,4 +8,7 @@ interface SessionStorage {
     fun getProfilePhotoUrl(): String?
     suspend fun setRememberMe(enabled: Boolean)
     fun isRememberMeEnabled(): Flow<Boolean>
+
+    suspend fun getLocalDataOwner(): String?
+    suspend fun setLocalDataOwner(uid: String?)
 }

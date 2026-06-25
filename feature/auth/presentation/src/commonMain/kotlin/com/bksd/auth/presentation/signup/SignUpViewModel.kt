@@ -52,8 +52,7 @@ class SignUpViewModel(
                 }
 
                 is Result.Success -> {
-                    _state = _state.copy(isLoading = false)
-                    sendEvent(SignUpEvent.SignUpSuccess)
+                    _state = _state.copy(isLoading = false, awaitingConfirmation = true)
                 }
             }
         }

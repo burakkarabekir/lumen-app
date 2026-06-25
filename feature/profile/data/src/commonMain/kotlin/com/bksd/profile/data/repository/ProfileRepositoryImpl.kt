@@ -1,51 +1,46 @@
 package com.bksd.profile.data.repository
 
-import com.bksd.core.data.remote.firebase.FirebaseAuthDataSource
-import com.bksd.core.data.remote.firebase.FirebaseFirestoreDataSource
-import com.bksd.core.data.remote.firebase.FirebaseStorageDataSource
+import com.bksd.core.data.remote.supabase.SupabaseAuthDataSource
+import com.bksd.core.data.remote.supabase.SupabaseBuckets
+import com.bksd.core.data.remote.supabase.SupabaseStorageDataSource
+import com.bksd.core.data.remote.supabase.supabaseCall
 import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.NetworkErrorType
 import com.bksd.core.domain.error.Result
 import com.bksd.profile.data.dto.UserProfileDto
 import com.bksd.profile.domain.model.UserProfile
 import com.bksd.profile.domain.repository.ProfileRepository
+import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.postgrest.postgrest
 import kotlin.random.Random
 
 class ProfileRepositoryImpl(
-    private val firebaseAuthDataSource: FirebaseAuthDataSource,
-    private val firestoreDataSource: FirebaseFirestoreDataSource,
-    private val storageDataSource: FirebaseStorageDataSource,
+    private val authDataSource: SupabaseAuthDataSource,
+    private val client: SupabaseClient,
+    private val storageDataSource: SupabaseStorageDataSource,
 ) : ProfileRepository {
 
     override suspend fun getUserProfile(): Result<UserProfile, AppError> {
-        val uid = firebaseAuthDataSource.getSignedInUserId()
+        val uid = authDataSource.getSignedInUserId()
             ?: return Result.Error(AppError.Network(NetworkErrorType.UNAUTHORIZED))
 
-        val displayName = firebaseAuthDataSource.getDisplayName().orEmpty()
-        val photoUrl = firebaseAuthDataSource.getPhotoUrl()
+        return supabaseCall {
+            val row = client.postgrest["profiles"]
+                .select { filter { eq("id", uid) } }
+                .decodeSingleOrNull<UserProfileDto>()
 
-        val dto = when (val result = firestoreDataSource.getDocument(
-            collectionPath = USERS_COLLECTION,
-            documentId = uid,
-            deserializer = UserProfileDto.serializer()
-        )) {
-            is Result.Success -> result.data ?: UserProfileDto()
-            is Result.Error -> UserProfileDto()
-        }
-
-        return Result.Success(
             UserProfile(
-                displayName = displayName,
-                photoUrl = photoUrl,
-                jobTitle = dto.jobTitle,
-                joinYear = dto.joinYear,
-                isPremium = dto.isPremium
+                displayName = row?.displayName ?: authDataSource.getDisplayName().orEmpty(),
+                photoUrl = row?.avatarUrl ?: authDataSource.getPhotoUrl(),
+                jobTitle = row?.jobTitle.orEmpty(),
+                joinYear = row?.joinYear.orEmpty(),
+                isPremium = row?.isPremium ?: false,
             )
-        )
+        }
     }
 
     override suspend fun uploadAvatar(bytes: ByteArray, mimeType: String?): Result<String, AppError> {
-        val uid = firebaseAuthDataSource.getSignedInUserId()
+        val uid = authDataSource.getSignedInUserId()
             ?: return Result.Error(AppError.Network(NetworkErrorType.UNAUTHORIZED))
 
         val extension = when (mimeType) {
@@ -53,24 +48,16 @@ class ProfileRepositoryImpl(
             "image/webp" -> "webp"
             else -> "jpg"
         }
-        val uniqueSuffix = Random.nextLong(0, Long.MAX_VALUE)
-        val fileName = "avatar_$uniqueSuffix.$extension"
+        val path = "$uid/avatar_${Random.nextLong(0, Long.MAX_VALUE)}.$extension"
 
-        val contentType = mimeType ?: "image/jpeg"
-        val remotePath = "$AVATARS_PATH/$uid/$fileName"
-        return when (val result = storageDataSource.uploadBytes(bytes, remotePath, contentType)) {
+        return when (val result = storageDataSource.upload(SupabaseBuckets.AVATARS, path, bytes)) {
             is Result.Success -> {
-                val downloadUrl = result.data
-                firebaseAuthDataSource.updatePhotoUrl(downloadUrl)
-                Result.Success(downloadUrl)
+                val publicUrl = storageDataSource.publicUrl(SupabaseBuckets.AVATARS, path)
+                authDataSource.updatePhotoUrl(publicUrl)
+                Result.Success(publicUrl)
             }
+
             is Result.Error -> Result.Error(result.error)
         }
     }
-
-    override suspend fun clearUserData() {
-    }
 }
-
-private const val USERS_COLLECTION = "users"
-private const val AVATARS_PATH = "avatars"

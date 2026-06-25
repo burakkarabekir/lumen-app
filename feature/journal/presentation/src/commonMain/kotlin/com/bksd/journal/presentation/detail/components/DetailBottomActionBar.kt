@@ -37,7 +37,6 @@ import com.bksd.journal.presentation.save_changes
 import org.jetbrains.compose.resources.stringResource
 
 private val BarShape = RoundedCornerShape(32.dp)
-private val ButtonShape = RoundedCornerShape(22.dp)
 private const val EXPAND_DURATION = 300
 
 @Composable

@@ -15,6 +15,8 @@ firebase-gitlive = "2.4.0"
 firebase-bom = "34.13.0"
 google-services = "4.4.4"
 
+supabase = "3.6.0"
+
 # ==================== Build Tools ====================
 agp = "9.2.1"
 androidTools = "32.2.1"
@@ -25,7 +27,7 @@ androidDesugarJdkLibs = "2.1.5"
 
 # ==================== Compose ====================
 composeBom = "2026.05.00"
-compose-multiplatform = "1.11.0"
+compose-multiplatform = "1.11.1"
 compose-material3 = "1.11.0-alpha07"
 compose-icons = "1.7.3"
 
@@ -221,6 +223,10 @@ firebase-storage = { module = "dev.gitlive:firebase-storage", version.ref = "fir
 firebase-analytics = { module = "dev.gitlive:firebase-analytics", version.ref = "firebase-gitlive" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 
+supabase-auth = { module = "io.github.jan-tennert.supabase:auth-kt", version.ref = "supabase" }
+supabase-postgrest = { module = "io.github.jan-tennert.supabase:postgrest-kt", version.ref = "supabase" }
+supabase-storage = { module = "io.github.jan-tennert.supabase:storage-kt", version.ref = "supabase" }
+
 [plugins]
 googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
 # ==================== Convention Plugins ====================
@@ -378,6 +384,12 @@ moko-permissions-all = [
 # ==================== Analytics ====================
 analytics = [
     "kotzilla-sdk-compose"
+]
+
+supabase = [
+    "supabase-auth",
+    "supabase-postgrest",
+    "supabase-storage",
 ]
 
 # ==================== Testing ====================

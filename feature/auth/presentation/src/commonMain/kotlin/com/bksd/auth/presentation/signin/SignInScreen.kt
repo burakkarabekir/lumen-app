@@ -47,6 +47,9 @@ import com.bksd.core.design_system.theme.LumenBase600
 import com.bksd.core.design_system.theme.LumenBrand500
 import com.bksd.core.design_system.theme.LumenRadius
 import com.bksd.core.design_system.theme.LumenSpacing
+import com.bksd.auth.presentation.signin.components.SocialLoginDivider
+import com.bksd.core.presentation.auth.GoogleSignInResult
+import com.bksd.core.presentation.auth.rememberGoogleSignInLauncher
 import com.bksd.core.presentation.util.ObserveAsEvents
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -84,6 +87,17 @@ internal fun SignInScreen(
     onAction: (SignInAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val googleLauncher = rememberGoogleSignInLauncher { result ->
+        when (result) {
+            is GoogleSignInResult.Success ->
+                onAction(SignInAction.OnGoogleIdTokenReceived(result.idToken))
+            GoogleSignInResult.Cancelled ->
+                onAction(SignInAction.OnGoogleSignInFailed(cancelled = true))
+            is GoogleSignInResult.Failed ->
+                onAction(SignInAction.OnGoogleSignInFailed(cancelled = false))
+        }
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -201,6 +215,23 @@ internal fun SignInScreen(
             enabled = state.isSubmitEnabled,
             isLoading = state.isLoading,
             style = AppButtonStyle.PRIMARY
+        )
+
+        Spacer(modifier = Modifier.height(LumenSpacing.lg))
+
+        SocialLoginDivider()
+
+        Spacer(modifier = Modifier.height(LumenSpacing.lg))
+
+        AppButton(
+            text = "Continue with Google",
+            onClick = { googleLauncher.launch() },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            enabled = !state.isLoading && !state.isSocialLoading,
+            isLoading = state.isSocialLoading,
+            style = AppButtonStyle.SECONDARY
         )
 
         Spacer(modifier = Modifier.weight(1f))

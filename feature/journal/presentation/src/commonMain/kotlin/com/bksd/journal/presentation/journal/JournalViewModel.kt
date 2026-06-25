@@ -118,7 +118,7 @@ class JournalViewModel(
             }
 
             is JournalAction.OnEditMoment -> {
-                sendEvent(JournalEvent.NavigateToDetail(action.id))
+                sendEvent(JournalEvent.NavigateToDetail(action.id, isEditing = true))
             }
 
             is JournalAction.OnFavoriteToggle -> Unit

@@ -8,11 +8,12 @@ data class MomentDto(
     val id: String,
     val title: String,
     val body: String? = null,
-    val createdAtMs: Long,
+    @SerialName("created_at_ms") val createdAtMs: Long,
     val moods: List<String> = emptyList(),
     val tags: List<String> = emptyList(),
     val location: LocationDto? = null,
-    val attachments: List<AttachmentDto> = emptyList()
+    val attachments: List<AttachmentDto> = emptyList(),
+    @SerialName("user_id") val userId: String? = null,
 )
 
 @Serializable

@@ -23,9 +23,7 @@ kotlin {
                 implementation(libs.androidx.room.runtime)
                 implementation(libs.androidx.sqlite.bundled)
 
-                implementation(libs.firebase.auth)
-                implementation(libs.firebase.firestore)
-                implementation(libs.firebase.storage)
+                api(libs.bundles.supabase)
 
                 implementation(projects.feature.auth.domain)
             }
@@ -35,13 +33,8 @@ kotlin {
             dependencies {
                 implementation(libs.ktor.client.okhttp)
                 implementation(libs.koin.android)
-                implementation(project.dependencies.platform(libs.firebase.bom))
-                implementation(libs.google.firebase.auth)
                 implementation(libs.kotlinx.coroutines.play.services)
                 implementation(libs.play.services.location)
-                implementation(libs.androidx.credentials)
-                implementation(libs.androidx.credentials.play.services.auth)
-                implementation(libs.googleid)
             }
         }
 

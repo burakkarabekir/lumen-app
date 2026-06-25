@@ -67,9 +67,10 @@ import kotlin.time.Clock
 @Composable
 fun MomentDetailRoot(
     momentId: String,
+    isEditing: Boolean = false,
     onNavigateBack: () -> Unit,
 ) {
-    val viewModel = koinViewModel<MomentDetailViewModel>(parameters = { parametersOf(momentId) })
+    val viewModel = koinViewModel<MomentDetailViewModel>(parameters = { parametersOf(momentId, isEditing) })
     val formatter = koinInject<MomentFormatter>()
     val state by viewModel.state.collectAsState()
     ObserveAsEvents(viewModel.events) { event ->

@@ -62,7 +62,7 @@ import kotlin.time.Clock
 
 @Composable
 fun JournalRoot(
-    onNavigateToDetail: (String) -> Unit,
+    onNavigateToDetail: (String, Boolean) -> Unit,
     onNavigateToCreate: () -> Unit,
 ) {
     val viewModel = koinViewModel<JournalViewModel>()
@@ -74,7 +74,7 @@ fun JournalRoot(
 
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
-            is JournalEvent.NavigateToDetail -> onNavigateToDetail(event.momentId)
+            is JournalEvent.NavigateToDetail -> onNavigateToDetail(event.momentId, event.isEditing)
             is JournalEvent.NavigateToCreate -> onNavigateToCreate()
             is JournalEvent.ShowError -> {
                 println("Journal Error: ${event.error}")

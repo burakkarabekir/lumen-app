@@ -145,8 +145,8 @@ fun NavigationRoot(
 
                     entry<Route.Main.Journal> {
                         JournalRoot(
-                            onNavigateToDetail = { momentId ->
-                                navigator.navigateToMomentDetail(momentId)
+                            onNavigateToDetail = { momentId, isEditing ->
+                                navigator.navigateToMomentDetail(momentId, isEditing)
                             },
                             onNavigateToCreate = { navigator.navigateToCreateMoment() }
                         )
@@ -164,6 +164,7 @@ fun NavigationRoot(
                     entry<Route.MomentDetail> { backStackEntry ->
                         MomentDetailRoot(
                             momentId = backStackEntry.momentId,
+                            isEditing = backStackEntry.isEditing,
                             onNavigateBack = navigator::goBack
                         )
                     }

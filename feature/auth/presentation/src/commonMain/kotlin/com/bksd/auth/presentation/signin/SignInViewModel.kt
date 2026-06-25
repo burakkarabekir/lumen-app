@@ -1,5 +1,6 @@
 package com.bksd.auth.presentation.signin
 
+import com.bksd.auth.domain.usecase.GoogleSignInUseCase
 import com.bksd.auth.domain.usecase.SignInUseCase
 import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.AuthErrorType
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 class SignInViewModel(
     private val signInUseCase: SignInUseCase,
+    private val googleSignInUseCase: GoogleSignInUseCase,
     private val sessionStorage: SessionStorage,
 ) : BaseViewModel<SignInAction, SignInEvent>() {
 
@@ -38,6 +40,24 @@ class SignInViewModel(
             SignInAction.OnSignInClick -> signIn()
             SignInAction.OnSignUpClick -> sendEvent(SignInEvent.NavigateToSignUp)
             SignInAction.OnForgotPasswordClick -> sendEvent(SignInEvent.NavigateToForgotPassword)
+
+            is SignInAction.OnGoogleIdTokenReceived -> signInWithGoogle(action.idToken)
+            is SignInAction.OnGoogleSignInFailed -> onGoogleSignInFailed(action.cancelled)
+        }
+    }
+
+    private fun signInWithGoogle(idToken: String) {
+        _state = _state.copy(isSocialLoading = true, error = null)
+        launch { handleSocialSignInResult(googleSignInUseCase(idToken)) }
+    }
+
+    private fun onGoogleSignInFailed(cancelled: Boolean) {
+        if (cancelled) {
+            _state = _state.copy(isSocialLoading = false)
+        } else {
+            val errorText = UiText.Dynamic("Google sign-in failed")
+            _state = _state.copy(isSocialLoading = false, error = errorText)
+            sendEvent(SignInEvent.SignInError(errorText))
         }
     }
 

@@ -72,7 +72,7 @@ class Navigator(
 
     // ==================== Detail Navigation ====================
 
-    fun navigateToMomentDetail(momentId: String) = navigate(Route.MomentDetail(momentId))
+    fun navigateToMomentDetail(momentId: String, isEditing: Boolean = false) = navigate(Route.MomentDetail(momentId, isEditing))
 
     fun navigateToCreateMoment() = navigate(Route.CreateMoment)
 

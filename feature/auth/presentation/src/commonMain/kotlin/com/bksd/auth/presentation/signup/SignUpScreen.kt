@@ -89,6 +89,15 @@ internal fun SignUpScreen(
     onAction: (SignUpAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    if (state.awaitingConfirmation) {
+        SignUpConfirmationPanel(
+            email = state.email,
+            onSignInClick = { onAction(SignUpAction.OnSignInClick) },
+            modifier = modifier
+        )
+        return
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -229,5 +238,49 @@ internal fun SignUpScreen(
                 modifier = Modifier.clickable { onAction(SignUpAction.OnSignInClick) }
             )
         }
+    }
+}
+
+@Composable
+private fun SignUpConfirmationPanel(
+    email: String,
+    onSignInClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .padding(LumenSpacing.xxl),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Check your email",
+            style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
+            color = MaterialTheme.colorScheme.onBackground,
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(LumenSpacing.md))
+
+        Text(
+            text = "We sent a confirmation link to $email. Tap it to activate your account, then sign in.",
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(horizontal = LumenSpacing.md)
+        )
+
+        Spacer(modifier = Modifier.height(LumenSpacing.xxxl))
+
+        AppButton(
+            text = stringResource(Res.string.sign_in_link),
+            onClick = onSignInClick,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            style = AppButtonStyle.PRIMARY
+        )
     }
 }

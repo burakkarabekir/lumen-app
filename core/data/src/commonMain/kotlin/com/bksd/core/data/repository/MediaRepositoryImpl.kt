@@ -1,6 +1,7 @@
 package com.bksd.core.data.repository
 
-import com.bksd.core.data.remote.firebase.FirebaseStorageDataSource
+import com.bksd.core.data.remote.supabase.SupabaseBuckets
+import com.bksd.core.data.remote.supabase.SupabaseStorageDataSource
 import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.Result
 import com.bksd.core.domain.model.Attachment
@@ -18,7 +19,7 @@ import com.bksd.core.domain.model.VideoAttachment
 import com.bksd.core.domain.repository.MediaRepository
 
 class MediaRepositoryImpl(
-    private val storageDataSource: FirebaseStorageDataSource
+    private val storageDataSource: SupabaseStorageDataSource
 ) : MediaRepository {
 
     override suspend fun uploadAttachment(
@@ -34,22 +35,16 @@ class MediaRepositoryImpl(
                 )
             )
 
-            is DraftPhoto -> {
-                uploadAndMap(draft.id, draft.localUri, userId, momentId) { remoteUrl ->
-                    PhotoAttachment(id = draft.id, remoteUrl = Url(remoteUrl))
-                }
+            is DraftPhoto -> uploadAndMap(draft.id, draft.localUri, userId, momentId) { path ->
+                PhotoAttachment(id = draft.id, remoteUrl = Url(path))
             }
 
-            is DraftVideo -> {
-                uploadAndMap(draft.id, draft.localUri, userId, momentId) { remoteUrl ->
-                    VideoAttachment(id = draft.id, remoteUrl = Url(remoteUrl), durationMs = draft.durationMs)
-                }
+            is DraftVideo -> uploadAndMap(draft.id, draft.localUri, userId, momentId) { path ->
+                VideoAttachment(id = draft.id, remoteUrl = Url(path), durationMs = draft.durationMs)
             }
 
-            is DraftAudio -> {
-                uploadAndMap(draft.id, draft.localUri, userId, momentId) { remoteUrl ->
-                    AudioAttachment(id = draft.id, remoteUrl = Url(remoteUrl), durationMs = draft.durationMs)
-                }
+            is DraftAudio -> uploadAndMap(draft.id, draft.localUri, userId, momentId) { path ->
+                AudioAttachment(id = draft.id, remoteUrl = Url(path), durationMs = draft.durationMs)
             }
         }
     }
@@ -61,12 +56,12 @@ class MediaRepositoryImpl(
         momentId: String,
         mapper: (String) -> Attachment
     ): Result<Attachment, AppError> {
-        // Remote path convention: users/{userId}/moments/{momentId}/{attachmentId}
         val extension = localPath.substringAfterLast('.', "")
-        val remotePath = "users/$userId/moments/$momentId/${attachmentId.value}.$extension"
+        val suffix = if (extension.isNotEmpty()) ".$extension" else ""
+        val objectPath = "$userId/moments/$momentId/${attachmentId.value}$suffix"
 
-        return when (val result = storageDataSource.uploadFile(localPath, remotePath)) {
-            is Result.Success -> Result.Success(mapper(result.data))
+        return when (val result = storageDataSource.uploadFromPath(SupabaseBuckets.MEDIA, objectPath, localPath)) {
+            is Result.Success -> Result.Success(mapper(objectPath))
             is Result.Error -> Result.Error(result.error)
         }
     }
@@ -74,13 +69,13 @@ class MediaRepositoryImpl(
     override suspend fun deleteAttachment(
         attachment: Attachment
     ): Result<Unit, AppError> {
-        val remoteUrl = when (attachment) {
+        val objectPath = when (attachment) {
             is PhotoAttachment -> attachment.remoteUrl.value
             is VideoAttachment -> attachment.remoteUrl.value
             is AudioAttachment -> attachment.remoteUrl.value
-            is LinkAttachment -> return Result.Success(Unit) 
+            is LinkAttachment -> return Result.Success(Unit)
         }
 
-        return storageDataSource.deleteFile(remoteUrl)
+        return storageDataSource.delete(SupabaseBuckets.MEDIA, objectPath)
     }
 }

@@ -2,7 +2,7 @@ package com.bksd.lumen.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bksd.core.data.remote.firebase.FirebaseAuthDataSource
+import com.bksd.core.data.remote.supabase.SupabaseAuthDataSource
 import com.bksd.core.domain.storage.SessionStorage
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val sessionStorage: SessionStorage,
-    private val firebaseAuthDataSource: FirebaseAuthDataSource,
+    private val authDataSource: SupabaseAuthDataSource,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(MainState())
@@ -31,7 +31,7 @@ class MainViewModel(
             if (isLoggedIn) {
                 val rememberMe = sessionStorage.isRememberMeEnabled().first()
                 if (!rememberMe) {
-                    firebaseAuthDataSource.signOut()
+                    authDataSource.signOut()
                     isLoggedIn = false
                 }
             }
