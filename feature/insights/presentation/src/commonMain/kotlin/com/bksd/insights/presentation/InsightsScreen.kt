@@ -20,21 +20,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.component.layout.AppBarStyle
 import com.bksd.core.design_system.component.layout.AppSurface
 import com.bksd.core.design_system.component.layout.AppTopBar
+import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.presentation.util.ObserveAsEvents
-import com.bksd.insights.presentation.Res
-import com.bksd.insights.presentation.adjustment
-import com.bksd.insights.presentation.consistency_trend
-import com.bksd.insights.presentation.insights_title
-import com.bksd.insights.presentation.medium_breakdown
-import com.bksd.insights.presentation.mindset_synthesis
-import com.bksd.insights.presentation.peak_activity
-import com.bksd.insights.presentation.power_user_analytics
-import com.bksd.insights.presentation.recurring_theme
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -55,6 +48,28 @@ fun InsightsRoot() {
         state = state,
         onAction = viewModel::onAction
     )
+}
+
+@Preview
+@Composable
+private fun InsightsScreenPreview() {
+    AppTheme {
+        InsightsScreen(
+            state = InsightsState(),
+            onAction = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun InsightsScreenPreviewDark() {
+    AppTheme(darkTheme = true) {
+        InsightsScreen(
+            state = InsightsState(),
+            onAction = {}
+        )
+    }
 }
 
 @OptIn(ExperimentalLayoutApi::class)

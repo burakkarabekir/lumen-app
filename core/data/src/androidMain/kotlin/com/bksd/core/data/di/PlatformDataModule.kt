@@ -13,8 +13,8 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 actual val platformDataModule: Module = module {
-    single<VoiceRecorder> { AndroidVoiceRecorder(androidContext()) }
-    single<AudioPlayer> { AndroidAudioPlayer() }
+    factory<VoiceRecorder> { AndroidVoiceRecorder(androidContext()) }
+    factory<AudioPlayer> { AndroidAudioPlayer() }
     single<LocationProvider> { AndroidLocationProvider(androidContext()) }
     single { createDataStore(androidContext()) }
     single { PlatformFileStorage(androidContext()) }

@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.extended
-import com.bksd.journal.domain.model.Mood
+import com.bksd.core.domain.model.Mood
 import com.bksd.journal.presentation.Res
 import com.bksd.journal.presentation.journal.components.moodColors
 import com.bksd.journal.presentation.mood_of_the_moment

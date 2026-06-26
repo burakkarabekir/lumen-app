@@ -24,8 +24,6 @@ kotlin {
                 implementation(libs.androidx.sqlite.bundled)
 
                 api(libs.bundles.supabase)
-
-                implementation(projects.feature.auth.domain)
             }
         }
 

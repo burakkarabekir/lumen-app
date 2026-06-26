@@ -1,7 +1,6 @@
-package com.bksd.journal.domain.model
+package com.bksd.core.domain.model
 
 import com.bksd.core.domain.location.LocationData
-import com.bksd.core.domain.model.Attachment
 import kotlin.time.Instant
 
 data class Moment(

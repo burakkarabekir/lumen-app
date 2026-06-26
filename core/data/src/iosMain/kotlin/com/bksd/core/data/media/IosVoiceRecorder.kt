@@ -10,6 +10,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +21,6 @@ import kotlinx.coroutines.launch
 import platform.AVFAudio.AVAudioRecorder
 import platform.AVFAudio.AVAudioSession
 import platform.AVFAudio.AVAudioSessionCategoryPlayAndRecord
-import platform.AVFAudio.AVAudioSessionModeDefault
 import platform.AVFAudio.AVAudioSessionRecordPermissionGranted
 import platform.AVFAudio.AVFormatIDKey
 import platform.AVFAudio.AVNumberOfChannelsKey
@@ -33,6 +33,7 @@ import platform.Foundation.NSURL
 import platform.Foundation.NSUUID
 import platform.Foundation.NSUserDomainMask
 import platform.Foundation.timeIntervalSince1970
+import kotlin.coroutines.cancellation.CancellationException
 
 @OptIn(ExperimentalForeignApi::class)
 class IosVoiceRecorder : VoiceRecorder {
@@ -50,7 +51,7 @@ class IosVoiceRecorder : VoiceRecorder {
     override val elapsedMs: StateFlow<Long> = _elapsedMs.asStateFlow()
 
     private var timerJob: Job? = null
-    private val scope = CoroutineScope(Dispatchers.Main)
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     override fun hasPermission(): Boolean {
         return AVAudioSession.sharedInstance()
@@ -96,8 +97,9 @@ class IosVoiceRecorder : VoiceRecorder {
 
             startTimer()
             Result.Success(Unit)
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
-            e.printStackTrace()
             cleanup()
             Result.Error(AppError.Media(MediaErrorType.RECORDING_FAILED))
         }
@@ -120,8 +122,9 @@ class IosVoiceRecorder : VoiceRecorder {
             } else {
                 Result.Error(AppError.Media(MediaErrorType.RECORDING_FAILED))
             }
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
-            e.printStackTrace()
             cleanup()
             Result.Error(AppError.Media(MediaErrorType.RECORDING_FAILED))
         }

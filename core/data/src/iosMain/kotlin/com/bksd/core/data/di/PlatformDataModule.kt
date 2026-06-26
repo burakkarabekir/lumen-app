@@ -12,8 +12,8 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 actual val platformDataModule: Module = module {
-    single<VoiceRecorder> { IosVoiceRecorder() }
-    single<AudioPlayer> { IosAudioPlayer() }
+    factory<VoiceRecorder> { IosVoiceRecorder() }
+    factory<AudioPlayer> { IosAudioPlayer() }
     single<LocationProvider> { IosLocationProvider() }
     single { createPlatformDataStore() }
     single { PlatformFileStorage() }

@@ -45,10 +45,12 @@ import com.bksd.core.design_system.component.layout.AppBarStyle
 import com.bksd.core.design_system.component.layout.AppTopBar
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.domain.location.LocationData
+import com.bksd.core.domain.model.Moment
+import com.bksd.core.domain.model.Mood
 import com.bksd.core.presentation.util.ObserveAsEvents
-import com.bksd.journal.domain.model.Moment
-import com.bksd.journal.domain.model.Mood
 import com.bksd.journal.presentation.Res
+import com.bksd.journal.presentation.content_desc_back
+import com.bksd.journal.presentation.content_desc_share
 import com.bksd.journal.presentation.detail.components.DetailBottomActionBar
 import com.bksd.journal.presentation.detail.components.DetailJournalEntryCard
 import com.bksd.journal.presentation.detail.components.MomentDetailMetadataRow
@@ -108,7 +110,7 @@ fun MomentDetailScreen(
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = null
+                            contentDescription = stringResource(Res.string.content_desc_back)
                         )
                     }
                 },
@@ -119,7 +121,7 @@ fun MomentDetailScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.IosShare,
-                                contentDescription = null,
+                                contentDescription = stringResource(Res.string.content_desc_share),
                                 tint = MaterialTheme.colorScheme.onSurface
                             )
                         }

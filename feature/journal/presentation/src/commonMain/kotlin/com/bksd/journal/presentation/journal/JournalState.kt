@@ -1,10 +1,10 @@
 package com.bksd.journal.presentation.journal
 
 import androidx.compose.runtime.Immutable
+import com.bksd.core.domain.model.Moment
 import com.bksd.core.domain.model.PlaybackState
 import com.bksd.core.presentation.util.UiText
 import com.bksd.journal.domain.model.JournalFilter
-import com.bksd.journal.domain.model.Moment
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.datetime.LocalDate

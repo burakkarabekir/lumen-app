@@ -2,7 +2,7 @@ package com.bksd.journal.presentation.journal.components
 
 import androidx.compose.ui.graphics.Color
 import com.bksd.core.design_system.theme.ExtendedColors
-import com.bksd.journal.domain.model.Mood
+import com.bksd.core.domain.model.Mood
 
 /**
  * Maps each [Mood] to a (background, text) color pair.

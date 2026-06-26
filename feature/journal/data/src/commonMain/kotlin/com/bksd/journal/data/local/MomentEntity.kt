@@ -15,5 +15,6 @@ data class MomentEntity(
     val locationLongitude: Double?,
     val locationDisplayName: String?,
     val attachments: String,
-    val pendingSync: Boolean = false
+    val pendingSync: Boolean = false,
+    val pendingDelete: Boolean = false
 )

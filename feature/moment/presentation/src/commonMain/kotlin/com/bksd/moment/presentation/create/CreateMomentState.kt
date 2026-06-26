@@ -2,8 +2,8 @@ package com.bksd.moment.presentation.create
 
 import androidx.compose.runtime.Stable
 import com.bksd.core.domain.model.MediaType
+import com.bksd.core.domain.model.Mood
 import com.bksd.core.domain.model.PlaybackState
-import com.bksd.journal.domain.model.Mood
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.PersistentSet

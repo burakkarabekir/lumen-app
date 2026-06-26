@@ -1,9 +1,12 @@
 package com.bksd.insights.presentation
 
+import androidx.compose.runtime.Immutable
+
 /**
  * Immutable UI state for the Emotional Insights screen.
  * All types are stable for Compose recomposition safety.
  */
+@Immutable
 data class InsightsState(
     val isLoading: Boolean = false,
     val peakActivityInsight: String = "",

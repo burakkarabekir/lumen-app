@@ -1,9 +1,9 @@
 package com.bksd.journal.presentation.detail
 
 import androidx.compose.runtime.Immutable
+import com.bksd.core.domain.model.Moment
+import com.bksd.core.domain.model.Mood
 import com.bksd.core.presentation.util.UiText
-import com.bksd.journal.domain.model.Moment
-import com.bksd.journal.domain.model.Mood
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf

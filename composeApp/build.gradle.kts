@@ -27,7 +27,6 @@ kotlin {
             implementation(projects.feature.journal.domain)
             implementation(projects.feature.journal.presentation)
 
-            implementation(projects.feature.moment.data)
             implementation(projects.feature.moment.domain)
             implementation(projects.feature.moment.presentation)
 

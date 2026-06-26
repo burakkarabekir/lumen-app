@@ -2,8 +2,8 @@ package com.bksd.moment.domain.usecase
 
 import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.Result
-import com.bksd.journal.domain.model.Moment
-import com.bksd.journal.domain.repository.MomentRepository
+import com.bksd.core.domain.model.Moment
+import com.bksd.core.domain.repository.MomentRepository
 
 class SaveMomentUseCase(
     private val repository: MomentRepository

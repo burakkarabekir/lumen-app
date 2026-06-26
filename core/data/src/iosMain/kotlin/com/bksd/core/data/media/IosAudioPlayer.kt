@@ -9,6 +9,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,13 +22,14 @@ import platform.AVFAudio.AVAudioSessionCategoryPlayback
 import platform.AVFAudio.setActive
 import platform.Foundation.NSData
 import platform.Foundation.dataWithContentsOfFile
+import kotlin.coroutines.cancellation.CancellationException
 
 @OptIn(ExperimentalForeignApi::class)
 class IosAudioPlayer : AudioPlayer {
 
     private var audioPlayer: AVAudioPlayer? = null
     private var progressJob: Job? = null
-    private val scope = CoroutineScope(Dispatchers.Main)
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     private val _playbackState = MutableStateFlow(PlaybackState.STOPPED)
     override val playbackState: StateFlow<PlaybackState> = _playbackState.asStateFlow()
@@ -63,8 +65,9 @@ class IosAudioPlayer : AudioPlayer {
             startProgressTracking()
 
             Result.Success(Unit)
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
-            e.printStackTrace()
             releaseInternal()
             Result.Error(AppError.Media(MediaErrorType.UNSUPPORTED_FORMAT))
         }

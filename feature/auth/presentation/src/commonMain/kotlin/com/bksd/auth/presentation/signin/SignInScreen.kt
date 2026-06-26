@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bksd.auth.presentation.Res
 import com.bksd.auth.presentation.btn_sign_in
+import com.bksd.auth.presentation.continue_with_google
 import com.bksd.auth.presentation.forgot_password
 import com.bksd.auth.presentation.label_email
 import com.bksd.auth.presentation.label_password
@@ -39,6 +40,7 @@ import com.bksd.auth.presentation.no_account_prompt
 import com.bksd.auth.presentation.remember_me
 import com.bksd.auth.presentation.sign_in_subtitle
 import com.bksd.auth.presentation.sign_up_link
+import com.bksd.auth.presentation.signin.components.SocialLoginDivider
 import com.bksd.auth.presentation.welcome_back
 import com.bksd.core.design_system.component.button.AppButton
 import com.bksd.core.design_system.component.button.AppButtonStyle
@@ -47,7 +49,6 @@ import com.bksd.core.design_system.theme.LumenBase600
 import com.bksd.core.design_system.theme.LumenBrand500
 import com.bksd.core.design_system.theme.LumenRadius
 import com.bksd.core.design_system.theme.LumenSpacing
-import com.bksd.auth.presentation.signin.components.SocialLoginDivider
 import com.bksd.core.presentation.auth.GoogleSignInResult
 import com.bksd.core.presentation.auth.rememberGoogleSignInLauncher
 import com.bksd.core.presentation.util.ObserveAsEvents
@@ -224,7 +225,7 @@ internal fun SignInScreen(
         Spacer(modifier = Modifier.height(LumenSpacing.lg))
 
         AppButton(
-            text = "Continue with Google",
+            text = stringResource(Res.string.continue_with_google),
             onClick = { googleLauncher.launch() },
             modifier = Modifier
                 .fillMaxWidth()

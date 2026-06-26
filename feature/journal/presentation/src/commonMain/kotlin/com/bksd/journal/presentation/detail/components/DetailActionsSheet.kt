@@ -28,6 +28,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.journal.presentation.Res
+import com.bksd.journal.presentation.delete
+import com.bksd.journal.presentation.edit_entry
+import com.bksd.journal.presentation.favorite
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -89,7 +94,7 @@ private fun DetailActionsSheetContent(
                 modifier = Modifier.size(24.dp)
             )
         },
-        label = "Edit Entry",
+        label = stringResource(Res.string.edit_entry),
         labelColor = MaterialTheme.colorScheme.onSurface,
         onClick = onEditClick
     )
@@ -103,7 +108,7 @@ private fun DetailActionsSheetContent(
                 modifier = Modifier.size(24.dp)
             )
         },
-        label = "Favorite",
+        label = stringResource(Res.string.favorite),
         labelColor = MaterialTheme.colorScheme.onSurface,
         onClick = onFavoriteClick
     )
@@ -124,7 +129,7 @@ private fun DetailActionsSheetContent(
                 modifier = Modifier.size(24.dp)
             )
         },
-        label = "Delete",
+        label = stringResource(Res.string.delete),
         labelColor = MaterialTheme.colorScheme.error,
         onClick = onDeleteClick
     )

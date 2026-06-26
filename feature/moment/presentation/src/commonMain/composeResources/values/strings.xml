@@ -1,6 +1,7 @@
 <resources>
     <!-- Screen UI -->
     <string name="create_moment_title">Create Moment</string>
+    <string name="title_placeholder">Title</string>
     <string name="content_desc_close">Close</string>
     <string name="content_desc_location">Location</string>
     <string name="add_location">Add Location</string>

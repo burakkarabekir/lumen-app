@@ -2,20 +2,22 @@ package com.bksd.journal.presentation.journal
 
 import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.Result
+import com.bksd.core.domain.model.Moment
+import com.bksd.core.domain.model.Mood
 import com.bksd.core.domain.model.PlaybackState
+import com.bksd.core.domain.repository.MomentRepository
 import com.bksd.core.domain.storage.AudioPlayer
 import com.bksd.core.domain.storage.SessionStorage
 import com.bksd.journal.domain.model.JournalFilter
-import com.bksd.journal.domain.model.Moment
-import com.bksd.journal.domain.model.Mood
-import com.bksd.journal.domain.repository.MomentRepository
 import com.bksd.journal.domain.usecase.DeleteMomentUseCase
 import com.bksd.journal.domain.usecase.GetPagedMomentsUseCase
 import com.bksd.journal.domain.usecase.SyncMomentsUseCase
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
@@ -61,6 +63,8 @@ class JournalViewModelTest {
         override fun getProfilePhotoUrl(): String? = null
         override suspend fun setRememberMe(enabled: Boolean) {}
         override fun isRememberMeEnabled() = flowOf(false)
+        override suspend fun getLocalDataOwner(): String? = null
+        override suspend fun setLocalDataOwner(uid: String?) {}
     }
 
     @BeforeTest
@@ -93,6 +97,7 @@ class JournalViewModelTest {
 
         getPagedMomentsUseCase = GetPagedMomentsUseCase(fakeRepository)
         syncMomentsUseCase = SyncMomentsUseCase(fakeRepository)
+        deleteMomentUseCase = DeleteMomentUseCase(fakeRepository)
 
         viewModel = JournalViewModel(
             getPagedMomentsUseCase = getPagedMomentsUseCase,
@@ -118,13 +123,17 @@ class JournalViewModelTest {
 
     @Test
     fun testOnFilterSelect_updatesState() {
+        val collectJob = CoroutineScope(testDispatcher).launch { viewModel.state.collect {} }
         viewModel.onAction(JournalAction.OnFilterSelect(JournalFilter.PHOTOS))
         assertEquals(JournalFilter.PHOTOS, viewModel.state.value.selectedFilter)
+        collectJob.cancel()
     }
 
     @Test
     fun testOnSearchQueryChange_updatesState() {
+        val collectJob = CoroutineScope(testDispatcher).launch { viewModel.state.collect {} }
         viewModel.onAction(JournalAction.OnSearchQueryChange("test query"))
         assertEquals("test query", viewModel.state.value.searchQuery)
+        collectJob.cancel()
     }
 }

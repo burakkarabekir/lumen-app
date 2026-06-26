@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.journal.presentation.Res
 import com.bksd.journal.presentation.add_favorite
+import com.bksd.journal.presentation.delete
 import com.bksd.journal.presentation.edit_entry
 import com.bksd.journal.presentation.remove_favorite
 import org.jetbrains.compose.resources.stringResource
@@ -136,7 +137,7 @@ private fun MomentActionsSheetContent(
                 modifier = Modifier.size(24.dp)
             )
         },
-        label = "Delete",
+        label = stringResource(Res.string.delete),
         labelColor = MaterialTheme.colorScheme.error,
         onClick = onDeleteClick
     )

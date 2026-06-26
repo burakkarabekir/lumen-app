@@ -62,6 +62,7 @@ import com.bksd.core.design_system.component.layout.AppScaffold
 import com.bksd.core.design_system.component.layout.AppSurface
 import com.bksd.core.design_system.component.layout.AppTopBar
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.domain.model.Mood
 import com.bksd.core.presentation.media.MediaPickResult
 import com.bksd.core.presentation.media.rememberMediaPickerLauncher
 import com.bksd.core.presentation.permission.LocationSettingsResolver
@@ -72,7 +73,6 @@ import com.bksd.core.presentation.permission.rememberLocationSettingsResolver
 import com.bksd.core.presentation.permission.rememberPermissionController
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.core.presentation.util.UiText
-import com.bksd.journal.domain.model.Mood
 import com.bksd.moment.presentation.Res
 import com.bksd.moment.presentation.action_enable_location
 import com.bksd.moment.presentation.action_open_settings
@@ -102,6 +102,7 @@ import com.bksd.moment.presentation.permission_mic_denied
 import com.bksd.moment.presentation.save_moment
 import com.bksd.moment.presentation.section_add_to_entry
 import com.bksd.moment.presentation.section_how_feeling
+import com.bksd.moment.presentation.title_placeholder
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
@@ -417,7 +418,7 @@ private fun CreateMomentScreen(
                         onValueChange = { onAction(CreateMomentAction.OnTitleChange(it)) },
                         placeholder = {
                             Text(
-                                text = "Title",
+                                text = stringResource(Res.string.title_placeholder),
                                 fontSize = 24.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)

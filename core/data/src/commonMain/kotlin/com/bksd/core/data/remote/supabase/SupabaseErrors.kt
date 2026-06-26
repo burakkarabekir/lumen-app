@@ -4,6 +4,12 @@ import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.AuthErrorType
 import com.bksd.core.domain.error.NetworkErrorType
 import com.bksd.core.domain.error.Result
+import io.github.jan.supabase.auth.exception.AuthErrorCode
+import io.github.jan.supabase.auth.exception.AuthRestException
+import io.github.jan.supabase.exceptions.HttpRequestException
+import io.github.jan.supabase.exceptions.RestException
+import io.ktor.client.plugins.HttpRequestTimeoutException
+import kotlinx.serialization.SerializationException
 import kotlin.coroutines.cancellation.CancellationException
 
 suspend fun <T> supabaseCall(block: suspend () -> T): Result<T, AppError> = try {
@@ -14,7 +20,54 @@ suspend fun <T> supabaseCall(block: suspend () -> T): Result<T, AppError> = try 
     Result.Error(mapSupabaseError(e))
 }
 
-fun mapSupabaseError(e: Throwable): AppError {
+fun mapSupabaseError(e: Throwable): AppError = when (e) {
+    is AuthRestException -> mapAuthError(e)
+    is RestException -> mapHttpStatus(e.statusCode)
+    is HttpRequestTimeoutException -> AppError.Network(NetworkErrorType.REQUEST_TIMEOUT)
+    is HttpRequestException -> AppError.Network(NetworkErrorType.NO_INTERNET)
+    is SerializationException -> AppError.Network(NetworkErrorType.SERIALIZATION)
+    else -> mapByMessage(e)
+}
+
+private fun mapAuthError(e: AuthRestException): AppError = when (e.errorCode) {
+    AuthErrorCode.InvalidCredentials,
+    AuthErrorCode.EmailNotConfirmed,
+    AuthErrorCode.BadCodeVerifier -> AppError.Auth(AuthErrorType.INVALID_CREDENTIALS)
+
+    AuthErrorCode.UserNotFound -> AppError.Auth(AuthErrorType.USER_NOT_FOUND)
+
+    AuthErrorCode.UserAlreadyExists,
+    AuthErrorCode.EmailExists,
+    AuthErrorCode.PhoneExists,
+    AuthErrorCode.IdentityAlreadyExists -> AppError.Auth(AuthErrorType.ACCOUNT_EXISTS)
+
+    AuthErrorCode.WeakPassword,
+    AuthErrorCode.SamePassword -> AppError.Auth(AuthErrorType.WEAK_PASSWORD)
+
+    AuthErrorCode.OverRequestRateLimit,
+    AuthErrorCode.OverEmailSendRateLimit,
+    AuthErrorCode.OverSmsSendRateLimit -> AppError.Network(NetworkErrorType.TOO_MANY_REQUESTS)
+
+    AuthErrorCode.RequestTimeout -> AppError.Network(NetworkErrorType.REQUEST_TIMEOUT)
+
+    AuthErrorCode.NoAuthorization,
+    AuthErrorCode.BadJwt,
+    AuthErrorCode.SessionExpired,
+    AuthErrorCode.SessionNotFound -> AppError.Network(NetworkErrorType.UNAUTHORIZED)
+
+    else -> mapHttpStatus(e.statusCode)
+}
+
+private fun mapHttpStatus(status: Int): AppError = when (status) {
+    401, 403 -> AppError.Network(NetworkErrorType.UNAUTHORIZED)
+    408, 504 -> AppError.Network(NetworkErrorType.REQUEST_TIMEOUT)
+    409 -> AppError.Network(NetworkErrorType.CONFLICT)
+    429 -> AppError.Network(NetworkErrorType.TOO_MANY_REQUESTS)
+    in 500..599 -> AppError.Network(NetworkErrorType.SERVER_ERROR)
+    else -> AppError.Unknown("HTTP $status")
+}
+
+private fun mapByMessage(e: Throwable): AppError {
     val msg = e.message?.lowercase().orEmpty()
     return when {
         "invalid login" in msg || "invalid credentials" in msg ||

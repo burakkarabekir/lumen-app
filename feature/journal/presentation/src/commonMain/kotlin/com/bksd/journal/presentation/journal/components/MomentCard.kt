@@ -56,13 +56,13 @@ import com.bksd.core.design_system.theme.extended
 import com.bksd.core.design_system.theme.labelXSmall
 import com.bksd.core.domain.model.AudioAttachment
 import com.bksd.core.domain.model.LinkAttachment
+import com.bksd.core.domain.model.Moment
+import com.bksd.core.domain.model.Mood
 import com.bksd.core.domain.model.PhotoAttachment
 import com.bksd.core.domain.model.PlaybackState
 import com.bksd.core.domain.model.VideoAttachment
 import com.bksd.core.presentation.AudioPlaybackMode
 import com.bksd.core.presentation.util.onSafe
-import com.bksd.journal.domain.model.Moment
-import com.bksd.journal.domain.model.Mood
 import com.bksd.journal.presentation.util.DefaultMomentFormatter
 import com.bksd.journal.presentation.util.MomentFormatter
 import kotlinx.collections.immutable.ImmutableList

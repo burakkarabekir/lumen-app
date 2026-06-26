@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.bksd.core.domain.error.Result
 import com.bksd.core.presentation.util.BaseViewModel
 import com.bksd.core.presentation.util.UiText
+import com.bksd.core.presentation.util.toUiText
 import com.bksd.journal.domain.usecase.DeleteMomentUseCase
 import com.bksd.journal.domain.usecase.GetMomentUseCase
 import com.bksd.journal.domain.usecase.UpdateMomentUseCase
@@ -122,7 +123,7 @@ class MomentDetailViewModel(
                     _state.update { it.copy(isSaving = false) }
                     sendEvent(
                         MomentDetailEvent.ShowError(
-                            UiText.Dynamic(result.error.toString())
+                            result.error.toUiText()
                         )
                     )
                 }
@@ -130,7 +131,7 @@ class MomentDetailViewModel(
         }
     }
 
-    private fun toggleMood(mood: com.bksd.journal.domain.model.Mood) {
+    private fun toggleMood(mood: com.bksd.core.domain.model.Mood) {
         _state.update { current ->
             val updated = if (mood in current.editMoods) {
                 current.editMoods - mood
@@ -146,7 +147,7 @@ class MomentDetailViewModel(
         launch {
             when (val result = getMomentUseCase(momentId)) {
                 is Result.Error -> {
-                    val errorText = UiText.Dynamic(result.error.toString())
+                    val errorText = result.error.toUiText()
                     _state.update { it.copy(error = errorText, isLoading = false) }
                     sendEvent(MomentDetailEvent.ShowError(errorText))
                 }
@@ -170,7 +171,7 @@ class MomentDetailViewModel(
                 }
 
                 is Result.Error -> {
-                    val errorText = UiText.Dynamic(result.error.toString())
+                    val errorText = result.error.toUiText()
                     sendEvent(MomentDetailEvent.ShowError(errorText))
                 }
             }

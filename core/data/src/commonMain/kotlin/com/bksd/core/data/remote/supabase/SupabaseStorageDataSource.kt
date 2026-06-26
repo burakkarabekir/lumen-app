@@ -4,6 +4,7 @@ import com.bksd.core.data.media.readFileBytes
 import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.Result
 import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.storage.SignedUrl
 import io.github.jan.supabase.storage.storage
 import kotlin.time.Duration
 
@@ -32,9 +33,17 @@ class SupabaseStorageDataSource(
             client.storage.from(bucket).createSignedUrl(path, expiresIn)
         }
 
+    suspend fun signedUrls(
+        bucket: String,
+        paths: Collection<String>,
+        expiresIn: Duration
+    ): Result<List<SignedUrl>, AppError> =
+        supabaseCall {
+            client.storage.from(bucket).createSignedUrls(expiresIn, paths)
+        }
+
     suspend fun delete(bucket: String, path: String): Result<Unit, AppError> =
         supabaseCall {
             client.storage.from(bucket).delete(path)
-            Unit
         }
 }

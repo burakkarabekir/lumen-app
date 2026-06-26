@@ -1,8 +1,8 @@
-package com.bksd.journal.domain.repository
+package com.bksd.core.domain.repository
 
 import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.Result
-import com.bksd.journal.domain.model.Moment
+import com.bksd.core.domain.model.Moment
 import kotlinx.coroutines.flow.Flow
 
 interface MomentRepository {

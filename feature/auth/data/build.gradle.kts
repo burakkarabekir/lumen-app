@@ -12,7 +12,6 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(projects.feature.auth.domain)
-                implementation(projects.feature.profile.domain)
             }
         }
     }

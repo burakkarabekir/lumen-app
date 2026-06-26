@@ -1,7 +1,7 @@
 package com.bksd.moment.presentation.create
 
 import com.bksd.core.domain.model.MediaType
-import com.bksd.journal.domain.model.Mood
+import com.bksd.core.domain.model.Mood
 import kotlinx.datetime.LocalDate
 
 sealed interface CreateMomentAction {

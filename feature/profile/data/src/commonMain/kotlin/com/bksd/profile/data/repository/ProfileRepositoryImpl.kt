@@ -3,20 +3,17 @@ package com.bksd.profile.data.repository
 import com.bksd.core.data.remote.supabase.SupabaseAuthDataSource
 import com.bksd.core.data.remote.supabase.SupabaseBuckets
 import com.bksd.core.data.remote.supabase.SupabaseStorageDataSource
-import com.bksd.core.data.remote.supabase.supabaseCall
 import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.NetworkErrorType
 import com.bksd.core.domain.error.Result
-import com.bksd.profile.data.dto.UserProfileDto
+import com.bksd.profile.data.remote.SupabaseProfileRemoteDataSource
 import com.bksd.profile.domain.model.UserProfile
 import com.bksd.profile.domain.repository.ProfileRepository
-import io.github.jan.supabase.SupabaseClient
-import io.github.jan.supabase.postgrest.postgrest
 import kotlin.random.Random
 
 class ProfileRepositoryImpl(
     private val authDataSource: SupabaseAuthDataSource,
-    private val client: SupabaseClient,
+    private val remoteDataSource: SupabaseProfileRemoteDataSource,
     private val storageDataSource: SupabaseStorageDataSource,
 ) : ProfileRepository {
 
@@ -24,18 +21,21 @@ class ProfileRepositoryImpl(
         val uid = authDataSource.getSignedInUserId()
             ?: return Result.Error(AppError.Network(NetworkErrorType.UNAUTHORIZED))
 
-        return supabaseCall {
-            val row = client.postgrest["profiles"]
-                .select { filter { eq("id", uid) } }
-                .decodeSingleOrNull<UserProfileDto>()
+        return when (val result = remoteDataSource.fetchProfile(uid)) {
+            is Result.Success -> {
+                val row = result.data
+                Result.Success(
+                    UserProfile(
+                        displayName = row?.displayName ?: authDataSource.getDisplayName().orEmpty(),
+                        photoUrl = row?.avatarUrl ?: authDataSource.getPhotoUrl(),
+                        jobTitle = row?.jobTitle.orEmpty(),
+                        joinYear = row?.joinYear.orEmpty(),
+                        isPremium = row?.isPremium ?: false,
+                    )
+                )
+            }
 
-            UserProfile(
-                displayName = row?.displayName ?: authDataSource.getDisplayName().orEmpty(),
-                photoUrl = row?.avatarUrl ?: authDataSource.getPhotoUrl(),
-                jobTitle = row?.jobTitle.orEmpty(),
-                joinYear = row?.joinYear.orEmpty(),
-                isPremium = row?.isPremium ?: false,
-            )
+            is Result.Error -> Result.Error(result.error)
         }
     }
 

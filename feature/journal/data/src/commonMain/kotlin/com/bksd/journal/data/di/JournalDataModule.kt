@@ -1,6 +1,8 @@
 package com.bksd.journal.data.di
 
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import com.bksd.core.domain.cleanup.LocalDataCleaner
+import com.bksd.core.domain.repository.MomentRepository
 import com.bksd.journal.data.MediatorMomentRepository
 import com.bksd.journal.data.local.DomainToEntityMapper
 import com.bksd.journal.data.local.EntityToDomainMapper
@@ -8,10 +10,8 @@ import com.bksd.journal.data.local.JournalDatabase
 import com.bksd.journal.data.local.MomentDao
 import com.bksd.journal.data.local.getJournalDatabaseBuilder
 import com.bksd.journal.data.remote.MomentDtoMapper
-import com.bksd.journal.data.remote.SupabaseMomentRemoteDataSource
 import com.bksd.journal.data.remote.MomentToDtoMapper
-import com.bksd.core.domain.cleanup.LocalDataCleaner
-import com.bksd.journal.domain.repository.MomentRepository
+import com.bksd.journal.data.remote.SupabaseMomentRemoteDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.serialization.json.Json

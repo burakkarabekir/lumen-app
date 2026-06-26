@@ -27,10 +27,13 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bksd.auth.presentation.Res
 import com.bksd.auth.presentation.already_have_account
 import com.bksd.auth.presentation.btn_sign_up
+import com.bksd.auth.presentation.check_your_email
+import com.bksd.auth.presentation.confirmation_link_sent
 import com.bksd.auth.presentation.create_your_space
 import com.bksd.auth.presentation.label_email
 import com.bksd.auth.presentation.label_full_name
@@ -41,6 +44,7 @@ import com.bksd.auth.presentation.sign_up_subtitle
 import com.bksd.auth.presentation.terms_agreement
 import com.bksd.core.design_system.component.button.AppButton
 import com.bksd.core.design_system.component.button.AppButtonStyle
+import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.LumenBase600
 import com.bksd.core.design_system.theme.LumenBrand500
 import com.bksd.core.design_system.theme.LumenRadius
@@ -81,6 +85,28 @@ fun SignUpRoot(
         onAction = viewModel::onAction,
         modifier = modifier
     )
+}
+
+@Preview
+@Composable
+private fun SignUpScreenPreview() {
+    AppTheme {
+        SignUpScreen(
+            state = SignUpState(),
+            onAction = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun SignUpScreenPreviewDark() {
+    AppTheme(darkTheme = true) {
+        SignUpScreen(
+            state = SignUpState(),
+            onAction = {}
+        )
+    }
 }
 
 @Composable
@@ -256,7 +282,7 @@ private fun SignUpConfirmationPanel(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Check your email",
+            text = stringResource(Res.string.check_your_email),
             style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
             color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center
@@ -265,7 +291,7 @@ private fun SignUpConfirmationPanel(
         Spacer(modifier = Modifier.height(LumenSpacing.md))
 
         Text(
-            text = "We sent a confirmation link to $email. Tap it to activate your account, then sign in.",
+            text = stringResource(Res.string.confirmation_link_sent, email),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
             textAlign = TextAlign.Center,

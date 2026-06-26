@@ -38,10 +38,10 @@ import com.bksd.core.design_system.component.divider.AppDivider
 import com.bksd.core.design_system.component.layout.AppSurface
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.domain.model.AudioAttachment
+import com.bksd.core.domain.model.Moment
 import com.bksd.core.domain.model.PlaybackState
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.journal.domain.model.JournalFilter
-import com.bksd.journal.domain.model.Moment
 import com.bksd.journal.presentation.Res
 import com.bksd.journal.presentation.content_desc_create_moment
 import com.bksd.journal.presentation.journal.components.FilterChips

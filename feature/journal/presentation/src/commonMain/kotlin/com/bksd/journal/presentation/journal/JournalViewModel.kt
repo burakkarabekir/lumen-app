@@ -2,11 +2,11 @@ package com.bksd.journal.presentation.journal
 
 import androidx.lifecycle.viewModelScope
 import com.bksd.core.domain.error.Result
+import com.bksd.core.domain.model.Moment
 import com.bksd.core.domain.storage.AudioPlayer
 import com.bksd.core.domain.storage.SessionStorage
 import com.bksd.core.presentation.util.BaseViewModel
-import com.bksd.core.presentation.util.UiText
-import com.bksd.journal.domain.model.Moment
+import com.bksd.core.presentation.util.toUiText
 import com.bksd.journal.domain.model.applyFilter
 import com.bksd.journal.domain.usecase.DeleteMomentUseCase
 import com.bksd.journal.domain.usecase.GetPagedMomentsUseCase
@@ -112,7 +112,7 @@ class JournalViewModel(
                 launch {
                     val result = deleteMomentUseCase(action.id)
                     if (result is Result.Error) {
-                        sendEvent(JournalEvent.ShowError(UiText.Dynamic(result.error.toString())))
+                        sendEvent(JournalEvent.ShowError(result.error.toUiText()))
                     }
                 }
             }
@@ -188,7 +188,7 @@ class JournalViewModel(
             _state.update { it.copy(isSyncing = true, error = null) }
             when (val result = syncMomentsUseCase(limit = limit, offset = offset)) {
                 is Result.Error -> {
-                    val errorText = UiText.Dynamic(result.error.toString())
+                    val errorText = result.error.toUiText()
                     _state.update { it.copy(isSyncing = false, error = errorText) }
                     sendEvent(JournalEvent.ShowError(errorText))
                 }

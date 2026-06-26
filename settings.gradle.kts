@@ -40,7 +40,6 @@ include(":core:data")
 include(":feature:journal:data")
 include(":feature:journal:domain")
 include(":feature:journal:presentation")
-include(":feature:moment:data")
 include(":feature:moment:domain")
 include(":feature:moment:presentation")
 

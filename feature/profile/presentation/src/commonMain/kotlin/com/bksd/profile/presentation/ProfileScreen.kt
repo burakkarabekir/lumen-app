@@ -71,14 +71,17 @@ fun ProfileRoot(
 
             is ProfileEvent.PermissionError -> {
                 scope.launch {
-                    val msg = getString(Res.string.error_avatar_update_failed, event.message)
+                    val msg = getString(
+                        Res.string.error_avatar_update_failed,
+                        event.error.asStringAsync()
+                    )
                     snackbarHostState.showSnackbar(msg)
                 }
             }
 
             is ProfileEvent.SignOutError -> {
                 scope.launch {
-                    snackbarHostState.showSnackbar(event.message)
+                    snackbarHostState.showSnackbar(event.error.asStringAsync())
                 }
             }
         }

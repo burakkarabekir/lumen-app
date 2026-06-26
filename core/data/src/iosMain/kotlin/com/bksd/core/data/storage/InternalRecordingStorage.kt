@@ -11,6 +11,7 @@ import platform.Foundation.NSFileManager
 import platform.Foundation.NSURL
 import platform.Foundation.NSUUID
 import platform.Foundation.NSUserDomainMask
+import kotlin.coroutines.cancellation.CancellationException
 
 class InternalRecordingStorage : RecordingStorage {
 
@@ -54,8 +55,9 @@ class InternalRecordingStorage : RecordingStorage {
                 fileManager.removeItemAtPath(tempFilePath, null)
 
                 destinationPath
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
-                e.printStackTrace()
                 null
             }
         }

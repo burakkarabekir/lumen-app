@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
-import com.bksd.journal.domain.model.Mood
+import com.bksd.core.domain.model.Mood
 
 @Composable
 fun MoodChip(

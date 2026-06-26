@@ -1,6 +1,6 @@
 package com.bksd.journal.presentation.detail
 
-import com.bksd.journal.domain.model.Mood
+import com.bksd.core.domain.model.Mood
 
 sealed interface MomentDetailAction {
     data object OnNavigateBack : MomentDetailAction

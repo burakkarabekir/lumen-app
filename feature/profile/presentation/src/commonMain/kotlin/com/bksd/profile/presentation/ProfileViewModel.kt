@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.bksd.auth.domain.usecase.SignOutUseCase
 import com.bksd.core.domain.error.Result
 import com.bksd.core.presentation.util.BaseViewModel
+import com.bksd.core.presentation.util.toUiText
 import com.bksd.profile.domain.usecase.GetUserProfileUseCase
 import com.bksd.profile.domain.usecase.SetProfileAvatarUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -71,7 +72,7 @@ class ProfileViewModel(
                             _state.update { it.copy(photoUrl = result.data, isAvatarLoading = false) }
                         }
                         is Result.Error -> {
-                            sendEvent(ProfileEvent.PermissionError(result.error.toString()))
+                            sendEvent(ProfileEvent.PermissionError(result.error.toUiText()))
                             _state.update { it.copy(isAvatarLoading = false) }
                         }
                     }
@@ -93,7 +94,7 @@ class ProfileViewModel(
             _state.update { it.copy(isSigningOut = false) }
             when (result) {
                 is Result.Success -> sendEvent(ProfileEvent.SignOutSuccess)
-                is Result.Error -> sendEvent(ProfileEvent.SignOutError(result.error.toString()))
+                is Result.Error -> sendEvent(ProfileEvent.SignOutError(result.error.toUiText()))
             }
         }
     }

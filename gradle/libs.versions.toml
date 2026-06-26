@@ -11,10 +11,6 @@ playServicesLocation = "21.3.0"
 versionCode = "1"
 versionName = "1.0"
 
-firebase-gitlive = "2.4.0"
-firebase-bom = "34.13.0"
-google-services = "4.4.4"
-
 supabase = "3.6.0"
 
 # ==================== Build Tools ====================
@@ -89,7 +85,6 @@ androidx-credentials = { module = "androidx.credentials:credentials", version.re
 androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
 androidx-lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "androidx-lifecycle" }
 
-google-firebase-auth = { module = "com.google.firebase:firebase-auth" }
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
 insert-koin-koin-android = { module = "io.insert-koin:koin-android" }
 insert-koin-koin-core = { module = "io.insert-koin:koin-core" }
@@ -192,7 +187,6 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 # ==================== Moko Permissions ====================
 moko-permissions = { module = "dev.icerock.moko:permissions", version.ref = "moko-permissions" }
 moko-permissions-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = "moko-permissions" }
-moko-permissions-notifications = { module = "dev.icerock.moko:permissions-notifications", version.ref = "moko-permissions" }
 moko-permissions-microphone = { module = "dev.icerock.moko:permissions-microphone", version.ref = "moko-permissions" }
 moko-permissions-location = { module = "dev.icerock.moko:permissions-location", version.ref = "moko-permissions" }
 moko-permissions-camera = { module = "dev.icerock.moko:permissions-camera", version.ref = "moko-permissions" }
@@ -216,19 +210,11 @@ androidx-core = { group = "androidx.test", name = "core", version.ref = "core" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil-network" }
 
-firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase-gitlive" }
-firebase-common = { module = "dev.gitlive:firebase-common", version.ref = "firebase-gitlive" }
-firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebase-gitlive" }
-firebase-storage = { module = "dev.gitlive:firebase-storage", version.ref = "firebase-gitlive" }
-firebase-analytics = { module = "dev.gitlive:firebase-analytics", version.ref = "firebase-gitlive" }
-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
-
 supabase-auth = { module = "io.github.jan-tennert.supabase:auth-kt", version.ref = "supabase" }
 supabase-postgrest = { module = "io.github.jan-tennert.supabase:postgrest-kt", version.ref = "supabase" }
 supabase-storage = { module = "io.github.jan-tennert.supabase:storage-kt", version.ref = "supabase" }
 
 [plugins]
-googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
 # ==================== Convention Plugins ====================
 convention-android-application = { id = "com.bksd.convention.android.application", version = "unspecified" }
 convention-android-application-compose = { id = "com.bksd.convention.android.application.compose", version = "unspecified" }
@@ -254,15 +240,11 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 # ==================== Compose Plugins ====================
 compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-compose-stability-analyzer = { id = "com.github.skydoves.compose.stability.analyzer", version = "0.7.5" }
 
 # ==================== Build Tools Plugins ====================
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
 buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
-
-# ==================== Analytics Plugins ====================
-kotzilla = { id = "io.kotzilla.kotzilla-plugin", version.ref = "kotzilla" }
 
 [bundles]
 # ==================== Compose (AndroidX) ====================
@@ -372,13 +354,6 @@ koin-android = [
 moko-permissions-core = [
     "moko-permissions",
     "moko-permissions-compose"
-]
-
-moko-permissions-all = [
-    "moko-permissions",
-    "moko-permissions-compose",
-    "moko-permissions-notifications",
-    "moko-permissions-gallery"
 ]
 
 # ==================== Analytics ====================
