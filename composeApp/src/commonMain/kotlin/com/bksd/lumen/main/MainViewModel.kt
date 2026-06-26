@@ -19,6 +19,7 @@ class MainViewModel(
 
     init {
         launch {
+            sessionStorage.awaitReady()
             var isLoggedIn = sessionStorage.isLoggedIn()
 
             if (isLoggedIn) {

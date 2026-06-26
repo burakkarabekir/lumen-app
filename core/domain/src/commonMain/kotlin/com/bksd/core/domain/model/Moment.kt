@@ -12,6 +12,7 @@ data class Moment(
     val tags: List<String> = emptyList(),
     val attachments: List<Attachment> = emptyList(),
     val location: LocationData? = null,
+    val isFavorite: Boolean = false,
     val pendingSync: Boolean = false
 )
 

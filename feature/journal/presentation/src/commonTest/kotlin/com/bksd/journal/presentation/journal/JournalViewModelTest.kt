@@ -60,6 +60,7 @@ class JournalViewModelTest {
     private val fakeSessionStorage = object : SessionStorage {
         override fun observeAuthState() = flowOf(true)
         override fun isLoggedIn() = true
+        override suspend fun awaitReady() {}
         override fun getProfilePhotoUrl(): String? = null
         override suspend fun setRememberMe(enabled: Boolean) {}
         override fun isRememberMeEnabled() = flowOf(false)

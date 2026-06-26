@@ -11,6 +11,7 @@ import com.bksd.journal.domain.model.applyFilter
 import com.bksd.journal.domain.usecase.DeleteMomentUseCase
 import com.bksd.journal.domain.usecase.GetPagedMomentsUseCase
 import com.bksd.journal.domain.usecase.SyncMomentsUseCase
+import com.bksd.journal.domain.usecase.UpdateMomentUseCase
 import com.bksd.journal.presentation.journal.JournalViewModel.Companion.LOAD_MORE_SIZE
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Job
@@ -28,6 +29,7 @@ class JournalViewModel(
     private val getPagedMomentsUseCase: GetPagedMomentsUseCase,
     private val syncMomentsUseCase: SyncMomentsUseCase,
     private val deleteMomentUseCase: DeleteMomentUseCase,
+    private val updateMomentUseCase: UpdateMomentUseCase,
     private val sessionStorage: SessionStorage,
     private val clock: Clock,
     private val timeZone: TimeZone,
@@ -121,8 +123,13 @@ class JournalViewModel(
                 sendEvent(JournalEvent.NavigateToDetail(action.id, isEditing = true))
             }
 
-            is JournalAction.OnFavoriteToggle -> Unit
+            is JournalAction.OnFavoriteToggle -> toggleFavorite(action.id)
         }
+    }
+
+    private fun toggleFavorite(id: String) {
+        val moment = _state.value.moments.find { it.id == id } ?: return
+        launch { updateMomentUseCase(moment.copy(isFavorite = !moment.isFavorite)) }
     }
 
     // ──────────────────────────────────────────────────────────────

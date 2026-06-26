@@ -51,7 +51,7 @@ class MomentDetailViewModel(
             MomentDetailAction.OnCancelEdit -> exitEditMode()
             MomentDetailAction.OnDeleteClick -> handleDelete()
             MomentDetailAction.OnShareClick -> Unit
-            MomentDetailAction.OnFavoriteToggle -> Unit
+            MomentDetailAction.OnFavoriteToggle -> toggleFavorite()
             MomentDetailAction.OnToggleBodyExpand -> {
                 _state.update { it.copy(isBodyExpanded = !it.isBodyExpanded) }
             }
@@ -66,6 +66,13 @@ class MomentDetailViewModel(
                 _state.update { it.copy(editTags = (it.editTags - action.tag).toPersistentList()) }
             }
         }
+    }
+
+    private fun toggleFavorite() {
+        val moment = _state.value.moment ?: return
+        val updated = moment.copy(isFavorite = !moment.isFavorite)
+        _state.update { it.copy(moment = updated) }
+        launch { updateMomentUseCase(updated) }
     }
 
     private fun handleNavigateBack() {

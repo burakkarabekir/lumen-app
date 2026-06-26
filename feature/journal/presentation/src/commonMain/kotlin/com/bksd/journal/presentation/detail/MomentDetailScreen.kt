@@ -138,6 +138,7 @@ fun MomentDetailScreen(
                     onEditClick = { onAction(MomentDetailAction.OnEditClick) },
                     onSaveClick = { onAction(MomentDetailAction.OnSaveChanges) },
                     onFavoriteClick = { onAction(MomentDetailAction.OnFavoriteToggle) },
+                    isFavorite = state.moment.isFavorite,
                     modifier = Modifier.wrapContentWidth(align = Alignment.CenterHorizontally)
                 )
             }

@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -47,6 +48,7 @@ fun DetailBottomActionBar(
     onEditClick: () -> Unit,
     onSaveClick: () -> Unit,
     onFavoriteClick: () -> Unit,
+    isFavorite: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val sideSlotWidth by animateDpAsState(
@@ -156,9 +158,9 @@ fun DetailBottomActionBar(
                 if (sideSlotWidth > 0.dp) {
                     IconButton(onClick = onFavoriteClick) {
                         Icon(
-                            imageVector = Icons.Default.FavoriteBorder,
+                            imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            tint = if (isFavorite) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(22.dp)
                         )
                     }

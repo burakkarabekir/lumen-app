@@ -2,18 +2,17 @@
 
 package com.bksd.journal.presentation.journal.components
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -24,6 +23,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -44,12 +44,15 @@ import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlin.math.roundToInt
 import com.bksd.core.design_system.component.divider.AppDivider
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.extended
@@ -147,25 +150,42 @@ fun MomentCard(
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
-            .animateContentSize(
-                animationSpec = tween(
-                    durationMillis = MomentCardDefaults.REVEAL_DURATION_MS,
-                    easing = MomentCardDefaults.RevealEasing
-                )
-            )
+            .pointerInput(hasMoods) {
+                if (!hasMoods) return@pointerInput
+                val thresholdPx = MomentCardDefaults.SWIPE_THRESHOLD_DP.dp.toPx()
+                var totalDrag = 0f
+                var handled = false
+                detectHorizontalDragGestures(
+                    onDragStart = {
+                        totalDrag = 0f
+                        handled = false
+                    },
+                    onDragEnd = {
+                        totalDrag = 0f
+                        handled = false
+                    }
+                ) { _, dragAmount ->
+                    totalDrag += dragAmount
+                    if (!handled) {
+                        if (totalDrag > thresholdPx) {
+                            moodPanelExpanded = true
+                            handled = true
+                        } else if (totalDrag < -thresholdPx) {
+                            moodPanelExpanded = false
+                            handled = true
+                        }
+                    }
+                }
+            }
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(IntrinsicSize.Min)
                 .padding(2.dp)
                 .clip(RoundedCornerShape(14.dp))
         ) {
             if (hasMoods) {
-                MoodColorStrip(
-                    colors = moodColorList.toPersistentList(),
-                    onClick = { moodPanelExpanded = !moodPanelExpanded }
-                )
+                Spacer(modifier = Modifier.width(MomentCardDefaults.STRIP_WIDTH_DP.dp))
             }
 
             if (hasMoods && panelWidth > 0.dp) {
@@ -239,6 +259,7 @@ fun MomentCard(
                 AppDivider()
                 CardFooter(
                     formattedDate = formattedDate,
+                    isFavorite = moment.isFavorite,
                     onMoreClick = { isActionsSheetVisible = true }
                 )
             }
@@ -266,6 +287,19 @@ fun MomentCard(
                     }
             )
         }
+
+        if (hasMoods) {
+            Box(
+                modifier = Modifier
+                    .matchParentSize()
+                    .padding(2.dp)
+            ) {
+                MoodColorStrip(
+                    colors = moodColorList.toPersistentList(),
+                    onClick = { moodPanelExpanded = !moodPanelExpanded }
+                )
+            }
+        }
     }
 
     if (isActionsSheetVisible) {
@@ -273,7 +307,8 @@ fun MomentCard(
             onDismiss = { isActionsSheetVisible = false },
             onEditClick = onEditClick,
             onFavoriteClick = onFavoriteToggleClick,
-            onDeleteClick = onDeleteClick
+            onDeleteClick = onDeleteClick,
+            isLiked = moment.isFavorite
         )
     }
 }
@@ -320,6 +355,13 @@ private fun MoodRevealPanel(
         modifier = Modifier
             .width(panelWidth)
             .clipToBounds()
+            .layout { measurable, constraints ->
+                val placeable = measurable.measure(constraints)
+                val height = (placeable.height * revealProgress).roundToInt().coerceAtLeast(0)
+                layout(placeable.width, height) {
+                    placeable.place(0, 0)
+                }
+            }
             .padding(vertical = 10.dp, horizontal = 6.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
@@ -396,6 +438,7 @@ private fun MediaContent(
 @Composable
 private fun CardFooter(
     formattedDate: String,
+    isFavorite: Boolean,
     onMoreClick: () -> Unit
 ) {
     Row(
@@ -410,16 +453,29 @@ private fun CardFooter(
             style = MaterialTheme.typography.displaySmall.copy(fontSize = 11.sp),
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
         )
-        IconButton(
-            onClick = onMoreClick,
-            modifier = Modifier.size(32.dp)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Icon(
-                imageVector = Icons.Default.MoreHoriz,
-                contentDescription = "More actions",
-                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-                modifier = Modifier.size(20.dp)
-            )
+            if (isFavorite) {
+                Icon(
+                    imageVector = Icons.Default.Favorite,
+                    contentDescription = "Favorited",
+                    tint = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.size(16.dp)
+                )
+            }
+            IconButton(
+                onClick = onMoreClick,
+                modifier = Modifier.size(32.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.MoreHoriz,
+                    contentDescription = "More actions",
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                    modifier = Modifier.size(20.dp)
+                )
+            }
         }
     }
 }

@@ -14,7 +14,8 @@ class MomentToDtoMapper : Mapper<Moment, MomentDto> {
         moods = input.moods.map { it.name },
         tags = input.tags,
         location = input.location?.toDto(),
-        attachments = input.attachments.map { it.toAttachmentDto() }
+        attachments = input.attachments.map { it.toAttachmentDto() },
+        isFavorite = input.isFavorite
     )
 
     private fun LocationData.toDto(): LocationDto = LocationDto(

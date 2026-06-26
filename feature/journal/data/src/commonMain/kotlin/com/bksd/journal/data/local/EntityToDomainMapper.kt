@@ -50,6 +50,7 @@ class EntityToDomainMapper(
                     displayName = input.locationDisplayName
                 )
             } else null,
+            isFavorite = input.isFavorite,
             pendingSync = input.pendingSync
         )
     }

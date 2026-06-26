@@ -61,6 +61,8 @@ class SupabaseAuthDataSource(
 
     fun getSignedInUserId(): String? = auth.currentUserOrNull()?.id
 
+    suspend fun awaitInitialization() = auth.awaitInitialization()
+
     fun getDisplayName(): String? = userMetaString("full_name")
 
     fun getPhotoUrl(): String? = userMetaString("avatar_url")

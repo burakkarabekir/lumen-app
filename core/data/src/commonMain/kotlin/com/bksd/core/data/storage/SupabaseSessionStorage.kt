@@ -22,6 +22,8 @@ class SupabaseSessionStorage(
     override fun isLoggedIn(): Boolean =
         authDataSource.getSignedInUserId() != null
 
+    override suspend fun awaitReady() = authDataSource.awaitInitialization()
+
     override fun getProfilePhotoUrl(): String? =
         authDataSource.getPhotoUrl()
 

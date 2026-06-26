@@ -13,6 +13,7 @@ data class MomentDto(
     val tags: List<String> = emptyList(),
     val location: LocationDto? = null,
     val attachments: List<AttachmentDto> = emptyList(),
+    @SerialName("is_favorite") val isFavorite: Boolean = false,
     @SerialName("user_id") val userId: String? = null,
 )
 

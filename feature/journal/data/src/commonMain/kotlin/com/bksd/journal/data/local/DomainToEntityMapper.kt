@@ -20,6 +20,7 @@ class DomainToEntityMapper(
         locationLongitude = input.location?.longitude,
         locationDisplayName = input.location?.displayName,
         attachments = json.encodeToString(input.attachments.map { it.toAttachmentDto() }),
+        isFavorite = input.isFavorite,
         pendingSync = input.pendingSync
     )
 }
