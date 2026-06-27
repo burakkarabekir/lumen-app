@@ -10,8 +10,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,7 +35,9 @@ import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.insights.presentation.CurrentStreak
 
 @Composable
-internal fun CurrentStreakCard(streak: CurrentStreak) {
+internal fun CurrentStreakCard(weekly: CurrentStreak, daily: CurrentStreak) {
+    var showDaily by rememberSaveable { mutableStateOf(false) }
+    val streak = if (showDaily) daily else weekly
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -38,11 +46,6 @@ internal fun CurrentStreakCard(streak: CurrentStreak) {
             .background(Brush.verticalGradient(listOf(Color(0xFF30344F), Color(0xFF191B29))))
     ) {
         StreakBlobs()
-        MenuDot(
-            modifier = Modifier.align(Alignment.TopEnd).padding(top = 16.dp, end = 18.dp),
-            tint = Color.White.copy(alpha = 0.6f),
-            bg = Color.White.copy(alpha = 0.10f)
-        )
         Column(modifier = Modifier.fillMaxSize().padding(18.dp)) {
             Text(
                 text = "Current Streak",
@@ -75,19 +78,25 @@ internal fun CurrentStreakCard(streak: CurrentStreak) {
                 Spacer(Modifier.height(14.dp))
                 Text(
                     text = buildAnnotatedString {
-                        withStyle(SpanStyle(color = Color.White.copy(alpha = 0.5f))) {
-                            append("You've journaled at least once a week since ")
-                        }
-                        withStyle(
-                            SpanStyle(
-                                color = Color.White.copy(alpha = 0.82f),
-                                fontWeight = FontWeight.SemiBold
-                            )
-                        ) {
-                            append(streak.since)
-                        }
-                        withStyle(SpanStyle(color = Color.White.copy(alpha = 0.5f))) {
-                            append(".")
+                        val dim = SpanStyle(color = Color.White.copy(alpha = 0.5f))
+                        if (streak.since.isNotBlank()) {
+                            withStyle(dim) {
+                                append(
+                                    if (showDaily) "You've journaled every day since "
+                                    else "You've journaled at least once a week since "
+                                )
+                            }
+                            withStyle(
+                                SpanStyle(
+                                    color = Color.White.copy(alpha = 0.82f),
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                            ) {
+                                append(streak.since)
+                            }
+                            withStyle(dim) { append(".") }
+                        } else {
+                            withStyle(dim) { append("Journal today to start a daily streak.") }
                         }
                     },
                     fontSize = 12.5.sp,
@@ -96,6 +105,13 @@ internal fun CurrentStreakCard(streak: CurrentStreak) {
                 )
             }
         }
+        MenuDot(
+            modifier = Modifier.align(Alignment.TopEnd).padding(top = 16.dp, end = 18.dp),
+            tint = Color.White.copy(alpha = 0.6f),
+            bg = Color.White.copy(alpha = 0.10f),
+            icon = Icons.Default.SwapHoriz,
+            onClick = { showDaily = !showDaily }
+        )
     }
 }
 
@@ -104,7 +120,7 @@ internal fun CurrentStreakCard(streak: CurrentStreak) {
 private fun CurrentStreakCardPreview() {
     AppTheme {
         Box(Modifier.padding(18.dp)) {
-            CurrentStreakCard(SampleCurrentStreak)
+            CurrentStreakCard(SampleCurrentStreak, SampleDailyStreak)
         }
     }
 }

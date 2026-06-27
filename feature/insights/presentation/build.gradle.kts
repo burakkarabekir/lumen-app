@@ -13,6 +13,8 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(projects.core.domain)
+                implementation(projects.feature.insights.domain)
+                implementation(libs.kotlinx.datetime)
             }
         }
     }

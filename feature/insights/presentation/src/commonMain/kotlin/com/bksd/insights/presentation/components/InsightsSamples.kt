@@ -15,6 +15,8 @@ import kotlinx.collections.immutable.persistentListOf
 
 internal val SampleCurrentStreak = CurrentStreak(15, "Weeks", "Dec 21, 2024")
 
+internal val SampleDailyStreak = CurrentStreak(5, "Days", "Jun 23, 2025")
+
 internal val SampleLongest = StreakDetail(
     title = "Longest",
     daily = StreakLine(7, "Days", "May 24, 2024", "May 31, 2024", StreakAccent.CORAL),
@@ -51,6 +53,7 @@ internal val SampleJournaled = JournaledStat(82, 1, 34)
 internal val SampleInsightsState = InsightsState(
     hasActiveStreak = true,
     currentStreak = SampleCurrentStreak,
+    currentDailyStreak = SampleDailyStreak,
     longest = SampleLongest,
     recent = SampleRecent,
     entries = SampleEntries,

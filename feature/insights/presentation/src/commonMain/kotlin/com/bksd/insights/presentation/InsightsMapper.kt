@@ -21,6 +21,11 @@ internal fun InsightsMetrics.toUiState(selectedRange: InsightsRange): InsightsSt
             unit = plural(currentWeekly?.length ?: 0, "Week"),
             since = currentWeekly?.start?.let(::formatDate).orEmpty(),
         ),
+        currentDailyStreak = CurrentStreak(
+            value = currentDaily?.length ?: 0,
+            unit = plural(currentDaily?.length ?: 0, "Day"),
+            since = currentDaily?.start?.let(::formatDate).orEmpty(),
+        ),
         longest = StreakDetail(
             title = "Longest",
             daily = longestDaily.toLine("Day", StreakAccent.CORAL),

@@ -40,6 +40,10 @@ class InsightsCalculator(
             val thisMonday = mondayOf(today)
             endMonday == thisMonday || endMonday == thisMonday.minus(7, DateTimeUnit.DAY)
         }
+        val recentDaily = dailyRuns.maxByOrNull { it.end }
+        val currentDaily = recentDaily?.takeIf {
+            it.end == today || it.end == today.minus(1, DateTimeUnit.DAY)
+        }
 
         val effectiveRange = when (range) {
             InsightsRange.AllTime -> range
@@ -54,9 +58,10 @@ class InsightsCalculator(
         return InsightsMetrics(
             hasActiveStreak = currentWeekly != null,
             currentWeekly = currentWeekly,
+            currentDaily = currentDaily,
             longestDaily = dailyRuns.maxWithOrNull(compareBy({ it.length }, { it.end })),
             longestWeekly = weeklyRuns.maxWithOrNull(compareBy({ it.length }, { it.end })),
-            recentDaily = dailyRuns.maxByOrNull { it.end },
+            recentDaily = recentDaily,
             recentWeekly = recentWeekly,
             entriesTotal = filtered.size,
             bars = barData.counts,
@@ -171,11 +176,17 @@ class InsightsCalculator(
 
     private fun places(filtered: List<Moment>): List<PlaceCount> =
         filtered
-            .mapNotNull { it.location?.displayName?.trim()?.takeIf(String::isNotBlank) }
+            .mapNotNull { it.location?.displayName?.let(::stateOf) }
             .groupBy { it.lowercase() }
             .map { (_, names) -> PlaceCount(names.first(), names.size, kindOf(names.first())) }
             .sortedByDescending { it.count }
             .take(4)
+
+    private fun stateOf(displayName: String): String? {
+        val trimmed = displayName.trim()
+        if (trimmed.isBlank()) return null
+        return trimmed.substringAfterLast(",").trim().takeIf { it.isNotBlank() }
+    }
 
     private fun kindOf(name: String): InsightsPlaceKind {
         val words = name.lowercase().split(NON_LETTER).toSet()
@@ -200,6 +211,7 @@ class InsightsCalculator(
         private val EMPTY = InsightsMetrics(
             hasActiveStreak = false,
             currentWeekly = null,
+            currentDaily = null,
             longestDaily = null,
             longestWeekly = null,
             recentDaily = null,

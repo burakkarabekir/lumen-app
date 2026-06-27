@@ -1,44 +1,60 @@
 package com.bksd.insights.presentation
 
+import androidx.lifecycle.viewModelScope
+import com.bksd.core.domain.error.Result
 import com.bksd.core.presentation.util.BaseViewModel
+import com.bksd.core.presentation.util.toUiText
+import com.bksd.insights.domain.model.InsightsRange
+import com.bksd.insights.domain.usecase.ComputeInsightsUseCase
+import com.bksd.insights.domain.usecase.ObserveAllMomentsUseCase
+import com.bksd.insights.domain.usecase.SyncAllMomentsUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.stateIn
 
-/**
- * ViewModel for the Emotional Insights screen.
- * Populates state with fake data for Phase 2 (UI-first development).
- */
-class InsightsViewModel : BaseViewModel<InsightsAction, InsightsEvent>() {
+class InsightsViewModel(
+    observeAllMoments: ObserveAllMomentsUseCase,
+    private val syncAllMoments: SyncAllMomentsUseCase,
+    private val computeInsights: ComputeInsightsUseCase,
+) : BaseViewModel<InsightsAction, InsightsEvent>() {
 
-    private val _stateFlow = MutableStateFlow(createFakeState())
-    val state: StateFlow<InsightsState> = _stateFlow.asStateFlow()
+    private val selectedRange = MutableStateFlow<InsightsRange>(InsightsRange.AllTime)
+
+    val state: StateFlow<InsightsState> = combine(
+        observeAllMoments(),
+        selectedRange
+    ) { moments, range ->
+        computeInsights(moments, range).toUiState(range)
+    }
+        .flowOn(Dispatchers.Default)
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000L),
+            initialValue = InsightsState(isLoading = true)
+        )
+
+    init {
+        sync()
+    }
 
     override fun onAction(action: InsightsAction) {
         when (action) {
-            InsightsAction.OnRefresh -> {
-                _stateFlow.value = createFakeState()
-            }
+            InsightsAction.OnRefresh -> sync()
+            is InsightsAction.OnStatsRangeSelect ->
+                selectedRange.value = action.range.toDomain()
         }
     }
 
-    private fun createFakeState(): InsightsState = InsightsState(
-        isLoading = false,
-        peakActivityInsight = "Your insights are 24% deeper when recording after 9 PM.",
-        consistencyTrend = ConsistencyTrend(
-            title = "Journaling Gap",
-            description = "You typically stop writing on Mondays when work stress peaks. Try a 1-min voice note instead."
-        ),
-        mediumBreakdown = MediumBreakdown(
-            correlation = "+18%",
-            metric = "Mood Lift via Voice",
-            description = "Correlation"
-        ),
-        mindsetSynthesis = MindsetSynthesis(
-            summary = "This week focused heavily on work stress but ended positively. You've successfully navigated a high-pressure deadline by increasing your evening reflection frequency.",
-            recurringTheme = "Imposter Syndrome",
-            adjustment = "Morning Gratitude",
-            reflectionPrompt = "Reflection Prompt"
-        )
-    )
+    private fun sync() {
+        launch {
+            val result = syncAllMoments()
+            if (result is Result.Error) {
+                sendEvent(InsightsEvent.ShowError(result.error.toUiText()))
+            }
+        }
+    }
 }

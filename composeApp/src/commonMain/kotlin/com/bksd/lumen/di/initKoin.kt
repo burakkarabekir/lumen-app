@@ -4,6 +4,7 @@ import com.bksd.auth.data.di.authDataModule
 import com.bksd.auth.domain.di.authDomainModule
 import com.bksd.auth.presentation.di.authPresentationModule
 import com.bksd.core.data.di.coreDataModule
+import com.bksd.insights.domain.di.insightsDomainModule
 import com.bksd.insights.presentation.di.insightsPresentationModule
 import com.bksd.journal.data.di.journalDataModule
 import com.bksd.journal.domain.di.journalDomainModule
@@ -36,6 +37,7 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             journalPresentationModule,
             momentDomainModule,
             momentPresentationModule,
+            insightsDomainModule,
             insightsPresentationModule,
             profileDataModule,
             profileDomainModule,

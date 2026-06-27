@@ -23,7 +23,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,7 +31,7 @@ import com.bksd.insights.presentation.PlaceKind
 import com.bksd.insights.presentation.VisitedPlace
 
 @Composable
-internal fun PlaceChip(place: VisitedPlace, modifier: Modifier) {
+internal fun PlaceChip(place: VisitedPlace, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(14.dp))
@@ -49,13 +48,12 @@ internal fun PlaceChip(place: VisitedPlace, modifier: Modifier) {
         Spacer(Modifier.width(10.dp))
         Text(
             text = place.name,
-            modifier = Modifier.weight(1f),
             fontSize = 13.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            maxLines = 1
         )
+        Spacer(Modifier.width(8.dp))
         Text(
             text = "${place.count}",
             fontSize = 16.sp,
@@ -79,9 +77,7 @@ private fun placeIcon(kind: PlaceKind): ImageVector =
 private fun PlaceChipPreview() {
     AppTheme {
         Box(Modifier.background(Color(0xFF2B2D48)).padding(16.dp)) {
-            Row {
-                PlaceChip(VisitedPlace("California", 4, PlaceKind.GENERIC), Modifier.weight(1f))
-            }
+            PlaceChip(VisitedPlace("California", 4, PlaceKind.GENERIC))
         }
     }
 }

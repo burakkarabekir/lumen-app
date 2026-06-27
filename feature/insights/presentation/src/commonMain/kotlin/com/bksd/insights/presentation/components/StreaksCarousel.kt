@@ -28,7 +28,7 @@ internal fun StreaksCarousel(state: InsightsState, palette: InsightsPalette) {
             modifier = Modifier.fillMaxWidth()
         ) { page ->
             when (page) {
-                0 -> CurrentStreakCard(state.currentStreak)
+                0 -> CurrentStreakCard(state.currentStreak, state.currentDailyStreak)
                 1 -> StreakDetailCard(state.longest, palette)
                 else -> StreakDetailCard(state.recent, palette)
             }

@@ -30,6 +30,7 @@ kotlin {
             implementation(projects.feature.moment.domain)
             implementation(projects.feature.moment.presentation)
 
+            implementation(projects.feature.insights.domain)
             implementation(projects.feature.insights.presentation)
 
             implementation(projects.feature.profile.data)

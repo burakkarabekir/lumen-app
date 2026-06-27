@@ -49,6 +49,7 @@ include(":feature:auth:data")
 include(":feature:auth:domain")
 include(":feature:auth:presentation")
 
+include(":feature:insights:domain")
 include(":feature:insights:presentation")
 
 include(":feature:profile:data")

@@ -5,6 +5,7 @@ import kotlinx.datetime.LocalDate
 data class InsightsMetrics(
     val hasActiveStreak: Boolean,
     val currentWeekly: StreakRun?,
+    val currentDaily: StreakRun?,
     val longestDaily: StreakRun?,
     val longestWeekly: StreakRun?,
     val recentDaily: StreakRun?,
