@@ -71,6 +71,14 @@ data class ExtendedColors(
     val accentTeal: Color,
     val accentIndigo: Color,
     val accentGrey: Color,
+
+    val insightsPageBg: Color,
+    val insightsLabel: Color,
+    val insightsSurface: Color,
+    val insightsText: Color,
+    val insightsSub: Color,
+    val insightsHairline: Color,
+    val insightsDotGray: Color,
 )
 
 val LightExtendedColors = ExtendedColors(
@@ -121,6 +129,14 @@ val LightExtendedColors = ExtendedColors(
     accentTeal = LumenAccentTeal,
     accentIndigo = LumenAccentIndigo,
     accentGrey = LumenAccentGrey,
+
+    insightsPageBg = InsightsPageBgLight,
+    insightsLabel = InsightsLabelLight,
+    insightsSurface = InsightsSurfaceLight,
+    insightsText = InsightsTextLight,
+    insightsSub = InsightsSubLight,
+    insightsHairline = InsightsHairlineLight,
+    insightsDotGray = InsightsDotGrayLight,
 )
 
 val DarkExtendedColors = ExtendedColors(
@@ -171,6 +187,14 @@ val DarkExtendedColors = ExtendedColors(
     accentTeal = LumenAccentTeal,
     accentIndigo = LumenAccentIndigo,
     accentGrey = LumenAccentGrey,
+
+    insightsPageBg = InsightsPageBgDark,
+    insightsLabel = InsightsLabelDark,
+    insightsSurface = InsightsSurfaceDark,
+    insightsText = InsightsTextDark,
+    insightsSub = InsightsSubDark,
+    insightsHairline = InsightsHairlineDark,
+    insightsDotGray = InsightsDotGrayDark,
 )
 
 val LightColorScheme = lightColorScheme(
