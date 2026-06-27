@@ -1,8 +1,5 @@
 package com.bksd.journal.presentation.journal
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,38 +13,28 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.bksd.core.design_system.component.button.fab.AppFab
-import com.bksd.core.design_system.component.divider.AppDivider
 import com.bksd.core.design_system.component.layout.AppSurface
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.domain.model.AudioAttachment
 import com.bksd.core.domain.model.Moment
 import com.bksd.core.domain.model.PlaybackState
 import com.bksd.core.presentation.util.ObserveAsEvents
-import com.bksd.journal.domain.model.JournalFilter
 import com.bksd.journal.presentation.Res
-import com.bksd.journal.presentation.content_desc_create_moment
-import com.bksd.journal.presentation.journal.components.FilterChips
+import com.bksd.journal.presentation.journal.components.JournalSectionHeader
 import com.bksd.journal.presentation.journal.components.JournalTopBar
 import com.bksd.journal.presentation.journal.components.MomentCard
-import com.bksd.journal.presentation.no_filter_day
 import com.bksd.journal.presentation.no_moments_day
 import com.bksd.journal.presentation.util.DefaultMomentFormatter
 import com.bksd.journal.presentation.util.MomentFormatter
@@ -63,7 +50,7 @@ import kotlin.time.Clock
 @Composable
 fun JournalRoot(
     onNavigateToDetail: (String, Boolean) -> Unit,
-    onNavigateToCreate: () -> Unit,
+    onNavigateToProfile: () -> Unit,
 ) {
     val viewModel = koinViewModel<JournalViewModel>()
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -75,7 +62,7 @@ fun JournalRoot(
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
             is JournalEvent.NavigateToDetail -> onNavigateToDetail(event.momentId, event.isEditing)
-            is JournalEvent.NavigateToCreate -> onNavigateToCreate()
+            is JournalEvent.NavigateToProfile -> onNavigateToProfile()
             is JournalEvent.ShowError -> {
                 println("Journal Error: ${event.error}")
             }
@@ -99,11 +86,6 @@ fun JournalScreen(
     listState: LazyListState,
     onAction: (JournalAction) -> Unit
 ) {
-    // FAB hides while user is scrolling, reappears when idle
-    val isFabVisible by remember {
-        derivedStateOf { !listState.isScrollInProgress }
-    }
-
     // Detect when user scrolls near the bottom → load more
     LaunchedEffect(listState) {
         snapshotFlow {
@@ -113,153 +95,123 @@ fun JournalScreen(
         }
             .distinctUntilChanged()
             .collect { (totalItems, lastVisibleIndex) ->
-                // Trigger load-more when within 3 items of the bottom
                 if (totalItems > 0 && lastVisibleIndex >= totalItems - 3) {
                     onAction(JournalAction.OnLoadMore)
                 }
             }
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        AppSurface(
-            header = {
-                JournalTopBar(
-                    searchQuery = state.searchQuery,
-                    profilePhotoUrl = state.profilePhotoUrl,
-                    onSearchQueryChange = { onAction(JournalAction.OnSearchQueryChange(it)) },
-                    onProfileClick = { onAction(JournalAction.OnProfileClick) },
-                    onSearchModeChanged = {}
-                )
-            }
-        ) {
-            when {
-                state.isLoading -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize().weight(1f),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
-                    }
+    AppSurface(
+        header = {
+            JournalTopBar(
+                searchQuery = state.searchQuery,
+                profilePhotoUrl = state.profilePhotoUrl,
+                onSearchQueryChange = { onAction(JournalAction.OnSearchQueryChange(it)) },
+                onProfileClick = { onAction(JournalAction.OnProfileClick) },
+                onSearchModeChanged = {}
+            )
+        }
+    ) {
+        when {
+            state.isLoading -> {
+                Box(
+                    modifier = Modifier.fillMaxSize().weight(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
                 }
+            }
 
-                else -> {
-                    FilterChips(
-                        selectedFilter = state.selectedFilter,
-                        onFilterSelect = { onAction(JournalAction.OnFilterSelect(it)) },
-                        modifier = Modifier.padding(12.dp)
+            state.sections.isEmpty() -> {
+                val message = if (state.searchQuery.isNotBlank()) {
+                    "No results for \"${state.searchQuery}\""
+                } else {
+                    stringResource(Res.string.no_moments_day)
+                }
+                Box(
+                    modifier = Modifier.fillMaxSize().weight(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = message,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyMedium
                     )
-                    AppDivider()
+                }
+            }
 
-                    if (state.moments.isEmpty()) {
-                        val message = when {
-                            state.searchQuery.isNotBlank() -> "No results for \"${state.searchQuery}\""
-                            state.selectedFilter != JournalFilter.ALL ->
-                                stringResource(
-                                    Res.string.no_filter_day,
-                                    stringResource(state.selectedFilter.labelRes).lowercase()
-                                )
+            else -> {
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier.fillMaxSize().weight(1f),
+                    contentPadding = PaddingValues(horizontal = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    item { Spacer(modifier = Modifier.height(4.dp)) }
 
-                            else ->
-                                stringResource(Res.string.no_moments_day)
+                    state.sections.forEach { section ->
+                        item(key = "header_${section.header}") {
+                            JournalSectionHeader(text = section.header)
                         }
-                        Box(
-                            modifier = Modifier.fillMaxSize().weight(1f),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = message,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
-                    } else {
-                        LazyColumn(
-                            state = listState,
-                            modifier = Modifier.fillMaxSize().weight(1f),
-                            contentPadding = PaddingValues(horizontal = 16.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            item { Spacer(modifier = Modifier.height(4.dp)) }
 
-                            items(
-                                items = state.moments,
-                                key = { it.id }
-                            ) { moment ->
-                                MomentCard(
-                                    moment = moment,
-                                    formatter = formatter,
-                                    timeZone = timeZone,
-                                    audioPlaybackState = if (state.playingAudioMomentId == moment.id) state.audioPlaybackState else PlaybackState.STOPPED,
-                                    audioCurrentPosition = if (state.playingAudioMomentId == moment.id && state.audioCurrentPositionMs > 0)
-                                        formatter.formatDuration(state.audioCurrentPositionMs) else "0:00",
-                                    onAudioPlayClick = {
-                                        val audioUrl =
-                                            moment.attachments.filterIsInstance<AudioAttachment>()
-                                                .firstOrNull()?.remoteUrl?.value
-                                        if (audioUrl != null) {
-                                            onAction(
-                                                JournalAction.OnAudioPlayClick(
-                                                    moment.id,
-                                                    audioUrl
-                                                )
-                                            )
-                                        }
-                                    },
-                                    onAudioPauseClick = { onAction(JournalAction.OnAudioPauseClick) },
-                                    onEditClick = { onAction(JournalAction.OnEditMoment(moment.id)) },
-                                    onFavoriteToggleClick = {
+                        items(
+                            items = section.items,
+                            key = { it.id }
+                        ) { moment ->
+                            MomentCard(
+                                moment = moment,
+                                formatter = formatter,
+                                timeZone = timeZone,
+                                audioPlaybackState = if (state.playingAudioMomentId == moment.id) state.audioPlaybackState else PlaybackState.STOPPED,
+                                audioCurrentPosition = if (state.playingAudioMomentId == moment.id && state.audioCurrentPositionMs > 0)
+                                    formatter.formatDuration(state.audioCurrentPositionMs) else "0:00",
+                                onAudioPlayClick = {
+                                    val audioUrl =
+                                        moment.attachments.filterIsInstance<AudioAttachment>()
+                                            .firstOrNull()?.remoteUrl?.value
+                                    if (audioUrl != null) {
                                         onAction(
-                                            JournalAction.OnFavoriteToggle(
-                                                moment.id
+                                            JournalAction.OnAudioPlayClick(
+                                                moment.id,
+                                                audioUrl
                                             )
-                                        )
-                                    },
-                                    onDeleteClick = { onAction(JournalAction.OnDeleteMoment(moment.id)) },
-                                    onClick = { onAction(JournalAction.OnMomentClick(moment.id)) }
-                                )
-                            }
-
-                            // Load more indicator at the bottom
-                            if (state.isLoadingMore) {
-                                item(key = "loading_more") {
-                                    Box(
-                                        modifier = Modifier.fillMaxWidth().padding(16.dp),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        CircularProgressIndicator(
-                                            modifier = Modifier.size(24.dp),
-                                            strokeWidth = 2.dp,
-                                            color = MaterialTheme.colorScheme.primary
                                         )
                                     }
-                                }
-                            }
+                                },
+                                onAudioPauseClick = { onAction(JournalAction.OnAudioPauseClick) },
+                                onEditClick = { onAction(JournalAction.OnEditMoment(moment.id)) },
+                                onFavoriteToggleClick = {
+                                    onAction(
+                                        JournalAction.OnFavoriteToggle(
+                                            moment.id
+                                        )
+                                    )
+                                },
+                                onDeleteClick = { onAction(JournalAction.OnDeleteMoment(moment.id)) },
+                                onClick = { onAction(JournalAction.OnMomentClick(moment.id)) }
+                            )
+                        }
+                    }
 
-                            item {
-                                Spacer(modifier = Modifier.height(128.dp))
+                    if (state.isLoadingMore) {
+                        item(key = "loading_more") {
+                            Box(
+                                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(24.dp),
+                                    strokeWidth = 2.dp,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
                             }
                         }
                     }
-                }
-            }
-        }
 
-        // FAB
-        AnimatedVisibility(
-            visible = isFabVisible,
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(end = 20.dp, bottom = 96.dp),
-            enter = scaleIn(),
-            exit = scaleOut()
-        ) {
-            AppFab(
-                onClick = { onAction(JournalAction.OnCreateNewClick) }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(Res.string.content_desc_create_moment)
-                )
+                    item {
+                        Spacer(modifier = Modifier.height(128.dp))
+                    }
+                }
             }
         }
     }
@@ -273,12 +225,17 @@ private fun PreviewJournalScreen() {
             state = JournalState(
                 visibleDate = LocalDate.fromEpochDays(1),
                 isLoading = false,
-                moments = persistentListOf(
-                    Moment(
-                        id = "",
-                        title = "Test",
-                        body = "Body",
-                        createdAt = Clock.System.now(),
+                sections = persistentListOf(
+                    JournalSection(
+                        header = "Today",
+                        items = persistentListOf(
+                            Moment(
+                                id = "",
+                                title = "Test",
+                                body = "Body",
+                                createdAt = Clock.System.now(),
+                            )
+                        )
                     )
                 )
             ),

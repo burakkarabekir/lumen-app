@@ -93,7 +93,7 @@ val serializersConfig = SavedStateConfiguration {
             // Main tabs
             subclass(Route.Main.Journal::class, Route.Main.Journal.serializer())
             subclass(Route.Main.Insights::class, Route.Main.Insights.serializer())
-            subclass(Route.Main.Profile::class, Route.Main.Profile.serializer())
+            subclass(Route.Profile::class, Route.Profile.serializer())
             // Onboarding
             subclass(Route.Onboarding::class, Route.Onboarding.serializer())
             // Auth

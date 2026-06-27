@@ -89,6 +89,13 @@ data class ExtendedColors(
     val newEntryPinBg: Color,
     val newEntryPinFg: Color,
     val newEntrySaveBg: Color,
+
+    val navCapsule: Color,
+    val navBorder: Color,
+    val navActiveFill: Color,
+    val navActiveText: Color,
+    val navIdle: Color,
+    val navPlus: Color,
 )
 
 val LightExtendedColors = ExtendedColors(
@@ -157,6 +164,13 @@ val LightExtendedColors = ExtendedColors(
     newEntryPinBg = NewEntryPinBgLight,
     newEntryPinFg = NewEntryPinFgLight,
     newEntrySaveBg = NewEntrySaveBg,
+
+    navCapsule = NavCapsuleLight,
+    navBorder = NavBorderLight,
+    navActiveFill = NavActiveFillLight,
+    navActiveText = NavActiveTextLight,
+    navIdle = NavIdleLight,
+    navPlus = NavPlusLight,
 )
 
 val DarkExtendedColors = ExtendedColors(
@@ -225,6 +239,13 @@ val DarkExtendedColors = ExtendedColors(
     newEntryPinBg = NewEntryPinBgDark,
     newEntryPinFg = NewEntryPinFgDark,
     newEntrySaveBg = NewEntrySaveBg,
+
+    navCapsule = NavCapsuleDark,
+    navBorder = NavBorderDark,
+    navActiveFill = NavActiveFillDark,
+    navActiveText = NavActiveTextDark,
+    navIdle = NavIdleDark,
+    navPlus = NavPlusDark,
 )
 
 val LightColorScheme = lightColorScheme(

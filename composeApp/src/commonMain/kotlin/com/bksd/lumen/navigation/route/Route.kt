@@ -35,9 +35,6 @@ sealed interface Route : NavKey {
 
         @Serializable
         data object Insights : Main
-
-        @Serializable
-        data object Profile : Main
     }
 
     // ==================== Detail / Sub-screen Routes ====================
@@ -48,14 +45,16 @@ sealed interface Route : NavKey {
     data object CreateMoment : Route
 
     @Serializable
+    data object Profile : Route
+
+    @Serializable
     data object Paywall : Route
 
     companion object {
         fun NavKey.shouldShowBottomBar(): Boolean =
             when (this) {
                 Main.Journal,
-                Main.Insights,
-                Main.Profile -> true
+                Main.Insights -> true
 
                 else -> false
             }

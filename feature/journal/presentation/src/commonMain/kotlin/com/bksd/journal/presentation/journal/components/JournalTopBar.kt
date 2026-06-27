@@ -10,8 +10,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,11 +39,13 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.component.AppAvatar
 import com.bksd.core.design_system.component.divider.AppDivider
+import com.bksd.core.design_system.component.layout.AppBarStyle
+import com.bksd.core.design_system.component.layout.AppTopBar
 import com.bksd.core.design_system.theme.AppTheme
 
 @Composable
@@ -59,14 +59,11 @@ fun JournalTopBar(
     val totalDuration = 500
     val fadeOutDuration = 150
     val organicEasing = remember { CubicBezierEasing(0.42f, 0.0f, 0.58f, 1.0f) }
-    val headerHeight = 52.dp
+    val headerHeight = 64.dp
 
     var isSearchMode by remember { mutableStateOf(false) }
 
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    Column {
         AnimatedContent(
             targetState = isSearchMode,
             transitionSpec = {
@@ -99,25 +96,44 @@ fun JournalTopBar(
             },
             label = "LumenMorphingSearch"
         ) { searchActive ->
-            Box(modifier = Modifier.fillMaxWidth().height(headerHeight)) {
-                if (searchActive) {
-                    SearchBar(
-                        query = searchQuery,
-                        onQueryChange = onSearchQueryChange,
-                        headerHeight = headerHeight,
-                        onBack = {
-                            isSearchMode = false
-                            onSearchQueryChange("")
+            if (searchActive) {
+                SearchBar(
+                    query = searchQuery,
+                    onQueryChange = onSearchQueryChange,
+                    headerHeight = headerHeight,
+                    onBack = {
+                        isSearchMode = false
+                        onSearchModeChanged(false)
+                        onSearchQueryChange("")
+                    }
+                )
+            } else {
+                AppTopBar(
+                    title = "Lumen",
+                    style = AppBarStyle.Root,
+                    actions = {
+                        IconButton(
+                            onClick = {
+                                isSearchMode = true
+                                onSearchModeChanged(true)
+                            },
+                            modifier = Modifier.graphicsLayer { clip = true }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = "Search",
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                         }
-                    )
-                } else {
-                    DefaultHeader(
-                        headerHeight = headerHeight,
-                        profilePhotoUrl = profilePhotoUrl,
-                        onProfileClick = onProfileClick,
-                        onSearchClick = { isSearchMode = true }
-                    )
-                }
+                        AppAvatar(
+                            photoUrl = profilePhotoUrl,
+                            size = 36.dp,
+                            contentDescription = "Profile",
+                            onClick = onProfileClick,
+                            modifier = Modifier.graphicsLayer { clip = true }
+                        )
+                    }
+                )
             }
         }
         AppDivider()
@@ -125,61 +141,14 @@ fun JournalTopBar(
 }
 
 @Composable
-private fun DefaultHeader(
-    headerHeight: androidx.compose.ui.unit.Dp,
-    profilePhotoUrl: String?,
-    onProfileClick: () -> Unit,
-    onSearchClick: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(headerHeight)
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(horizontal = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        AppAvatar(
-            photoUrl = profilePhotoUrl,
-            size = 36.dp,
-            contentDescription = "Profile",
-            onClick = onProfileClick,
-            modifier = Modifier.graphicsLayer { clip = true }
-        )
-
-        Text(
-            text = "Lumen",
-            style = MaterialTheme.typography.headlineSmall.copy(
-                fontWeight = FontWeight.Bold,
-            ),
-            color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.weight(1f)
-        )
-
-        IconButton(
-            onClick = onSearchClick,
-            modifier = Modifier.graphicsLayer { clip = true }
-        ) {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = "Search",
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-    }
-}
-
-@Composable
 private fun SearchBar(
-    headerHeight: androidx.compose.ui.unit.Dp,
+    headerHeight: Dp,
     query: String,
     onQueryChange: (String) -> Unit,
     onBack: () -> Unit
 ) {
     val focusRequester = remember { FocusRequester() }
 
-    // Auto-focus when search bar appears
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
     }

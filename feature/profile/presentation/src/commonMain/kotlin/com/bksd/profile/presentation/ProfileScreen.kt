@@ -4,11 +4,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -46,6 +49,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ProfileRoot(
+    onBack: () -> Unit,
     onNavigateToSignIn: () -> Unit,
     onNavigateToPaywall: () -> Unit,
 ) {
@@ -90,6 +94,7 @@ fun ProfileRoot(
     ProfileScreen(
         state = state,
         snackbarHostState = snackbarHostState,
+        onBack = onBack,
         onAction = viewModel::onAction,
     )
 }
@@ -98,6 +103,7 @@ fun ProfileRoot(
 internal fun ProfileScreen(
     state: ProfileState,
     snackbarHostState: SnackbarHostState,
+    onBack: () -> Unit,
     onAction: (ProfileAction) -> Unit
 ) {
     val themeController = rememberThemeController()
@@ -128,7 +134,15 @@ internal fun ProfileScreen(
             header = {
                 AppTopBar(
                     title = stringResource(Res.string.profile_title),
-                    style = AppBarStyle.Root,
+                    style = AppBarStyle.Child,
+                    navigationIcon = {
+                        IconButton(onClick = onBack) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Back"
+                            )
+                        }
+                    },
                 )
             }
         ) {
@@ -229,6 +243,7 @@ private fun ProfileScreenDarkPreview() {
                 hasNotificationBadge = true,
             ),
             snackbarHostState = SnackbarHostState(),
+            onBack = {},
             onAction = {},
         )
     }
@@ -247,6 +262,7 @@ private fun ProfileScreenLightPreview() {
                 hasNotificationBadge = true,
             ),
             snackbarHostState = SnackbarHostState(),
+            onBack = {},
             onAction = {},
         )
     }

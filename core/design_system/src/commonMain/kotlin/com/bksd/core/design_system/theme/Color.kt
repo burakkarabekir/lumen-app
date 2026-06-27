@@ -139,6 +139,20 @@ val NewEntryPinFgDark = Color(0xFFA6AEEC)
 
 val NewEntrySaveBg = Color(0xFF4F46E5)
 
+val NavCapsuleLight = Color(0xFFFFFFFF)
+val NavBorderLight = Color(0x0F000000)
+val NavActiveFillLight = Color(0xFF4A47B5)
+val NavActiveTextLight = Color(0xFFF4F3FB)
+val NavIdleLight = Color(0xFF8A867F)
+val NavPlusLight = Color(0xFF4A47B5)
+
+val NavCapsuleDark = Color(0xFF191920)
+val NavBorderDark = Color(0x12FFFFFF)
+val NavActiveFillDark = Color(0xFF403C8E)
+val NavActiveTextDark = Color(0xFFEDECF7)
+val NavIdleDark = Color(0xFF9C9AA6)
+val NavPlusDark = Color(0xFF9D99E8)
+
 // ==================== Gradient Helpers ====================
 
 val ColorScheme.bgGradient: Brush

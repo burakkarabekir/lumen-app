@@ -8,7 +8,6 @@ import com.bksd.core.domain.model.PlaybackState
 import com.bksd.core.domain.repository.MomentRepository
 import com.bksd.core.domain.storage.AudioPlayer
 import com.bksd.core.domain.storage.SessionStorage
-import com.bksd.journal.domain.model.JournalFilter
 import com.bksd.journal.domain.usecase.DeleteMomentUseCase
 import com.bksd.journal.domain.usecase.GetPagedMomentsUseCase
 import com.bksd.journal.domain.usecase.SyncMomentsUseCase
@@ -127,14 +126,6 @@ class JournalViewModelTest {
     fun testInitialState_visibleDateIsCorrect() {
         val expectedDate = LocalDate(2024, 5, 1)
         assertEquals(expectedDate, viewModel.state.value.visibleDate)
-    }
-
-    @Test
-    fun testOnFilterSelect_updatesState() {
-        val collectJob = CoroutineScope(testDispatcher).launch { viewModel.state.collect {} }
-        viewModel.onAction(JournalAction.OnFilterSelect(JournalFilter.PHOTOS))
-        assertEquals(JournalFilter.PHOTOS, viewModel.state.value.selectedFilter)
-        collectJob.cancel()
     }
 
     @Test

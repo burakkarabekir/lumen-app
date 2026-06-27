@@ -90,7 +90,8 @@ fun NavigationRoot(
                     selectedKey = navigationState.topLevelRoute,
                     onSelectKey = {
                         navigator.navigate(it)
-                    }
+                    },
+                    onAddClick = { navigator.navigateToCreateMoment() }
                 )
             }
         }
@@ -148,14 +149,15 @@ fun NavigationRoot(
                             onNavigateToDetail = { momentId, isEditing ->
                                 navigator.navigateToMomentDetail(momentId, isEditing)
                             },
-                            onNavigateToCreate = { navigator.navigateToCreateMoment() }
+                            onNavigateToProfile = { navigator.navigateToProfile() }
                         )
                     }
                     entry<Route.Main.Insights> {
                         InsightsRoot()
                     }
-                    entry<Route.Main.Profile> {
+                    entry<Route.Profile> {
                         ProfileRoot(
+                            onBack = { navigator.goBack() },
                             onNavigateToSignIn = { navigator.navigateToSignIn() },
                             onNavigateToPaywall = { navigator.navigateToPaywall() }
                         )

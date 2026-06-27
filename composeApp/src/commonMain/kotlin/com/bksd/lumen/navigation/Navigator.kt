@@ -60,7 +60,7 @@ class Navigator(
 
     fun navigateToInsights() = navigate(Route.Main.Insights)
 
-    fun navigateToProfile() = navigate(Route.Main.Profile)
+    fun navigateToProfile() = navigate(Route.Profile)
 
     // ==================== Auth Navigation ====================
 
