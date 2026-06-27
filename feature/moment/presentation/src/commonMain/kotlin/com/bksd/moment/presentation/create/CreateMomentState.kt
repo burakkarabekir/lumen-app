@@ -35,6 +35,7 @@ data class CreateMomentState(
     val recordingState: RecordingUiState = RecordingUiState.Idle,
     val isRecordingSheetVisible: Boolean = false,
     val timestampFormatted: String = "Today",
+    val dateHeadline: String = "",
     val linkInput: String = "",
     val isLinkSheetVisible: Boolean = false,
 

@@ -52,7 +52,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlin.math.roundToInt
 import com.bksd.core.design_system.component.divider.AppDivider
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.extended
@@ -71,6 +70,7 @@ import com.bksd.journal.presentation.util.MomentFormatter
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.datetime.TimeZone
+import kotlin.math.roundToInt
 import kotlin.time.Clock
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -510,7 +510,7 @@ private fun PreviewMomentCardDark() {
                 body = "Ideas flowing like a river. Wrote three pages without stopping.",
                 tags = listOf("writing", "flow"),
                 createdAt = Clock.System.now(),
-                moods = listOf(Mood.INSPIRED, Mood.ENERGETIC, Mood.CREATIVE)
+                moods = listOf(Mood.INSPIRED, Mood.FOCUSED, Mood.PROUD)
             ),
             formatter = DefaultMomentFormatter(TimeZone.UTC),
             onClick = {},

@@ -79,6 +79,16 @@ data class ExtendedColors(
     val insightsSub: Color,
     val insightsHairline: Color,
     val insightsDotGray: Color,
+
+    val newEntryPageBg: Color,
+    val newEntrySurface: Color,
+    val newEntryText: Color,
+    val newEntryBodyText: Color,
+    val newEntrySub: Color,
+    val newEntryHairline: Color,
+    val newEntryPinBg: Color,
+    val newEntryPinFg: Color,
+    val newEntrySaveBg: Color,
 )
 
 val LightExtendedColors = ExtendedColors(
@@ -137,6 +147,16 @@ val LightExtendedColors = ExtendedColors(
     insightsSub = InsightsSubLight,
     insightsHairline = InsightsHairlineLight,
     insightsDotGray = InsightsDotGrayLight,
+
+    newEntryPageBg = LumenBase0,
+    newEntrySurface = LumenBase100,
+    newEntryText = NewEntryTextLight,
+    newEntryBodyText = NewEntryBodyTextLight,
+    newEntrySub = NewEntrySubLight,
+    newEntryHairline = NewEntryHairlineLight,
+    newEntryPinBg = NewEntryPinBgLight,
+    newEntryPinFg = NewEntryPinFgLight,
+    newEntrySaveBg = NewEntrySaveBg,
 )
 
 val DarkExtendedColors = ExtendedColors(
@@ -195,6 +215,16 @@ val DarkExtendedColors = ExtendedColors(
     insightsSub = InsightsSubDark,
     insightsHairline = InsightsHairlineDark,
     insightsDotGray = InsightsDotGrayDark,
+
+    newEntryPageBg = LumenBase1000,
+    newEntrySurface = LumenBase900,
+    newEntryText = NewEntryTextDark,
+    newEntryBodyText = NewEntryBodyTextDark,
+    newEntrySub = NewEntrySubDark,
+    newEntryHairline = NewEntryHairlineDark,
+    newEntryPinBg = NewEntryPinBgDark,
+    newEntryPinFg = NewEntryPinFgDark,
+    newEntrySaveBg = NewEntrySaveBg,
 )
 
 val LightColorScheme = lightColorScheme(

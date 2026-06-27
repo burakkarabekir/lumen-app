@@ -15,8 +15,8 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
-import kotlinx.datetime.todayIn
 import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.todayIn
 import kotlin.time.Clock
 
 class InsightsCalculator(
@@ -45,9 +45,10 @@ class InsightsCalculator(
             it.end == today || it.end == today.minus(1, DateTimeUnit.DAY)
         }
 
-        val effectiveRange = when (range) {
-            InsightsRange.AllTime -> range
-            is InsightsRange.Year -> if (range.year in years) range else InsightsRange.AllTime
+        val effectiveRange = when {
+            years.size == 1 -> InsightsRange.Year(years.first())
+            range is InsightsRange.Year && range.year in years -> range
+            else -> InsightsRange.AllTime
         }
         val filtered = when (effectiveRange) {
             InsightsRange.AllTime -> moments

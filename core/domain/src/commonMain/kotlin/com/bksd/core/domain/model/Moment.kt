@@ -18,18 +18,20 @@ data class Moment(
 
 enum class Mood(val label: String, val emoji: String) {
     HAPPY("Happy", "😊"),
-    CALM("Calm", "🧘"),
-    INSPIRED("Inspired", "✨"),
-    ENERGETIC("Energetic", "⚡"),
-    REFLECTIVE("Reflective", "🤔"),
     GRATEFUL("Grateful", "🙏"),
-    CREATIVE("Creative", "🎨"),
+    CALM("Calm", "🧘"),
+    LOVED("Loved", "🥰"),
+    HOPEFUL("Hopeful", "🌱"),
+    PROUD("Proud", "🏆"),
+    INSPIRED("Inspired", "✨"),
+    REFLECTIVE("Reflective", "🤔"),
     FOCUSED("Focused", "🎯"),
+    NOSTALGIC("Nostalgic", "📷"),
     TIRED("Tired", "😫"),
     ANXIOUS("Anxious", "😰"),
-    ROMANTIC("Romantic", "💕"),
+    STRESSED("Stressed", "😖"),
+    FRUSTRATED("Frustrated", "😤"),
+    SAD("Sad", "😢"),
     MELANCHOLIC("Melancholic", "🌧️"),
-    PROUD("Proud", "🏆"),
-    HOPEFUL("Hopeful", "🌱"),
-    NOSTALGIC("Nostalgic", "📷")
+    BORED("Bored", "🥱")
 }

@@ -51,6 +51,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.getString
 import kotlin.time.Clock
 import kotlin.uuid.ExperimentalUuidApi
@@ -86,7 +88,14 @@ class CreateMomentViewModel(
         val now = clock.now()
         launch {
             val formatted = getString(Res.string.timestamp_today_format, now.toFormattedTime())
-            updateState { it.copy(timestampFormatted = formatted) }
+            val date = now.toLocalDateTime(TimeZone.currentSystemDefault()).date
+            val month = date.month.name.lowercase().replaceFirstChar { it.uppercase() }
+            updateState {
+                it.copy(
+                    timestampFormatted = formatted,
+                    dateHeadline = "$month ${date.day}"
+                )
+            }
         }
 
         launch { voiceRecorder.isRecording.collect { updateRecordingState() } }

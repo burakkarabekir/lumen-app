@@ -76,14 +76,16 @@ internal fun EntriesCard(
         ) {
             entries.breakdown.forEach { item -> BreakdownItem(item) }
         }
-        Spacer(Modifier.height(16.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
-            rangeOptions.forEach { range ->
-                RangeChip(
-                    label = range.label,
-                    selected = range == selectedRange,
-                    onClick = { onRangeSelect(range) }
-                )
+        if (rangeOptions.size > 2) {
+            Spacer(Modifier.height(16.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+                rangeOptions.forEach { range ->
+                    RangeChip(
+                        label = range.label,
+                        selected = range == selectedRange,
+                        onClick = { onRangeSelect(range) }
+                    )
+                }
             }
         }
     }
@@ -97,7 +99,11 @@ private fun EntriesCardPreview() {
             EntriesCard(
                 entries = SampleEntries,
                 selectedRange = StatsRange.AllTime,
-                rangeOptions = persistentListOf(StatsRange.AllTime, StatsRange("2025", 2025)),
+                rangeOptions = persistentListOf(
+                    StatsRange.AllTime,
+                    StatsRange("2025", 2025),
+                    StatsRange("2024", 2024)
+                ),
                 onRangeSelect = {}
             )
         }

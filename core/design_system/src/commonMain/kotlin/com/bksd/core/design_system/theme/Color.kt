@@ -123,6 +123,22 @@ val InsightsSubDark = Color(0xFF7C7A85)
 val InsightsHairlineDark = Color(0x14FFFFFF)
 val InsightsDotGrayDark = Color(0xFF46454D)
 
+val NewEntryTextLight = Color(0xFF1C1B1A)
+val NewEntryBodyTextLight = Color(0xFF3A3733)
+val NewEntrySubLight = Color(0xFF8A867F)
+val NewEntryHairlineLight = Color(0x12000000)
+val NewEntryPinBgLight = Color(0x247682D6)
+val NewEntryPinFgLight = Color(0xFF5B6AD0)
+
+val NewEntryTextDark = Color(0xFFF2F1F4)
+val NewEntryBodyTextDark = Color(0xFFD9D7DE)
+val NewEntrySubDark = Color(0xFF8B8993)
+val NewEntryHairlineDark = Color(0x14FFFFFF)
+val NewEntryPinBgDark = Color(0x2E7682D6)
+val NewEntryPinFgDark = Color(0xFFA6AEEC)
+
+val NewEntrySaveBg = Color(0xFF4F46E5)
+
 // ==================== Gradient Helpers ====================
 
 val ColorScheme.bgGradient: Brush
