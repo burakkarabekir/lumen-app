@@ -52,6 +52,11 @@ class MediatorMomentRepository(
             .map { moments -> moments.map { it.withSignedMedia() } }
     }
 
+    override fun observeAllMoments(): Flow<List<Moment>> {
+        return momentDao.observeAll()
+            .map { entities -> entities.map { entityToDomain.map(it) } }
+    }
+
     /**
      * Fetches [limit] moments from Supabase starting at [offset],
      * ordered by createdAtMs descending, and upserts them into Room.
@@ -71,6 +76,28 @@ class MediatorMomentRepository(
             }
 
             is Result.Error -> Result.Error(result.error)
+        }
+    }
+
+    override suspend fun syncAllMoments(): Result<Unit, AppError> {
+        ensureLocalOwner()
+        flushPendingSync()
+        var offset = 0
+        while (true) {
+            when (val result = remoteDataSource.fetchMomentsPaged(FULL_SYNC_PAGE, offset)) {
+                is Result.Success -> {
+                    val pendingIds = (momentDao.getPendingSync().map { it.id } +
+                            momentDao.getPendingDelete().map { it.id }).toSet()
+                    val entities = result.data
+                        .filterNot { it.id in pendingIds }
+                        .map { dto -> domainToEntity.map(dtoToDomain.map(dto)) }
+                    momentDao.upsertAll(entities)
+                    if (result.data.size < FULL_SYNC_PAGE) return Result.Success(Unit)
+                    offset += FULL_SYNC_PAGE
+                }
+
+                is Result.Error -> return Result.Error(result.error)
+            }
         }
     }
 
@@ -215,6 +242,7 @@ class MediatorMomentRepository(
 
     companion object {
         private const val TAG = "MediatorMomentRepository"
+        private const val FULL_SYNC_PAGE = 200
         private val SIGNED_URL_TTL = 7.days
         private val REFRESH_MARGIN_MS = 1.hours.inWholeMilliseconds
     }

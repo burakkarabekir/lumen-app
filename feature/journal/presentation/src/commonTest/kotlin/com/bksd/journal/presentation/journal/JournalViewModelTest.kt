@@ -12,6 +12,7 @@ import com.bksd.journal.domain.model.JournalFilter
 import com.bksd.journal.domain.usecase.DeleteMomentUseCase
 import com.bksd.journal.domain.usecase.GetPagedMomentsUseCase
 import com.bksd.journal.domain.usecase.SyncMomentsUseCase
+import com.bksd.journal.domain.usecase.UpdateMomentUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -76,7 +77,12 @@ class JournalViewModelTest {
             override fun observeMomentsPaged(limit: Int, offset: Int) =
                 flowOf(emptyList<Moment>())
 
+            override fun observeAllMoments() = flowOf(emptyList<Moment>())
+
             override suspend fun syncMomentsPaged(limit: Int, offset: Int): Result<Unit, AppError> =
+                Result.Success(Unit)
+
+            override suspend fun syncAllMoments(): Result<Unit, AppError> =
                 Result.Success(Unit)
 
             override suspend fun getMoment(id: String): Result<Moment, AppError> = Result.Success(
@@ -107,7 +113,8 @@ class JournalViewModelTest {
             clock = testClock,
             timeZone = testTimeZone,
             audioPlayer = fakeAudioPlayer,
-            deleteMomentUseCase = deleteMomentUseCase
+            deleteMomentUseCase = deleteMomentUseCase,
+            updateMomentUseCase = UpdateMomentUseCase(fakeRepository)
         )
     }
 

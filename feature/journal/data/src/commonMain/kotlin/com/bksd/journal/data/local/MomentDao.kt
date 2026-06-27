@@ -14,6 +14,9 @@ interface MomentDao {
     @Query("SELECT * FROM moments WHERE pendingDelete = 0 ORDER BY createdAtMs DESC LIMIT :limit OFFSET :offset")
     fun observePaged(limit: Int, offset: Int): Flow<List<MomentEntity>>
 
+    @Query("SELECT * FROM moments WHERE pendingDelete = 0 ORDER BY createdAtMs DESC")
+    fun observeAll(): Flow<List<MomentEntity>>
+
     @Query("SELECT * FROM moments WHERE id = :id AND pendingDelete = 0")
     suspend fun getById(id: String): MomentEntity?
 

@@ -7,7 +7,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface MomentRepository {
     fun observeMomentsPaged(limit: Int, offset: Int): Flow<List<Moment>>
+    fun observeAllMoments(): Flow<List<Moment>>
     suspend fun syncMomentsPaged(limit: Int, offset: Int): Result<Unit, AppError>
+    suspend fun syncAllMoments(): Result<Unit, AppError>
     suspend fun getMoment(id: String): Result<Moment, AppError>
     suspend fun saveMoment(moment: Moment): Result<Unit, AppError>
     suspend fun deleteMoment(id: String): Result<Unit, AppError>
