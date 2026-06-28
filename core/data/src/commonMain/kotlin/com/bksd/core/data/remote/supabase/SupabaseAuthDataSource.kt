@@ -9,6 +9,7 @@ import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.auth.providers.builtin.IDToken
 import io.github.jan.supabase.auth.status.SessionStatus
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
@@ -29,7 +30,6 @@ class SupabaseAuthDataSource(
                 this.email = email
                 this.password = password
             }
-            Unit
         }
 
     suspend fun signUp(
@@ -56,7 +56,6 @@ class SupabaseAuthDataSource(
                 this.idToken = idToken
                 provider = Google
             }
-            Unit
         }
 
     fun getSignedInUserId(): String? = auth.currentUserOrNull()?.id
@@ -66,6 +65,15 @@ class SupabaseAuthDataSource(
     fun getDisplayName(): String? = userMetaString("full_name")
 
     fun getPhotoUrl(): String? = userMetaString("avatar_url")
+
+    fun observePhotoUrl(): Flow<String?> =
+        auth.sessionStatus.map { getPhotoUrl() }.distinctUntilChanged()
+
+    fun observeIdentityChanges(): Flow<Unit> =
+        auth.sessionStatus
+            .map { getDisplayName() to getPhotoUrl() }
+            .distinctUntilChanged()
+            .map { }
 
     suspend fun updateDisplayName(name: String): Result<Unit, AppError> =
         supabaseCall {

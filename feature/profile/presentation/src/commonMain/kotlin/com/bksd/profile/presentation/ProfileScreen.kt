@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -31,8 +32,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -52,7 +55,9 @@ import com.bksd.core.presentation.media.rememberImagePickerLauncher
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.profile.presentation.components.AppearanceRow
 import com.bksd.profile.presentation.components.ProfileHeroCard
+import com.bksd.profile.presentation.components.ProfilePhotoViewer
 import com.bksd.profile.presentation.components.ProfileSettingsRow
+import com.bksd.profile.presentation.components.RemindersSheet
 import com.bksd.profile.presentation.components.SectionHeader
 import com.bksd.profile.presentation.components.SettingsGroup
 import kotlinx.coroutines.launch
@@ -70,6 +75,8 @@ fun ProfileRoot(
     onNavigateToSignIn: () -> Unit,
     onNavigateToPaywall: () -> Unit,
     onNavigateToEditProfile: () -> Unit,
+    onNavigateToAbout: () -> Unit,
+    onNavigateToHelp: () -> Unit,
 ) {
     val viewModel = koinViewModel<ProfileViewModel>()
     val state by viewModel.state.collectAsState()
@@ -90,6 +97,8 @@ fun ProfileRoot(
             ProfileEvent.SignOutSuccess -> onNavigateToSignIn()
             ProfileEvent.NavigateToPaywall -> onNavigateToPaywall()
             ProfileEvent.NavigateToEditProfile -> onNavigateToEditProfile()
+            ProfileEvent.NavigateToAbout -> onNavigateToAbout()
+            ProfileEvent.NavigateToHelp -> onNavigateToHelp()
             ProfileEvent.OpenPhotoPicker -> imagePickerLauncher.launch()
 
             is ProfileEvent.PermissionError -> {
@@ -129,11 +138,14 @@ internal fun ProfileScreen(
     val themeMode by themeController.themeMode.collectAsState()
     val isDark = themeMode == AppThemeMode.DARK ||
             (themeMode == AppThemeMode.SYSTEM && isSystemInDarkTheme())
+    var showRemindersSheet by remember { mutableStateOf(false) }
+    var showEnlargedPhoto by remember { mutableStateOf(false) }
 
-    AppScaffold(
-        snackbarHostState = snackbarHostState
-    ) {
-        AppSurface(
+    Box(modifier = Modifier.fillMaxSize()) {
+        AppScaffold(
+            snackbarHostState = snackbarHostState
+        ) {
+            AppSurface(
             enableScrolling = true,
             centered = true,
             header = {
@@ -159,7 +171,7 @@ internal fun ProfileScreen(
                 entries = state.entriesCount,
                 weeklyStreak = state.weeklyStreak,
                 joinYear = state.joinYear,
-                onAvatarClick = { onAction(ProfileAction.OnUploadPictureClick) },
+                onAvatarClick = { if (!state.photoUrl.isNullOrBlank()) showEnlargedPhoto = true },
                 onEditClick = { onAction(ProfileAction.OnEditProfileClick) },
                 modifier = Modifier.padding(16.dp)
             )
@@ -180,8 +192,7 @@ internal fun ProfileScreen(
                     icon = Icons.Default.Notifications,
                     label = stringResource(Res.string.reminders),
                     accent = AccentPreferences,
-                    trailingValue = "9:00 PM",
-                    onClick = {}
+                    onClick = { showRemindersSheet = true }
                 )
             }
 
@@ -229,7 +240,7 @@ internal fun ProfileScreen(
                     icon = Icons.AutoMirrored.Filled.Help,
                     label = stringResource(Res.string.help_center),
                     accent = AccentSupport,
-                    onClick = {}
+                    onClick = { onAction(ProfileAction.OnHelpClick) }
                 )
                 HorizontalDivider(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
@@ -239,8 +250,7 @@ internal fun ProfileScreen(
                     icon = Icons.Default.Info,
                     label = stringResource(Res.string.about_lumen),
                     accent = AccentSupport,
-                    trailingValue = "v2.4.1",
-                    onClick = {}
+                    onClick = { onAction(ProfileAction.OnAboutClick) }
                 )
             }
 
@@ -283,7 +293,18 @@ internal fun ProfileScreen(
                 }
             }
             Spacer(Modifier.height(128.dp))
+
+                if (showRemindersSheet) {
+                    RemindersSheet(onDismiss = { showRemindersSheet = false })
+                }
         }
+        }
+
+        ProfilePhotoViewer(
+            visible = showEnlargedPhoto,
+            photoUrl = state.photoUrl,
+            onDismiss = { showEnlargedPhoto = false }
+        )
     }
 }
 

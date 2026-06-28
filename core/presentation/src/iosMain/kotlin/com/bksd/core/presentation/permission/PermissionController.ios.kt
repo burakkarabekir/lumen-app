@@ -6,6 +6,7 @@ import dev.icerock.moko.permissions.camera.CAMERA
 import dev.icerock.moko.permissions.gallery.GALLERY
 import dev.icerock.moko.permissions.location.LOCATION
 import dev.icerock.moko.permissions.microphone.RECORD_AUDIO
+import dev.icerock.moko.permissions.notifications.REMOTE_NOTIFICATION
 import dev.icerock.moko.permissions.Permission as MokoPermission
 import dev.icerock.moko.permissions.PermissionState as MokoPermissionState
 import dev.icerock.moko.permissions.ios.PermissionsController as IosPermissionsController
@@ -45,6 +46,7 @@ private fun Permission.toMoko(): MokoPermission = when (this) {
     Permission.LOCATION -> MokoPermission.LOCATION
     Permission.CAMERA -> MokoPermission.CAMERA
     Permission.GALLERY -> MokoPermission.GALLERY
+    Permission.NOTIFICATION -> MokoPermission.REMOTE_NOTIFICATION
 }
 
 private fun MokoPermissionState.toAppState(): PermissionState = when (this) {

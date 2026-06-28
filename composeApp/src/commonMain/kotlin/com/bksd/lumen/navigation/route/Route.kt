@@ -51,6 +51,12 @@ sealed interface Route : NavKey {
     data object EditProfile : Route
 
     @Serializable
+    data object About : Route
+
+    @Serializable
+    data object Help : Route
+
+    @Serializable
     data object Paywall : Route
 
     companion object {

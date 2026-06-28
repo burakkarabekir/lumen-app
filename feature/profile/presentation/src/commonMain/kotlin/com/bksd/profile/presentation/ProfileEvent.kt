@@ -6,6 +6,8 @@ sealed interface ProfileEvent {
     data object SignOutSuccess : ProfileEvent
     data object NavigateToPaywall : ProfileEvent
     data object NavigateToEditProfile : ProfileEvent
+    data object NavigateToAbout : ProfileEvent
+    data object NavigateToHelp : ProfileEvent
     data object OpenPhotoPicker : ProfileEvent
     data class PermissionError(val error: UiText) : ProfileEvent
     data class SignOutError(val error: UiText) : ProfileEvent

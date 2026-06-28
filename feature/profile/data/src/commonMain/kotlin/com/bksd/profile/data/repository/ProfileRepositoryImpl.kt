@@ -9,6 +9,8 @@ import com.bksd.core.domain.error.Result
 import com.bksd.profile.data.remote.SupabaseProfileRemoteDataSource
 import com.bksd.profile.domain.model.UserProfile
 import com.bksd.profile.domain.repository.ProfileRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlin.random.Random
 
 class ProfileRepositoryImpl(
@@ -39,6 +41,9 @@ class ProfileRepositoryImpl(
         }
     }
 
+    override fun observeUserProfile(): Flow<Result<UserProfile, AppError>> =
+        authDataSource.observeIdentityChanges().map { getUserProfile() }
+
     override suspend fun uploadAvatar(bytes: ByteArray, mimeType: String?): Result<String, AppError> {
         val uid = authDataSource.getSignedInUserId()
             ?: return Result.Error(AppError.Network(NetworkErrorType.UNAUTHORIZED))
@@ -50,7 +55,8 @@ class ProfileRepositoryImpl(
         }
         val path = "$uid/avatar_${Random.nextLong(0, Long.MAX_VALUE)}.$extension"
 
-        return when (val result = storageDataSource.upload(SupabaseBuckets.AVATARS, path, bytes)) {
+        return when (val result =
+            storageDataSource.upload(SupabaseBuckets.AVATARS, path, bytes, upsert = false)) {
             is Result.Success -> {
                 val publicUrl = storageDataSource.publicUrl(SupabaseBuckets.AVATARS, path)
                 authDataSource.updatePhotoUrl(publicUrl)

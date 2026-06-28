@@ -7,6 +7,7 @@ interface SessionStorage {
     fun isLoggedIn(): Boolean
     suspend fun awaitReady()
     fun getProfilePhotoUrl(): String?
+    fun observeProfilePhotoUrl(): Flow<String?>
     suspend fun setRememberMe(enabled: Boolean)
     fun isRememberMeEnabled(): Flow<Boolean>
 

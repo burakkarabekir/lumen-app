@@ -62,6 +62,7 @@ class JournalViewModelTest {
         override fun isLoggedIn() = true
         override suspend fun awaitReady() {}
         override fun getProfilePhotoUrl(): String? = null
+        override fun observeProfilePhotoUrl() = flowOf<String?>(null)
         override suspend fun setRememberMe(enabled: Boolean) {}
         override fun isRememberMeEnabled() = flowOf(false)
         override suspend fun getLocalDataOwner(): String? = null

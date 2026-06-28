@@ -27,6 +27,9 @@ class SupabaseSessionStorage(
     override fun getProfilePhotoUrl(): String? =
         authDataSource.getPhotoUrl()
 
+    override fun observeProfilePhotoUrl(): Flow<String?> =
+        authDataSource.observePhotoUrl()
+
     override suspend fun setRememberMe(enabled: Boolean) {
         dataStore.edit { preferences ->
             preferences[REMEMBER_ME] = enabled

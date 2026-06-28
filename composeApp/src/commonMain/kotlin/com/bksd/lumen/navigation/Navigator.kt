@@ -64,6 +64,10 @@ class Navigator(
 
     fun navigateToEditProfile() = navigate(Route.EditProfile)
 
+    fun navigateToAbout() = navigate(Route.About)
+
+    fun navigateToHelp() = navigate(Route.Help)
+
     // ==================== Auth Navigation ====================
 
     fun navigateToSignIn() = clearBackstackAndNavigate(Route.Auth.SignIn)

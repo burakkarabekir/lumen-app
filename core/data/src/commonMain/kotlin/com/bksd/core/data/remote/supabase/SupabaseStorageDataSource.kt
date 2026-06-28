@@ -16,9 +16,14 @@ object SupabaseBuckets {
 class SupabaseStorageDataSource(
     private val client: SupabaseClient,
 ) {
-    suspend fun upload(bucket: String, path: String, bytes: ByteArray): Result<Unit, AppError> =
+    suspend fun upload(
+        bucket: String,
+        path: String,
+        bytes: ByteArray,
+        upsert: Boolean = true,
+    ): Result<Unit, AppError> =
         supabaseCall {
-            client.storage.from(bucket).upload(path, bytes) { upsert = true }
+            client.storage.from(bucket).upload(path, bytes) { this.upsert = upsert }
             Unit
         }
 

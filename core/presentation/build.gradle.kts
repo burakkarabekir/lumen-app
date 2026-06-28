@@ -29,6 +29,7 @@ kotlin {
                 implementation(libs.moko.permissions.location)
                 implementation(libs.moko.permissions.camera)
                 implementation(libs.moko.permissions.gallery)
+                implementation(libs.moko.permissions.notifications)
             }
         }
         androidMain {

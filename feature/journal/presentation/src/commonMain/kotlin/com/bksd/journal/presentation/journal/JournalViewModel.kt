@@ -34,7 +34,7 @@ class JournalViewModel(
     private val sessionStorage: SessionStorage,
     private val clock: Clock,
     private val timeZone: TimeZone,
-    private val audioPlayer: AudioPlayer
+    private val audioPlayer: AudioPlayer,
 ) : BaseViewModel<JournalAction, JournalEvent>() {
 
     companion object {
@@ -59,6 +59,11 @@ class JournalViewModel(
     init {
         syncFromRemote(limit = INITIAL_PAGE_SIZE, offset = 0)
         observeMoments()
+        launch {
+            sessionStorage.observeProfilePhotoUrl().collect { url ->
+                _state.update { it.copy(profilePhotoUrl = url) }
+            }
+        }
     }
 
     /**

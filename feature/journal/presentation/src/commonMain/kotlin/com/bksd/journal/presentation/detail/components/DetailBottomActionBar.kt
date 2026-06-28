@@ -4,8 +4,10 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
@@ -14,11 +16,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -85,20 +89,32 @@ fun DetailBottomActionBar(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(26.dp))
                 .background(animatedTrayColor)
                 .padding(7.dp)
         ) {
-            AnimatedVisibility(visible = !isEditing) {
-                DetailActionButton(
-                    icon = Icons.Default.Delete,
-                    tint = palette.sub,
-                    background = sideColor,
-                    onClick = onDeleteClick
+            AnimatedVisibility(
+                visible = !isEditing,
+                enter = fadeIn(tween(200)) + expandHorizontally(
+                    tween(260),
+                    expandFrom = Alignment.Start
+                ),
+                exit = fadeOut(tween(160)) + shrinkHorizontally(
+                    tween(260),
+                    shrinkTowards = Alignment.Start
                 )
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    DetailActionButton(
+                        icon = Icons.Default.Delete,
+                        tint = palette.sub,
+                        background = sideColor,
+                        onClick = onDeleteClick
+                    )
+                    Spacer(Modifier.width(10.dp))
+                }
             }
 
             Box(
@@ -148,13 +164,26 @@ fun DetailBottomActionBar(
                 }
             }
 
-            AnimatedVisibility(visible = !isEditing) {
-                DetailActionButton(
-                    icon = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                    tint = if (isFavorite) FavoriteRed else palette.sub,
-                    background = sideColor,
-                    onClick = onFavoriteClick
+            AnimatedVisibility(
+                visible = !isEditing,
+                enter = fadeIn(tween(200)) + expandHorizontally(
+                    tween(260),
+                    expandFrom = Alignment.End
+                ),
+                exit = fadeOut(tween(160)) + shrinkHorizontally(
+                    tween(260),
+                    shrinkTowards = Alignment.End
                 )
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Spacer(Modifier.width(10.dp))
+                    DetailActionButton(
+                        icon = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                        tint = if (isFavorite) FavoriteRed else palette.sub,
+                        background = sideColor,
+                        onClick = onFavoriteClick
+                    )
+                }
             }
         }
     }

@@ -191,6 +191,7 @@ moko-permissions-microphone = { module = "dev.icerock.moko:permissions-microphon
 moko-permissions-location = { module = "dev.icerock.moko:permissions-location", version.ref = "moko-permissions" }
 moko-permissions-camera = { module = "dev.icerock.moko:permissions-camera", version.ref = "moko-permissions" }
 moko-permissions-gallery = { module = "dev.icerock.moko:permissions-gallery", version.ref = "moko-permissions" }
+moko-permissions-notifications = { module = "dev.icerock.moko:permissions-notifications", version.ref = "moko-permissions" }
 
 # ==================== Logging ====================
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
