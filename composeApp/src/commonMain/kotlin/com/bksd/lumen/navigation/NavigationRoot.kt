@@ -35,6 +35,7 @@ import com.bksd.lumen.navigation.route.Route.Companion.shouldShowBottomBar
 import com.bksd.moment.presentation.create.CreateMomentRoot
 import com.bksd.onboarding.presentation.OnboardingRoot
 import com.bksd.paywall.presentation.PaywallRoot
+import com.bksd.profile.presentation.EditProfileRoot
 import com.bksd.profile.presentation.ProfileRoot
 import kotlinx.collections.immutable.toImmutableSet
 import org.koin.compose.koinInject
@@ -159,7 +160,14 @@ fun NavigationRoot(
                         ProfileRoot(
                             onBack = { navigator.goBack() },
                             onNavigateToSignIn = { navigator.navigateToSignIn() },
-                            onNavigateToPaywall = { navigator.navigateToPaywall() }
+                            onNavigateToPaywall = { navigator.navigateToPaywall() },
+                            onNavigateToEditProfile = { navigator.navigateToEditProfile() }
+                        )
+                    }
+
+                    entry<Route.EditProfile> {
+                        EditProfileRoot(
+                            onBack = { navigator.goBack() }
                         )
                     }
 
