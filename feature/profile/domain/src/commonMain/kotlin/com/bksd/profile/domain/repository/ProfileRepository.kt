@@ -7,4 +7,5 @@ import com.bksd.profile.domain.model.UserProfile
 interface ProfileRepository {
     suspend fun getUserProfile(): Result<UserProfile, AppError>
     suspend fun uploadAvatar(bytes: ByteArray, mimeType: String?): Result<String, AppError>
+    suspend fun updateDisplayName(name: String): Result<Unit, AppError>
 }

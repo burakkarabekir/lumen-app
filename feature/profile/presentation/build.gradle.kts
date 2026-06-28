@@ -14,6 +14,7 @@ kotlin {
             dependencies {
                 implementation(projects.feature.profile.domain)
                 implementation(projects.feature.auth.domain)
+                implementation(projects.feature.insights.domain)
 
                 implementation(libs.coil.compose)
                 implementation(libs.bundles.datastore)

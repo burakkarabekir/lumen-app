@@ -16,4 +16,13 @@ class SupabaseProfileRemoteDataSource(
                 .select { filter { eq("id", userId) } }
                 .decodeSingleOrNull<UserProfileDto>()
         }
+
+    suspend fun updateDisplayName(userId: String, name: String): Result<Unit, AppError> =
+        supabaseCall {
+            client.postgrest["profiles"].update(
+                update = { set("display_name", name) },
+                request = { filter { eq("id", userId) } }
+            )
+            Unit
+        }
 }

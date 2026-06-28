@@ -60,4 +60,18 @@ class ProfileRepositoryImpl(
             is Result.Error -> Result.Error(result.error)
         }
     }
+
+    override suspend fun updateDisplayName(name: String): Result<Unit, AppError> {
+        val uid = authDataSource.getSignedInUserId()
+            ?: return Result.Error(AppError.Network(NetworkErrorType.UNAUTHORIZED))
+
+        return when (val result = authDataSource.updateDisplayName(name)) {
+            is Result.Success -> {
+                remoteDataSource.updateDisplayName(uid, name)
+                Result.Success(Unit)
+            }
+
+            is Result.Error -> Result.Error(result.error)
+        }
+    }
 }

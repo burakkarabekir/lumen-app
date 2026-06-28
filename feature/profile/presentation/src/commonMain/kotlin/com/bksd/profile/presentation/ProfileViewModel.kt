@@ -5,6 +5,9 @@ import com.bksd.auth.domain.usecase.SignOutUseCase
 import com.bksd.core.domain.error.Result
 import com.bksd.core.presentation.util.BaseViewModel
 import com.bksd.core.presentation.util.toUiText
+import com.bksd.insights.domain.calculator.InsightsCalculator
+import com.bksd.insights.domain.model.InsightsRange
+import com.bksd.insights.domain.usecase.ObserveAllMomentsUseCase
 import com.bksd.profile.domain.usecase.GetUserProfileUseCase
 import com.bksd.profile.domain.usecase.SetProfileAvatarUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,6 +20,8 @@ class ProfileViewModel(
     private val getUserProfileUseCase: GetUserProfileUseCase,
     private val setProfileAvatarUseCase: SetProfileAvatarUseCase,
     private val signOutUseCase: SignOutUseCase,
+    private val observeAllMoments: ObserveAllMomentsUseCase,
+    private val insightsCalculator: InsightsCalculator,
 ) : BaseViewModel<ProfileAction, ProfileEvent>() {
 
     private var hasLoadedInitialData = false
@@ -26,6 +31,7 @@ class ProfileViewModel(
         .onStart {
             if (!hasLoadedInitialData) {
                 loadUserProfile()
+                observeStats()
                 hasLoadedInitialData = true
             }
         }
@@ -58,11 +64,25 @@ class ProfileViewModel(
         }
     }
 
+    private fun observeStats() {
+        launch {
+            observeAllMoments().collect { moments ->
+                val weeklyStreak = insightsCalculator
+                    .compute(moments, InsightsRange.AllTime)
+                    .currentWeekly?.length ?: 0
+                _state.update {
+                    it.copy(entriesCount = moments.size, weeklyStreak = weeklyStreak)
+                }
+            }
+        }
+    }
+
     override fun onAction(action: ProfileAction) {
         when (action) {
             ProfileAction.OnSignOutClick -> handleSignOut()
             ProfileAction.OnUpgradeClick -> sendEvent(ProfileEvent.NavigateToPaywall)
             ProfileAction.OnUploadPictureClick -> sendEvent(ProfileEvent.OpenPhotoPicker)
+            ProfileAction.OnEditProfileClick -> sendEvent(ProfileEvent.NavigateToEditProfile)
 
             is ProfileAction.OnPictureSelected -> {
                 _state.update { it.copy(isAvatarLoading = true) }

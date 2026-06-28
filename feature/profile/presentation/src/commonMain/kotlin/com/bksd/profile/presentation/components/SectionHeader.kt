@@ -19,11 +19,9 @@ fun SectionHeader(
 ) {
     Text(
         text = title,
-        style = MaterialTheme.typography.labelSmall.copy(
-            fontWeight = FontWeight.SemiBold,
-            letterSpacing = 1.sp
-        ),
-        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+        fontSize = 12.sp,
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.45f),
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
@@ -34,7 +32,7 @@ fun SectionHeader(
 @Composable
 private fun SectionHeaderDarkPreview() {
     AppTheme(darkTheme = true) {
-        SectionHeader(title = "ACCOUNT")
+        SectionHeader(title = "Preferences")
     }
 }
 
@@ -42,6 +40,6 @@ private fun SectionHeaderDarkPreview() {
 @Composable
 private fun SectionHeaderLightPreview() {
     AppTheme(darkTheme = false) {
-        SectionHeader(title = "ACCOUNT")
+        SectionHeader(title = "Preferences")
     }
 }
