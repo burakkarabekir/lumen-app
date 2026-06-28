@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
 
 @Composable
-internal fun EmptyStreakCard(onSetSchedule: () -> Unit) {
+internal fun EmptyStreakCard(onSetReminder: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -67,7 +67,7 @@ internal fun EmptyStreakCard(onSetSchedule: () -> Unit) {
                 modifier = Modifier
                     .clip(RoundedCornerShape(20.dp))
                     .background(Color(0xFF4F46E5))
-                    .clickable(onClick = onSetSchedule)
+                    .clickable(onClick = onSetReminder)
                     .padding(horizontal = 17.dp, vertical = 10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -79,7 +79,7 @@ internal fun EmptyStreakCard(onSetSchedule: () -> Unit) {
                 )
                 Spacer(Modifier.width(7.dp))
                 Text(
-                    text = "Set Schedule",
+                    text = "Set Reminder",
                     fontSize = 13.5.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White
@@ -94,7 +94,7 @@ internal fun EmptyStreakCard(onSetSchedule: () -> Unit) {
 private fun EmptyStreakCardPreview() {
     AppTheme {
         Box(Modifier.padding(18.dp)) {
-            EmptyStreakCard(onSetSchedule = {})
+            EmptyStreakCard(onSetReminder = {})
         }
     }
 }

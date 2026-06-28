@@ -55,7 +55,7 @@ internal fun InsightsScreen(
         if (state.hasActiveStreak) {
             StreaksCarousel(state = state, palette = palette)
         } else {
-            EmptyStreakCard(onSetSchedule = {})
+            EmptyStreakCard(onSetReminder = {})
         }
 
         Spacer(Modifier.height(18.dp))

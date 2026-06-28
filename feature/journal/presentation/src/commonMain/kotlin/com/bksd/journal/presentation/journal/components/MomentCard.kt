@@ -12,7 +12,6 @@ import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -25,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.MoreHoriz
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -47,24 +47,18 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bksd.core.design_system.component.divider.AppDivider
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.extended
-import com.bksd.core.design_system.theme.labelXSmall
-import com.bksd.core.domain.model.AudioAttachment
-import com.bksd.core.domain.model.LinkAttachment
+import com.bksd.core.design_system.theme.rememberNewEntryPalette
 import com.bksd.core.domain.model.Moment
 import com.bksd.core.domain.model.Mood
-import com.bksd.core.domain.model.PhotoAttachment
 import com.bksd.core.domain.model.PlaybackState
-import com.bksd.core.domain.model.VideoAttachment
-import com.bksd.core.presentation.AudioPlaybackMode
-import com.bksd.core.presentation.util.onSafe
 import com.bksd.journal.presentation.util.DefaultMomentFormatter
 import com.bksd.journal.presentation.util.MomentFormatter
 import kotlinx.collections.immutable.ImmutableList
@@ -73,7 +67,6 @@ import kotlinx.datetime.TimeZone
 import kotlin.math.roundToInt
 import kotlin.time.Clock
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MomentCard(
     moment: Moment,
@@ -85,28 +78,31 @@ fun MomentCard(
     audioCurrentPosition: String = "0:00",
     onAudioPlayClick: () -> Unit = {},
     onAudioPauseClick: () -> Unit = {},
+    onLinkClick: (String) -> Unit = {},
     onEditClick: () -> Unit = {},
     onFavoriteToggleClick: () -> Unit = {},
     onDeleteClick: () -> Unit = {},
 ) {
-    val formattedDate = remember(moment.createdAt) {
-        formatCardDate(moment.createdAt, timeZone)
-    }
+    val palette = rememberNewEntryPalette()
+    val extendedColors = MaterialTheme.colorScheme.extended
+    val formattedDate = remember(moment.createdAt) { formatCardDate(moment.createdAt, timeZone) }
 
     val hasMoods = moment.moods.isNotEmpty()
     var moodPanelExpanded by remember { mutableStateOf(false) }
     val transition = updateTransition(targetState = moodPanelExpanded, label = "MoodReveal")
 
-    val extendedColors = MaterialTheme.colorScheme.extended
     val moodColorList = remember(moment.moods, extendedColors) {
         moment.moods.map { moodColors(it, extendedColors).second.copy(alpha = 0.5f) }
     }
     val primaryMoodColor = moodColorList.firstOrNull() ?: Color.Transparent
+    val accentColor = remember(moment.moods, extendedColors, palette.saveBg) {
+        moment.moods.firstOrNull()?.let { moodColors(it, extendedColors).second } ?: palette.saveBg
+    }
 
     val panelWidth by transition.animateDp(
         transitionSpec = {
             tween(
-                durationMillis = MomentCardDefaults.REVEAL_DURATION_MS,
+                MomentCardDefaults.REVEAL_DURATION_MS,
                 easing = MomentCardDefaults.RevealEasing
             )
         },
@@ -116,7 +112,7 @@ fun MomentCard(
     val contentBlur by transition.animateDp(
         transitionSpec = {
             tween(
-                durationMillis = MomentCardDefaults.REVEAL_DURATION_MS,
+                MomentCardDefaults.REVEAL_DURATION_MS,
                 easing = MomentCardDefaults.RevealEasing
             )
         },
@@ -126,7 +122,7 @@ fun MomentCard(
     val gradientAlpha by transition.animateFloat(
         transitionSpec = {
             tween(
-                durationMillis = MomentCardDefaults.REVEAL_DURATION_MS,
+                MomentCardDefaults.REVEAL_DURATION_MS,
                 easing = MomentCardDefaults.RevealEasing
             )
         },
@@ -136,7 +132,7 @@ fun MomentCard(
     val revealProgress by transition.animateFloat(
         transitionSpec = {
             tween(
-                durationMillis = MomentCardDefaults.REVEAL_DURATION_MS,
+                MomentCardDefaults.REVEAL_DURATION_MS,
                 easing = MomentCardDefaults.RevealEasing
             )
         },
@@ -148,8 +144,8 @@ fun MomentCard(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+            .clip(RoundedCornerShape(18.dp))
+            .background(palette.surface)
             .pointerInput(hasMoods) {
                 if (!hasMoods) return@pointerInput
                 val thresholdPx = MomentCardDefaults.SWIPE_THRESHOLD_DP.dp.toPx()
@@ -178,12 +174,7 @@ fun MomentCard(
                 }
             }
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(2.dp)
-                .clip(RoundedCornerShape(14.dp))
-        ) {
+        Row(modifier = Modifier.fillMaxWidth()) {
             if (hasMoods) {
                 Spacer(modifier = Modifier.width(MomentCardDefaults.STRIP_WIDTH_DP.dp))
             }
@@ -199,69 +190,120 @@ fun MomentCard(
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .clip(RoundedCornerShape(12.dp))
                     .then(if (contentBlur > 0.dp) Modifier.blur(contentBlur) else Modifier)
-                    .padding(start = 2.dp)
                     .clickable { onClick() }
             ) {
-                MediaContent(
-                    moment = moment,
-                    formatter = formatter,
-                    audioPlaybackState = audioPlaybackState,
-                    audioCurrentPosition = audioCurrentPosition,
-                    onAudioPlayClick = onAudioPlayClick,
-                    onAudioPauseClick = onAudioPauseClick
-                )
-
-                moment.location?.let { location ->
-                    LocationBar(location = location)
-                }
-
-                Column(
-                    modifier = Modifier
-                        .padding(horizontal = 14.dp, vertical = 10.dp)
-                ) {
-                    Text(
-                        text = moment.title,
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    moment.body.onSafe {
-                        Spacer(modifier = Modifier.height(2.dp))
+                val locationName = moment.location?.displayName
+                if (!locationName.isNullOrBlank()) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(7.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(palette.pinBg)
+                            .padding(horizontal = 16.dp, vertical = 12.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Place,
+                            contentDescription = null,
+                            tint = palette.pinFg,
+                            modifier = Modifier.size(14.dp)
+                        )
                         Text(
-                            text = it,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            maxLines = 2,
+                            text = locationName,
+                            fontSize = 13.5.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = palette.pinFg,
+                            maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
                     }
+                }
 
-                    moment.tags.onSafe { items ->
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            items.forEach { tag ->
-                                Text(
-                                    text = "#$tag",
-                                    style = MaterialTheme.typography.labelXSmall,
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                            }
-                        }
+                Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 15.dp)) {
+                    Text(
+                        text = moment.title,
+                        fontSize = 19.sp,
+                        lineHeight = 22.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        letterSpacing = (-0.3).sp,
+                        color = palette.text,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    val body = moment.body
+                    if (!body.isNullOrBlank()) {
+                        Text(
+                            text = body,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = palette.sub,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.padding(top = 3.dp)
+                        )
                     }
                 }
 
-                AppDivider()
-                CardFooter(
-                    formattedDate = formattedDate,
-                    isFavorite = moment.isFavorite,
-                    onMoreClick = { isActionsSheetVisible = true }
+                if (moment.attachments.isNotEmpty()) {
+                    AttachmentChips(
+                        attachments = moment.attachments,
+                        accentColor = accentColor,
+                        formatter = formatter,
+                        playbackState = audioPlaybackState,
+                        onAudioPlayClick = onAudioPlayClick,
+                        onAudioPauseClick = onAudioPauseClick,
+                        onLinkClick = onLinkClick,
+                        modifier = Modifier.padding(top = 13.dp)
+                    )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .padding(top = 14.dp, start = 16.dp, end = 16.dp)
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(palette.hairline)
                 )
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 6.dp, top = 5.dp, bottom = 7.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = formattedDate,
+                        fontSize = 12.5.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = palette.sub
+                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(2.dp)
+                    ) {
+                        if (moment.isFavorite) {
+                            Icon(
+                                imageVector = Icons.Default.Favorite,
+                                contentDescription = "Favorited",
+                                tint = MaterialTheme.colorScheme.error,
+                                modifier = Modifier.size(15.dp)
+                            )
+                        }
+                        IconButton(
+                            onClick = { isActionsSheetVisible = true },
+                            modifier = Modifier.size(32.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.MoreHoriz,
+                                contentDescription = "More actions",
+                                tint = palette.sub,
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
+                    }
+                }
             }
         }
 
@@ -289,11 +331,7 @@ fun MomentCard(
         }
 
         if (hasMoods) {
-            Box(
-                modifier = Modifier
-                    .matchParentSize()
-                    .padding(2.dp)
-            ) {
+            Box(modifier = Modifier.matchParentSize()) {
                 MoodColorStrip(
                     colors = moodColorList.toPersistentList(),
                     onClick = { moodPanelExpanded = !moodPanelExpanded }
@@ -337,7 +375,7 @@ private fun MoodColorStrip(
         modifier = Modifier
             .width(MomentCardDefaults.STRIP_WIDTH_DP.dp)
             .fillMaxHeight()
-            .clip(RoundedCornerShape(topStart = 14.dp, bottomStart = 14.dp))
+            .clip(RoundedCornerShape(topStart = 18.dp, bottomStart = 18.dp))
             .background(stripBrush)
             .clickable(onClick = onClick)
     )
@@ -392,98 +430,10 @@ private fun MoodRevealPanel(
     }
 }
 
-@Composable
-private fun MediaContent(
-    moment: Moment,
-    formatter: MomentFormatter,
-    audioPlaybackState: PlaybackState,
-    audioCurrentPosition: String,
-    onAudioPlayClick: () -> Unit,
-    onAudioPauseClick: () -> Unit
-) {
-    val attachments = moment.attachments
-    if (attachments.isEmpty()) return
-
-    when (val primary = attachments.first()) {
-        is PhotoAttachment -> {
-            PhotoPreview(url = primary.remoteUrl.value)
-        }
-
-        is VideoAttachment -> {
-            VideoPreview(durationMs = primary.durationMs, formatter = formatter)
-        }
-
-        is AudioAttachment -> {
-            Box(modifier = Modifier.padding(12.dp)) {
-                AudioPreview(
-                    playbackState = audioPlaybackState,
-                    currentPositionFormatted = audioCurrentPosition,
-                    mode = AudioPlaybackMode.STANDARD,
-                    durationFormatted = if (primary.durationMs > 0)
-                        formatter.formatDuration(primary.durationMs) else "0:00",
-                    onPlayClick = onAudioPlayClick,
-                    onPauseClick = onAudioPauseClick
-                )
-            }
-        }
-
-        is LinkAttachment -> {
-            Box(modifier = Modifier.padding(12.dp)) {
-                LinkPreview(url = primary.url.value)
-            }
-        }
-    }
-}
-
-@Composable
-private fun CardFooter(
-    formattedDate: String,
-    isFavorite: Boolean,
-    onMoreClick: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 12.dp, end = 4.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = formattedDate,
-            style = MaterialTheme.typography.displaySmall.copy(fontSize = 11.sp),
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
-        )
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            if (isFavorite) {
-                Icon(
-                    imageVector = Icons.Default.Favorite,
-                    contentDescription = "Favorited",
-                    tint = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.size(16.dp)
-                )
-            }
-            IconButton(
-                onClick = onMoreClick,
-                modifier = Modifier.size(32.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.MoreHoriz,
-                    contentDescription = "More actions",
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-                    modifier = Modifier.size(20.dp)
-                )
-            }
-        }
-    }
-}
-
 @Preview
 @Composable
 private fun PreviewMomentCard() {
-    AppTheme {
+    AppTheme(darkTheme = true) {
         MomentCard(
             moment = Moment(
                 id = "0",
@@ -501,16 +451,15 @@ private fun PreviewMomentCard() {
 
 @Preview
 @Composable
-private fun PreviewMomentCardDark() {
-    AppTheme(darkTheme = true) {
+private fun PreviewMomentCardLight() {
+    AppTheme(darkTheme = false) {
         MomentCard(
             moment = Moment(
                 id = "0",
                 title = "Creative burst at midnight",
                 body = "Ideas flowing like a river. Wrote three pages without stopping.",
-                tags = listOf("writing", "flow"),
                 createdAt = Clock.System.now(),
-                moods = listOf(Mood.INSPIRED, Mood.FOCUSED, Mood.PROUD)
+                moods = listOf(Mood.INSPIRED)
             ),
             formatter = DefaultMomentFormatter(TimeZone.UTC),
             onClick = {},

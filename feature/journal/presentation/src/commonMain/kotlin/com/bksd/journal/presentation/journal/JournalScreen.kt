@@ -19,9 +19,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -30,6 +34,8 @@ import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.domain.model.AudioAttachment
 import com.bksd.core.domain.model.Moment
 import com.bksd.core.domain.model.PlaybackState
+import com.bksd.core.presentation.link.LinkConfirmationDialog
+import com.bksd.core.presentation.link.toOpenableWebUrl
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.journal.presentation.Res
 import com.bksd.journal.presentation.journal.components.JournalSectionHeader
@@ -86,6 +92,9 @@ fun JournalScreen(
     listState: LazyListState,
     onAction: (JournalAction) -> Unit
 ) {
+    val uriHandler = LocalUriHandler.current
+    var pendingLink by remember { mutableStateOf<String?>(null) }
+
     // Detect when user scrolls near the bottom → load more
     LaunchedEffect(listState) {
         snapshotFlow {
@@ -179,6 +188,7 @@ fun JournalScreen(
                                     }
                                 },
                                 onAudioPauseClick = { onAction(JournalAction.OnAudioPauseClick) },
+                                onLinkClick = { pendingLink = it },
                                 onEditClick = { onAction(JournalAction.OnEditMoment(moment.id)) },
                                 onFavoriteToggleClick = {
                                     onAction(
@@ -213,6 +223,17 @@ fun JournalScreen(
                     }
                 }
             }
+        }
+
+        pendingLink?.let { url ->
+            LinkConfirmationDialog(
+                url = url,
+                onConfirm = {
+                    toOpenableWebUrl(url)?.let { safe -> runCatching { uriHandler.openUri(safe) } }
+                    pendingLink = null
+                },
+                onDismiss = { pendingLink = null }
+            )
         }
     }
 }

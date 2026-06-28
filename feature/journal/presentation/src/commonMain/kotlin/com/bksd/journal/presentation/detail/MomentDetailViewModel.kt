@@ -2,12 +2,15 @@ package com.bksd.journal.presentation.detail
 
 import androidx.lifecycle.viewModelScope
 import com.bksd.core.domain.error.Result
+import com.bksd.core.domain.model.PlaybackState
+import com.bksd.core.domain.storage.AudioPlayer
 import com.bksd.core.presentation.util.BaseViewModel
 import com.bksd.core.presentation.util.UiText
 import com.bksd.core.presentation.util.toUiText
 import com.bksd.journal.domain.usecase.DeleteMomentUseCase
 import com.bksd.journal.domain.usecase.GetMomentUseCase
 import com.bksd.journal.domain.usecase.UpdateMomentUseCase
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,6 +24,7 @@ class MomentDetailViewModel(
     private val getMomentUseCase: GetMomentUseCase,
     private val deleteMomentUseCase: DeleteMomentUseCase,
     private val updateMomentUseCase: UpdateMomentUseCase,
+    private val audioPlayer: AudioPlayer,
     private val momentId: String,
     private val initialIsEditing: Boolean = false
 ) : BaseViewModel<MomentDetailAction, MomentDetailEvent>() {
@@ -33,6 +37,7 @@ class MomentDetailViewModel(
         .onStart {
             if (!hasLoadedInitialData) {
                 loadMoment()
+                observeAudio()
                 hasLoadedInitialData = true
             }
         }
@@ -50,7 +55,7 @@ class MomentDetailViewModel(
             MomentDetailAction.OnSaveChanges -> handleSaveChanges()
             MomentDetailAction.OnCancelEdit -> exitEditMode()
             MomentDetailAction.OnDeleteClick -> handleDelete()
-            MomentDetailAction.OnShareClick -> Unit
+            MomentDetailAction.OnShareClick -> handleShare()
             MomentDetailAction.OnFavoriteToggle -> toggleFavorite()
             MomentDetailAction.OnToggleBodyExpand -> {
                 _state.update { it.copy(isBodyExpanded = !it.isBodyExpanded) }
@@ -65,7 +70,77 @@ class MomentDetailViewModel(
             is MomentDetailAction.OnTagRemove -> {
                 _state.update { it.copy(editTags = (it.editTags - action.tag).toPersistentList()) }
             }
+            is MomentDetailAction.OnAudioPlayClick -> playAudio(action.url)
+            MomentDetailAction.OnAudioPauseClick -> launch { audioPlayer.pause() }
+            MomentDetailAction.OnLocationRemove -> _state.update { it.copy(editLocation = null) }
+            is MomentDetailAction.OnDateChange -> _state.update { it.copy(editCreatedAt = action.date) }
+            is MomentDetailAction.OnAttachmentRemove -> _state.update {
+                it.copy(
+                    editAttachments = it.editAttachments
+                        .filter { att -> att.id != action.id }
+                        .toPersistentList()
+                )
+            }
         }
+    }
+
+    private fun handleShare() {
+        val moment = _state.value.moment ?: return
+        val text = buildString {
+            if (moment.title.isNotBlank()) append(moment.title)
+            val body = moment.body
+            if (!body.isNullOrBlank()) {
+                if (isNotEmpty()) append("\n\n")
+                append(body)
+            }
+        }
+        if (text.isNotBlank()) sendEvent(MomentDetailEvent.ShareEntry(text))
+    }
+
+    private fun playAudio(url: String) {
+        _state.update { it.copy(playingAudioUrl = url) }
+        launch {
+            if (audioPlayer.playbackState.value == PlaybackState.PAUSED) {
+                audioPlayer.resume()
+            } else {
+                audioPlayer.play(url)
+            }
+        }
+    }
+
+    private fun observeAudio() {
+        launch {
+            audioPlayer.playbackState.collect { st ->
+                _state.update { it.copy(audioPlaybackState = st) }
+            }
+        }
+        launch {
+            audioPlayer.currentPositionMs.collect { ms ->
+                _state.update { it.copy(audioPositionFormatted = formatMs(ms)) }
+            }
+        }
+        launch {
+            audioPlayer.durationMs.collect { ms ->
+                _state.update { it.copy(audioDurationFormatted = formatMs(ms)) }
+            }
+        }
+        launch {
+            audioPlayer.playbackAmplitudes.collect { amps ->
+                _state.update { it.copy(audioAmplitudes = amps.toImmutableList()) }
+            }
+        }
+    }
+
+    private fun formatMs(ms: Long): String {
+        val total = ms / 1000
+        val minutes = total / 60
+        val seconds = total % 60
+        return "$minutes:${seconds.toString().padStart(2, '0')}"
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        audioPlayer.release()
     }
 
     private fun toggleFavorite() {
@@ -91,7 +166,10 @@ class MomentDetailViewModel(
                 editTitle = moment.title,
                 editBody = moment.body.orEmpty(),
                 editMoods = moment.moods.toSet().toPersistentSet(),
-                editTags = moment.tags.toPersistentList()
+                editTags = moment.tags.toPersistentList(),
+                editLocation = moment.location,
+                editCreatedAt = moment.createdAt,
+                editAttachments = moment.attachments.toPersistentList()
             )
         }
     }
@@ -110,7 +188,10 @@ class MomentDetailViewModel(
             title = current.editTitle,
             body = current.editBody.ifEmpty { null },
             moods = current.editMoods.toList(),
-            tags = current.editTags.toList()
+            tags = current.editTags.toList(),
+            location = current.editLocation,
+            createdAt = current.editCreatedAt ?: moment.createdAt,
+            attachments = current.editAttachments.toList()
         )
 
         launch {

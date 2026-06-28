@@ -4,6 +4,7 @@ import com.bksd.core.presentation.util.UiText
 
 sealed interface MomentDetailEvent {
     data object NavigateBack : MomentDetailEvent
+    data class ShareEntry(val text: String) : MomentDetailEvent
     data class ShowError(val error: UiText) : MomentDetailEvent
     data class ShowSuccess(val message: UiText) : MomentDetailEvent
 }

@@ -1,6 +1,8 @@
 package com.bksd.journal.presentation.detail
 
+import com.bksd.core.domain.model.AttachmentId
 import com.bksd.core.domain.model.Mood
+import kotlin.time.Instant
 
 sealed interface MomentDetailAction {
     data object OnNavigateBack : MomentDetailAction
@@ -16,4 +18,9 @@ sealed interface MomentDetailAction {
     data class OnBodyChange(val body: String) : MomentDetailAction
     data class OnMoodToggle(val mood: Mood) : MomentDetailAction
     data class OnTagRemove(val tag: String) : MomentDetailAction
+    data class OnAudioPlayClick(val url: String) : MomentDetailAction
+    data object OnAudioPauseClick : MomentDetailAction
+    data object OnLocationRemove : MomentDetailAction
+    data class OnDateChange(val date: Instant) : MomentDetailAction
+    data class OnAttachmentRemove(val id: AttachmentId) : MomentDetailAction
 }

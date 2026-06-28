@@ -34,6 +34,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bksd.core.design_system.component.layout.AppScaffold
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
+import com.bksd.core.presentation.attachment.LinkAttachmentCard
+import com.bksd.core.presentation.attachment.PhotoAttachmentCard
+import com.bksd.core.presentation.attachment.VideoAttachmentCard
+import com.bksd.core.presentation.attachment.VoiceAttachmentCard
 import com.bksd.core.presentation.media.MediaPickResult
 import com.bksd.core.presentation.media.rememberMediaPickerLauncher
 import com.bksd.core.presentation.permission.LocationSettingsResolver
@@ -49,12 +53,9 @@ import com.bksd.moment.presentation.action_enable_location
 import com.bksd.moment.presentation.action_open_settings
 import com.bksd.moment.presentation.body_placeholder
 import com.bksd.moment.presentation.create.components.AttachmentSummaryBar
-import com.bksd.moment.presentation.create.components.AudioPlaybackCard
 import com.bksd.moment.presentation.create.components.EntryMetaRow
 import com.bksd.moment.presentation.create.components.EntryToolbar
-import com.bksd.moment.presentation.create.components.LinkAttachmentPreviewCard
 import com.bksd.moment.presentation.create.components.LinkEntryBottomSheet
-import com.bksd.moment.presentation.create.components.MediaPreviewCard
 import com.bksd.moment.presentation.create.components.MoodSection
 import com.bksd.moment.presentation.create.components.NewEntryTopBar
 import com.bksd.moment.presentation.create.components.VoiceRecordingBottomSheet
@@ -303,7 +304,6 @@ private fun CreateMomentScreen(
                         timestamp = state.timestampFormatted,
                         locationName = state.location?.displayName,
                         isFetchingLocation = state.isFetchingLocation,
-                        onAddLocation = { onAction(CreateMomentAction.OnAddLocationClick) },
                         onRemoveLocation = { onAction(CreateMomentAction.OnRemoveLocationClick) },
                     )
 
@@ -376,57 +376,59 @@ private fun CreateMomentScreen(
                             ) {
                                 state.allAttachments.forEach { attachment ->
                                     when (attachment) {
-                                        is AttachmentUiModel.Photo, is AttachmentUiModel.Video -> {
-                                            MediaPreviewCard(
-                                                type = attachment.type,
-                                                onRemoveClick = {
-                                                    onAction(
-                                                        CreateMomentAction.OnRemoveAttachment(
-                                                            attachment.id
-                                                        )
+                                        is AttachmentUiModel.Photo -> PhotoAttachmentCard(
+                                            imageModel = attachment.localPath
+                                                ?: attachment.remoteUrl,
+                                            onRemove = {
+                                                onAction(
+                                                    CreateMomentAction.OnRemoveAttachment(
+                                                        attachment.id
                                                     )
-                                                }
-                                            )
-                                        }
+                                                )
+                                            }
+                                        )
 
-                                        is AttachmentUiModel.Audio -> {
-                                            AudioPlaybackCard(
-                                                playbackState = state.playbackState,
-                                                amplitudes = state.playbackAmplitudes,
-                                                currentPositionFormatted = state.playbackPositionFormatted,
-                                                durationFormatted = state.playbackDurationFormatted,
-                                                onPlayClick = {
-                                                    onAction(
-                                                        CreateMomentAction.OnPlayAudio(
-                                                            attachment.id
-                                                        )
+                                        is AttachmentUiModel.Video -> VideoAttachmentCard(
+                                            durationFormatted = "",
+                                            onRemove = {
+                                                onAction(
+                                                    CreateMomentAction.OnRemoveAttachment(
+                                                        attachment.id
                                                     )
-                                                },
-                                                onPauseClick = {
-                                                    onAction(CreateMomentAction.OnPauseAudio)
-                                                },
-                                                onDeleteClick = {
-                                                    onAction(
-                                                        CreateMomentAction.OnDeleteRecording(
-                                                            attachment.id
-                                                        )
-                                                    )
-                                                }
-                                            )
-                                        }
+                                                )
+                                            }
+                                        )
 
-                                        is AttachmentUiModel.Link -> {
-                                            LinkAttachmentPreviewCard(
-                                                url = attachment.remoteUrl,
-                                                onRemoveClick = {
-                                                    onAction(
-                                                        CreateMomentAction.OnRemoveAttachment(
-                                                            attachment.id
-                                                        )
+                                        is AttachmentUiModel.Audio -> VoiceAttachmentCard(
+                                            playbackState = state.playbackState,
+                                            amplitudes = state.playbackAmplitudes,
+                                            positionFormatted = state.playbackPositionFormatted,
+                                            durationFormatted = state.playbackDurationFormatted,
+                                            onPlay = {
+                                                onAction(CreateMomentAction.OnPlayAudio(attachment.id))
+                                            },
+                                            onPause = {
+                                                onAction(CreateMomentAction.OnPauseAudio)
+                                            },
+                                            onRemove = {
+                                                onAction(
+                                                    CreateMomentAction.OnDeleteRecording(
+                                                        attachment.id
                                                     )
-                                                }
-                                            )
-                                        }
+                                                )
+                                            }
+                                        )
+
+                                        is AttachmentUiModel.Link -> LinkAttachmentCard(
+                                            url = attachment.remoteUrl,
+                                            onRemove = {
+                                                onAction(
+                                                    CreateMomentAction.OnRemoveAttachment(
+                                                        attachment.id
+                                                    )
+                                                )
+                                            }
+                                        )
                                     }
                                 }
                             }

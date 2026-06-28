@@ -3,10 +3,13 @@ package com.bksd.moment.presentation.create.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -19,16 +22,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 import com.bksd.moment.presentation.Res
-import com.bksd.moment.presentation.add_location
 import com.bksd.moment.presentation.content_desc_location
 import com.bksd.moment.presentation.content_desc_remove_location
 import org.jetbrains.compose.resources.stringResource
+
+private val LocationBoxHeight = 34.dp
 
 @Composable
 fun EntryMetaRow(
@@ -36,7 +41,6 @@ fun EntryMetaRow(
     timestamp: String,
     locationName: String?,
     isFetchingLocation: Boolean,
-    onAddLocation: () -> Unit,
     onRemoveLocation: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -64,47 +68,52 @@ fun EntryMetaRow(
             )
         }
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
-            modifier = Modifier
-                .clip(RoundedCornerShape(14.dp))
-                .background(palette.pinBg)
-                .clickable(
-                    enabled = locationName == null && !isFetchingLocation,
-                    onClick = onAddLocation
-                )
-                .padding(horizontal = 12.dp, vertical = 8.dp)
+        Box(
+            modifier = Modifier.height(LocationBoxHeight),
+            contentAlignment = Alignment.CenterEnd
         ) {
-            Icon(
-                imageVector = Icons.Filled.Place,
-                contentDescription = stringResource(Res.string.content_desc_location),
-                tint = palette.pinFg,
-                modifier = Modifier.size(13.dp)
-            )
-            if (isFetchingLocation) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(12.dp),
-                    strokeWidth = 2.dp,
-                    color = palette.pinFg
-                )
-            } else {
-                Text(
-                    text = locationName ?: stringResource(Res.string.add_location),
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = palette.pinFg
-                )
-            }
-            if (locationName != null) {
-                Icon(
-                    imageVector = Icons.Filled.Close,
-                    contentDescription = stringResource(Res.string.content_desc_remove_location),
-                    tint = palette.pinFg,
+            if (isFetchingLocation || locationName != null) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
                     modifier = Modifier
-                        .size(12.dp)
-                        .clickable(onClick = onRemoveLocation)
-                )
+                        .height(LocationBoxHeight)
+                        .clip(RoundedCornerShape(14.dp))
+                        .background(palette.pinBg)
+                        .padding(horizontal = 12.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Place,
+                        contentDescription = stringResource(Res.string.content_desc_location),
+                        tint = palette.pinFg,
+                        modifier = Modifier.size(13.dp)
+                    )
+                    if (isFetchingLocation) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(12.dp),
+                            strokeWidth = 2.dp,
+                            color = palette.pinFg
+                        )
+                    } else {
+                        Text(
+                            text = locationName.orEmpty(),
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = palette.pinFg,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.widthIn(max = 150.dp)
+                        )
+                        Icon(
+                            imageVector = Icons.Filled.Close,
+                            contentDescription = stringResource(Res.string.content_desc_remove_location),
+                            tint = palette.pinFg,
+                            modifier = Modifier
+                                .size(12.dp)
+                                .clickable(onClick = onRemoveLocation)
+                        )
+                    }
+                }
             }
         }
     }
@@ -125,7 +134,6 @@ private fun EntryMetaRowPreview() {
                 timestamp = "Today, 9:41 AM",
                 locationName = "Mountain View",
                 isFetchingLocation = false,
-                onAddLocation = {},
                 onRemoveLocation = {}
             )
         }
