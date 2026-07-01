@@ -4,10 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.bksd.core.presentation.util.ObserveAsEvents
+import com.bksd.insights.presentation.reflection.WeeklyReflectionRoot
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun InsightsRoot() {
+fun InsightsRoot(
+    onViewFullReflection: () -> Unit,
+) {
     val viewModel = koinViewModel<InsightsViewModel>()
     val state by viewModel.state.collectAsState()
 
@@ -19,6 +22,7 @@ fun InsightsRoot() {
 
     InsightsScreen(
         state = state,
-        onAction = viewModel::onAction
+        onAction = viewModel::onAction,
+        reflectionSlot = { WeeklyReflectionRoot(onViewFullReflection = onViewFullReflection) }
     )
 }

@@ -26,6 +26,7 @@ import com.bksd.auth.presentation.signup.SignUpRoot
 import com.bksd.core.design_system.component.layout.AppScaffold
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.insights.presentation.InsightsRoot
+import com.bksd.insights.presentation.reflection.full.WeeklyReflectionDetailRoot
 import com.bksd.journal.presentation.detail.MomentDetailRoot
 import com.bksd.journal.presentation.journal.JournalRoot
 import com.bksd.lumen.main.MainEvent
@@ -156,7 +157,9 @@ fun NavigationRoot(
                         )
                     }
                     entry<Route.Main.Insights> {
-                        InsightsRoot()
+                        InsightsRoot(
+                            onViewFullReflection = { navigator.navigateToWeeklyReflection() }
+                        )
                     }
                     entry<Route.Profile> {
                         ProfileRoot(
@@ -192,6 +195,12 @@ fun NavigationRoot(
                             momentId = backStackEntry.momentId,
                             isEditing = backStackEntry.isEditing,
                             onNavigateBack = navigator::goBack
+                        )
+                    }
+                    entry<Route.WeeklyReflection> {
+                        WeeklyReflectionDetailRoot(
+                            onBack = navigator::goBack,
+                            onOpenMoment = { navigator.navigateToMomentDetail(it) }
                         )
                     }
                     entry<Route.CreateMoment> {

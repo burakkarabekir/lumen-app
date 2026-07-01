@@ -68,6 +68,8 @@ class Navigator(
 
     fun navigateToHelp() = navigate(Route.Help)
 
+    fun navigateToWeeklyReflection() = navigate(Route.WeeklyReflection)
+
     // ==================== Auth Navigation ====================
 
     fun navigateToSignIn() = clearBackstackAndNavigate(Route.Auth.SignIn)

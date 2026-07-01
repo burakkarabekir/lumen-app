@@ -21,10 +21,13 @@ import com.bksd.core.domain.model.Url
 import com.bksd.core.domain.repository.MediaRepository
 import com.bksd.core.domain.storage.AudioPlayer
 import com.bksd.core.domain.storage.VoiceRecorder
+import com.bksd.core.presentation.util.ApplicationScope
 import com.bksd.core.presentation.util.BaseViewModel
 import com.bksd.core.presentation.util.UiText
 import com.bksd.core.presentation.util.toFormattedTime
 import com.bksd.moment.domain.usecase.SaveMomentUseCase
+import com.bksd.reflection.domain.usecase.RequestEntryAnalysisUseCase
+import kotlinx.coroutines.launch
 import com.bksd.moment.presentation.Res
 import com.bksd.moment.presentation.create.mappers.toLocationData
 import com.bksd.moment.presentation.create.mappers.toLocationInfoUiModel
@@ -65,7 +68,9 @@ class CreateMomentViewModel(
     private val audioPlayer: AudioPlayer,
     private val locationProvider: LocationProvider,
     private val authRepository: AuthRepository,
-    private val clock: Clock
+    private val clock: Clock,
+    private val applicationScope: ApplicationScope,
+    private val requestEntryAnalysis: RequestEntryAnalysisUseCase,
 ) : BaseViewModel<CreateMomentAction, CreateMomentEvent>() {
 
     private var hasLoadedInitialData = false
@@ -221,6 +226,8 @@ class CreateMomentViewModel(
             is CreateMomentAction.OnDateSelect -> updateState { it.copy(selectedDate = action.date) }
             CreateMomentAction.OnBackClick -> sendEvent(CreateMomentEvent.NavigateBack)
             CreateMomentAction.OnSaveClick -> saveMoment()
+            is CreateMomentAction.OnToggleAiAnalysis ->
+                updateState { it.copy(analyzeWithAi = action.enabled) }
 
             // Attachments
             is CreateMomentAction.OnRemoveAttachment -> removeAttachment(action.id)
@@ -507,6 +514,20 @@ class CreateMomentViewModel(
                 }
 
                 is Result.Success -> {
+                    if (currentState.analyzeWithAi) {
+                        val entryText = listOfNotNull(
+                            currentState.title.trim().takeIf { it.isNotBlank() },
+                            currentState.body.trim().takeIf { it.isNotBlank() }
+                        ).joinToString("\n\n")
+                        if (entryText.isNotBlank()) {
+                            val mood = currentState.selectedMoods
+                                .joinToString(", ") { it.label }
+                                .takeIf { it.isNotBlank() }
+                            applicationScope.launch {
+                                requestEntryAnalysis(momentId, entryText, mood)
+                            }
+                        }
+                    }
                     sendEvent(CreateMomentEvent.ShowSaveSuccess(UiText.Resource(Res.string.success_moment_saved)))
                     sendEvent(CreateMomentEvent.NavigateBack)
                 }

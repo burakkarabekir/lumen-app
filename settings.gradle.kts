@@ -58,3 +58,6 @@ include(":feature:profile:presentation")
 
 include(":feature:paywall:domain")
 include(":feature:paywall:presentation")
+
+include(":feature:reflection:domain")
+include(":feature:reflection:data")

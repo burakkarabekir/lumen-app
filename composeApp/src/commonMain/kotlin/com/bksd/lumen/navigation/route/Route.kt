@@ -57,6 +57,9 @@ sealed interface Route : NavKey {
     data object Help : Route
 
     @Serializable
+    data object WeeklyReflection : Route
+
+    @Serializable
     data object Paywall : Route
 
     companion object {

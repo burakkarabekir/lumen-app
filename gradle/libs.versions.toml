@@ -7,7 +7,7 @@ applicationId = "com.bksd.lumen"
 credentials = "1.6.0"
 googleid = "1.2.0"
 kotlinxCoroutinesPlayServices = "1.11.0"
-playServicesLocation = "21.3.0"
+playServicesLocation = "21.4.0"
 versionCode = "1"
 versionName = "1.0"
 
@@ -16,13 +16,13 @@ supabase = "3.6.0"
 # ==================== Build Tools ====================
 agp = "9.2.1"
 androidTools = "32.2.1"
-kotlin = "2.3.21"
+kotlin = "2.4.0"
 ksp = "2.3.7"
-buildkonfig = "0.21.0"
+buildkonfig = "0.22.0"
 androidDesugarJdkLibs = "2.1.5"
 
 # ==================== Compose ====================
-composeBom = "2026.05.00"
+composeBom = "2026.06.01"
 compose-multiplatform = "1.11.1"
 compose-material3 = "1.11.0-alpha07"
 compose-icons = "1.7.3"
@@ -37,27 +37,27 @@ jetbrains-adaptive = "1.3.0-alpha07"
 # ==================== AndroidX ====================
 androidx-activity = "1.13.0"
 androidx-appcompat = "1.7.1"
-androidx-core = "1.18.0"
-androidx-lifecycle-runtime-compose = "2.11.0-beta01"
-androidx-lifecycle = "2.11.0-beta01"
+androidx-core = "1.19.0"
+androidx-lifecycle-runtime-compose = "2.11.0-beta02"
+androidx-lifecycle = "2.11.0"
 androidx-splashscreen = "1.2.0"
 
 # ==================== Data & Storage ====================
 room = "2.8.4"
-sqlite = "2.6.2"
+sqlite = "2.7.0"
 datastore = "1.2.1"
 
 # ==================== Networking ====================
 ktor = "3.5.0"
 
 # ==================== Dependency Injection ====================
-koin = "4.2.1"
+koin = "4.2.2"
 kotzilla = "2.1.3"
 
 # ==================== Kotlinx ====================
 kotlinx-serialization = "1.11.0"
 kotlinx-coroutines = "1.11.0"
-kotlinx-collections-immutable = "0.4.0"
+kotlinx-collections-immutable = "0.5.0"
 kotlinx-datetime = "0.8.0"
 
 # ==================== Permissions ====================
@@ -77,8 +77,8 @@ navigation3Lifecycle = "2.10.0"
 kotlinStdlib = "2.3.21"
 core = "1.7.0"
 
-coil = "3.4.0"
-coil-network = "3.4.0"
+coil = "3.5.0"
+coil-network = "3.5.0"
 
 [libraries]
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
@@ -214,6 +214,7 @@ coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.re
 supabase-auth = { module = "io.github.jan-tennert.supabase:auth-kt", version.ref = "supabase" }
 supabase-postgrest = { module = "io.github.jan-tennert.supabase:postgrest-kt", version.ref = "supabase" }
 supabase-storage = { module = "io.github.jan-tennert.supabase:storage-kt", version.ref = "supabase" }
+supabase-functions = { module = "io.github.jan-tennert.supabase:functions-kt", version.ref = "supabase" }
 
 [plugins]
 # ==================== Convention Plugins ====================
@@ -366,6 +367,7 @@ supabase = [
     "supabase-auth",
     "supabase-postgrest",
     "supabase-storage",
+    "supabase-functions",
 ]
 
 # ==================== Testing ====================

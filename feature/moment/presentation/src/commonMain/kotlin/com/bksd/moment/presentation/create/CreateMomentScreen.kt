@@ -52,6 +52,7 @@ import com.bksd.moment.presentation.Res
 import com.bksd.moment.presentation.action_enable_location
 import com.bksd.moment.presentation.action_open_settings
 import com.bksd.moment.presentation.body_placeholder
+import com.bksd.moment.presentation.create.components.AiAnalysisOptInCard
 import com.bksd.moment.presentation.create.components.AttachmentSummaryBar
 import com.bksd.moment.presentation.create.components.EntryMetaRow
 import com.bksd.moment.presentation.create.components.EntryToolbar
@@ -442,6 +443,13 @@ private fun CreateMomentScreen(
                         isExpanded = state.isMoodSectionExpanded,
                         onMoodClick = { onAction(CreateMomentAction.OnMoodSelect(it)) },
                         onToggleExpand = { onAction(CreateMomentAction.OnToggleMoodSection) },
+                    )
+
+                    Spacer(Modifier.height(24.dp))
+
+                    AiAnalysisOptInCard(
+                        checked = state.analyzeWithAi,
+                        onCheckedChange = { onAction(CreateMomentAction.OnToggleAiAnalysis(it)) },
                     )
                 }
 

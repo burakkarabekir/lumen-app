@@ -20,6 +20,7 @@ data class CreateMomentState(
     val location: LocationInfoUiModel? = null,
     val isFetchingLocation: Boolean = false,
     val isSaving: Boolean = false,
+    val analyzeWithAi: Boolean = false,
     val selectedDate: LocalDate? = null,
 
     // Media capabilities

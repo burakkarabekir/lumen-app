@@ -40,6 +40,9 @@ kotlin {
             implementation(projects.feature.paywall.domain)
             implementation(projects.feature.paywall.presentation)
 
+            implementation(projects.feature.reflection.domain)
+            implementation(projects.feature.reflection.data)
+
             implementation(libs.bundles.compose)
 
             implementation(libs.bundles.lifecycle)

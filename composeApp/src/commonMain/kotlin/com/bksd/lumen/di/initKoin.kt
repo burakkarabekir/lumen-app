@@ -17,6 +17,8 @@ import com.bksd.paywall.presentation.di.paywallPresentationModule
 import com.bksd.profile.data.di.profileDataModule
 import com.bksd.profile.domain.di.profileDomainModule
 import com.bksd.profile.presentation.di.profilePresentationModule
+import com.bksd.reflection.data.di.reflectionDataModule
+import com.bksd.reflection.domain.di.reflectionDomainModule
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
 
@@ -43,7 +45,9 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             profileDomainModule,
             profilePresentationModule,
             paywallDomainModule,
-            paywallPresentationModule
+            paywallPresentationModule,
+            reflectionDomainModule,
+            reflectionDataModule
         )
     }
 }

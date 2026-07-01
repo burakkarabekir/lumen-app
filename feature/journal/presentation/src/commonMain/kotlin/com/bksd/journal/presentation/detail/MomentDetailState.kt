@@ -7,6 +7,7 @@ import com.bksd.core.domain.model.Moment
 import com.bksd.core.domain.model.Mood
 import com.bksd.core.domain.model.PlaybackState
 import com.bksd.core.presentation.util.UiText
+import com.bksd.reflection.domain.model.MomentAnalysisState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf
@@ -32,5 +33,6 @@ data class MomentDetailState(
     val audioPlaybackState: PlaybackState = PlaybackState.STOPPED,
     val audioPositionFormatted: String = "0:00",
     val audioDurationFormatted: String = "0:00",
-    val audioAmplitudes: ImmutableList<Float> = persistentListOf()
+    val audioAmplitudes: ImmutableList<Float> = persistentListOf(),
+    val analysis: MomentAnalysisState = MomentAnalysisState.None
 )

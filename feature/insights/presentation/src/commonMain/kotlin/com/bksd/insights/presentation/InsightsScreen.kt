@@ -29,7 +29,8 @@ import com.bksd.insights.presentation.components.WrittenJournaledRow
 @Composable
 internal fun InsightsScreen(
     state: InsightsState,
-    onAction: (InsightsAction) -> Unit
+    onAction: (InsightsAction) -> Unit,
+    reflectionSlot: @Composable () -> Unit = {}
 ) {
     val palette = rememberInsightsPalette()
     Column(
@@ -59,6 +60,7 @@ internal fun InsightsScreen(
         }
 
         Spacer(Modifier.height(18.dp))
+        reflectionSlot()
         SectionLabel("Stats", palette)
         Spacer(Modifier.height(8.dp))
         EntriesCard(

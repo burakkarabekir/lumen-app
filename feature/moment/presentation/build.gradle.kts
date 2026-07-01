@@ -15,6 +15,7 @@ kotlin {
                 implementation(projects.core.domain)
                 api(projects.feature.moment.domain)
                 implementation(projects.feature.auth.domain)
+                implementation(projects.feature.reflection.domain)
                 implementation(libs.bundles.jetbrains.adaptive)
                 implementation(libs.jetbrains.compose.backhandler)
                 implementation(libs.kotlinx.datetime)

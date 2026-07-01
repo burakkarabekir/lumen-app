@@ -10,6 +10,7 @@ import com.bksd.core.presentation.util.toUiText
 import com.bksd.journal.domain.usecase.DeleteMomentUseCase
 import com.bksd.journal.domain.usecase.GetMomentUseCase
 import com.bksd.journal.domain.usecase.UpdateMomentUseCase
+import com.bksd.reflection.domain.usecase.ObserveEntryAnalysisUseCase
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentSet
@@ -24,6 +25,7 @@ class MomentDetailViewModel(
     private val getMomentUseCase: GetMomentUseCase,
     private val deleteMomentUseCase: DeleteMomentUseCase,
     private val updateMomentUseCase: UpdateMomentUseCase,
+    private val observeEntryAnalysis: ObserveEntryAnalysisUseCase,
     private val audioPlayer: AudioPlayer,
     private val momentId: String,
     private val initialIsEditing: Boolean = false
@@ -38,6 +40,7 @@ class MomentDetailViewModel(
             if (!hasLoadedInitialData) {
                 loadMoment()
                 observeAudio()
+                observeAnalysis()
                 hasLoadedInitialData = true
             }
         }
@@ -127,6 +130,14 @@ class MomentDetailViewModel(
         launch {
             audioPlayer.playbackAmplitudes.collect { amps ->
                 _state.update { it.copy(audioAmplitudes = amps.toImmutableList()) }
+            }
+        }
+    }
+
+    private fun observeAnalysis() {
+        launch {
+            observeEntryAnalysis(momentId).collect { analysisState ->
+                _state.update { it.copy(analysis = analysisState) }
             }
         }
     }

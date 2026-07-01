@@ -13,6 +13,7 @@ sealed interface CreateMomentAction {
     data class OnDateSelect(val date: LocalDate) : CreateMomentAction
     data object OnSaveClick : CreateMomentAction
     data object OnBackClick : CreateMomentAction
+    data class OnToggleAiAnalysis(val enabled: Boolean) : CreateMomentAction
 
     // Media & Location Actions
     data object OnAddLocationClick : CreateMomentAction

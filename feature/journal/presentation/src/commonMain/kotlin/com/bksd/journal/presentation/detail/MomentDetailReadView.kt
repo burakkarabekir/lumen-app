@@ -52,12 +52,20 @@ import com.bksd.core.presentation.link.toOpenableWebUrl
 import com.bksd.journal.presentation.Res
 import com.bksd.journal.presentation.content_desc_back
 import com.bksd.journal.presentation.content_desc_share
+import com.bksd.journal.presentation.detail.components.EntryAnalysisCard
+import com.bksd.journal.presentation.detail.components.EntryAnalysisLoadingCard
+import com.bksd.journal.presentation.detail.components.EntryCrisisCard
+import com.bksd.journal.presentation.detail.components.EntrySupportCard
 import com.bksd.journal.presentation.detail.components.MomentDetailAttachments
 import com.bksd.journal.presentation.detail.components.MomentDetailMoodChip
 import com.bksd.journal.presentation.my_moment_fallback
 import com.bksd.journal.presentation.util.MomentFormatter
+import com.bksd.reflection.domain.model.EntryAnalysis
+import com.bksd.reflection.domain.model.MomentAnalysisState
+import com.bksd.reflection.domain.model.MomentReflection
 import org.jetbrains.compose.resources.stringResource
 import kotlin.time.Clock
+import kotlin.time.Instant
 
 private val CoverColors = listOf(Color(0xFF7682D6), Color(0xFF9281C6), Color(0xFFCF6F64))
 
@@ -167,6 +175,25 @@ fun MomentDetailReadView(
                     )
                 }
 
+                when (val analysis = state.analysis) {
+                    MomentAnalysisState.Pending -> {
+                        Spacer(Modifier.height(22.dp))
+                        EntryAnalysisLoadingCard()
+                    }
+
+                    is MomentAnalysisState.Ready -> {
+                        Spacer(Modifier.height(22.dp))
+                        when (val reflection = analysis.reflection) {
+                            is MomentReflection.Reflection -> EntryAnalysisCard(reflection)
+                            is MomentReflection.Support -> EntrySupportCard(reflection)
+                            is MomentReflection.Crisis -> EntryCrisisCard(reflection)
+                        }
+                    }
+
+                    MomentAnalysisState.Failed,
+                    MomentAnalysisState.None -> Unit
+                }
+
                 if (moment.attachments.isNotEmpty()) {
                     Spacer(Modifier.height(26.dp))
                     MomentDetailAttachments(
@@ -264,7 +291,23 @@ fun MomentDetailReadView(
 private fun MomentDetailReadViewPreview() {
     AppTheme(darkTheme = true) {
         MomentDetailReadView(
-            state = MomentDetailState(),
+            state = MomentDetailState(
+                analysis = MomentAnalysisState.Ready(
+                    reflection = MomentReflection.Support(
+                        analysis = EntryAnalysis(
+                            summary = "Calm, grateful morning.",
+                            moodValence = com.bksd.reflection.domain.model.MoodValence.POSITIVE,
+                            moodConfidence = 0.82,
+                            dominantEmotions = listOf("calm", "gratitude"),
+                            themes = listOf("Calm", "Mornings", "Stillness"),
+                            distress = com.bksd.reflection.domain.model.DistressLevel.NONE,
+                            distressRationale = ""
+                        ),
+                        message = "It sounds like things feel heavy right now, and that's hard. You don't have to carry it alone — reaching out to someone you trust can make a difference.",
+                        mentalHealthLines = listOf()
+                    )
+                )
+            ),
             moment = Moment(
                 id = "1",
                 title = "Morning pages",
@@ -274,7 +317,7 @@ private fun MomentDetailReadViewPreview() {
                 location = LocationData(0.0, 0.0, "Mountain View, California")
             ),
             formatter = object : MomentFormatter {
-                override fun formatTime(instant: kotlin.time.Instant): String =
+                override fun formatTime(instant: Instant): String =
                     "Saturday, June 27 · 9:41 AM"
 
                 override fun formatDuration(ms: Long): String = "0:42"
