@@ -34,7 +34,8 @@ class SupabaseEntryReflector(
         ReflectionResponse(
             analysis = dto.analysis,
             feedback = dto.feedback,
-            question = dto.question
+            question = dto.question,
+            coverImageUrl = dto.coverImageUrl
         )
     }
 

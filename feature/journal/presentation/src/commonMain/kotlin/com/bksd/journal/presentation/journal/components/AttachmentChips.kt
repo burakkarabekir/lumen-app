@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -37,6 +38,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.AttachmentChipLinkAccent
+import com.bksd.core.design_system.theme.attachmentChipLinkTile
+import com.bksd.core.design_system.theme.attachmentChipPlayIcon
+import com.bksd.core.design_system.theme.attachmentChipVideoTile
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.extended
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 import com.bksd.core.domain.model.Attachment
 import com.bksd.core.domain.model.AttachmentId
@@ -48,8 +55,6 @@ import com.bksd.core.domain.model.Url
 import com.bksd.core.domain.model.VideoAttachment
 import com.bksd.journal.presentation.util.MomentFormatter
 
-private val VideoChipColors = listOf(Color(0xFF3A3F63), Color(0xFF7682D6), Color(0xFFCF8676))
-private val LinkChipTileColors = listOf(Color(0xFF8FE0CF), Color(0xFF34D399))
 private val WaveformHeights = listOf(7, 12, 17, 10, 14, 8, 11, 16, 9, 7)
 
 private fun chipLinkHost(url: String): String {
@@ -75,13 +80,16 @@ fun AttachmentChips(
     val palette = rememberNewEntryPalette()
     val chipBg = lerp(palette.surface, palette.text, 0.06f)
     val idleBar = palette.sub.copy(alpha = 0.4f)
+    val videoChipColors = MaterialTheme.colorScheme.extended.attachmentChipVideoTile
+    val linkChipTileColors = MaterialTheme.colorScheme.extended.attachmentChipLinkTile
+    val playIconTint = MaterialTheme.colorScheme.extended.attachmentChipPlayIcon
 
     Row(
         modifier = modifier
             .fillMaxWidth()
             .horizontalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+            .padding(horizontal = MaterialTheme.dimens.spacing.lg),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm)
     ) {
         attachments.forEach { attachment ->
             when (attachment) {
@@ -90,30 +98,30 @@ fun AttachmentChips(
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .size(54.dp)
-                        .clip(RoundedCornerShape(13.dp))
+                        .size(MaterialTheme.dimens.size.fab)
+                        .clip(RoundedCornerShape(MaterialTheme.dimens.radius.cardTight))
                         .background(palette.hairline)
                 )
 
                 is VideoAttachment -> Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
-                        .size(54.dp)
-                        .clip(RoundedCornerShape(13.dp))
-                        .background(Brush.linearGradient(VideoChipColors))
+                        .size(MaterialTheme.dimens.size.fab)
+                        .clip(RoundedCornerShape(MaterialTheme.dimens.radius.cardTight))
+                        .background(Brush.linearGradient(videoChipColors))
                 ) {
                     Box(
                         contentAlignment = Alignment.Center,
                         modifier = Modifier
-                            .size(24.dp)
+                            .size(MaterialTheme.dimens.icon.xl)
                             .clip(CircleShape)
                             .background(Color.White.copy(alpha = 0.92f))
                     ) {
                         Icon(
                             imageVector = Icons.Default.PlayArrow,
                             contentDescription = null,
-                            tint = Color(0xFF1C1B1A),
-                            modifier = Modifier.size(13.dp)
+                            tint = playIconTint,
+                            modifier = Modifier.size(MaterialTheme.dimens.icon.xs)
                         )
                     }
                 }
@@ -122,17 +130,17 @@ fun AttachmentChips(
                     val isPlaying = playbackState == PlaybackState.PLAYING
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(9.dp),
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
                         modifier = Modifier
-                            .height(54.dp)
-                            .clip(RoundedCornerShape(15.dp))
+                            .height(MaterialTheme.dimens.size.fab)
+                            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.lg))
                             .background(chipBg)
-                            .padding(start = 8.dp, end = 14.dp)
+                            .padding(start = MaterialTheme.dimens.spacing.sm, end = MaterialTheme.dimens.spacing.lg)
                     ) {
                         Box(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
-                                .size(36.dp)
+                                .size(MaterialTheme.dimens.icon.avatar)
                                 .clip(CircleShape)
                                 .background(accentColor)
                                 .clickable { if (isPlaying) onAudioPauseClick() else onAudioPlayClick() }
@@ -141,19 +149,19 @@ fun AttachmentChips(
                                 imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
                                 contentDescription = null,
                                 tint = Color.White,
-                                modifier = Modifier.size(13.dp)
+                                modifier = Modifier.size(MaterialTheme.dimens.icon.xs)
                             )
                         }
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(2.dp)
+                            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.xxs)
                         ) {
                             WaveformHeights.forEachIndexed { index, h ->
                                 Box(
                                     modifier = Modifier
-                                        .width(2.5.dp)
+                                        .width(MaterialTheme.dimens.icon.xs)
                                         .height(h.dp)
-                                        .clip(RoundedCornerShape(2.dp))
+                                        .clip(RoundedCornerShape(MaterialTheme.dimens.radius.xs))
                                         .background(if (index < 4) accentColor else idleBar)
                                 )
                             }
@@ -171,27 +179,27 @@ fun AttachmentChips(
 
                 is LinkAttachment -> Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.md),
                     modifier = Modifier
                         .widthIn(max = 190.dp)
-                        .height(54.dp)
-                        .clip(RoundedCornerShape(15.dp))
+                        .height(MaterialTheme.dimens.size.fab)
+                        .clip(RoundedCornerShape(MaterialTheme.dimens.radius.lg))
                         .background(chipBg)
                         .clickable { onLinkClick(attachment.url.value) }
-                        .padding(start = 8.dp, end = 15.dp)
+                        .padding(start = MaterialTheme.dimens.spacing.sm, end = MaterialTheme.dimens.spacing.lg)
                 ) {
                     Box(
                         contentAlignment = Alignment.Center,
                         modifier = Modifier
-                            .size(38.dp)
-                            .clip(RoundedCornerShape(11.dp))
-                            .background(Brush.linearGradient(LinkChipTileColors))
+                            .size(MaterialTheme.dimens.icon.tile)
+                            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.md))
+                            .background(Brush.linearGradient(linkChipTileColors))
                     ) {
                         Icon(
                             imageVector = Icons.Default.Link,
                             contentDescription = null,
                             tint = Color.White,
-                            modifier = Modifier.size(17.dp)
+                            modifier = Modifier.size(MaterialTheme.dimens.icon.md)
                         )
                     }
                     Text(
@@ -213,14 +221,14 @@ fun AttachmentChips(
 private fun AttachmentChipsPreview() {
     AppTheme(darkTheme = true) {
         val palette = rememberNewEntryPalette()
-        Column(modifier = Modifier.background(palette.surface).padding(vertical = 12.dp)) {
+        Column(modifier = Modifier.background(palette.surface).padding(vertical = MaterialTheme.dimens.spacing.md)) {
             AttachmentChips(
                 attachments = listOf(
                     VideoAttachment(AttachmentId("1"), Url(""), 18_000L),
                     AudioAttachment(AttachmentId("2"), Url(""), 3_000L),
                     LinkAttachment(AttachmentId("3"), Url("https://www.alltrails.com/trail"))
                 ),
-                accentColor = Color(0xFFA78BFA),
+                accentColor = AttachmentChipLinkAccent,
                 formatter = object : MomentFormatter {
                     override fun formatTime(instant: kotlin.time.Instant) = "9:41 AM"
                     override fun formatDuration(ms: Long) = "0:03"

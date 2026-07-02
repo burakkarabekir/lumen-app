@@ -23,6 +23,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,10 +43,12 @@ import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.component.AppAvatar
 import com.bksd.core.design_system.component.layout.AppScaffold
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 import com.bksd.core.presentation.media.rememberImagePickerLauncher
 import com.bksd.core.presentation.util.ObserveAsEvents
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -101,39 +104,39 @@ internal fun EditProfileScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(54.dp)
-                    .padding(horizontal = 20.dp)
+                    .height(MaterialTheme.dimens.size.fab)
+                    .padding(horizontal = MaterialTheme.dimens.spacing.xl)
             ) {
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
-                        .size(36.dp)
+                        .size(MaterialTheme.dimens.icon.avatar)
                         .clip(CircleShape)
                         .background(palette.surface)
                         .clickable { onBack() }
                 ) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = "Close",
+                        contentDescription = stringResource(Res.string.action_close),
                         tint = palette.text,
-                        modifier = Modifier.size(17.dp)
+                        modifier = Modifier.size(MaterialTheme.dimens.icon.sm)
                     )
                 }
                 Text(
-                    text = "Edit Profile",
+                    text = stringResource(Res.string.edit_profile_title),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = palette.text
                 )
                 if (state.isSaving) {
                     CircularProgressIndicator(
-                        modifier = Modifier.size(20.dp),
+                        modifier = Modifier.size(MaterialTheme.dimens.icon.lg),
                         strokeWidth = 2.dp,
                         color = accent
                     )
                 } else {
                     Text(
-                        text = "Save",
+                        text = stringResource(Res.string.action_save),
                         fontSize = 15.sp,
                         fontWeight = FontWeight.ExtraBold,
                         color = accent,
@@ -147,47 +150,47 @@ internal fun EditProfileScreen(
                     .weight(1f)
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState())
-                    .padding(start = 22.dp, end = 22.dp, top = 14.dp, bottom = 40.dp),
+                    .padding(start = MaterialTheme.dimens.spacing.xxl, end = MaterialTheme.dimens.spacing.xxl, top = MaterialTheme.dimens.spacing.lg, bottom = MaterialTheme.dimens.spacing.huge),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Spacer(Modifier.height(18.dp))
+                Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))
 
                 AppAvatar(
                     photoUrl = state.photoUrl,
                     size = 118.dp,
                     isLoading = state.isAvatarLoading,
                     showBorder = true,
-                    contentDescription = "Profile photo",
+                    contentDescription = stringResource(Res.string.edit_profile_photo_content_desc),
                     onEditClick = { onAction(EditProfileAction.OnChangePhotoClick) }
                 )
 
-                Spacer(Modifier.height(16.dp))
+                Spacer(Modifier.height(MaterialTheme.dimens.spacing.lg))
                 Text(
-                    text = "Change Photo",
+                    text = stringResource(Res.string.edit_profile_change_photo),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     color = accent,
                     modifier = Modifier.clickable { onAction(EditProfileAction.OnChangePhotoClick) }
                 )
 
-                Spacer(Modifier.height(34.dp))
+                Spacer(Modifier.height(MaterialTheme.dimens.spacing.xxxl))
 
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Text(
-                        text = "NAME",
+                        text = stringResource(Res.string.edit_profile_name_label),
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
                         letterSpacing = 0.7.sp,
                         color = palette.sub,
-                        modifier = Modifier.padding(start = 2.dp, bottom = 9.dp)
+                        modifier = Modifier.padding(start = MaterialTheme.dimens.spacing.xxs, bottom = MaterialTheme.dimens.spacing.sm)
                     )
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clip(RoundedCornerShape(15.dp))
+                            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.lg))
                             .background(palette.surface)
-                            .border(1.5.dp, accent, RoundedCornerShape(15.dp))
-                            .padding(horizontal = 16.dp, vertical = 15.dp)
+                            .border(1.5.dp, accent, RoundedCornerShape(MaterialTheme.dimens.radius.lg))
+                            .padding(horizontal = MaterialTheme.dimens.spacing.lg, vertical = MaterialTheme.dimens.spacing.lg)
                     ) {
                         BasicTextField(
                             value = state.name,
@@ -203,7 +206,7 @@ internal fun EditProfileScreen(
                             decorationBox = { inner ->
                                 if (state.name.isEmpty()) {
                                     Text(
-                                        text = "Your name",
+                                        text = stringResource(Res.string.edit_profile_name_placeholder),
                                         fontSize = 17.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = palette.sub
@@ -214,11 +217,11 @@ internal fun EditProfileScreen(
                         )
                     }
                     Text(
-                        text = "This is the name shown on your journal and profile.",
+                        text = stringResource(Res.string.edit_profile_name_hint),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Medium,
                         color = palette.sub,
-                        modifier = Modifier.padding(start = 2.dp, top = 9.dp)
+                        modifier = Modifier.padding(start = MaterialTheme.dimens.spacing.xxs, top = MaterialTheme.dimens.spacing.sm)
                     )
                 }
             }

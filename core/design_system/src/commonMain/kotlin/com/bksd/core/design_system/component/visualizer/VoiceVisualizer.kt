@@ -17,8 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -121,7 +121,7 @@ private fun PreviewRecording() {
                 0.1f, 0.5f, 0.8f, 0.3f, 0.6f, 0.9f, 0.4f, 0.7f
             ),
             isActive = true,
-            modifier = Modifier.fillMaxWidth().height(40.dp)
+            modifier = Modifier.fillMaxWidth().height(MaterialTheme.dimens.icon.tile)
         )
     }
 }
@@ -133,7 +133,7 @@ private fun PreviewIdle() {
         VoiceVisualizer(
             amplitudes = persistentListOf(),
             isActive = false,
-            modifier = Modifier.fillMaxWidth().height(40.dp)
+            modifier = Modifier.fillMaxWidth().height(MaterialTheme.dimens.icon.tile)
         )
     }
 }
@@ -147,7 +147,7 @@ private fun PreviewDarkRecording() {
                 0.2f, 0.5f, 0.8f, 0.3f, 0.6f, 0.9f, 0.4f, 0.7f
             ),
             isActive = true,
-            modifier = Modifier.fillMaxWidth().height(40.dp)
+            modifier = Modifier.fillMaxWidth().height(MaterialTheme.dimens.icon.tile)
         )
     }
 }

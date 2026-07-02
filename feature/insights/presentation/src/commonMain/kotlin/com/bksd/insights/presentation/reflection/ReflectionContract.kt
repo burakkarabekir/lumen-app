@@ -1,7 +1,9 @@
 package com.bksd.insights.presentation.reflection
 
+import androidx.compose.runtime.Immutable
 import com.bksd.reflection.domain.model.WeeklyReflection
 
+@Immutable
 data class ReflectionState(
     val reflection: WeeklyReflection? = null,
     val isGenerating: Boolean = false,

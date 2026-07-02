@@ -23,11 +23,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
-
-private val AppearanceAccent = Color(0xFF6E7AD0)
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.extended
+import com.bksd.core.design_system.theme.profileAccentIndigo
+import com.bksd.profile.presentation.Res
+import com.bksd.profile.presentation.appearance_dark
+import com.bksd.profile.presentation.appearance_light
+import com.bksd.profile.presentation.appearance_title
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun AppearanceRow(
@@ -36,29 +41,30 @@ fun AppearanceRow(
     onSelectDark: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val accent = MaterialTheme.colorScheme.extended.profileAccentIndigo
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 14.dp),
+            .padding(horizontal = MaterialTheme.dimens.spacing.lg, vertical = MaterialTheme.dimens.spacing.lg),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
             modifier = Modifier
-                .size(32.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .background(AppearanceAccent.copy(alpha = 0.16f)),
+                .size(MaterialTheme.dimens.icon.avatar)
+                .clip(RoundedCornerShape(MaterialTheme.dimens.radius.md))
+                .background(accent.copy(alpha = 0.16f)),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = Icons.Default.DarkMode,
                 contentDescription = null,
-                tint = AppearanceAccent,
-                modifier = Modifier.size(18.dp)
+                tint = accent,
+                modifier = Modifier.size(MaterialTheme.dimens.icon.md)
             )
         }
-        Spacer(Modifier.width(13.dp))
+        Spacer(Modifier.width(MaterialTheme.dimens.spacing.md))
         Text(
-            text = "Appearance",
+            text = stringResource(Res.string.appearance_title),
             fontSize = 15.sp,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurface,
@@ -66,21 +72,21 @@ fun AppearanceRow(
         )
         Row(
             modifier = Modifier
-                .clip(RoundedCornerShape(10.dp))
+                .clip(RoundedCornerShape(MaterialTheme.dimens.radius.md))
                 .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f))
-                .padding(3.dp),
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                .padding(MaterialTheme.dimens.spacing.xs),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.xs),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(MaterialTheme.dimens.radius.sm))
                     .background(if (!isDark) MaterialTheme.colorScheme.surface else Color.Transparent)
                     .clickable(onClick = onSelectLight)
-                    .padding(horizontal = 12.dp, vertical = 5.dp)
+                    .padding(horizontal = MaterialTheme.dimens.spacing.md, vertical = MaterialTheme.dimens.spacing.xs)
             ) {
                 Text(
-                    text = "Light",
+                    text = stringResource(Res.string.appearance_light),
                     fontSize = 11.5.sp,
                     fontWeight = if (!isDark) FontWeight.Bold else FontWeight.Medium,
                     color = if (!isDark) {
@@ -92,13 +98,13 @@ fun AppearanceRow(
             }
             Box(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(MaterialTheme.dimens.radius.sm))
                     .background(if (isDark) MaterialTheme.colorScheme.surface else Color.Transparent)
                     .clickable(onClick = onSelectDark)
-                    .padding(horizontal = 12.dp, vertical = 5.dp)
+                    .padding(horizontal = MaterialTheme.dimens.spacing.md, vertical = MaterialTheme.dimens.spacing.xs)
             ) {
                 Text(
-                    text = "Dark",
+                    text = stringResource(Res.string.appearance_dark),
                     fontSize = 11.5.sp,
                     fontWeight = if (isDark) FontWeight.Bold else FontWeight.Medium,
                     color = if (isDark) {

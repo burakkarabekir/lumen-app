@@ -7,5 +7,6 @@ import kotlinx.serialization.Serializable
 data class AnalyzeResponseDto(
     val analysis: EntryAnalysis,
     val feedback: String? = null,
-    val question: String? = null
+    val question: String? = null,
+    val coverImageUrl: String? = null,
 )

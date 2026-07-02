@@ -23,8 +23,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.extended
+import com.bksd.core.design_system.theme.paywallHeroGradient
 import com.bksd.paywall.presentation.Res
 import com.bksd.paywall.presentation.paywall_subtitle
 import com.bksd.paywall.presentation.paywall_title
@@ -37,16 +39,11 @@ fun HeroCard(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(20.dp))
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.xl))
             .background(
-                Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xFF1A1C2E),
-                        Color(0xFF12141F)
-                    )
-                )
+                Brush.verticalGradient(colors = MaterialTheme.colorScheme.extended.paywallHeroGradient)
             )
-            .padding(vertical = 40.dp),
+            .padding(vertical = MaterialTheme.dimens.spacing.huge),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -54,7 +51,7 @@ fun HeroCard(
         ) {
             Box(
                 modifier = Modifier
-                    .size(48.dp)
+                    .size(MaterialTheme.dimens.size.cancelIcon)
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
                 contentAlignment = Alignment.Center
@@ -63,11 +60,11 @@ fun HeroCard(
                     imageVector = Icons.Default.AutoAwesome,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(MaterialTheme.dimens.icon.xl)
                 )
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.xl))
 
             Text(
                 text = stringResource(Res.string.paywall_title),
@@ -79,7 +76,7 @@ fun HeroCard(
                 textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.md))
 
             Text(
                 text = stringResource(Res.string.paywall_subtitle),

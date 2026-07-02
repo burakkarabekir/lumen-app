@@ -9,14 +9,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.InsightsPalette
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberInsightsPalette
 
 @Composable
@@ -30,9 +31,9 @@ internal fun PagerDots(count: Int, current: Int, palette: InsightsPalette) {
             val active = i == current
             Box(
                 modifier = Modifier
-                    .padding(horizontal = 3.dp)
-                    .height(6.dp)
-                    .width(if (active) 18.dp else 6.dp)
+                    .padding(horizontal = MaterialTheme.dimens.spacing.xs)
+                    .height(MaterialTheme.dimens.icon.xs)
+                    .width(if (active) MaterialTheme.dimens.icon.md else MaterialTheme.dimens.icon.xs)
                     .clip(CircleShape)
                     .background(if (active) palette.sub else palette.dotGray)
             )
@@ -45,7 +46,7 @@ internal fun PagerDots(count: Int, current: Int, palette: InsightsPalette) {
 private fun PagerDotsPreview() {
     AppTheme {
         val palette = rememberInsightsPalette()
-        Box(Modifier.background(palette.pageBg).padding(16.dp)) {
+        Box(Modifier.background(palette.pageBg).padding(MaterialTheme.dimens.spacing.lg)) {
             PagerDots(count = 3, current = 0, palette = palette)
         }
     }

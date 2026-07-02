@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 
 private val VideoCoverColors = listOf(Color(0xFF3A3F63), Color(0xFF7682D6), Color(0xFFCF8676))
 
@@ -67,7 +69,7 @@ internal fun VideoThumbnail(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .align(Alignment.Center)
-                .size(50.dp)
+                .size(MaterialTheme.dimens.size.cancelIcon)
                 .clip(CircleShape)
                 .background(Color.White.copy(alpha = 0.92f))
         ) {
@@ -75,17 +77,17 @@ internal fun VideoThumbnail(
                 imageVector = Icons.Default.PlayArrow,
                 contentDescription = null,
                 tint = Color(0xFF1C1B1A),
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(MaterialTheme.dimens.icon.xl)
             )
         }
         if (durationFormatted.isNotBlank()) {
             Box(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(11.dp)
-                    .clip(RoundedCornerShape(9.dp))
+                    .padding(MaterialTheme.dimens.spacing.md)
+                    .clip(RoundedCornerShape(MaterialTheme.dimens.radius.sm))
                     .background(Color(0x8C000000))
-                    .padding(horizontal = 9.dp, vertical = 4.dp)
+                    .padding(horizontal = MaterialTheme.dimens.spacing.sm, vertical = MaterialTheme.dimens.spacing.xs)
             ) {
                 Text(
                     text = durationFormatted,
@@ -105,7 +107,7 @@ private fun VideoThumbnailPreview() {
         VideoThumbnail(
             durationFormatted = "0:18",
             height = 158.dp,
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg)
         )
     }
 }

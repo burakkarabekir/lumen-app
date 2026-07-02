@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,9 +21,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 
 @Composable
@@ -37,13 +38,13 @@ fun ToolbarTile(
     val palette = rememberNewEntryPalette()
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(6.dp),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
         modifier = modifier.clickable(onClick = onClick)
     ) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .size(48.dp)
+                .size(MaterialTheme.dimens.size.cancelIcon)
                 .clip(CircleShape)
                 .background(if (isActive) tint.copy(alpha = 0.22f) else palette.surface)
         ) {
@@ -51,7 +52,7 @@ fun ToolbarTile(
                 imageVector = icon,
                 contentDescription = label,
                 tint = tint,
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(MaterialTheme.dimens.icon.lg)
             )
         }
         Text(
@@ -68,7 +69,7 @@ fun ToolbarTile(
 private fun ToolbarTilePreview() {
     AppTheme(darkTheme = true) {
         val palette = rememberNewEntryPalette()
-        Box(Modifier.background(palette.pageBg).padding(16.dp)) {
+        Box(Modifier.background(palette.pageBg).padding(MaterialTheme.dimens.spacing.lg)) {
             ToolbarTile(
                 icon = Icons.Filled.Image,
                 label = "Photo",

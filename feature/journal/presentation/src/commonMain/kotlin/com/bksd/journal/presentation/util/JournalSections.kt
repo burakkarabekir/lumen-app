@@ -2,6 +2,7 @@ package com.bksd.journal.presentation.util
 
 import com.bksd.core.domain.model.Moment
 import com.bksd.journal.presentation.journal.JournalSection
+import com.bksd.journal.presentation.model.toMomentUi
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
@@ -18,7 +19,7 @@ fun groupMomentsByDate(
     val yesterday = today.minus(1, DateTimeUnit.DAY)
     return moments
         .groupBy { headerFor(it.createdAt.toLocalDateTime(timeZone).date, today, yesterday) }
-        .map { (header, items) -> JournalSection(header, items.toImmutableList()) }
+        .map { (header, items) -> JournalSection(header, items.map { it.toMomentUi() }.toImmutableList()) }
 }
 
 private fun headerFor(date: LocalDate, today: LocalDate, yesterday: LocalDate): String = when {

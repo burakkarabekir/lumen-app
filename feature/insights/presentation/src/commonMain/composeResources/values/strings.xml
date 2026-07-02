@@ -7,4 +7,47 @@
     <string name="mindset_synthesis">Mindset Synthesis</string>
     <string name="recurring_theme">Recurring Theme</string>
     <string name="adjustment">Adjustment</string>
+
+    <!-- Weekly Reflection -->
+    <string name="weekly_reflection_title">Weekly Reflection</string>
+    <string name="weekly_based_on_entries">Based on %1$d %2$s · %3$s</string>
+    <string name="weekly_entry_singular">entry</string>
+    <string name="weekly_entry_plural">entries</string>
+    <string name="weekly_entry_count">%1$d %2$s</string>
+    <string name="weekly_question_to_sit_with">A QUESTION TO SIT WITH</string>
+    <string name="weekly_view_full">View full reflection</string>
+    <string name="weekly_private_to_you">Private to you</string>
+    <string name="weekly_reflecting">Reflecting on your week…</string>
+    <string name="weekly_back">Back</string>
+    <string name="weekly_no_reflection">No weekly reflection yet. Write a few entries this week and it\'ll appear here.</string>
+    <string name="weekly_emotional_arc">YOUR EMOTIONAL ARC</string>
+    <string name="weekly_brightest_on">Brightest on %1$s</string>
+    <string name="weekly_arc_empty">Add a few entries this week to see your arc.</string>
+    <string name="weekly_open">Open</string>
+    <string name="weekly_section_themes">RECURRING THEMES</string>
+    <string name="weekly_section_standout">A MOMENT THAT STOOD OUT</string>
+    <string name="weekly_section_questions">QUESTIONS TO SIT WITH</string>
+
+    <!-- Section labels -->
+    <string name="section_streaks">Streaks</string>
+    <string name="section_stats">Stats</string>
+
+    <!-- Streak cards -->
+    <string name="current_streak">Current Streak</string>
+    <string name="journaled_every_day_since_prefix">You\'ve journaled every day since</string>
+    <string name="journaled_once_a_week_since_prefix">You\'ve journaled at least once a week since</string>
+    <string name="journal_today_to_start">Journal today to start a daily streak.</string>
+    <string name="no_current_streak">No Current Streak</string>
+    <string name="journal_every_day_to_build">Journal every day to build a streak.</string>
+    <string name="set_reminder">Set Reminder</string>
+
+    <!-- Stat cards -->
+    <string name="stat_entries">Entries</string>
+    <string name="stat_written">Written</string>
+    <string name="stat_words">Words</string>
+    <string name="stat_journaled">Journaled</string>
+    <string name="stat_days">Days</string>
+    <string name="stat_this_month">This Month</string>
+    <string name="stat_this_year">This Year</string>
+    <string name="visited_places">Visited Places</string>
 </resources>

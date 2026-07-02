@@ -28,9 +28,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
+import com.bksd.insights.presentation.Res
 import com.bksd.insights.presentation.reflection.reflectionHexColor
+import com.bksd.insights.presentation.weekly_arc_empty
+import com.bksd.insights.presentation.weekly_brightest_on
+import com.bksd.insights.presentation.weekly_emotional_arc
 import com.bksd.reflection.domain.model.ArcPoint
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun EmotionalArcCard(
@@ -47,9 +53,9 @@ fun EmotionalArcCard(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(18.dp))
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.xl))
             .background(palette.surface)
-            .padding(horizontal = 16.dp, vertical = 15.dp)
+            .padding(horizontal = MaterialTheme.dimens.spacing.lg, vertical = MaterialTheme.dimens.spacing.lg)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -57,7 +63,7 @@ fun EmotionalArcCard(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "YOUR EMOTIONAL ARC",
+                text = stringResource(Res.string.weekly_emotional_arc),
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 0.7.sp,
@@ -65,7 +71,7 @@ fun EmotionalArcCard(
             )
             if (brightestDayLabel != null) {
                 Text(
-                    text = "Brightest on $brightestDayLabel",
+                    text = stringResource(Res.string.weekly_brightest_on, brightestDayLabel),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
                     color = accent
@@ -75,10 +81,10 @@ fun EmotionalArcCard(
 
         if (!hasData) {
             Text(
-                text = "Add a few entries this week to see your arc.",
+                text = stringResource(Res.string.weekly_arc_empty),
                 fontSize = 13.sp,
                 color = palette.sub,
-                modifier = Modifier.padding(top = 14.dp, bottom = 4.dp)
+                modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.lg, bottom = MaterialTheme.dimens.spacing.xs)
             )
             return@Column
         }
@@ -87,7 +93,7 @@ fun EmotionalArcCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(92.dp)
-                .padding(top = 12.dp)
+                .padding(top = MaterialTheme.dimens.spacing.md)
         ) {
             val padX = size.width * 0.05f
             val usable = size.width - padX * 2
@@ -133,10 +139,10 @@ fun EmotionalArcCard(
             }
         }
 
-        Spacer(Modifier.height(6.dp))
+        Spacer(Modifier.height(MaterialTheme.dimens.spacing.sm))
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 6.dp)
+            modifier = Modifier.fillMaxWidth().padding(horizontal = MaterialTheme.dimens.spacing.sm)
         ) {
             arc.forEach { point ->
                 Text(
@@ -164,6 +170,6 @@ private fun sampleArc() = listOf(
 @Composable
 private fun EmotionalArcCardPreview() {
     AppTheme(darkTheme = true) {
-        EmotionalArcCard(arc = sampleArc(), brightestDayLabel = "Sat", modifier = Modifier.padding(16.dp))
+        EmotionalArcCard(arc = sampleArc(), brightestDayLabel = "Sat", modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg))
     }
 }

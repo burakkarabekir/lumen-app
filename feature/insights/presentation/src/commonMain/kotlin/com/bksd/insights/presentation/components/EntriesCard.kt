@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,10 +24,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.extended
+import com.bksd.core.design_system.theme.insightsEntriesGradient
 import com.bksd.insights.presentation.EntriesStat
+import com.bksd.insights.presentation.Res
 import com.bksd.insights.presentation.StatsRange
+import com.bksd.insights.presentation.stat_entries
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun EntriesCard(
@@ -35,12 +42,13 @@ internal fun EntriesCard(
     rangeOptions: ImmutableList<StatsRange>,
     onRangeSelect: (StatsRange) -> Unit
 ) {
+    val gradient = MaterialTheme.colorScheme.extended.insightsEntriesGradient
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(22.dp))
-            .background(Brush.verticalGradient(listOf(Color(0xFF7682D6), Color(0xFF9281C6))))
-            .padding(18.dp)
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.card))
+            .background(Brush.verticalGradient(gradient))
+            .padding(MaterialTheme.dimens.spacing.xl)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -55,9 +63,9 @@ internal fun EntriesCard(
                     fontWeight = FontWeight.ExtraBold,
                     color = Color.White
                 )
-                Spacer(Modifier.height(2.dp))
+                Spacer(Modifier.height(MaterialTheme.dimens.spacing.xxs))
                 Text(
-                    text = "Entries",
+                    text = stringResource(Res.string.stat_entries),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White.copy(alpha = 0.92f)
@@ -66,19 +74,19 @@ internal fun EntriesCard(
             EntriesBarChart(
                 bars = entries.bars,
                 axisLabels = entries.axisLabels,
-                modifier = Modifier.width(160.dp).height(86.dp)
+                modifier = Modifier.width(160.dp).height(MaterialTheme.dimens.size.topBar)
             )
         }
-        Spacer(Modifier.height(18.dp))
+        Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.xs)
         ) {
             entries.breakdown.forEach { item -> BreakdownItem(item) }
         }
         if (rangeOptions.size > 2) {
-            Spacer(Modifier.height(16.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.lg))
+            Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm)) {
                 rangeOptions.forEach { range ->
                     RangeChip(
                         label = range.label,
@@ -95,7 +103,7 @@ internal fun EntriesCard(
 @Composable
 private fun EntriesCardPreview() {
     AppTheme {
-        Box(Modifier.padding(18.dp)) {
+        Box(Modifier.padding(MaterialTheme.dimens.spacing.xl)) {
             EntriesCard(
                 entries = SampleEntries,
                 selectedRange = StatsRange.AllTime,

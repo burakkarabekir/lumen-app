@@ -22,6 +22,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.journal.presentation.Res
+import com.bksd.journal.presentation.cancel
+import com.bksd.journal.presentation.ok
+import com.bksd.journal.presentation.select_time
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun DetailTimePickerDialog(
@@ -37,31 +43,31 @@ fun DetailTimePickerDialog(
     )
     Dialog(onDismissRequest = onDismiss) {
         Surface(
-            shape = RoundedCornerShape(28.dp),
+            shape = RoundedCornerShape(MaterialTheme.dimens.radius.xxl),
             tonalElevation = 6.dp,
             color = MaterialTheme.colorScheme.surface
         ) {
             Column(
-                modifier = Modifier.padding(24.dp),
+                modifier = Modifier.padding(MaterialTheme.dimens.spacing.xxl),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Select time",
+                    text = stringResource(Res.string.select_time),
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier
                         .align(Alignment.Start)
-                        .padding(bottom = 18.dp)
+                        .padding(bottom = MaterialTheme.dimens.spacing.xl)
                 )
                 TimePicker(state = state)
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 8.dp),
+                        .padding(top = MaterialTheme.dimens.spacing.sm),
                     horizontalArrangement = Arrangement.End
                 ) {
-                    TextButton(onClick = onDismiss) { Text("Cancel") }
-                    TextButton(onClick = { onConfirm(state.hour, state.minute) }) { Text("OK") }
+                    TextButton(onClick = onDismiss) { Text(stringResource(Res.string.cancel)) }
+                    TextButton(onClick = { onConfirm(state.hour, state.minute) }) { Text(stringResource(Res.string.ok)) }
                 }
             }
         }

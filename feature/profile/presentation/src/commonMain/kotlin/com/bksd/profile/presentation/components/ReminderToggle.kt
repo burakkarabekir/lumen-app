@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -20,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 
 @Composable
@@ -35,23 +37,23 @@ fun ReminderToggle(
         label = "track"
     )
     val knobOffset by animateDpAsState(
-        targetValue = if (checked) 20.dp else 0.dp,
+        targetValue = if (checked) MaterialTheme.dimens.spacing.xl else 0.dp,
         animationSpec = tween(200),
         label = "knob"
     )
     Box(
         contentAlignment = Alignment.CenterStart,
         modifier = modifier
-            .size(width = 50.dp, height = 30.dp)
-            .clip(RoundedCornerShape(15.dp))
+            .size(width = MaterialTheme.dimens.size.cancelIcon, height = MaterialTheme.dimens.icon.avatar)
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.lg))
             .background(trackColor)
             .clickable { onCheckedChange(!checked) }
-            .padding(horizontal = 3.dp)
+            .padding(horizontal = MaterialTheme.dimens.spacing.xs)
     ) {
         Box(
             modifier = Modifier
                 .offset(x = knobOffset)
-                .size(24.dp)
+                .size(MaterialTheme.dimens.icon.xl)
                 .clip(CircleShape)
                 .background(Color.White)
         )
@@ -63,7 +65,7 @@ fun ReminderToggle(
 private fun ReminderTogglePreview() {
     AppTheme(darkTheme = true) {
         val palette = rememberNewEntryPalette()
-        Box(modifier = Modifier.background(palette.pageBg).padding(16.dp)) {
+        Box(modifier = Modifier.background(palette.pageBg).padding(MaterialTheme.dimens.spacing.lg)) {
             ReminderToggle(checked = true, onCheckedChange = {})
         }
     }

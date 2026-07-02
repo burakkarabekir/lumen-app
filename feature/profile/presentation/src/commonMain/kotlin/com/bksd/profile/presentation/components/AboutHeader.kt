@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -12,9 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.PreviewAppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 import com.bksd.profile.presentation.Res
 import com.bksd.profile.presentation.about_app_name
@@ -34,12 +35,12 @@ fun AboutHeader(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 20.dp, bottom = 24.dp)
+            .padding(top = MaterialTheme.dimens.spacing.xl, bottom = MaterialTheme.dimens.spacing.xxl)
     ) {
         Image(
             painter = painterResource(Res.drawable.logo_blue),
             contentDescription = null,
-            modifier = Modifier.size(84.dp)
+            modifier = Modifier.size(MaterialTheme.dimens.size.topBar)
         )
         Text(
             text = stringResource(Res.string.about_app_name),
@@ -47,14 +48,14 @@ fun AboutHeader(
             fontWeight = FontWeight.ExtraBold,
             letterSpacing = (-0.5).sp,
             color = palette.text,
-            modifier = Modifier.padding(top = 14.dp)
+            modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.lg)
         )
         Text(
             text = stringResource(Res.string.about_version, version),
             fontSize = 13.sp,
             fontWeight = FontWeight.Medium,
             color = palette.sub,
-            modifier = Modifier.padding(top = 5.dp)
+            modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.xs)
         )
         Text(
             text = stringResource(Res.string.about_tagline),
@@ -63,7 +64,7 @@ fun AboutHeader(
             color = palette.bodyText,
             textAlign = TextAlign.Center,
             lineHeight = 20.sp,
-            modifier = Modifier.padding(top = 12.dp, start = 32.dp, end = 32.dp)
+            modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.md, start = MaterialTheme.dimens.spacing.xxxl, end = MaterialTheme.dimens.spacing.xxxl)
         )
     }
 }

@@ -29,8 +29,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material3.MaterialTheme
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.aiIconGradient
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.extended
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
+import com.bksd.moment.presentation.Res
+import com.bksd.moment.presentation.ai_optin_caption
+import com.bksd.moment.presentation.ai_optin_title
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun AiAnalysisOptInCard(
@@ -46,44 +54,42 @@ fun AiAnalysisOptInCard(
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(13.dp),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.md),
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(18.dp))
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.xl))
             .background(background)
-            .border(1.5.dp, borderColor, RoundedCornerShape(18.dp))
+            .border(1.5.dp, borderColor, RoundedCornerShape(MaterialTheme.dimens.radius.xl))
             .clickable { onCheckedChange(!checked) }
-            .padding(15.dp)
+            .padding(MaterialTheme.dimens.spacing.lg)
     ) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .size(40.dp)
-                .clip(RoundedCornerShape(12.dp))
+                .size(MaterialTheme.dimens.icon.tile)
+                .clip(RoundedCornerShape(MaterialTheme.dimens.radius.md))
                 .background(
-                    Brush.linearGradient(
-                        listOf(Color(0xFF7682D6), Color(0xFFCF6F64))
-                    )
+                    Brush.linearGradient(MaterialTheme.colorScheme.extended.aiIconGradient)
                 )
         ) {
             Icon(
                 imageVector = Icons.Filled.AutoAwesome,
                 contentDescription = null,
                 tint = Color.White,
-                modifier = Modifier.size(21.dp)
+                modifier = Modifier.size(MaterialTheme.dimens.icon.lg)
             )
         }
 
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = "Yes, analyze this entry with AI",
+                text = stringResource(Res.string.ai_optin_title),
                 fontSize = 14.5.sp,
                 fontWeight = FontWeight.ExtraBold,
                 color = palette.text
             )
-            Spacer(Modifier.height(2.dp))
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.xxs))
             Text(
-                text = "Get a reflection on your mood and themes right after you save.",
+                text = stringResource(Res.string.ai_optin_caption),
                 fontSize = 12.sp,
                 lineHeight = 17.sp,
                 color = palette.sub
@@ -93,13 +99,13 @@ fun AiAnalysisOptInCard(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .size(26.dp)
-                .clip(RoundedCornerShape(9.dp))
+                .size(MaterialTheme.dimens.icon.xl)
+                .clip(RoundedCornerShape(MaterialTheme.dimens.radius.sm))
                 .background(if (checked) accent else Color.Transparent)
                 .border(
                     2.dp,
                     if (checked) accent else palette.sub,
-                    RoundedCornerShape(9.dp)
+                    RoundedCornerShape(MaterialTheme.dimens.radius.sm)
                 )
         ) {
             if (checked) {
@@ -107,7 +113,7 @@ fun AiAnalysisOptInCard(
                     imageVector = Icons.Filled.Check,
                     contentDescription = null,
                     tint = Color.White,
-                    modifier = Modifier.size(15.dp)
+                    modifier = Modifier.size(MaterialTheme.dimens.icon.sm)
                 )
             }
         }

@@ -29,7 +29,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.bksd.auth.presentation.Res
 import com.bksd.auth.presentation.btn_sign_in
 import com.bksd.auth.presentation.continue_with_google
@@ -49,6 +48,7 @@ import com.bksd.core.design_system.theme.LumenBase600
 import com.bksd.core.design_system.theme.LumenBrand500
 import com.bksd.core.design_system.theme.LumenRadius
 import com.bksd.core.design_system.theme.LumenSpacing
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.presentation.auth.GoogleSignInResult
 import com.bksd.core.presentation.auth.rememberGoogleSignInLauncher
 import com.bksd.core.presentation.util.ObserveAsEvents
@@ -212,7 +212,7 @@ internal fun SignInScreen(
             onClick = { onAction(SignInAction.OnSignInClick) },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp),
+                .height(MaterialTheme.dimens.size.fab),
             enabled = state.isSubmitEnabled,
             isLoading = state.isLoading,
             style = AppButtonStyle.PRIMARY
@@ -229,7 +229,7 @@ internal fun SignInScreen(
             onClick = { googleLauncher.launch() },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp),
+                .height(MaterialTheme.dimens.size.fab),
             enabled = !state.isLoading && !state.isSocialLoading,
             isLoading = state.isSocialLoading,
             style = AppButtonStyle.SECONDARY

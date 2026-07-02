@@ -25,9 +25,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.extended
+import com.bksd.core.design_system.theme.profileAccentIndigo
 
 @Composable
 fun ProfileSettingsRow(
@@ -35,7 +37,7 @@ fun ProfileSettingsRow(
     label: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    accent: Color = Color(0xFF6E7AD0),
+    accent: Color = MaterialTheme.colorScheme.extended.profileAccentIndigo,
     trailingValue: String? = null,
     trailingColor: Color? = null,
     showBadge: Boolean = false
@@ -44,13 +46,13 @@ fun ProfileSettingsRow(
         modifier = modifier
             .fillMaxWidth()
             .clickable { onClick() }
-            .padding(horizontal = 16.dp, vertical = 14.dp),
+            .padding(horizontal = MaterialTheme.dimens.spacing.lg, vertical = MaterialTheme.dimens.spacing.lg),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
             modifier = Modifier
-                .size(32.dp)
-                .clip(RoundedCornerShape(10.dp))
+                .size(MaterialTheme.dimens.icon.avatar)
+                .clip(RoundedCornerShape(MaterialTheme.dimens.radius.md))
                 .background(accent.copy(alpha = 0.16f)),
             contentAlignment = Alignment.Center
         ) {
@@ -58,10 +60,10 @@ fun ProfileSettingsRow(
                 imageVector = icon,
                 contentDescription = label,
                 tint = accent,
-                modifier = Modifier.size(18.dp)
+                modifier = Modifier.size(MaterialTheme.dimens.icon.md)
             )
         }
-        Spacer(modifier = Modifier.width(13.dp))
+        Spacer(modifier = Modifier.width(MaterialTheme.dimens.spacing.md))
         Text(
             text = label,
             fontSize = 15.sp,
@@ -77,24 +79,24 @@ fun ProfileSettingsRow(
                 fontWeight = FontWeight.Medium,
                 color = trailingColor ?: MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
             )
-            Spacer(modifier = Modifier.width(6.dp))
+            Spacer(modifier = Modifier.width(MaterialTheme.dimens.spacing.sm))
         }
 
         if (showBadge) {
             Box(
                 modifier = Modifier
-                    .size(8.dp)
+                    .size(MaterialTheme.dimens.icon.xs)
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.error)
             )
-            Spacer(modifier = Modifier.width(6.dp))
+            Spacer(modifier = Modifier.width(MaterialTheme.dimens.spacing.sm))
         }
 
         Icon(
             imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
             contentDescription = null,
             tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
-            modifier = Modifier.size(18.dp)
+            modifier = Modifier.size(MaterialTheme.dimens.icon.md)
         )
     }
 }

@@ -26,33 +26,37 @@ class AnalyzeAndReflectUseCase(
         }
 
         val analysis = response.analysis
+        val coverImageUrl = response.coverImageUrl
         val reflection = when (analysis.distress) {
             DistressLevel.NONE, DistressLevel.MILD ->
                 MomentReflection.Reflection(
                     analysis = analysis,
                     message = response.feedback ?: GENTLE_FALLBACK,
-                    question = response.question
+                    question = response.question,
+                    coverImageUrl = coverImageUrl
                 )
 
-            DistressLevel.ELEVATED -> elevatedSupport(analysis)
-            DistressLevel.CRISIS -> crisisSupport(analysis)
+            DistressLevel.ELEVATED -> elevatedSupport(analysis, coverImageUrl)
+            DistressLevel.CRISIS -> crisisSupport(analysis, coverImageUrl)
         }
         return Result.Success(reflection)
     }
 
-    private fun elevatedSupport(analysis: EntryAnalysis): MomentReflection.Support =
+    private fun elevatedSupport(analysis: EntryAnalysis, coverImageUrl: String?): MomentReflection.Support =
         MomentReflection.Support(
             analysis = analysis,
             message = SupportConfig.ELEVATED_MESSAGE,
-            mentalHealthLines = SupportConfig.mentalHealthLines
+            mentalHealthLines = SupportConfig.mentalHealthLines,
+            coverImageUrl = coverImageUrl
         )
 
-    private fun crisisSupport(analysis: EntryAnalysis): MomentReflection.Crisis =
+    private fun crisisSupport(analysis: EntryAnalysis, coverImageUrl: String?): MomentReflection.Crisis =
         MomentReflection.Crisis(
             analysis = analysis,
             message = SupportConfig.CRISIS_MESSAGE,
             emergency = SupportConfig.emergency,
-            crisisLines = SupportConfig.crisisLines
+            crisisLines = SupportConfig.crisisLines,
+            coverImageUrl = coverImageUrl
         )
 
     private companion object {

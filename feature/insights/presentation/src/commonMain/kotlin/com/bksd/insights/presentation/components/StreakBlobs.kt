@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +20,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 
 @Composable
 internal fun StreakBlobs() {
@@ -87,7 +89,7 @@ private fun StreakBlobsPreview() {
         Box(
             modifier = Modifier
                 .size(280.dp, 200.dp)
-                .clip(RoundedCornerShape(22.dp))
+                .clip(RoundedCornerShape(MaterialTheme.dimens.radius.card))
                 .background(Brush.verticalGradient(listOf(Color(0xFF30344F), Color(0xFF191B29))))
         ) {
             StreakBlobs()

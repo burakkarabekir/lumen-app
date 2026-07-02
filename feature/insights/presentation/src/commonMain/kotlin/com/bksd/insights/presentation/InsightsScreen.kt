@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,7 +18,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberInsightsPalette
+import com.bksd.insights.presentation.Res
+import com.bksd.insights.presentation.insights_title
+import com.bksd.insights.presentation.section_stats
+import com.bksd.insights.presentation.section_streaks
 import com.bksd.insights.presentation.components.EmptyStreakCard
 import com.bksd.insights.presentation.components.EntriesCard
 import com.bksd.insights.presentation.components.SampleInsightsState
@@ -25,6 +31,7 @@ import com.bksd.insights.presentation.components.SectionLabel
 import com.bksd.insights.presentation.components.StreaksCarousel
 import com.bksd.insights.presentation.components.VisitedPlacesCard
 import com.bksd.insights.presentation.components.WrittenJournaledRow
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun InsightsScreen(
@@ -39,30 +46,30 @@ internal fun InsightsScreen(
             .background(palette.pageBg)
             .verticalScroll(rememberScrollState())
             .statusBarsPadding()
-            .padding(horizontal = 18.dp)
-            .padding(top = 10.dp)
+            .padding(horizontal = MaterialTheme.dimens.spacing.xl)
+            .padding(top = MaterialTheme.dimens.spacing.md)
     ) {
         Text(
-            text = "Insights",
+            text = stringResource(Res.string.insights_title),
             fontSize = 27.sp,
             fontWeight = FontWeight.ExtraBold,
             letterSpacing = (-0.6).sp,
             color = palette.text
         )
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(MaterialTheme.dimens.spacing.lg))
 
-        SectionLabel("Streaks", palette)
-        Spacer(Modifier.height(8.dp))
+        SectionLabel(stringResource(Res.string.section_streaks), palette)
+        Spacer(Modifier.height(MaterialTheme.dimens.spacing.sm))
         if (state.hasActiveStreak) {
             StreaksCarousel(state = state, palette = palette)
         } else {
             EmptyStreakCard(onSetReminder = {})
         }
 
-        Spacer(Modifier.height(18.dp))
+        Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))
         reflectionSlot()
-        SectionLabel("Stats", palette)
-        Spacer(Modifier.height(8.dp))
+        SectionLabel(stringResource(Res.string.section_stats), palette)
+        Spacer(Modifier.height(MaterialTheme.dimens.spacing.sm))
         EntriesCard(
             entries = state.entries,
             selectedRange = state.selectedRange,
@@ -71,11 +78,11 @@ internal fun InsightsScreen(
         )
 
         if (state.places.isNotEmpty()) {
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.md))
             VisitedPlacesCard(places = state.places)
         }
 
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(MaterialTheme.dimens.spacing.md))
         WrittenJournaledRow(writtenWords = state.writtenWords, journaled = state.journaled)
 
         Spacer(Modifier.height(120.dp))

@@ -24,6 +24,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
 import com.bksd.core.design_system.theme.PreviewAppTheme
+import com.bksd.profile.presentation.Res
+import com.bksd.profile.presentation.profile_photo_content_desc
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ProfilePhotoViewer(
@@ -56,7 +59,7 @@ fun ProfilePhotoViewer(
             ) {
                 AsyncImage(
                     model = photoUrl,
-                    contentDescription = "Profile photo",
+                    contentDescription = stringResource(Res.string.profile_photo_content_desc),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxWidth(0.8f)

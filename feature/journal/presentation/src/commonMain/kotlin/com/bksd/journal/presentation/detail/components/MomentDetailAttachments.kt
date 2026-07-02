@@ -7,14 +7,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 import com.bksd.core.domain.model.Attachment
 import com.bksd.core.domain.model.AttachmentId
@@ -28,9 +29,12 @@ import com.bksd.core.presentation.attachment.LinkAttachmentCard
 import com.bksd.core.presentation.attachment.PhotoAttachmentCard
 import com.bksd.core.presentation.attachment.VideoAttachmentCard
 import com.bksd.core.presentation.attachment.VoiceAttachmentCard
+import com.bksd.journal.presentation.Res
+import com.bksd.journal.presentation.attachments_section
 import com.bksd.journal.presentation.util.MomentFormatter
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun MomentDetailAttachments(
@@ -51,14 +55,14 @@ fun MomentDetailAttachments(
 
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(11.dp)
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.md)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 2.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = MaterialTheme.dimens.spacing.xxs),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "ATTACHMENTS",
+                text = stringResource(Res.string.attachments_section),
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 0.7.sp,
@@ -114,7 +118,7 @@ fun MomentDetailAttachments(
 private fun MomentDetailAttachmentsPreview() {
     AppTheme(darkTheme = true) {
         val palette = rememberNewEntryPalette()
-        Box(modifier = Modifier.background(palette.pageBg).padding(16.dp)) {
+        Box(modifier = Modifier.background(palette.pageBg).padding(MaterialTheme.dimens.spacing.lg)) {
             MomentDetailAttachments(
                 attachments = listOf(
                     PhotoAttachment(AttachmentId("1"), Url("")),

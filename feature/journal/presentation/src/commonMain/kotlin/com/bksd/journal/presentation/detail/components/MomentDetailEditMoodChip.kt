@@ -21,9 +21,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
 import com.bksd.core.domain.model.Mood
 import com.bksd.journal.presentation.journal.components.moodColors
@@ -37,17 +37,22 @@ fun MomentDetailEditMoodChip(
     val accent = moodColors(mood, MaterialTheme.colorScheme.extended).second
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(7.dp),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
         modifier = modifier
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.lg))
             .background(accent)
-            .padding(start = 12.dp, end = 9.dp, top = 9.dp, bottom = 9.dp)
+            .padding(
+                start = MaterialTheme.dimens.spacing.md,
+                end = MaterialTheme.dimens.spacing.sm,
+                top = MaterialTheme.dimens.spacing.sm,
+                bottom = MaterialTheme.dimens.spacing.sm
+            )
     ) {
         Icon(
             imageVector = detailMoodIcon(mood),
             contentDescription = null,
             tint = Color.White,
-            modifier = Modifier.size(15.dp)
+            modifier = Modifier.size(MaterialTheme.dimens.icon.sm)
         )
         Text(
             text = mood.label,
@@ -58,7 +63,7 @@ fun MomentDetailEditMoodChip(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .size(18.dp)
+                .size(MaterialTheme.dimens.icon.md)
                 .clip(CircleShape)
                 .background(Color.White.copy(alpha = 0.25f))
                 .clickable(onClick = onRemove)
@@ -67,7 +72,7 @@ fun MomentDetailEditMoodChip(
                 imageVector = Icons.Default.Close,
                 contentDescription = null,
                 tint = Color.White,
-                modifier = Modifier.size(11.dp)
+                modifier = Modifier.size(MaterialTheme.dimens.icon.xs)
             )
         }
     }
@@ -77,7 +82,7 @@ fun MomentDetailEditMoodChip(
 @Composable
 private fun MomentDetailEditMoodChipPreview() {
     AppTheme(darkTheme = true) {
-        Row(modifier = Modifier.padding(16.dp)) {
+        Row(modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg)) {
             MomentDetailEditMoodChip(mood = Mood.CALM, onRemove = {})
         }
     }

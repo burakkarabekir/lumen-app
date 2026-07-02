@@ -9,12 +9,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.InsightsPalette
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberInsightsPalette
 import com.bksd.insights.presentation.InsightsState
 
@@ -24,7 +25,7 @@ internal fun StreaksCarousel(state: InsightsState, palette: InsightsPalette) {
     Column {
         HorizontalPager(
             state = pagerState,
-            pageSpacing = 12.dp,
+            pageSpacing = MaterialTheme.dimens.spacing.md,
             modifier = Modifier.fillMaxWidth()
         ) { page ->
             when (page) {
@@ -33,7 +34,7 @@ internal fun StreaksCarousel(state: InsightsState, palette: InsightsPalette) {
                 else -> StreakDetailCard(state.recent, palette)
             }
         }
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(MaterialTheme.dimens.spacing.lg))
         PagerDots(count = 3, current = pagerState.currentPage, palette = palette)
     }
 }
@@ -43,7 +44,7 @@ internal fun StreaksCarousel(state: InsightsState, palette: InsightsPalette) {
 private fun StreaksCarouselPreview() {
     AppTheme {
         val palette = rememberInsightsPalette()
-        Box(Modifier.background(palette.pageBg).padding(18.dp)) {
+        Box(Modifier.background(palette.pageBg).padding(MaterialTheme.dimens.spacing.xl)) {
             StreaksCarousel(state = SampleInsightsState, palette = palette)
         }
     }

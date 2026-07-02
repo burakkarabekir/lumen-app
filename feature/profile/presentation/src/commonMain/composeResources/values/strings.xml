@@ -51,4 +51,43 @@
     <string name="help_email_support">Email Support</string>
     <string name="help_report_bug">Report a Bug</string>
     <string name="help_response_note">We usually reply within 2 business days.</string>
+
+    <!-- Common -->
+    <string name="action_close">Close</string>
+    <string name="action_back">Back</string>
+    <string name="action_ok">OK</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_save">Save</string>
+    <string name="action_edit">Edit</string>
+
+    <!-- Edit Profile -->
+    <string name="edit_profile_title">Edit Profile</string>
+    <string name="edit_profile_change_photo">Change Photo</string>
+    <string name="edit_profile_photo_content_desc">Profile photo</string>
+    <string name="edit_profile_name_label">NAME</string>
+    <string name="edit_profile_name_placeholder">Your name</string>
+    <string name="edit_profile_name_hint">This is the name shown on your journal and profile.</string>
+
+    <!-- Reminders -->
+    <string name="reminders_subtitle">Choose when Lumen nudges you to write.</string>
+    <string name="reminders_daily">Daily reminder</string>
+    <string name="reminders_time">Time</string>
+    <string name="reminders_repeat">Repeat</string>
+    <string name="reminders_streak">Streak reminder</string>
+    <string name="reminders_streak_description">Get a nudge before your streak is about to expire.</string>
+    <string name="reminders_select_time">Select time</string>
+
+    <!-- Appearance -->
+    <string name="appearance_title">Appearance</string>
+    <string name="appearance_light">Light</string>
+    <string name="appearance_dark">Dark</string>
+
+    <!-- Profile Hero -->
+    <string name="profile_hero_avatar_content_desc">Profile</string>
+    <string name="profile_hero_stat_entries">Entries</string>
+    <string name="profile_hero_stat_weekly_streak">Wk Streak</string>
+    <string name="profile_hero_stat_joined">Joined</string>
+
+    <!-- Profile Photo Viewer -->
+    <string name="profile_photo_content_desc">Profile photo</string>
 </resources>

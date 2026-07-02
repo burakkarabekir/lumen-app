@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,10 +22,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.journal.presentation.Res
+import com.bksd.journal.presentation.ai_call_resource
 import com.bksd.reflection.domain.support.SupportResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun SupportResourceRow(
@@ -39,10 +43,10 @@ fun SupportResourceRow(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(14.dp))
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.cardTight))
             .background(rowBackground)
             .clickable { runCatching { uriHandler.openUri("tel:${resource.phoneNumber}") } }
-            .padding(horizontal = 14.dp, vertical = 12.dp)
+            .padding(horizontal = MaterialTheme.dimens.spacing.lg, vertical = MaterialTheme.dimens.spacing.md)
     ) {
         Column(Modifier.weight(1f)) {
             Text(
@@ -56,21 +60,21 @@ fun SupportResourceRow(
                 fontSize = 12.5.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = accent,
-                modifier = Modifier.padding(top = 1.dp)
+                modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.xxs)
             )
         }
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .size(34.dp)
-                .clip(RoundedCornerShape(11.dp))
+                .size(MaterialTheme.dimens.icon.avatar)
+                .clip(RoundedCornerShape(MaterialTheme.dimens.radius.md))
                 .background(accent.copy(alpha = 0.16f))
         ) {
             Icon(
                 imageVector = Icons.Default.Call,
-                contentDescription = "Call ${resource.label}",
+                contentDescription = stringResource(Res.string.ai_call_resource, resource.label),
                 tint = accent,
-                modifier = Modifier.size(17.dp)
+                modifier = Modifier.size(MaterialTheme.dimens.icon.md)
             )
         }
     }
@@ -85,7 +89,7 @@ private fun SupportResourceRowPreview() {
             accent = Color(0xFFC08A1E),
             rowBackground = Color.White,
             labelColor = Color(0xFF22203A),
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg)
         )
     }
 }

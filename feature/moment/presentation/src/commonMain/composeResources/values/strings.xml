@@ -44,4 +44,19 @@
     <string name="success_moment_saved">Moment saved!</string>
     <string name="timestamp_today_format">Today, %1$s</string>
     <string name="error_camera_permission_denied">Camera permission is required to take photos</string>
+
+    <!-- AI Analysis Opt-In -->
+    <string name="ai_optin_title">Yes, analyze this entry with AI</string>
+    <string name="ai_optin_caption">Get a reflection on your mood and themes right after you save.</string>
+
+    <!-- Attachments -->
+    <string name="add_link">Add Link</string>
+    <string name="remove_link">Remove Link</string>
+    <string name="link_url_hint">https://...</string>
+    <string name="done">Done</string>
+    <string name="recording_in_progress">Recording your memories...</string>
+    <string name="cancel_recording">Cancel Recording</string>
+    <string name="toggle_attachments">Toggle Attachments</string>
+    <string name="attachment_count_single">%1$d Attachment</string>
+    <string name="attachment_count_plural">%1$d Attachments</string>
 </resources>

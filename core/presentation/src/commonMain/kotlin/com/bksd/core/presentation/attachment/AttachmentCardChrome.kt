@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,6 +32,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.attachmentPhoto
+import com.bksd.core.design_system.theme.attachmentRemove
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.extended
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 
 @Composable
@@ -47,28 +52,28 @@ internal fun AttachmentCardChrome(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .shadow(elevation = 2.dp, shape = RoundedCornerShape(18.dp))
+            .shadow(elevation = 2.dp, shape = RoundedCornerShape(MaterialTheme.dimens.radius.xl))
             .background(palette.surface)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.md),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 14.dp, vertical = 12.dp)
+                .padding(horizontal = MaterialTheme.dimens.spacing.lg, vertical = MaterialTheme.dimens.spacing.md)
         ) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .size(30.dp)
-                    .clip(RoundedCornerShape(9.dp))
+                    .size(MaterialTheme.dimens.icon.avatar)
+                    .clip(RoundedCornerShape(MaterialTheme.dimens.radius.sm))
                     .background(badgeColor.copy(alpha = 0.16f))
             ) {
                 Icon(
                     imageVector = badgeIcon,
                     contentDescription = null,
                     tint = badgeColor,
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(MaterialTheme.dimens.icon.sm)
                 )
             }
             Text(
@@ -85,16 +90,16 @@ internal fun AttachmentCardChrome(
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
-                        .size(28.dp)
+                        .size(MaterialTheme.dimens.icon.xl)
                         .clip(CircleShape)
-                        .background(RemoveTint.copy(alpha = 0.14f))
+                        .background(MaterialTheme.colorScheme.extended.attachmentRemove.copy(alpha = 0.14f))
                         .clickable(onClick = onRemove)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Close,
                         contentDescription = "Remove attachment",
-                        tint = RemoveTint,
-                        modifier = Modifier.size(15.dp)
+                        tint = MaterialTheme.colorScheme.extended.attachmentRemove,
+                        modifier = Modifier.size(MaterialTheme.dimens.icon.sm)
                     )
                 }
             }
@@ -108,9 +113,9 @@ internal fun AttachmentCardChrome(
 private fun AttachmentCardChromePreview() {
     AppTheme(darkTheme = true) {
         val palette = rememberNewEntryPalette()
-        Box(modifier = Modifier.background(palette.pageBg).padding(16.dp)) {
+        Box(modifier = Modifier.background(palette.pageBg).padding(MaterialTheme.dimens.spacing.lg)) {
             AttachmentCardChrome(
-                badgeColor = PhotoBadgeColor,
+                badgeColor = MaterialTheme.colorScheme.extended.attachmentPhoto,
                 badgeIcon = Icons.Default.Image,
                 title = "Photo",
                 onRemove = {},
@@ -120,10 +125,10 @@ private fun AttachmentCardChromePreview() {
             ) {
                 Box(
                     modifier = Modifier
-                        .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
+                        .padding(start = MaterialTheme.dimens.spacing.md, end = MaterialTheme.dimens.spacing.md, bottom = MaterialTheme.dimens.spacing.md)
                         .fillMaxWidth()
                         .size(120.dp)
-                        .clip(RoundedCornerShape(12.dp))
+                        .clip(RoundedCornerShape(MaterialTheme.dimens.radius.md))
                         .background(Color(0xFF3A3F63))
                 )
             }

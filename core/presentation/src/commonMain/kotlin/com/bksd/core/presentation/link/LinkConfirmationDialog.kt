@@ -20,6 +20,7 @@ import androidx.compose.ui.window.Dialog
 import com.bksd.core.design_system.component.button.AppButton
 import com.bksd.core.design_system.component.button.AppButtonStyle
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 
 fun toOpenableWebUrl(url: String): String? {
@@ -40,12 +41,12 @@ fun LinkConfirmationDialog(
     val palette = rememberNewEntryPalette()
     Dialog(onDismissRequest = onDismiss) {
         Surface(
-            shape = RoundedCornerShape(24.dp),
+            shape = RoundedCornerShape(MaterialTheme.dimens.radius.xxl),
             tonalElevation = 6.dp,
             color = MaterialTheme.colorScheme.surface,
             modifier = modifier
         ) {
-            Column(modifier = Modifier.padding(24.dp)) {
+            Column(modifier = Modifier.padding(MaterialTheme.dimens.spacing.xxl)) {
                 Text(
                     text = "Open link?",
                     fontSize = 18.sp,
@@ -56,7 +57,7 @@ fun LinkConfirmationDialog(
                     text = "You'll leave Lumen to open this in your browser.",
                     fontSize = 13.sp,
                     color = palette.sub,
-                    modifier = Modifier.padding(top = 6.dp)
+                    modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.sm)
                 )
                 Text(
                     text = url,
@@ -65,13 +66,13 @@ fun LinkConfirmationDialog(
                     color = palette.text,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.padding(top = 14.dp)
+                    modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.lg)
                 )
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 24.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        .padding(top = MaterialTheme.dimens.spacing.xxl),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.md)
                 ) {
                     AppButton(
                         text = "Cancel",

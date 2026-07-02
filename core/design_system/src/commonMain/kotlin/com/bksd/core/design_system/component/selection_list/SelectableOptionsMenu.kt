@@ -35,6 +35,7 @@ import com.bksd.core.design_system.component.selection_list.Selectable.Companion
 import com.bksd.core.design_system.create_entry
 import com.bksd.core.design_system.hashtag
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.jetbrains.compose.resources.stringResource
@@ -61,7 +62,7 @@ fun <T> SelectableOptionsMenu(
     ) {
         Surface(
             color = MaterialTheme.colorScheme.surface,
-            shape = RoundedCornerShape(10.dp),
+            shape = RoundedCornerShape(MaterialTheme.dimens.radius.md),
             shadowElevation = 4.dp,
             modifier = modifier
                 .heightIn(
@@ -69,16 +70,16 @@ fun <T> SelectableOptionsMenu(
                 )
                 .fillMaxWidth()
                 .padding(
-                    horizontal = 16.dp,
-                    vertical = 8.dp
+                    horizontal = MaterialTheme.dimens.spacing.lg,
+                    vertical = MaterialTheme.dimens.spacing.sm
                 )
         ) {
             LazyColumn(
                 state = listState,
                 modifier = Modifier
                     .animateContentSize()
-                    .padding(6.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                    .padding(MaterialTheme.dimens.spacing.sm),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.xs)
             ) {
                 items(
                     items = items,
@@ -88,7 +89,7 @@ fun <T> SelectableOptionsMenu(
                         modifier = Modifier
                             .animateItem()
                             .fillMaxWidth()
-                            .clip(RoundedCornerShape(8.dp))
+                            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.sm))
                             .background(
                                 color = if (selectable.selected) {
                                     MaterialTheme.colorScheme.surfaceTint.copy(alpha = 0.05f)
@@ -97,8 +98,8 @@ fun <T> SelectableOptionsMenu(
                                 }
                             )
                             .clickable { onItemClick(selectable) }
-                            .padding(8.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            .padding(MaterialTheme.dimens.spacing.sm),
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
                         verticalAlignment = Alignment.CenterVertically
 
                     ) {
@@ -121,7 +122,7 @@ fun <T> SelectableOptionsMenu(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clip(RoundedCornerShape(8.dp))
+                                .clip(RoundedCornerShape(MaterialTheme.dimens.radius.sm))
                                 .background(MaterialTheme.colorScheme.surface)
                                 .clickable { extras.onClick() },
                             verticalAlignment = Alignment.CenterVertically
@@ -131,8 +132,8 @@ fun <T> SelectableOptionsMenu(
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.primary,
                                 modifier = Modifier
-                                    .padding(8.dp)
-                                    .size(18.dp)
+                                    .padding(MaterialTheme.dimens.spacing.sm)
+                                    .size(MaterialTheme.dimens.icon.md)
                             )
                             Text(
                                 text = stringResource(

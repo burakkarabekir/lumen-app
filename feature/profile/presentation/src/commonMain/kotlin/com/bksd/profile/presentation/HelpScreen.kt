@@ -15,7 +15,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -27,15 +26,16 @@ import com.bksd.core.design_system.component.layout.AppScaffold
 import com.bksd.core.design_system.component.layout.AppSurface
 import com.bksd.core.design_system.component.layout.AppTopBar
 import com.bksd.core.design_system.theme.PreviewAppTheme
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.extended
+import com.bksd.core.design_system.theme.profileAccentIndigo
+import com.bksd.core.design_system.theme.profileAccentRed
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 import com.bksd.profile.presentation.components.HelpHeader
 import com.bksd.profile.presentation.components.ProfileSettingsRow
 import com.bksd.profile.presentation.components.SectionHeader
 import com.bksd.profile.presentation.components.SettingsGroup
 import org.jetbrains.compose.resources.stringResource
-
-private val AccentContact = Color(0xFF6E7AD0)
-private val AccentBug = Color(0xFFD0584F)
 
 private const val SupportMailto = "mailto:support@lumenjournal.app"
 private const val BugReportMailto = "mailto:support@lumenjournal.app?subject=Bug%20Report"
@@ -62,7 +62,7 @@ internal fun HelpScreen(onBack: () -> Unit) {
                         IconButton(onClick = onBack) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back"
+                                contentDescription = stringResource(Res.string.action_back)
                             )
                         }
                     },
@@ -70,30 +70,30 @@ internal fun HelpScreen(onBack: () -> Unit) {
             }
         ) {
             HelpHeader()
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))
 
             SectionHeader(stringResource(Res.string.help_section_contact))
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.sm))
             SettingsGroup {
                 ProfileSettingsRow(
                     icon = Icons.Default.MailOutline,
                     label = stringResource(Res.string.help_email_support),
-                    accent = AccentContact,
+                    accent = MaterialTheme.colorScheme.extended.profileAccentIndigo,
                     onClick = { runCatching { uriHandler.openUri(SupportMailto) } }
                 )
                 HorizontalDivider(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
-                    modifier = Modifier.padding(start = 61.dp)
+                    modifier = Modifier.padding(start = MaterialTheme.dimens.spacing.massive)
                 )
                 ProfileSettingsRow(
                     icon = Icons.Default.BugReport,
                     label = stringResource(Res.string.help_report_bug),
-                    accent = AccentBug,
+                    accent = MaterialTheme.colorScheme.extended.profileAccentRed,
                     onClick = { runCatching { uriHandler.openUri(BugReportMailto) } }
                 )
             }
 
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.lg))
             Text(
                 text = stringResource(Res.string.help_response_note),
                 fontSize = 12.5.sp,
@@ -102,7 +102,7 @@ internal fun HelpScreen(onBack: () -> Unit) {
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp)
+                    .padding(horizontal = MaterialTheme.dimens.spacing.xxl)
             )
             Spacer(Modifier.height(128.dp))
         }

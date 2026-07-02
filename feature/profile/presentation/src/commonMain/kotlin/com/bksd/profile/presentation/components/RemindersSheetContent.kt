@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,8 +29,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 import com.bksd.profile.presentation.RemindersState
+import com.bksd.profile.presentation.Res
+import com.bksd.profile.presentation.action_close
+import com.bksd.profile.presentation.reminders
+import com.bksd.profile.presentation.reminders_daily
+import com.bksd.profile.presentation.reminders_repeat
+import com.bksd.profile.presentation.reminders_streak
+import com.bksd.profile.presentation.reminders_streak_description
+import com.bksd.profile.presentation.reminders_subtitle
+import com.bksd.profile.presentation.reminders_time
+import org.jetbrains.compose.resources.stringResource
 
 private val DayLabels = listOf("M", "T", "W", "T", "F", "S", "S")
 
@@ -57,41 +69,41 @@ internal fun RemindersSheetContent(
     val card = palette.surface
     val pill = lerp(palette.surface, palette.text, 0.06f)
 
-    Column(modifier = Modifier.fillMaxWidth().padding(start = 18.dp, end = 18.dp, bottom = 28.dp)) {
+    Column(modifier = Modifier.fillMaxWidth().padding(start = MaterialTheme.dimens.spacing.xl, end = MaterialTheme.dimens.spacing.xl, bottom = MaterialTheme.dimens.spacing.xxxl)) {
         Row(
             verticalAlignment = Alignment.Top,
-            modifier = Modifier.fillMaxWidth().padding(top = 4.dp, bottom = 16.dp)
+            modifier = Modifier.fillMaxWidth().padding(top = MaterialTheme.dimens.spacing.xs, bottom = MaterialTheme.dimens.spacing.lg)
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "Reminders",
+                    text = stringResource(Res.string.reminders),
                     fontSize = 23.sp,
                     fontWeight = FontWeight.ExtraBold,
                     letterSpacing = (-0.5).sp,
                     color = palette.text
                 )
                 Text(
-                    text = "Choose when Lumen nudges you to write.",
+                    text = stringResource(Res.string.reminders_subtitle),
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Medium,
                     color = palette.sub,
-                    modifier = Modifier.padding(top = 4.dp)
+                    modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.xs)
                 )
             }
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .padding(start = 12.dp)
-                    .size(34.dp)
+                    .padding(start = MaterialTheme.dimens.spacing.md)
+                    .size(MaterialTheme.dimens.icon.avatar)
                     .clip(CircleShape)
                     .background(pill)
                     .clickable(onClick = onClose)
             ) {
                 Icon(
                     imageVector = Icons.Default.Close,
-                    contentDescription = "Close",
+                    contentDescription = stringResource(Res.string.action_close),
                     tint = palette.sub,
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(MaterialTheme.dimens.icon.sm)
                 )
             }
         }
@@ -99,34 +111,34 @@ internal fun RemindersSheetContent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(18.dp))
+                .clip(RoundedCornerShape(MaterialTheme.dimens.radius.xl))
                 .background(card)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 15.dp)
+                modifier = Modifier.fillMaxWidth().padding(horizontal = MaterialTheme.dimens.spacing.lg, vertical = MaterialTheme.dimens.spacing.lg)
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.md)
                 ) {
                     Box(
                         contentAlignment = Alignment.Center,
                         modifier = Modifier
-                            .size(34.dp)
-                            .clip(RoundedCornerShape(10.dp))
+                            .size(MaterialTheme.dimens.icon.avatar)
+                            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.md))
                             .background(accent.copy(alpha = 0.14f))
                     ) {
                         Icon(
                             imageVector = Icons.Default.Notifications,
                             contentDescription = null,
                             tint = accent,
-                            modifier = Modifier.size(18.dp)
+                            modifier = Modifier.size(MaterialTheme.dimens.icon.md)
                         )
                     }
                     Text(
-                        text = "Daily reminder",
+                        text = stringResource(Res.string.reminders_daily),
                         fontSize = 15.sp,
                         fontWeight = FontWeight.Bold,
                         color = palette.text
@@ -136,27 +148,27 @@ internal fun RemindersSheetContent(
             }
 
             Box(
-                modifier = Modifier.padding(start = 62.dp).fillMaxWidth().height(1.dp)
+                modifier = Modifier.padding(start = MaterialTheme.dimens.spacing.massive).fillMaxWidth().height(1.dp)
                     .background(palette.hairline)
             )
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 15.dp)
+                modifier = Modifier.fillMaxWidth().padding(horizontal = MaterialTheme.dimens.spacing.lg, vertical = MaterialTheme.dimens.spacing.lg)
             ) {
                 Text(
-                    text = "Time",
+                    text = stringResource(Res.string.reminders_time),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
                     color = palette.text
                 )
                 Box(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(13.dp))
+                        .clip(RoundedCornerShape(MaterialTheme.dimens.radius.cardTight))
                         .background(pill)
                         .clickable(onClick = onTimeClick)
-                        .padding(horizontal = 14.dp, vertical = 8.dp)
+                        .padding(horizontal = MaterialTheme.dimens.spacing.lg, vertical = MaterialTheme.dimens.spacing.sm)
                 ) {
                     Text(
                         text = formatTimeLabel(state.hour, state.minute),
@@ -169,26 +181,26 @@ internal fun RemindersSheetContent(
             }
 
             Box(
-                modifier = Modifier.padding(start = 16.dp).fillMaxWidth().height(1.dp)
+                modifier = Modifier.padding(start = MaterialTheme.dimens.spacing.lg).fillMaxWidth().height(1.dp)
                     .background(palette.hairline)
             )
 
             Column(
                 modifier = Modifier.padding(
-                    start = 16.dp,
-                    end = 16.dp,
-                    top = 15.dp,
-                    bottom = 17.dp
+                    start = MaterialTheme.dimens.spacing.lg,
+                    end = MaterialTheme.dimens.spacing.lg,
+                    top = MaterialTheme.dimens.spacing.lg,
+                    bottom = MaterialTheme.dimens.spacing.lg
                 )
             ) {
                 Text(
-                    text = "Repeat",
+                    text = stringResource(Res.string.reminders_repeat),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
                     color = palette.text
                 )
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(top = 13.dp),
+                    modifier = Modifier.fillMaxWidth().padding(top = MaterialTheme.dimens.spacing.md),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     DayLabels.forEachIndexed { index, label ->
@@ -197,7 +209,7 @@ internal fun RemindersSheetContent(
                         Box(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
-                                .size(36.dp)
+                                .size(MaterialTheme.dimens.icon.avatar)
                                 .clip(CircleShape)
                                 .background(if (selected) accent else pill)
                                 .clickable { onDayToggle(day) }
@@ -216,28 +228,28 @@ internal fun RemindersSheetContent(
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(14.dp),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.lg),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 12.dp)
-                .clip(RoundedCornerShape(18.dp))
+                .padding(top = MaterialTheme.dimens.spacing.md)
+                .clip(RoundedCornerShape(MaterialTheme.dimens.radius.xl))
                 .background(card)
-                .padding(horizontal = 16.dp, vertical = 15.dp)
+                .padding(horizontal = MaterialTheme.dimens.spacing.lg, vertical = MaterialTheme.dimens.spacing.lg)
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "Streak reminder",
+                    text = stringResource(Res.string.reminders_streak),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
                     color = palette.text
                 )
                 Text(
-                    text = "Get a nudge before your streak is about to expire.",
+                    text = stringResource(Res.string.reminders_streak_description),
                     fontSize = 12.5.sp,
                     fontWeight = FontWeight.Medium,
                     lineHeight = 18.sp,
                     color = palette.sub,
-                    modifier = Modifier.padding(top = 3.dp)
+                    modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.xs)
                 )
             }
             ReminderToggle(checked = state.streakEnabled, onCheckedChange = onStreakToggle)
@@ -250,7 +262,7 @@ internal fun RemindersSheetContent(
 private fun RemindersSheetContentPreview() {
     AppTheme(darkTheme = true) {
         val palette = rememberNewEntryPalette()
-        Box(modifier = Modifier.background(palette.pageBg).padding(top = 12.dp)) {
+        Box(modifier = Modifier.background(palette.pageBg).padding(top = MaterialTheme.dimens.spacing.md)) {
             RemindersSheetContent(
                 state = RemindersState(
                     dailyEnabled = true,

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -35,7 +37,7 @@ internal fun EntriesBarChart(
     Column(modifier) {
         Row(
             modifier = Modifier.fillMaxWidth().weight(1f),
-            horizontalArrangement = Arrangement.spacedBy(2.dp),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.xxs),
             verticalAlignment = Alignment.Bottom
         ) {
             bars.forEach { value ->
@@ -43,13 +45,13 @@ internal fun EntriesBarChart(
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxHeight(value.toFloat() / maxBar)
-                        .clip(RoundedCornerShape(topStart = 2.dp, topEnd = 2.dp))
+                        .clip(RoundedCornerShape(topStart = MaterialTheme.dimens.radius.xs, topEnd = MaterialTheme.dimens.radius.xs))
                         .background(Color.White.copy(alpha = 0.62f))
                 )
             }
         }
         if (axisLabels.isNotEmpty()) {
-            Spacer(Modifier.height(5.dp))
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.xs))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -71,11 +73,11 @@ internal fun EntriesBarChart(
 @Composable
 private fun EntriesBarChartPreview() {
     AppTheme {
-        Box(Modifier.background(Color(0xFF7682D6)).padding(16.dp)) {
+        Box(Modifier.background(Color(0xFF7682D6)).padding(MaterialTheme.dimens.spacing.lg)) {
             EntriesBarChart(
                 bars = SampleEntries.bars,
                 axisLabels = SampleEntries.axisLabels,
-                modifier = Modifier.width(160.dp).height(86.dp)
+                modifier = Modifier.width(160.dp).height(MaterialTheme.dimens.size.topBar)
             )
         }
     }

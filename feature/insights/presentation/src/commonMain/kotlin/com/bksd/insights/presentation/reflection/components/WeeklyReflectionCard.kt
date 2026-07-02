@@ -29,15 +29,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.extended
+import com.bksd.insights.presentation.Res
 import com.bksd.insights.presentation.reflection.reflectionHexColor
+import com.bksd.insights.presentation.weekly_based_on_entries
+import com.bksd.insights.presentation.weekly_entry_plural
+import com.bksd.insights.presentation.weekly_entry_singular
+import com.bksd.insights.presentation.weekly_private_to_you
+import com.bksd.insights.presentation.weekly_question_to_sit_with
+import com.bksd.insights.presentation.weekly_reflection_title
+import com.bksd.insights.presentation.weekly_view_full
 import com.bksd.reflection.domain.model.ReflectionTheme
 import com.bksd.reflection.domain.model.WeeklyReflection
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -46,62 +56,70 @@ fun WeeklyReflectionCard(
     onViewFull: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val dark = MaterialTheme.colorScheme.background.luminance() < 0.5f
-    val colors = weeklyCardColors(dark)
+    val colors = MaterialTheme.colorScheme.extended.reflectionCard
 
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(22.dp))
-            .background(colors.surface)
-            .border(1.dp, colors.border, RoundedCornerShape(22.dp))
-            .padding(18.dp)
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.card))
+            .background(Brush.linearGradient(colors.surfaceGradient))
+            .border(1.dp, colors.border, RoundedCornerShape(MaterialTheme.dimens.radius.card))
+            .padding(MaterialTheme.dimens.spacing.xl)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .size(38.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(Brush.linearGradient(listOf(Color(0xFF7682D6), Color(0xFF5B6AD0))))
+                    .size(MaterialTheme.dimens.icon.tile)
+                    .clip(RoundedCornerShape(MaterialTheme.dimens.radius.md))
+                    .background(Brush.linearGradient(listOf(colors.iconStart, colors.iconEnd)))
             ) {
                 Icon(
                     imageVector = Icons.Default.AutoAwesome,
                     contentDescription = null,
                     tint = Color.White,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(MaterialTheme.dimens.icon.lg)
                 )
             }
-            Spacer(Modifier.width(11.dp))
+            Spacer(Modifier.width(MaterialTheme.dimens.spacing.md))
             Column(Modifier.weight(1f)) {
                 Text(
-                    text = "Weekly Reflection",
+                    text = stringResource(Res.string.weekly_reflection_title),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.ExtraBold,
                     letterSpacing = (-0.2).sp,
                     color = colors.title
                 )
+                val entryNoun = stringResource(
+                    if (reflection.entryCount == 1) Res.string.weekly_entry_singular
+                    else Res.string.weekly_entry_plural
+                )
                 Text(
-                    text = "Based on ${reflection.entryCount} ${entryWord(reflection.entryCount)} · ${reflection.rangeLabel}",
+                    text = stringResource(
+                        Res.string.weekly_based_on_entries,
+                        reflection.entryCount,
+                        entryNoun,
+                        reflection.rangeLabel
+                    ),
                     fontSize = 11.5.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = colors.meta,
-                    modifier = Modifier.padding(top = 1.dp)
+                    modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.xxs)
                 )
             }
             if (reflection.summary.isNotBlank()) {
-                Spacer(Modifier.width(8.dp))
+                Spacer(Modifier.width(MaterialTheme.dimens.spacing.sm))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(5.dp),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.xs),
                     modifier = Modifier
-                        .clip(RoundedCornerShape(11.dp))
+                        .clip(RoundedCornerShape(MaterialTheme.dimens.radius.md))
                         .background(colors.pillBg)
-                        .padding(horizontal = 10.dp, vertical = 5.dp)
+                        .padding(horizontal = MaterialTheme.dimens.spacing.md, vertical = MaterialTheme.dimens.spacing.xs)
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(6.dp)
+                            .size(MaterialTheme.dimens.icon.xs)
                             .clip(CircleShape)
                             .background(colors.pillContent)
                     )
@@ -121,14 +139,14 @@ fun WeeklyReflectionCard(
             lineHeight = 23.5.sp,
             fontWeight = FontWeight.Medium,
             color = colors.body,
-            modifier = Modifier.padding(top = 15.dp)
+            modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.lg)
         )
 
         if (reflection.themes.isNotEmpty()) {
             FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(7.dp),
-                verticalArrangement = Arrangement.spacedBy(7.dp),
-                modifier = Modifier.padding(top = 14.dp)
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
+                modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.lg)
             ) {
                 reflection.themes.forEach { theme ->
                     ReflectionThemeChip(
@@ -144,15 +162,15 @@ fun WeeklyReflectionCard(
         reflection.questions.firstOrNull()?.takeIf { it.isNotBlank() }?.let { question ->
             Column(
                 modifier = Modifier
-                    .padding(top = 15.dp)
+                    .padding(top = MaterialTheme.dimens.spacing.lg)
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(14.dp))
+                    .clip(RoundedCornerShape(MaterialTheme.dimens.radius.cardTight))
                     .background(colors.promptBg)
-                    .border(1.dp, colors.promptBorder, RoundedCornerShape(14.dp))
-                    .padding(horizontal = 14.dp, vertical = 13.dp)
+                    .border(1.dp, colors.promptBorder, RoundedCornerShape(MaterialTheme.dimens.radius.cardTight))
+                    .padding(horizontal = MaterialTheme.dimens.spacing.lg, vertical = MaterialTheme.dimens.spacing.md)
             ) {
                 Text(
-                    text = "A QUESTION TO SIT WITH",
+                    text = stringResource(Res.string.weekly_question_to_sit_with),
                     fontSize = 10.5.sp,
                     fontWeight = FontWeight.Bold,
                     letterSpacing = 0.7.sp,
@@ -164,14 +182,14 @@ fun WeeklyReflectionCard(
                     lineHeight = 21.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = colors.promptText,
-                    modifier = Modifier.padding(top = 5.dp)
+                    modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.xs)
                 )
             }
         }
 
         Box(
             modifier = Modifier
-                .padding(top = 16.dp)
+                .padding(top = MaterialTheme.dimens.spacing.lg)
                 .fillMaxWidth()
                 .height(1.dp)
                 .background(colors.hairline)
@@ -180,18 +198,18 @@ fun WeeklyReflectionCard(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .padding(top = 14.dp)
+                .padding(top = MaterialTheme.dimens.spacing.lg)
                 .fillMaxWidth()
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(7.dp),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
                 modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(MaterialTheme.dimens.radius.sm))
                     .clickable(onClick = onViewFull)
             ) {
                 Text(
-                    text = "View full reflection",
+                    text = stringResource(Res.string.weekly_view_full),
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Bold,
                     color = colors.title
@@ -200,72 +218,17 @@ fun WeeklyReflectionCard(
                     imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                     contentDescription = null,
                     tint = colors.title,
-                    modifier = Modifier.size(15.dp)
+                    modifier = Modifier.size(MaterialTheme.dimens.icon.lg)
                 )
             }
             Text(
-                text = "Private to you",
+                text = stringResource(Res.string.weekly_private_to_you),
                 fontSize = 11.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = colors.meta
             )
         }
     }
-}
-
-private fun entryWord(count: Int): String = if (count == 1) "entry" else "entries"
-
-private data class WeeklyCardColors(
-    val surface: Color,
-    val border: Color,
-    val title: Color,
-    val meta: Color,
-    val body: Color,
-    val pillBg: Color,
-    val pillContent: Color,
-    val chipBg: Color,
-    val chipText: Color,
-    val promptBg: Color,
-    val promptBorder: Color,
-    val promptLabel: Color,
-    val promptText: Color,
-    val hairline: Color,
-)
-
-private fun weeklyCardColors(dark: Boolean): WeeklyCardColors = if (dark) {
-    WeeklyCardColors(
-        surface = Color(0xFF232A45),
-        border = Color.White.copy(alpha = 0.07f),
-        title = Color.White,
-        meta = Color.White.copy(alpha = 0.5f),
-        body = Color.White.copy(alpha = 0.87f),
-        pillBg = Color(0xFF5EEAD4).copy(alpha = 0.16f),
-        pillContent = Color(0xFF8FE9DA),
-        chipBg = Color.White.copy(alpha = 0.10f),
-        chipText = Color.White.copy(alpha = 0.9f),
-        promptBg = Color.White.copy(alpha = 0.06f),
-        promptBorder = Color.White.copy(alpha = 0.09f),
-        promptLabel = Color.White.copy(alpha = 0.5f),
-        promptText = Color.White,
-        hairline = Color.White.copy(alpha = 0.10f),
-    )
-} else {
-    WeeklyCardColors(
-        surface = Color(0xFFECEEFB),
-        border = Color(0xFF4F46E5).copy(alpha = 0.14f),
-        title = Color(0xFF22203A),
-        meta = Color(0xFF8A867F),
-        body = Color(0xFF3A3645),
-        pillBg = Color(0xFF2FA876).copy(alpha = 0.14f),
-        pillContent = Color(0xFF2A815E),
-        chipBg = Color(0xFF282446).copy(alpha = 0.06f),
-        chipText = Color(0xFF3A3645),
-        promptBg = Color(0xFF4F46E5).copy(alpha = 0.07f),
-        promptBorder = Color(0xFF4F46E5).copy(alpha = 0.14f),
-        promptLabel = Color(0xFF8A867F),
-        promptText = Color(0xFF22203A),
-        hairline = Color.Black.copy(alpha = 0.07f),
-    )
 }
 
 private fun sampleWeekly() = WeeklyReflection(
@@ -288,7 +251,7 @@ private fun sampleWeekly() = WeeklyReflection(
 @Composable
 private fun WeeklyReflectionCardLightPreview() {
     AppTheme {
-        WeeklyReflectionCard(reflection = sampleWeekly(), onViewFull = {}, modifier = Modifier.padding(16.dp))
+        WeeklyReflectionCard(reflection = sampleWeekly(), onViewFull = {}, modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg))
     }
 }
 
@@ -296,6 +259,6 @@ private fun WeeklyReflectionCardLightPreview() {
 @Composable
 private fun WeeklyReflectionCardDarkPreview() {
     AppTheme(darkTheme = true) {
-        WeeklyReflectionCard(reflection = sampleWeekly(), onViewFull = {}, modifier = Modifier.padding(16.dp))
+        WeeklyReflectionCard(reflection = sampleWeekly(), onViewFull = {}, modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg))
     }
 }

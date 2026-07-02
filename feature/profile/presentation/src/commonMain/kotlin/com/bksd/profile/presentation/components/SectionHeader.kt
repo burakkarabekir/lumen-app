@@ -8,9 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 
 @Composable
 fun SectionHeader(
@@ -24,7 +24,7 @@ fun SectionHeader(
         color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.45f),
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = MaterialTheme.dimens.spacing.lg)
     )
 }
 

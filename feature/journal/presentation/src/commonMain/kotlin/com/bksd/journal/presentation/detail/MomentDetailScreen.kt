@@ -10,18 +10,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 import com.bksd.core.domain.location.LocationData
 import com.bksd.core.domain.model.Moment
 import com.bksd.core.domain.model.Mood
-import com.bksd.core.presentation.share.rememberShareLauncher
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.journal.presentation.detail.components.DetailBottomActionBar
+import com.bksd.journal.presentation.detail.share.ShareMomentSheet
+import com.bksd.journal.presentation.detail.share.shareCardDateLabel
+import com.bksd.journal.presentation.model.toMomentUi
 import com.bksd.journal.presentation.util.MomentFormatter
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentSetOf
@@ -38,12 +43,12 @@ fun MomentDetailRoot(
 ) {
     val viewModel = koinViewModel<MomentDetailViewModel>(parameters = { parametersOf(momentId, isEditing) })
     val formatter = koinInject<MomentFormatter>()
-    val shareLauncher = rememberShareLauncher()
     val state by viewModel.state.collectAsState()
+    var showShareSheet by remember { mutableStateOf(false) }
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
             is MomentDetailEvent.NavigateBack -> onNavigateBack()
-            is MomentDetailEvent.ShareEntry -> shareLauncher.share(event.text)
+            is MomentDetailEvent.ShowShareSheet -> showShareSheet = true
             is MomentDetailEvent.ShowError -> Unit
             is MomentDetailEvent.ShowSuccess -> Unit
         }
@@ -52,7 +57,9 @@ fun MomentDetailRoot(
     MomentDetailScreen(
         state = state,
         formatter = formatter,
-        onAction = viewModel::onAction
+        onAction = viewModel::onAction,
+        showShareSheet = showShareSheet,
+        onDismissShareSheet = { showShareSheet = false },
     )
 }
 
@@ -60,12 +67,22 @@ fun MomentDetailRoot(
 fun MomentDetailScreen(
     state: MomentDetailState,
     formatter: MomentFormatter,
-    onAction: (MomentDetailAction) -> Unit
+    onAction: (MomentDetailAction) -> Unit,
+    showShareSheet: Boolean = false,
+    onDismissShareSheet: () -> Unit = {},
 ) {
     val moment = state.moment
     when {
         moment != null -> {
             val palette = rememberNewEntryPalette()
+            val momentUi = remember(moment) { moment.toMomentUi() }
+            if (showShareSheet) {
+                ShareMomentSheet(
+                    moment = momentUi,
+                    dateLabel = shareCardDateLabel(moment.createdAt),
+                    onDismiss = onDismissShareSheet,
+                )
+            }
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -74,14 +91,14 @@ fun MomentDetailScreen(
                 if (state.isEditing) {
                     MomentDetailEditView(
                         state = state,
-                        moment = moment,
+                        moment = momentUi,
                         formatter = formatter,
                         onAction = onAction
                     )
                 } else {
                     MomentDetailReadView(
                         state = state,
-                        moment = moment,
+                        moment = momentUi,
                         formatter = formatter,
                         onAction = onAction
                     )
@@ -104,7 +121,7 @@ fun MomentDetailScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
-                .padding(horizontal = 24.dp),
+                .padding(horizontal = MaterialTheme.dimens.spacing.xxl),
             contentAlignment = Alignment.Center
         ) {
             Text(

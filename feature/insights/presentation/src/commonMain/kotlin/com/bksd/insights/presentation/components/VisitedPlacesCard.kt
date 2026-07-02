@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,35 +22,41 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.extended
+import com.bksd.core.design_system.theme.insightsPlacesGradient
+import com.bksd.insights.presentation.Res
 import com.bksd.insights.presentation.VisitedPlace
+import com.bksd.insights.presentation.visited_places
 import kotlinx.collections.immutable.ImmutableList
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun VisitedPlacesCard(places: ImmutableList<VisitedPlace>) {
+    val gradient = MaterialTheme.colorScheme.extended.insightsPlacesGradient
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(22.dp))
-            .background(Brush.verticalGradient(listOf(Color(0xFF2B2D48), Color(0xFF1B1C2B))))
-            .padding(16.dp)
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.card))
+            .background(Brush.verticalGradient(gradient))
+            .padding(MaterialTheme.dimens.spacing.lg)
     ) {
         Text(
-            text = "Visited Places",
+            text = stringResource(Res.string.visited_places),
             modifier = Modifier.fillMaxWidth(),
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White,
             textAlign = TextAlign.Center
         )
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(MaterialTheme.dimens.spacing.md))
         FlowRow(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.md, Alignment.CenterHorizontally),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.md),
             maxItemsInEachRow = 2
         ) {
             places.forEach { place -> PlaceChip(place) }
@@ -61,7 +68,7 @@ internal fun VisitedPlacesCard(places: ImmutableList<VisitedPlace>) {
 @Composable
 private fun VisitedPlacesCardPreview() {
     AppTheme {
-        Box(Modifier.padding(18.dp)) {
+        Box(Modifier.padding(MaterialTheme.dimens.spacing.xl)) {
             VisitedPlacesCard(SamplePlaces)
         }
     }

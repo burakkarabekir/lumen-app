@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 import com.bksd.moment.presentation.Res
 import com.bksd.moment.presentation.action_save
@@ -44,14 +46,14 @@ fun NewEntryTopBar(
         modifier = modifier
             .fillMaxWidth()
             .background(palette.pageBg)
-            .height(56.dp)
-            .padding(horizontal = 16.dp)
+            .height(MaterialTheme.dimens.size.fab)
+            .padding(horizontal = MaterialTheme.dimens.spacing.lg)
     ) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .align(Alignment.CenterStart)
-                .size(38.dp)
+                .size(MaterialTheme.dimens.icon.tile)
                 .clip(CircleShape)
                 .background(palette.surface)
                 .clickable(onClick = onClose)
@@ -60,7 +62,7 @@ fun NewEntryTopBar(
                 imageVector = Icons.Filled.Close,
                 contentDescription = stringResource(Res.string.content_desc_close),
                 tint = palette.sub,
-                modifier = Modifier.size(18.dp)
+                modifier = Modifier.size(MaterialTheme.dimens.icon.md)
             )
         }
 
@@ -76,14 +78,14 @@ fun NewEntryTopBar(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .align(Alignment.CenterEnd)
-                .clip(RoundedCornerShape(17.dp))
+                .clip(RoundedCornerShape(MaterialTheme.dimens.radius.lg))
                 .background(palette.saveBg.copy(alpha = if (saveEnabled) 1f else 0.4f))
                 .clickable(enabled = saveEnabled && !isSaving, onClick = onSave)
-                .padding(horizontal = 17.dp, vertical = 8.dp)
+                .padding(horizontal = MaterialTheme.dimens.spacing.lg, vertical = MaterialTheme.dimens.spacing.sm)
         ) {
             if (isSaving) {
                 CircularProgressIndicator(
-                    modifier = Modifier.size(16.dp),
+                    modifier = Modifier.size(MaterialTheme.dimens.icon.sm),
                     strokeWidth = 2.dp,
                     color = Color.White
                 )

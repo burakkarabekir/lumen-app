@@ -22,11 +22,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.journal.presentation.Res
+import com.bksd.journal.presentation.collapse
+import com.bksd.journal.presentation.expand
+import com.bksd.journal.presentation.journal_entry_label
+import com.bksd.journal.presentation.write_thoughts_hint
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun DetailJournalEntryCard(
@@ -42,9 +48,9 @@ fun DetailJournalEntryCard(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.lg))
             .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
-            .padding(20.dp)
+            .padding(MaterialTheme.dimens.spacing.xl)
             .animateContentSize()
     ) {
         Row(
@@ -52,7 +58,7 @@ fun DetailJournalEntryCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "JOURNAL ENTRY",
+                text = stringResource(Res.string.journal_entry_label),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 letterSpacing = 1.5.sp,
@@ -60,7 +66,7 @@ fun DetailJournalEntryCard(
             )
             if (!isEditing && body.length > 200) {
                 Text(
-                    text = if (isExpanded) "Collapse" else "Expand",
+                    text = if (isExpanded) stringResource(Res.string.collapse) else stringResource(Res.string.expand),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.SemiBold,
@@ -69,7 +75,7 @@ fun DetailJournalEntryCard(
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.lg))
 
         if (isEditing) {
             TextField(
@@ -89,7 +95,7 @@ fun DetailJournalEntryCard(
                 ),
                 placeholder = {
                     Text(
-                        text = "Write your thoughts...",
+                        text = stringResource(Res.string.write_thoughts_hint),
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
                     )
                 }
@@ -106,7 +112,7 @@ fun DetailJournalEntryCard(
         }
 
         if (tags.isNotEmpty()) {
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.lg))
             MomentDetailTagChips(
                 tags = tags,
                 isEditing = isEditing,
@@ -128,7 +134,7 @@ private fun DetailJournalEntryCardPreview() {
             onToggleExpand = {},
             onBodyChange = {},
             onTagRemove = {},
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg)
         )
     }
 }
@@ -145,7 +151,7 @@ private fun DetailJournalEntryCardEditPreview() {
             onToggleExpand = {},
             onBodyChange = {},
             onTagRemove = {},
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg)
         )
     }
 }

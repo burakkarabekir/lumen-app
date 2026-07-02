@@ -9,16 +9,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.InsightsPalette
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberInsightsPalette
 
 @Composable
@@ -27,9 +28,9 @@ internal fun StreakDetailCard(detail: com.bksd.insights.presentation.StreakDetai
         modifier = Modifier
             .fillMaxWidth()
             .height(StreakCardHeight)
-            .clip(RoundedCornerShape(22.dp))
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.card))
             .background(palette.surface)
-            .padding(18.dp)
+            .padding(MaterialTheme.dimens.spacing.xl)
     ) {
         Text(
             text = detail.title,
@@ -37,11 +38,11 @@ internal fun StreakDetailCard(detail: com.bksd.insights.presentation.StreakDetai
             fontWeight = FontWeight.ExtraBold,
             color = palette.text
         )
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(MaterialTheme.dimens.spacing.lg))
         StreakLineRow("Daily Streak", detail.daily, palette)
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(MaterialTheme.dimens.spacing.lg))
         HorizontalDivider(color = palette.hair)
-        Spacer(Modifier.height(14.dp))
+        Spacer(Modifier.height(MaterialTheme.dimens.spacing.lg))
         StreakLineRow("Weekly Streak", detail.weekly, palette)
     }
 }
@@ -51,7 +52,7 @@ internal fun StreakDetailCard(detail: com.bksd.insights.presentation.StreakDetai
 private fun StreakDetailCardPreview() {
     AppTheme {
         val palette = rememberInsightsPalette()
-        Box(Modifier.background(palette.pageBg).padding(18.dp)) {
+        Box(Modifier.background(palette.pageBg).padding(MaterialTheme.dimens.spacing.xl)) {
             StreakDetailCard(SampleLongest, palette)
         }
     }

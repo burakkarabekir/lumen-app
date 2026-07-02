@@ -1,8 +1,10 @@
 package com.bksd.insights.presentation.reflection.full
 
+import androidx.compose.runtime.Immutable
 import com.bksd.reflection.domain.model.WeeklyMomentInsights
 import com.bksd.reflection.domain.model.WeeklyReflection
 
+@Immutable
 data class WeeklyReflectionDetailState(
     val reflection: WeeklyReflection? = null,
     val insights: WeeklyMomentInsights? = null,

@@ -17,7 +17,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,6 +25,11 @@ import com.bksd.core.design_system.component.layout.AppScaffold
 import com.bksd.core.design_system.component.layout.AppSurface
 import com.bksd.core.design_system.component.layout.AppTopBar
 import com.bksd.core.design_system.theme.PreviewAppTheme
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.extended
+import com.bksd.core.design_system.theme.profileAccentAmber
+import com.bksd.core.design_system.theme.profileAccentIndigo
+import com.bksd.core.design_system.theme.profileAccentViolet
 import com.bksd.core.domain.appinfo.AppInfoProvider
 import com.bksd.profile.presentation.components.AboutFooter
 import com.bksd.profile.presentation.components.AboutHeader
@@ -34,10 +38,6 @@ import com.bksd.profile.presentation.components.SectionHeader
 import com.bksd.profile.presentation.components.SettingsGroup
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
-
-private val AccentLegal = Color(0xFF8A6FBF)
-private val AccentWeb = Color(0xFF6E7AD0)
-private val AccentRate = Color(0xFFE0A33A)
 
 private const val PrivacyPolicyUrl = "https://lumenjournal.app/privacy"
 private const val TermsUrl = "https://lumenjournal.app/terms"
@@ -75,7 +75,7 @@ internal fun AboutScreen(
                         IconButton(onClick = onBack) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back"
+                                contentDescription = stringResource(Res.string.action_back)
                             )
                         }
                     },
@@ -85,60 +85,60 @@ internal fun AboutScreen(
             AboutHeader(version = version)
 
             SectionHeader(stringResource(Res.string.about_section_legal))
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.sm))
             SettingsGroup {
                 ProfileSettingsRow(
                     icon = Icons.Default.Lock,
                     label = stringResource(Res.string.about_privacy_policy),
-                    accent = AccentLegal,
+                    accent = MaterialTheme.colorScheme.extended.profileAccentViolet,
                     onClick = { runCatching { uriHandler.openUri(PrivacyPolicyUrl) } }
                 )
                 HorizontalDivider(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
-                    modifier = Modifier.padding(start = 61.dp)
+                    modifier = Modifier.padding(start = MaterialTheme.dimens.spacing.massive)
                 )
                 ProfileSettingsRow(
                     icon = Icons.Default.Description,
                     label = stringResource(Res.string.about_terms),
-                    accent = AccentLegal,
+                    accent = MaterialTheme.colorScheme.extended.profileAccentViolet,
                     onClick = { runCatching { uriHandler.openUri(TermsUrl) } }
                 )
                 HorizontalDivider(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
-                    modifier = Modifier.padding(start = 61.dp)
+                    modifier = Modifier.padding(start = MaterialTheme.dimens.spacing.massive)
                 )
                 ProfileSettingsRow(
                     icon = Icons.Default.Language,
                     label = stringResource(Res.string.about_website),
-                    accent = AccentWeb,
+                    accent = MaterialTheme.colorScheme.extended.profileAccentIndigo,
                     onClick = { runCatching { uriHandler.openUri(WebsiteUrl) } }
                 )
             }
 
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))
 
             SectionHeader(stringResource(Res.string.about_section_more))
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.sm))
             SettingsGroup {
                 ProfileSettingsRow(
                     icon = Icons.Default.Star,
                     label = stringResource(Res.string.about_rate),
-                    accent = AccentRate,
+                    accent = MaterialTheme.colorScheme.extended.profileAccentAmber,
                     onClick = { runCatching { uriHandler.openUri(rateUrl) } }
                 )
                 HorizontalDivider(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
-                    modifier = Modifier.padding(start = 61.dp)
+                    modifier = Modifier.padding(start = MaterialTheme.dimens.spacing.massive)
                 )
                 ProfileSettingsRow(
                     icon = Icons.Default.Code,
                     label = stringResource(Res.string.about_acknowledgements),
-                    accent = AccentWeb,
+                    accent = MaterialTheme.colorScheme.extended.profileAccentIndigo,
                     onClick = { runCatching { uriHandler.openUri(LicensesUrl) } }
                 )
             }
 
-            Spacer(Modifier.height(28.dp))
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.xxxl))
             AboutFooter()
             Spacer(Modifier.height(128.dp))
         }

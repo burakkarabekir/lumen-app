@@ -11,8 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 
 @Composable
 fun AppFab(
@@ -25,7 +25,7 @@ fun AppFab(
     FloatingActionButton(
         onClick = onClick,
         modifier = modifier
-            .size(48.dp),
+            .size(MaterialTheme.dimens.size.cancelIcon),
         shape = CircleShape,
         containerColor = containerColor,
         contentColor = contentColor,

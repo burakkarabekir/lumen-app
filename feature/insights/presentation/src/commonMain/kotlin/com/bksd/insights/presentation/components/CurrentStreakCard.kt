@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.SwapHoriz
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,26 +30,35 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.extended
+import com.bksd.core.design_system.theme.insightsStreakGradient
 import com.bksd.insights.presentation.CurrentStreak
+import com.bksd.insights.presentation.Res
+import com.bksd.insights.presentation.current_streak
+import com.bksd.insights.presentation.journal_today_to_start
+import com.bksd.insights.presentation.journaled_every_day_since_prefix
+import com.bksd.insights.presentation.journaled_once_a_week_since_prefix
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun CurrentStreakCard(weekly: CurrentStreak, daily: CurrentStreak) {
     var showDaily by rememberSaveable { mutableStateOf(false) }
     val streak = if (showDaily) daily else weekly
+    val gradient = MaterialTheme.colorScheme.extended.insightsStreakGradient
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(StreakCardHeight)
-            .clip(RoundedCornerShape(22.dp))
-            .background(Brush.verticalGradient(listOf(Color(0xFF30344F), Color(0xFF191B29))))
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.card))
+            .background(Brush.verticalGradient(gradient))
     ) {
         StreakBlobs()
-        Column(modifier = Modifier.fillMaxSize().padding(18.dp)) {
+        Column(modifier = Modifier.fillMaxSize().padding(MaterialTheme.dimens.spacing.xl)) {
             Text(
-                text = "Current Streak",
+                text = stringResource(Res.string.current_streak),
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
                 fontSize = 15.sp,
@@ -68,23 +78,24 @@ internal fun CurrentStreakCard(weekly: CurrentStreak, daily: CurrentStreak) {
                     letterSpacing = (-2.5).sp,
                     color = Color.White
                 )
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(MaterialTheme.dimens.spacing.sm))
                 Text(
                     text = streak.unit,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.ExtraBold,
                     color = Color.White
                 )
-                Spacer(Modifier.height(14.dp))
+                Spacer(Modifier.height(MaterialTheme.dimens.spacing.lg))
+                val sincePrefix =
+                    if (showDaily) stringResource(Res.string.journaled_every_day_since_prefix)
+                    else stringResource(Res.string.journaled_once_a_week_since_prefix)
+                val startPrompt = stringResource(Res.string.journal_today_to_start)
                 Text(
                     text = buildAnnotatedString {
                         val dim = SpanStyle(color = Color.White.copy(alpha = 0.5f))
                         if (streak.since.isNotBlank()) {
                             withStyle(dim) {
-                                append(
-                                    if (showDaily) "You've journaled every day since "
-                                    else "You've journaled at least once a week since "
-                                )
+                                append("$sincePrefix ")
                             }
                             withStyle(
                                 SpanStyle(
@@ -96,7 +107,7 @@ internal fun CurrentStreakCard(weekly: CurrentStreak, daily: CurrentStreak) {
                             }
                             withStyle(dim) { append(".") }
                         } else {
-                            withStyle(dim) { append("Journal today to start a daily streak.") }
+                            withStyle(dim) { append(startPrompt) }
                         }
                     },
                     fontSize = 12.5.sp,
@@ -106,7 +117,7 @@ internal fun CurrentStreakCard(weekly: CurrentStreak, daily: CurrentStreak) {
             }
         }
         MenuDot(
-            modifier = Modifier.align(Alignment.TopEnd).padding(top = 16.dp, end = 18.dp),
+            modifier = Modifier.align(Alignment.TopEnd).padding(top = MaterialTheme.dimens.spacing.lg, end = MaterialTheme.dimens.spacing.xl),
             tint = Color.White.copy(alpha = 0.6f),
             bg = Color.White.copy(alpha = 0.10f),
             icon = Icons.Default.SwapHoriz,
@@ -119,7 +130,7 @@ internal fun CurrentStreakCard(weekly: CurrentStreak, daily: CurrentStreak) {
 @Composable
 private fun CurrentStreakCardPreview() {
     AppTheme {
-        Box(Modifier.padding(18.dp)) {
+        Box(Modifier.padding(MaterialTheme.dimens.spacing.xl)) {
             CurrentStreakCard(SampleCurrentStreak, SampleDailyStreak)
         }
     }

@@ -15,10 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.Res
 import com.bksd.core.design_system.tag_prefix
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -33,9 +33,9 @@ fun HashtagChip(
         modifier = modifier
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+            modifier = Modifier.padding(horizontal = MaterialTheme.dimens.spacing.md, vertical = MaterialTheme.dimens.spacing.sm),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.xs)
         ) {
             Text(
                 text = stringResource(Res.string.tag_prefix),
@@ -63,7 +63,7 @@ private fun HashtagChipWithIconPreview() {
                     imageVector = Icons.Default.Close,
                     contentDescription = "Remove tag",
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(14.dp)
+                    modifier = Modifier.size(MaterialTheme.dimens.icon.xs)
                 )
             }
         )

@@ -21,6 +21,7 @@
  import androidx.compose.ui.tooling.preview.Preview
  import androidx.compose.ui.unit.dp
  import com.bksd.core.design_system.theme.AppTheme
+ import com.bksd.core.design_system.theme.dimens
  import com.bksd.core.design_system.theme.textFieldBgPassive
  import com.bksd.core.design_system.theme.textPrimary
  import com.bksd.core.design_system.theme.textTertiary
@@ -55,7 +56,7 @@
                 enabled -> MaterialTheme.colorScheme.surface
                 else -> MaterialTheme.colorScheme.textFieldBgPassive
             },
-            shape = RoundedCornerShape(8.dp)
+            shape = RoundedCornerShape(MaterialTheme.dimens.radius.sm)
         )
         .border(
             width = 1.dp,
@@ -64,9 +65,9 @@
                 isFocused -> MaterialTheme.colorScheme.primary
                 else -> MaterialTheme.colorScheme.outline
             },
-            shape = RoundedCornerShape(8.dp)
+            shape = RoundedCornerShape(MaterialTheme.dimens.radius.sm)
         )
-        .padding(12.dp)
+        .padding(MaterialTheme.dimens.spacing.md)
 
     Column(
         modifier = modifier
@@ -77,13 +78,13 @@
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.textPrimary
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.sm))
         }
 
         textField(textFieldStyleModifier, interactionSource)
 
         if (supportingText != null) {
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.xs))
             Text(
                 text = supportingText,
                 color = if (isError) {

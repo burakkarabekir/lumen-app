@@ -88,16 +88,8 @@ class MomentDetailViewModel(
     }
 
     private fun handleShare() {
-        val moment = _state.value.moment ?: return
-        val text = buildString {
-            if (moment.title.isNotBlank()) append(moment.title)
-            val body = moment.body
-            if (!body.isNullOrBlank()) {
-                if (isNotEmpty()) append("\n\n")
-                append(body)
-            }
-        }
-        if (text.isNotBlank()) sendEvent(MomentDetailEvent.ShareEntry(text))
+        if (_state.value.moment == null) return
+        sendEvent(MomentDetailEvent.ShowShareSheet)
     }
 
     private fun playAudio(url: String) {

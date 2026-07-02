@@ -8,9 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 
 @Composable
 fun EditSectionLabel(
@@ -24,7 +24,7 @@ fun EditSectionLabel(
         fontWeight = FontWeight.Bold,
         letterSpacing = 0.7.sp,
         color = color,
-        modifier = modifier.padding(start = 2.dp, bottom = 8.dp)
+        modifier = modifier.padding(start = MaterialTheme.dimens.spacing.xxs, bottom = MaterialTheme.dimens.spacing.sm)
     )
 }
 

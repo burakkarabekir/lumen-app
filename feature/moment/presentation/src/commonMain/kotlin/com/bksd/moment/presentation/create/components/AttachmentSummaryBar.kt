@@ -27,10 +27,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.labelAttachmentBar
+import com.bksd.moment.presentation.Res
+import com.bksd.moment.presentation.attachment_count_plural
+import com.bksd.moment.presentation.attachment_count_single
+import com.bksd.moment.presentation.toggle_attachments
 import com.bksd.moment.presentation.create.AttachmentUiModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun AttachmentSummaryBar(
@@ -54,21 +60,21 @@ fun AttachmentSummaryBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.lg))
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .clickable { onToggleExpand() }
             .border(
                 width = 1.dp,
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(MaterialTheme.dimens.radius.lg)
             )
-            .padding(12.dp),
+            .padding(MaterialTheme.dimens.spacing.md),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
             modifier = Modifier
-                .size(48.dp)
-                .clip(RoundedCornerShape(12.dp))
+                .size(MaterialTheme.dimens.size.cancelIcon)
+                .clip(RoundedCornerShape(MaterialTheme.dimens.radius.md))
                 .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)),
             contentAlignment = Alignment.Center
         ) {
@@ -76,17 +82,21 @@ fun AttachmentSummaryBar(
                 imageVector = Icons.Default.Attachment,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(MaterialTheme.dimens.icon.xl)
             )
         }
         
         Column(
             modifier = Modifier
                 .weight(1f)
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = MaterialTheme.dimens.spacing.lg)
         ) {
             Text(
-                text = "$totalItems Attachment${if (totalItems > 1) "s" else ""}",
+                text = if (totalItems > 1) {
+                    stringResource(Res.string.attachment_count_plural, totalItems)
+                } else {
+                    stringResource(Res.string.attachment_count_single, totalItems)
+                },
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
@@ -100,16 +110,16 @@ fun AttachmentSummaryBar(
 
         Box(
             modifier = Modifier
-                .size(32.dp)
+                .size(MaterialTheme.dimens.icon.avatar)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f)),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                contentDescription = "Toggle Attachments",
+                contentDescription = stringResource(Res.string.toggle_attachments),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(MaterialTheme.dimens.icon.lg)
             )
         }
     }

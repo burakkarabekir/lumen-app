@@ -15,9 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
 import com.bksd.core.domain.model.Mood
 import com.bksd.journal.presentation.journal.components.moodColors
@@ -30,17 +30,22 @@ fun MomentDetailMoodChip(
     val (background, accent) = moodColors(mood, MaterialTheme.colorScheme.extended)
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(7.dp),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
         modifier = modifier
-            .clip(RoundedCornerShape(15.dp))
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.lg))
             .background(background)
-            .padding(start = 11.dp, end = 13.dp, top = 8.dp, bottom = 8.dp)
+            .padding(
+                start = MaterialTheme.dimens.spacing.md,
+                end = MaterialTheme.dimens.spacing.md,
+                top = MaterialTheme.dimens.spacing.sm,
+                bottom = MaterialTheme.dimens.spacing.sm
+            )
     ) {
         Icon(
             imageVector = detailMoodIcon(mood),
             contentDescription = null,
             tint = accent,
-            modifier = Modifier.size(15.dp)
+            modifier = Modifier.size(MaterialTheme.dimens.icon.sm)
         )
         Text(
             text = mood.label,
@@ -56,8 +61,8 @@ fun MomentDetailMoodChip(
 private fun MomentDetailMoodChipPreview() {
     AppTheme(darkTheme = true) {
         Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.padding(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
+            modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg)
         ) {
             MomentDetailMoodChip(Mood.CALM)
             MomentDetailMoodChip(Mood.GRATEFUL)

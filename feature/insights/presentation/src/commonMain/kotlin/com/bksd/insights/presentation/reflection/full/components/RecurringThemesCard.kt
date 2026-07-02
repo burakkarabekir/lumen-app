@@ -25,9 +25,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
+import com.bksd.insights.presentation.Res
 import com.bksd.insights.presentation.reflection.reflectionHexColor
+import com.bksd.insights.presentation.weekly_entry_count
+import com.bksd.insights.presentation.weekly_entry_plural
+import com.bksd.insights.presentation.weekly_entry_singular
 import com.bksd.reflection.domain.model.ReflectionTheme
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun RecurringThemesCard(
@@ -42,12 +48,12 @@ fun RecurringThemesCard(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(18.dp))
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.xl))
             .background(palette.surface)
     ) {
         themes.forEachIndexed { index, theme ->
             val color = reflectionHexColor(theme.colorHex)
-            Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 14.dp)) {
+            Column(modifier = Modifier.fillMaxWidth().padding(horizontal = MaterialTheme.dimens.spacing.lg, vertical = MaterialTheme.dimens.spacing.lg)) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -55,11 +61,11 @@ fun RecurringThemesCard(
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(9.dp)
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm)
                     ) {
                         Box(
                             modifier = Modifier
-                                .size(9.dp)
+                                .size(MaterialTheme.dimens.icon.xs)
                                 .clip(CircleShape)
                                 .background(color)
                         )
@@ -70,8 +76,12 @@ fun RecurringThemesCard(
                             color = palette.text
                         )
                     }
+                    val entryNoun = stringResource(
+                        if (theme.count == 1) Res.string.weekly_entry_singular
+                        else Res.string.weekly_entry_plural
+                    )
                     Text(
-                        text = "${theme.count} ${if (theme.count == 1) "entry" else "entries"}",
+                        text = stringResource(Res.string.weekly_entry_count, theme.count, entryNoun),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = palette.sub
@@ -79,17 +89,17 @@ fun RecurringThemesCard(
                 }
                 Box(
                     modifier = Modifier
-                        .padding(top = 10.dp)
+                        .padding(top = MaterialTheme.dimens.spacing.md)
                         .fillMaxWidth()
-                        .height(6.dp)
-                        .clip(RoundedCornerShape(3.dp))
+                        .height(MaterialTheme.dimens.icon.xs)
+                        .clip(RoundedCornerShape(MaterialTheme.dimens.radius.xs))
                         .background(trackColor)
                 ) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth(theme.count.toFloat() / maxCount)
-                            .height(6.dp)
-                            .clip(RoundedCornerShape(3.dp))
+                            .height(MaterialTheme.dimens.icon.xs)
+                            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.xs))
                             .background(color)
                     )
                 }
@@ -112,7 +122,7 @@ private fun RecurringThemesCardPreview() {
                 ReflectionTheme("Mornings", "#E0A21A", 3),
                 ReflectionTheme("Rest", "#6E7AD0", 2),
             ),
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg)
         )
     }
 }

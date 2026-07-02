@@ -8,9 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 
 @Composable
 fun JournalSectionHeader(
@@ -21,7 +21,11 @@ fun JournalSectionHeader(
         text = text,
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = 2.dp, top = 10.dp, bottom = 2.dp),
+            .padding(
+                start = MaterialTheme.dimens.spacing.xxs,
+                top = MaterialTheme.dimens.spacing.md,
+                bottom = MaterialTheme.dimens.spacing.xxs
+            ),
         fontSize = 19.sp,
         fontWeight = FontWeight.ExtraBold,
         letterSpacing = (-0.4).sp,

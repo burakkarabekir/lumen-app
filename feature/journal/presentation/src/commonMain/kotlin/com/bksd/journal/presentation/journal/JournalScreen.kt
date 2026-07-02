@@ -31,8 +31,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bksd.core.design_system.component.layout.AppSurface
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.domain.model.AudioAttachment
-import com.bksd.core.domain.model.Moment
+import com.bksd.journal.presentation.model.MomentUi
 import com.bksd.core.domain.model.PlaybackState
 import com.bksd.core.presentation.link.LinkConfirmationDialog
 import com.bksd.core.presentation.link.toOpenableWebUrl
@@ -153,10 +154,10 @@ fun JournalScreen(
                 LazyColumn(
                     state = listState,
                     modifier = Modifier.fillMaxSize().weight(1f),
-                    contentPadding = PaddingValues(horizontal = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                    contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.spacing.lg),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.md)
                 ) {
-                    item { Spacer(modifier = Modifier.height(4.dp)) }
+                    item { Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.xs)) }
 
                     state.sections.forEach { section ->
                         item(key = "header_${section.header}") {
@@ -206,11 +207,11 @@ fun JournalScreen(
                     if (state.isLoadingMore) {
                         item(key = "loading_more") {
                             Box(
-                                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                                modifier = Modifier.fillMaxWidth().padding(MaterialTheme.dimens.spacing.lg),
                                 contentAlignment = Alignment.Center
                             ) {
                                 CircularProgressIndicator(
-                                    modifier = Modifier.size(24.dp),
+                                    modifier = Modifier.size(MaterialTheme.dimens.icon.xl),
                                     strokeWidth = 2.dp,
                                     color = MaterialTheme.colorScheme.primary
                                 )
@@ -250,11 +251,16 @@ private fun PreviewJournalScreen() {
                     JournalSection(
                         header = "Today",
                         items = persistentListOf(
-                            Moment(
+                            MomentUi(
                                 id = "",
                                 title = "Test",
                                 body = "Body",
                                 createdAt = Clock.System.now(),
+                                moods = persistentListOf(),
+                                tags = persistentListOf(),
+                                attachments = persistentListOf(),
+                                location = null,
+                                isFavorite = false,
                             )
                         )
                     )

@@ -17,6 +17,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bksd.core.design_system.component.layout.AppScaffold
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 import com.bksd.core.presentation.attachment.LinkAttachmentCard
 import com.bksd.core.presentation.attachment.PhotoAttachmentCard
@@ -297,8 +299,8 @@ private fun CreateMomentScreen(
                         .weight(1f)
                         .fillMaxWidth()
                         .verticalScroll(scrollState)
-                        .padding(horizontal = 20.dp)
-                        .padding(top = 12.dp, bottom = 24.dp)
+                        .padding(horizontal = MaterialTheme.dimens.spacing.xl)
+                        .padding(top = MaterialTheme.dimens.spacing.md, bottom = MaterialTheme.dimens.spacing.xxl)
                 ) {
                     EntryMetaRow(
                         dateHeadline = state.dateHeadline,
@@ -308,7 +310,7 @@ private fun CreateMomentScreen(
                         onRemoveLocation = { onAction(CreateMomentAction.OnRemoveLocationClick) },
                     )
 
-                    Spacer(Modifier.height(18.dp))
+                    Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))
 
                     BasicTextField(
                         value = state.title,
@@ -334,7 +336,7 @@ private fun CreateMomentScreen(
                         }
                     )
 
-                    Spacer(Modifier.height(12.dp))
+                    Spacer(Modifier.height(MaterialTheme.dimens.spacing.md))
 
                     BasicTextField(
                         value = state.body,
@@ -362,7 +364,7 @@ private fun CreateMomentScreen(
                     )
 
                     if (state.allAttachments.isNotEmpty()) {
-                        Spacer(Modifier.height(20.dp))
+                        Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))
                         AttachmentSummaryBar(
                             attachments = state.allAttachments,
                             isExpanded = state.isAttachmentsExpanded,
@@ -372,8 +374,8 @@ private fun CreateMomentScreen(
 
                         AnimatedVisibility(visible = state.isAttachmentsExpanded) {
                             Column(
-                                verticalArrangement = Arrangement.spacedBy(12.dp),
-                                modifier = Modifier.padding(top = 12.dp)
+                                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.md),
+                                modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.md)
                             ) {
                                 state.allAttachments.forEach { attachment ->
                                     when (attachment) {
@@ -436,7 +438,7 @@ private fun CreateMomentScreen(
                         }
                     }
 
-                    Spacer(Modifier.height(26.dp))
+                    Spacer(Modifier.height(MaterialTheme.dimens.spacing.xxl))
 
                     MoodSection(
                         selectedMoods = state.selectedMoods,
@@ -445,7 +447,7 @@ private fun CreateMomentScreen(
                         onToggleExpand = { onAction(CreateMomentAction.OnToggleMoodSection) },
                     )
 
-                    Spacer(Modifier.height(24.dp))
+                    Spacer(Modifier.height(MaterialTheme.dimens.spacing.xxl))
 
                     AiAnalysisOptInCard(
                         checked = state.analyzeWithAi,

@@ -26,11 +26,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.component.button.AppButton
 import com.bksd.core.design_system.component.button.AppButtonStyle
 import com.bksd.core.design_system.theme.PreviewAppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.paywall.presentation.components.FeatureRow
 import com.bksd.paywall.presentation.components.HeroCard
@@ -71,7 +71,7 @@ internal fun PaywallScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp, vertical = 8.dp),
+                .padding(horizontal = MaterialTheme.dimens.spacing.sm, vertical = MaterialTheme.dimens.spacing.sm),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -91,7 +91,7 @@ internal fun PaywallScreen(
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
                 modifier = Modifier
                     .clickable { onAction(PaywallAction.OnRestoreClick) }
-                    .padding(horizontal = 12.dp, vertical = 8.dp)
+                    .padding(horizontal = MaterialTheme.dimens.spacing.md, vertical = MaterialTheme.dimens.spacing.sm)
             )
         }
 
@@ -99,21 +99,21 @@ internal fun PaywallScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 20.dp),
+                .padding(horizontal = MaterialTheme.dimens.spacing.xl),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.sm))
 
             HeroCard()
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.xxxl))
 
             state.features.forEach { feature ->
                 FeatureRow(feature = feature)
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.xl))
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.sm))
 
             state.tiers.forEach { tier ->
                 PricingTierCard(
@@ -121,10 +121,10 @@ internal fun PaywallScreen(
                     isSelected = state.selectedTier?.id == tier.id,
                     onSelect = { onAction(PaywallAction.OnSelectTier(tier)) }
                 )
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.md))
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.md))
 
             AppButton(
                 text = if (state.selectedTier?.hasFreeTrial == true) {
@@ -135,13 +135,13 @@ internal fun PaywallScreen(
                 onClick = { onAction(PaywallAction.OnSubscribeClick) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp),
+                    .height(MaterialTheme.dimens.size.fab),
                 enabled = !state.isProcessing,
                 isLoading = state.isProcessing,
                 style = AppButtonStyle.PRIMARY
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.md))
 
             Text(
                 text = stringResource(Res.string.legal_text),
@@ -153,7 +153,7 @@ internal fun PaywallScreen(
                 textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.xxxl))
         }
     }
 }

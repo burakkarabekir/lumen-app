@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 
 @Composable
@@ -33,23 +35,23 @@ fun QuestionsToSitWithCard(
     val accent = palette.saveBg
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.md),
         modifier = modifier.fillMaxWidth()
     ) {
         questions.forEach { question ->
             Row(
-                horizontalArrangement = Arrangement.spacedBy(11.dp),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.md),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(14.dp))
+                    .clip(RoundedCornerShape(MaterialTheme.dimens.radius.cardTight))
                     .background(accent.copy(alpha = 0.06f))
-                    .border(1.dp, accent.copy(alpha = 0.14f), RoundedCornerShape(14.dp))
-                    .padding(horizontal = 14.dp, vertical = 14.dp)
+                    .border(1.dp, accent.copy(alpha = 0.14f), RoundedCornerShape(MaterialTheme.dimens.radius.cardTight))
+                    .padding(horizontal = MaterialTheme.dimens.spacing.lg, vertical = MaterialTheme.dimens.spacing.lg)
             ) {
                 Box(
                     modifier = Modifier
-                        .padding(top = 6.dp)
-                        .size(7.dp)
+                        .padding(top = MaterialTheme.dimens.spacing.sm)
+                        .size(MaterialTheme.dimens.icon.xs)
                         .clip(CircleShape)
                         .background(accent)
                 )
@@ -74,7 +76,7 @@ private fun QuestionsToSitWithCardPreview() {
                 "What would it take to protect one slow morning each week?",
                 "Where did the week feel most like your own?"
             ),
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg)
         )
     }
 }

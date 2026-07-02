@@ -17,8 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.paywall.presentation.PaywallFeatureUi
 
 @Composable
@@ -29,16 +29,16 @@ fun FeatureRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 4.dp),
+            .padding(horizontal = MaterialTheme.dimens.spacing.xs),
         verticalAlignment = Alignment.Top
     ) {
         Icon(
             imageVector = Icons.Default.Star,
             contentDescription = null,
             tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(MaterialTheme.dimens.icon.xl)
         )
-        Spacer(modifier = Modifier.width(14.dp))
+        Spacer(modifier = Modifier.width(MaterialTheme.dimens.spacing.lg))
         Column {
             Text(
                 text = feature.title,
@@ -47,7 +47,7 @@ fun FeatureRow(
                 ),
                 color = MaterialTheme.colorScheme.onBackground
             )
-            Spacer(modifier = Modifier.height(2.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.xxs))
             Text(
                 text = feature.description,
                 style = MaterialTheme.typography.bodySmall.copy(

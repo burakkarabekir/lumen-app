@@ -39,7 +39,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,6 +48,11 @@ import com.bksd.core.design_system.component.layout.AppScaffold
 import com.bksd.core.design_system.component.layout.AppSurface
 import com.bksd.core.design_system.component.layout.AppTopBar
 import com.bksd.core.design_system.theme.PreviewAppTheme
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.extended
+import com.bksd.core.design_system.theme.profileAccentGreen
+import com.bksd.core.design_system.theme.profileAccentIndigo
+import com.bksd.core.design_system.theme.profileAccentViolet
 import com.bksd.core.design_system.theme.rememberThemeController
 import com.bksd.core.domain.theme.AppThemeMode
 import com.bksd.core.presentation.media.rememberImagePickerLauncher
@@ -64,10 +68,6 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-
-private val AccentPreferences = Color(0xFF6E7AD0)
-private val AccentData = Color(0xFF2FA876)
-private val AccentSupport = Color(0xFF8A6FBF)
 
 @Composable
 fun ProfileRoot(
@@ -156,7 +156,7 @@ internal fun ProfileScreen(
                         IconButton(onClick = onBack) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back"
+                                contentDescription = stringResource(Res.string.action_back)
                             )
                         }
                     },
@@ -173,11 +173,11 @@ internal fun ProfileScreen(
                 joinYear = state.joinYear,
                 onAvatarClick = { if (!state.photoUrl.isNullOrBlank()) showEnlargedPhoto = true },
                 onEditClick = { onAction(ProfileAction.OnEditProfileClick) },
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg)
             )
 
             SectionHeader(stringResource(Res.string.section_preferences))
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.sm))
             SettingsGroup {
                 AppearanceRow(
                     isDark = isDark,
@@ -186,102 +186,102 @@ internal fun ProfileScreen(
                 )
                 HorizontalDivider(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
-                    modifier = Modifier.padding(start = 61.dp)
+                    modifier = Modifier.padding(start = MaterialTheme.dimens.spacing.massive)
                 )
                 ProfileSettingsRow(
                     icon = Icons.Default.Notifications,
                     label = stringResource(Res.string.reminders),
-                    accent = AccentPreferences,
+                    accent = MaterialTheme.colorScheme.extended.profileAccentIndigo,
                     onClick = { showRemindersSheet = true }
                 )
             }
 
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))
 
             SectionHeader(stringResource(Res.string.section_data_privacy))
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.sm))
             SettingsGroup {
                 ProfileSettingsRow(
                     icon = Icons.Default.Cloud,
                     label = stringResource(Res.string.cloud_sync),
-                    accent = AccentData,
+                    accent = MaterialTheme.colorScheme.extended.profileAccentGreen,
                     trailingValue = "On",
-                    trailingColor = AccentData,
+                    trailingColor = MaterialTheme.colorScheme.extended.profileAccentGreen,
                     onClick = {}
                 )
                 HorizontalDivider(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
-                    modifier = Modifier.padding(start = 61.dp)
+                    modifier = Modifier.padding(start = MaterialTheme.dimens.spacing.massive)
                 )
                 ProfileSettingsRow(
                     icon = Icons.Default.Lock,
                     label = stringResource(Res.string.lock_privacy),
-                    accent = AccentData,
+                    accent = MaterialTheme.colorScheme.extended.profileAccentGreen,
                     onClick = { onAction(ProfileAction.OnPrivacyClick) }
                 )
                 HorizontalDivider(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
-                    modifier = Modifier.padding(start = 61.dp)
+                    modifier = Modifier.padding(start = MaterialTheme.dimens.spacing.massive)
                 )
                 ProfileSettingsRow(
                     icon = Icons.Default.Download,
                     label = stringResource(Res.string.export_journal),
-                    accent = AccentData,
+                    accent = MaterialTheme.colorScheme.extended.profileAccentGreen,
                     onClick = { onAction(ProfileAction.OnDataExportClick) }
                 )
             }
 
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))
 
             SectionHeader(stringResource(Res.string.section_support))
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.sm))
             SettingsGroup {
                 ProfileSettingsRow(
                     icon = Icons.AutoMirrored.Filled.Help,
                     label = stringResource(Res.string.help_center),
-                    accent = AccentSupport,
+                    accent = MaterialTheme.colorScheme.extended.profileAccentViolet,
                     onClick = { onAction(ProfileAction.OnHelpClick) }
                 )
                 HorizontalDivider(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
-                    modifier = Modifier.padding(start = 61.dp)
+                    modifier = Modifier.padding(start = MaterialTheme.dimens.spacing.massive)
                 )
                 ProfileSettingsRow(
                     icon = Icons.Default.Info,
                     label = stringResource(Res.string.about_lumen),
-                    accent = AccentSupport,
+                    accent = MaterialTheme.colorScheme.extended.profileAccentViolet,
                     onClick = { onAction(ProfileAction.OnAboutClick) }
                 )
             }
 
-            Spacer(Modifier.height(20.dp))
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))
 
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .clip(RoundedCornerShape(16.dp))
+                    .padding(horizontal = MaterialTheme.dimens.spacing.lg)
+                    .clip(RoundedCornerShape(MaterialTheme.dimens.radius.lg))
                     .background(MaterialTheme.colorScheme.surfaceVariant)
                     .clickable(enabled = !state.isSigningOut) { onAction(ProfileAction.OnSignOutClick) }
-                    .padding(14.dp),
+                    .padding(MaterialTheme.dimens.spacing.lg),
                 contentAlignment = Alignment.Center
             ) {
                 if (state.isSigningOut) {
                     CircularProgressIndicator(
-                        modifier = Modifier.size(20.dp),
+                        modifier = Modifier.size(MaterialTheme.dimens.icon.lg),
                         strokeWidth = 2.dp,
                         color = MaterialTheme.colorScheme.error
                     )
                 } else {
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.Logout,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.error,
-                            modifier = Modifier.size(18.dp)
+                            modifier = Modifier.size(MaterialTheme.dimens.icon.md)
                         )
                         Text(
                             text = stringResource(Res.string.sign_out),

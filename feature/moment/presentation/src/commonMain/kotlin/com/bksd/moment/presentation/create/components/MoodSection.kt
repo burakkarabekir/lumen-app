@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,9 +25,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 import com.bksd.core.domain.model.Mood
 import com.bksd.moment.presentation.Res
@@ -60,17 +61,17 @@ fun MoodSection(
             fontWeight = FontWeight.ExtraBold,
             color = palette.text
         )
-        Spacer(Modifier.height(3.dp))
+        Spacer(Modifier.height(MaterialTheme.dimens.spacing.xs))
         Text(
             text = stringResource(Res.string.mood_section_subtitle),
             fontSize = 12.5.sp,
             fontWeight = FontWeight.Medium,
             color = palette.sub
         )
-        Spacer(Modifier.height(13.dp))
+        Spacer(Modifier.height(MaterialTheme.dimens.spacing.md))
         FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(9.dp),
-            verticalArrangement = Arrangement.spacedBy(9.dp),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
             modifier = Modifier.fillMaxWidth()
         ) {
             visibleMoods.forEach { mood ->
@@ -82,12 +83,12 @@ fun MoodSection(
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
                 modifier = Modifier
-                    .clip(RoundedCornerShape(16.dp))
+                    .clip(RoundedCornerShape(MaterialTheme.dimens.radius.lg))
                     .background(palette.surface)
                     .clickable(onClick = onToggleExpand)
-                    .padding(horizontal = 14.dp, vertical = 9.dp)
+                    .padding(horizontal = MaterialTheme.dimens.spacing.lg, vertical = MaterialTheme.dimens.spacing.sm)
             ) {
                 Text(
                     text = if (isExpanded) {
@@ -106,7 +107,7 @@ fun MoodSection(
                     imageVector = if (isExpanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
                     contentDescription = null,
                     tint = palette.sub,
-                    modifier = Modifier.size(15.dp)
+                    modifier = Modifier.size(MaterialTheme.dimens.icon.sm)
                 )
             }
         }
@@ -121,7 +122,7 @@ private fun MoodSectionPreview() {
         Column(
             modifier = Modifier
                 .background(palette.pageBg)
-                .padding(16.dp)
+                .padding(MaterialTheme.dimens.spacing.lg)
         ) {
             MoodSection(
                 selectedMoods = persistentSetOf(Mood.CALM, Mood.GRATEFUL),

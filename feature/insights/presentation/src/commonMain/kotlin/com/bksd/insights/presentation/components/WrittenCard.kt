@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,25 +22,33 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.extended
+import com.bksd.core.design_system.theme.insightsWrittenGradient
+import com.bksd.insights.presentation.Res
+import com.bksd.insights.presentation.stat_words
+import com.bksd.insights.presentation.stat_written
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun WrittenCard(words: Int, modifier: Modifier) {
+    val gradient = MaterialTheme.colorScheme.extended.insightsWrittenGradient
     Column(
         modifier = modifier
             .height(StatCardHeight)
-            .clip(RoundedCornerShape(20.dp))
-            .background(Brush.verticalGradient(listOf(Color(0xFFD3796A), Color(0xFFC0584F))))
-            .padding(16.dp),
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.xl))
+            .background(Brush.verticalGradient(gradient))
+            .padding(MaterialTheme.dimens.spacing.lg),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Written",
+            text = stringResource(Res.string.stat_written),
             fontSize = 13.sp,
             fontWeight = FontWeight.SemiBold,
             color = Color.White.copy(alpha = 0.9f)
         )
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(MaterialTheme.dimens.spacing.md))
         Text(
             text = words.grouped(),
             fontSize = 40.sp,
@@ -48,7 +57,7 @@ internal fun WrittenCard(words: Int, modifier: Modifier) {
             color = Color.White
         )
         Text(
-            text = "Words",
+            text = stringResource(Res.string.stat_words),
             fontSize = 13.sp,
             fontWeight = FontWeight.SemiBold,
             color = Color.White.copy(alpha = 0.85f)
@@ -63,7 +72,7 @@ private fun Int.grouped(): String =
 @Composable
 private fun WrittenCardPreview() {
     AppTheme {
-        Box(Modifier.padding(18.dp).width(170.dp)) {
+        Box(Modifier.padding(MaterialTheme.dimens.spacing.xl).width(170.dp)) {
             WrittenCard(words = 4930, modifier = Modifier)
         }
     }

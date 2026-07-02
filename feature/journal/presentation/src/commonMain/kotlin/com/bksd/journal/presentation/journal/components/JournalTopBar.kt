@@ -41,12 +41,19 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.component.AppAvatar
 import com.bksd.core.design_system.component.divider.AppDivider
 import com.bksd.core.design_system.component.layout.AppBarStyle
 import com.bksd.core.design_system.component.layout.AppTopBar
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.journal.presentation.Res
+import com.bksd.journal.presentation.content_desc_back
+import com.bksd.journal.presentation.content_desc_clear_search
+import com.bksd.journal.presentation.content_desc_profile
+import com.bksd.journal.presentation.content_desc_search
+import com.bksd.journal.presentation.search_moments_hint
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun JournalTopBar(
@@ -59,7 +66,7 @@ fun JournalTopBar(
     val totalDuration = 500
     val fadeOutDuration = 150
     val organicEasing = remember { CubicBezierEasing(0.42f, 0.0f, 0.58f, 1.0f) }
-    val headerHeight = 64.dp
+    val headerHeight = MaterialTheme.dimens.size.topBar
 
     var isSearchMode by remember { mutableStateOf(false) }
 
@@ -121,14 +128,14 @@ fun JournalTopBar(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Search,
-                                contentDescription = "Search",
+                                contentDescription = stringResource(Res.string.content_desc_search),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                         AppAvatar(
                             photoUrl = profilePhotoUrl,
-                            size = 36.dp,
-                            contentDescription = "Profile",
+                            size = MaterialTheme.dimens.icon.avatar,
+                            contentDescription = stringResource(Res.string.content_desc_profile),
                             onClick = onProfileClick,
                             modifier = Modifier.graphicsLayer { clip = true }
                         )
@@ -158,18 +165,18 @@ private fun SearchBar(
             .fillMaxWidth()
             .height(headerHeight)
             .background(MaterialTheme.colorScheme.surface)
-            .padding(horizontal = 4.dp),
+            .padding(horizontal = MaterialTheme.dimens.spacing.xs),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         IconButton(
             onClick = onBack,
             modifier = Modifier
-                .size(40.dp)
+                .size(MaterialTheme.dimens.icon.tile)
                 .graphicsLayer { clip = true }
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Back",
+                contentDescription = stringResource(Res.string.content_desc_back),
                 tint = MaterialTheme.colorScheme.onSurface
             )
         }
@@ -184,14 +191,14 @@ private fun SearchBar(
             cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
             modifier = Modifier
                 .weight(1f)
-                .clip(RoundedCornerShape(12.dp))
+                .clip(RoundedCornerShape(MaterialTheme.dimens.radius.md))
                 .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
-                .padding(horizontal = 12.dp, vertical = 10.dp)
+                .padding(horizontal = MaterialTheme.dimens.spacing.md, vertical = MaterialTheme.dimens.spacing.md)
                 .focusRequester(focusRequester),
             decorationBox = { innerTextField ->
                 if (query.isEmpty()) {
                     Text(
-                        text = "Search moments…",
+                        text = stringResource(Res.string.search_moments_hint),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
                     )
@@ -205,14 +212,14 @@ private fun SearchBar(
             IconButton(
                 onClick = { onQueryChange("") },
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(MaterialTheme.dimens.icon.tile)
                     .graphicsLayer { clip = true }
             ) {
                 Icon(
                     imageVector = Icons.Default.Close,
-                    contentDescription = "Clear search",
+                    contentDescription = stringResource(Res.string.content_desc_clear_search),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(MaterialTheme.dimens.icon.lg)
                 )
             }
         }

@@ -34,6 +34,7 @@ import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
@@ -54,17 +55,34 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.coverGradient
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.extended
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 import com.bksd.core.domain.location.LocationData
 import com.bksd.core.domain.model.AudioAttachment
-import com.bksd.core.domain.model.Moment
+import com.bksd.journal.presentation.model.MomentUi
 import com.bksd.core.domain.model.Mood
+import com.bksd.journal.presentation.Res
+import com.bksd.journal.presentation.add_mood
+import com.bksd.journal.presentation.cancel
 import com.bksd.journal.presentation.detail.components.DetailTimePickerDialog
 import com.bksd.journal.presentation.detail.components.EditSectionLabel
 import com.bksd.journal.presentation.detail.components.MomentDetailAttachments
 import com.bksd.journal.presentation.detail.components.MomentDetailEditMoodChip
 import com.bksd.journal.presentation.detail.components.MomentDetailMoodChip
+import com.bksd.journal.presentation.edit_mood_done
+import com.bksd.journal.presentation.edit_section_date_time
+import com.bksd.journal.presentation.edit_section_entry
+import com.bksd.journal.presentation.edit_section_moods
+import com.bksd.journal.presentation.edit_section_title
+import com.bksd.journal.presentation.edit_title_hint
+import com.bksd.journal.presentation.editing_badge
+import com.bksd.journal.presentation.next
 import com.bksd.journal.presentation.util.MomentFormatter
+import com.bksd.journal.presentation.write_thoughts_hint
+import org.jetbrains.compose.resources.stringResource
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
@@ -73,12 +91,10 @@ import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
 import kotlin.time.Instant
 
-private val CoverColors = listOf(Color(0xFF7682D6), Color(0xFF9281C6), Color(0xFFCF6F64))
-
 @Composable
 fun MomentDetailEditView(
     state: MomentDetailState,
-    moment: Moment,
+    moment: MomentUi,
     formatter: MomentFormatter,
     onAction: (MomentDetailAction) -> Unit,
     modifier: Modifier = Modifier
@@ -98,26 +114,26 @@ fun MomentDetailEditView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(212.dp)
-                    .background(Brush.linearGradient(CoverColors))
+                    .background(Brush.linearGradient(MaterialTheme.colorScheme.extended.coverGradient))
             ) {
                 Box(modifier = Modifier.fillMaxSize().background(Color(0x2E000000)))
                 val locationName = state.editLocation?.displayName
                 if (!locationName.isNullOrBlank()) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(7.dp),
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
                         modifier = Modifier
                             .align(Alignment.BottomStart)
-                            .padding(start = 18.dp, bottom = 16.dp)
-                            .clip(RoundedCornerShape(15.dp))
+                            .padding(start = MaterialTheme.dimens.spacing.xl, bottom = MaterialTheme.dimens.spacing.lg)
+                            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.lg))
                             .background(Color.White.copy(alpha = 0.22f))
-                            .padding(start = 12.dp, end = 9.dp, top = 8.dp, bottom = 8.dp)
+                            .padding(start = MaterialTheme.dimens.spacing.md, end = MaterialTheme.dimens.spacing.sm, top = MaterialTheme.dimens.spacing.sm, bottom = MaterialTheme.dimens.spacing.sm)
                     ) {
                         Icon(
                             imageVector = Icons.Default.Place,
                             contentDescription = null,
                             tint = Color.White,
-                            modifier = Modifier.size(13.dp)
+                            modifier = Modifier.size(MaterialTheme.dimens.icon.xs)
                         )
                         Text(
                             text = locationName,
@@ -128,7 +144,7 @@ fun MomentDetailEditView(
                         Box(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
-                                .size(18.dp)
+                                .size(MaterialTheme.dimens.icon.md)
                                 .clip(CircleShape)
                                 .background(Color(0x47000000))
                                 .clickable { onAction(MomentDetailAction.OnLocationRemove) }
@@ -137,7 +153,7 @@ fun MomentDetailEditView(
                                 imageVector = Icons.Default.Close,
                                 contentDescription = null,
                                 tint = Color.White,
-                                modifier = Modifier.size(11.dp)
+                                modifier = Modifier.size(MaterialTheme.dimens.icon.xs)
                             )
                         }
                     }
@@ -147,10 +163,10 @@ fun MomentDetailEditView(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
-                    .padding(top = 22.dp, bottom = 150.dp)
+                    .padding(horizontal = MaterialTheme.dimens.spacing.xl)
+                    .padding(top = MaterialTheme.dimens.spacing.xxl, bottom = 150.dp)
             ) {
-                EditSectionLabel("DATE & TIME", palette.sub)
+                EditSectionLabel(stringResource(Res.string.edit_section_date_time), palette.sub)
                 val localCreated = createdAt.toLocalDateTime(TimeZone.currentSystemDefault())
                 val monthShort = localCreated.month.name.lowercase()
                     .replaceFirstChar { it.uppercase() }
@@ -163,20 +179,20 @@ fun MomentDetailEditView(
                     }"
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.md),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(14.dp))
+                        .clip(RoundedCornerShape(MaterialTheme.dimens.radius.cardTight))
                         .background(palette.surface)
-                        .border(1.dp, palette.hairline, RoundedCornerShape(14.dp))
+                        .border(1.dp, palette.hairline, RoundedCornerShape(MaterialTheme.dimens.radius.cardTight))
                         .clickable { showDatePicker = true }
-                        .padding(horizontal = 14.dp, vertical = 13.dp)
+                        .padding(horizontal = MaterialTheme.dimens.spacing.lg, vertical = MaterialTheme.dimens.spacing.md)
                 ) {
                     Icon(
                         imageVector = Icons.Default.CalendarMonth,
                         contentDescription = null,
                         tint = accent,
-                        modifier = Modifier.size(17.dp)
+                        modifier = Modifier.size(MaterialTheme.dimens.icon.md)
                     )
                     Text(
                         text = dateTimeLabel,
@@ -189,19 +205,19 @@ fun MomentDetailEditView(
                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                         contentDescription = null,
                         tint = palette.sub,
-                        modifier = Modifier.size(16.dp)
+                        modifier = Modifier.size(MaterialTheme.dimens.icon.sm)
                     )
                 }
 
-                Spacer(Modifier.height(18.dp))
-                EditSectionLabel("TITLE", palette.sub)
+                Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))
+                EditSectionLabel(stringResource(Res.string.edit_section_title), palette.sub)
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(14.dp))
+                        .clip(RoundedCornerShape(MaterialTheme.dimens.radius.cardTight))
                         .background(palette.surface)
-                        .border(1.dp, palette.hairline, RoundedCornerShape(14.dp))
-                        .padding(horizontal = 15.dp, vertical = 13.dp)
+                        .border(1.dp, palette.hairline, RoundedCornerShape(MaterialTheme.dimens.radius.cardTight))
+                        .padding(horizontal = MaterialTheme.dimens.spacing.lg, vertical = MaterialTheme.dimens.spacing.md)
                 ) {
                     BasicTextField(
                         value = state.editTitle,
@@ -217,7 +233,7 @@ fun MomentDetailEditView(
                         decorationBox = { inner ->
                             if (state.editTitle.isEmpty()) {
                                 Text(
-                                    text = "Title",
+                                    text = stringResource(Res.string.edit_title_hint),
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.ExtraBold,
                                     color = palette.sub
@@ -228,11 +244,11 @@ fun MomentDetailEditView(
                     )
                 }
 
-                Spacer(Modifier.height(18.dp))
-                EditSectionLabel("MOODS", palette.sub)
+                Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))
+                EditSectionLabel(stringResource(Res.string.edit_section_moods), palette.sub)
                 FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     state.editMoods.forEach { mood ->
@@ -244,25 +260,25 @@ fun MomentDetailEditView(
                     val moodPickerOpen = showMoodPicker
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
                         modifier = Modifier
-                            .clip(RoundedCornerShape(16.dp))
+                            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.lg))
                             .border(
                                 1.5.dp,
                                 if (moodPickerOpen) accent else palette.hairline,
-                                RoundedCornerShape(16.dp)
+                                RoundedCornerShape(MaterialTheme.dimens.radius.lg)
                             )
                             .clickable { showMoodPicker = !showMoodPicker }
-                            .padding(horizontal = 14.dp, vertical = 9.dp)
+                            .padding(horizontal = MaterialTheme.dimens.spacing.lg, vertical = MaterialTheme.dimens.spacing.sm)
                     ) {
                         Icon(
                             imageVector = if (moodPickerOpen) Icons.Default.Check else Icons.Default.Add,
                             contentDescription = null,
                             tint = if (moodPickerOpen) accent else palette.sub,
-                            modifier = Modifier.size(15.dp)
+                            modifier = Modifier.size(MaterialTheme.dimens.icon.sm)
                         )
                         Text(
-                            text = if (moodPickerOpen) "Done" else "Add mood",
+                            text = if (moodPickerOpen) stringResource(Res.string.edit_mood_done) else stringResource(Res.string.add_mood),
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Bold,
                             color = if (moodPickerOpen) accent else palette.sub
@@ -270,10 +286,10 @@ fun MomentDetailEditView(
                     }
                 }
                 if (showMoodPicker) {
-                    Spacer(Modifier.height(10.dp))
+                    Spacer(Modifier.height(MaterialTheme.dimens.spacing.md))
                     FlowRow(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
+                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Mood.entries.filter { it !in state.editMoods }.forEach { mood ->
@@ -288,15 +304,15 @@ fun MomentDetailEditView(
                     }
                 }
 
-                Spacer(Modifier.height(18.dp))
-                EditSectionLabel("ENTRY", palette.sub)
+                Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))
+                EditSectionLabel(stringResource(Res.string.edit_section_entry), palette.sub)
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(14.dp))
+                        .clip(RoundedCornerShape(MaterialTheme.dimens.radius.cardTight))
                         .background(palette.surface)
-                        .border(1.5.dp, accent, RoundedCornerShape(14.dp))
-                        .padding(15.dp)
+                        .border(1.5.dp, accent, RoundedCornerShape(MaterialTheme.dimens.radius.cardTight))
+                        .padding(MaterialTheme.dimens.spacing.lg)
                 ) {
                     BasicTextField(
                         value = state.editBody,
@@ -311,7 +327,7 @@ fun MomentDetailEditView(
                         decorationBox = { inner ->
                             if (state.editBody.isEmpty()) {
                                 Text(
-                                    text = "Write your thoughts...",
+                                    text = stringResource(Res.string.write_thoughts_hint),
                                     fontSize = 15.5.sp,
                                     color = palette.sub
                                 )
@@ -325,7 +341,7 @@ fun MomentDetailEditView(
                     val audioUrl = state.editAttachments
                         .filterIsInstance<AudioAttachment>()
                         .firstOrNull()?.remoteUrl?.value
-                    Spacer(Modifier.height(20.dp))
+                    Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))
                     MomentDetailAttachments(
                         attachments = state.editAttachments,
                         audioPlaybackState = state.audioPlaybackState,
@@ -348,8 +364,8 @@ fun MomentDetailEditView(
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .statusBarsPadding()
-                .padding(start = 18.dp, top = 8.dp)
-                .size(38.dp)
+                .padding(start = MaterialTheme.dimens.spacing.xl, top = MaterialTheme.dimens.spacing.sm)
+                .size(MaterialTheme.dimens.icon.tile)
                 .clip(CircleShape)
                 .background(Color(0x57141420))
                 .clickable { onAction(MomentDetailAction.OnNavigateBack) }
@@ -358,29 +374,29 @@ fun MomentDetailEditView(
                 imageVector = Icons.Default.Close,
                 contentDescription = null,
                 tint = Color.White,
-                modifier = Modifier.size(18.dp)
+                modifier = Modifier.size(MaterialTheme.dimens.icon.md)
             )
         }
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(7.dp),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .statusBarsPadding()
-                .padding(top = 12.dp)
-                .clip(RoundedCornerShape(16.dp))
+                .padding(top = MaterialTheme.dimens.spacing.md)
+                .clip(RoundedCornerShape(MaterialTheme.dimens.radius.lg))
                 .background(Color(0x99141420))
-                .padding(horizontal = 13.dp, vertical = 8.dp)
+                .padding(horizontal = MaterialTheme.dimens.spacing.md, vertical = MaterialTheme.dimens.spacing.sm)
         ) {
             Box(
                 modifier = Modifier
-                    .size(7.dp)
+                    .size(MaterialTheme.dimens.icon.xs)
                     .clip(CircleShape)
                     .background(accent)
             )
             Text(
-                text = "Editing",
+                text = stringResource(Res.string.editing_badge),
                 fontSize = 12.5.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
@@ -404,10 +420,10 @@ fun MomentDetailEditView(
                     pendingDateMillis = datePickerState.selectedDateMillis
                     showDatePicker = false
                     if (pendingDateMillis != null) showTimePicker = true
-                }) { Text("Next") }
+                }) { Text(stringResource(Res.string.next)) }
             },
             dismissButton = {
-                TextButton(onClick = { showDatePicker = false }) { Text("Cancel") }
+                TextButton(onClick = { showDatePicker = false }) { Text(stringResource(Res.string.cancel)) }
             }
         ) {
             DatePicker(state = datePickerState)
@@ -448,11 +464,16 @@ private fun MomentDetailEditViewPreview() {
                 editLocation = LocationData(0.0, 0.0, "Mountain View, California"),
                 editCreatedAt = Clock.System.now()
             ),
-            moment = Moment(
+            moment = MomentUi(
                 id = "1",
                 title = "Morning pages",
                 body = "Woke up before the alarm.",
-                createdAt = Clock.System.now()
+                createdAt = Clock.System.now(),
+                moods = persistentListOf(),
+                tags = persistentListOf(),
+                attachments = persistentListOf(),
+                location = null,
+                isFavorite = false,
             ),
             formatter = object : MomentFormatter {
                 override fun formatTime(instant: Instant): String = "Saturday, June 27 · 9:41 AM"

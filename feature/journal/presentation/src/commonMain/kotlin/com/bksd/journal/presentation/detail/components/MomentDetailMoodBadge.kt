@@ -14,9 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
 import com.bksd.core.domain.model.Mood
 import com.bksd.journal.presentation.Res
@@ -35,11 +35,11 @@ fun MomentDetailMoodBadge(
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm)
     ) {
         Box(
             modifier = Modifier
-                .size(64.dp)
+                .size(MaterialTheme.dimens.size.topBar)
                 .clip(CircleShape)
                 .background(bgColor),
             contentAlignment = Alignment.Center

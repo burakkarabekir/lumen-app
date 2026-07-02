@@ -1,7 +1,9 @@
 import com.bksd.lumen.convention.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeCompilerGradlePluginExtension
 
 class CmpLibraryConventionPlugin : Plugin<Project> {
 
@@ -11,6 +13,12 @@ class CmpLibraryConventionPlugin : Plugin<Project> {
                 apply("com.bksd.convention.kmp.library")
                 apply("org.jetbrains.kotlin.plugin.compose")
                 apply("org.jetbrains.compose")
+            }
+
+            extensions.configure<ComposeCompilerGradlePluginExtension> {
+                stabilityConfigurationFiles.add(
+                    rootProject.layout.projectDirectory.file("compose_stability_config.conf")
+                )
             }
 
             dependencies {

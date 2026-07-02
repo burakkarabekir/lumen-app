@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,6 +23,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.SubcomposeAsyncImage
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 
 @Composable
@@ -44,7 +46,7 @@ internal fun AttachmentImage(
         loading = {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator(
-                    modifier = Modifier.size(22.dp),
+                    modifier = Modifier.size(MaterialTheme.dimens.icon.xl),
                     strokeWidth = 2.dp,
                     color = palette.sub
                 )
@@ -56,7 +58,7 @@ internal fun AttachmentImage(
                     imageVector = Icons.Default.Image,
                     contentDescription = null,
                     tint = palette.sub,
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(MaterialTheme.dimens.icon.avatar)
                 )
             }
         }

@@ -54,22 +54,28 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
-import com.bksd.core.domain.model.Moment
+import com.bksd.journal.presentation.model.MomentUi
 import com.bksd.core.domain.model.Mood
 import com.bksd.core.domain.model.PlaybackState
+import com.bksd.journal.presentation.Res
+import com.bksd.journal.presentation.content_desc_favorited
+import com.bksd.journal.presentation.content_desc_more_actions
 import com.bksd.journal.presentation.util.DefaultMomentFormatter
 import com.bksd.journal.presentation.util.MomentFormatter
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.datetime.TimeZone
+import org.jetbrains.compose.resources.stringResource
 import kotlin.math.roundToInt
 import kotlin.time.Clock
 
 @Composable
 fun MomentCard(
-    moment: Moment,
+    moment: MomentUi,
     formatter: MomentFormatter,
     timeZone: TimeZone,
     onClick: () -> Unit,
@@ -144,7 +150,7 @@ fun MomentCard(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(18.dp))
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.xl))
             .background(palette.surface)
             .pointerInput(hasMoods) {
                 if (!hasMoods) return@pointerInput
@@ -197,17 +203,17 @@ fun MomentCard(
                 if (!locationName.isNullOrBlank()) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(7.dp),
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(palette.pinBg)
-                            .padding(horizontal = 16.dp, vertical = 12.dp)
+                            .padding(horizontal = MaterialTheme.dimens.spacing.lg, vertical = MaterialTheme.dimens.spacing.md)
                     ) {
                         Icon(
                             imageVector = Icons.Default.Place,
                             contentDescription = null,
                             tint = palette.pinFg,
-                            modifier = Modifier.size(14.dp)
+                            modifier = Modifier.size(MaterialTheme.dimens.icon.xs)
                         )
                         Text(
                             text = locationName,
@@ -220,7 +226,7 @@ fun MomentCard(
                     }
                 }
 
-                Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 15.dp)) {
+                Column(modifier = Modifier.padding(start = MaterialTheme.dimens.spacing.lg, end = MaterialTheme.dimens.spacing.lg, top = MaterialTheme.dimens.spacing.lg)) {
                     Text(
                         text = moment.title,
                         fontSize = 19.sp,
@@ -240,7 +246,7 @@ fun MomentCard(
                             color = palette.sub,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier.padding(top = 3.dp)
+                            modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.xs)
                         )
                     }
                 }
@@ -254,13 +260,13 @@ fun MomentCard(
                         onAudioPlayClick = onAudioPlayClick,
                         onAudioPauseClick = onAudioPauseClick,
                         onLinkClick = onLinkClick,
-                        modifier = Modifier.padding(top = 13.dp)
+                        modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.md)
                     )
                 }
 
                 Box(
                     modifier = Modifier
-                        .padding(top = 14.dp, start = 16.dp, end = 16.dp)
+                        .padding(top = MaterialTheme.dimens.spacing.lg, start = MaterialTheme.dimens.spacing.lg, end = MaterialTheme.dimens.spacing.lg)
                         .fillMaxWidth()
                         .height(1.dp)
                         .background(palette.hairline)
@@ -269,7 +275,7 @@ fun MomentCard(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 16.dp, end = 6.dp, top = 5.dp, bottom = 7.dp),
+                        .padding(start = MaterialTheme.dimens.spacing.lg, end = MaterialTheme.dimens.spacing.sm, top = MaterialTheme.dimens.spacing.xs, bottom = MaterialTheme.dimens.spacing.sm),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -281,25 +287,25 @@ fun MomentCard(
                     )
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(2.dp)
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.xxs)
                     ) {
                         if (moment.isFavorite) {
                             Icon(
                                 imageVector = Icons.Default.Favorite,
-                                contentDescription = "Favorited",
+                                contentDescription = stringResource(Res.string.content_desc_favorited),
                                 tint = MaterialTheme.colorScheme.error,
-                                modifier = Modifier.size(15.dp)
+                                modifier = Modifier.size(MaterialTheme.dimens.icon.sm)
                             )
                         }
                         IconButton(
                             onClick = { isActionsSheetVisible = true },
-                            modifier = Modifier.size(32.dp)
+                            modifier = Modifier.size(MaterialTheme.dimens.icon.avatar)
                         ) {
                             Icon(
                                 imageVector = Icons.Default.MoreHoriz,
-                                contentDescription = "More actions",
+                                contentDescription = stringResource(Res.string.content_desc_more_actions),
                                 tint = palette.sub,
-                                modifier = Modifier.size(20.dp)
+                                modifier = Modifier.size(MaterialTheme.dimens.icon.lg)
                             )
                         }
                     }
@@ -375,7 +381,7 @@ private fun MoodColorStrip(
         modifier = Modifier
             .width(MomentCardDefaults.STRIP_WIDTH_DP.dp)
             .fillMaxHeight()
-            .clip(RoundedCornerShape(topStart = 18.dp, bottomStart = 18.dp))
+            .clip(RoundedCornerShape(topStart = MaterialTheme.dimens.radius.xl, bottomStart = MaterialTheme.dimens.radius.xl))
             .background(stripBrush)
             .clickable(onClick = onClick)
     )
@@ -400,8 +406,8 @@ private fun MoodRevealPanel(
                     placeable.place(0, 0)
                 }
             }
-            .padding(vertical = 10.dp, horizontal = 6.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+            .padding(vertical = MaterialTheme.dimens.spacing.md, horizontal = MaterialTheme.dimens.spacing.sm),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.xs)
     ) {
         moods.forEachIndexed { index, mood ->
             val staggerDelay = index * 0.12f
@@ -411,10 +417,10 @@ private fun MoodRevealPanel(
             Row(
                 modifier = Modifier
                     .graphicsLayer { alpha = chipAlpha }
-                    .clip(RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(MaterialTheme.dimens.radius.sm))
                     .background(bg)
-                    .padding(horizontal = 8.dp, vertical = 4.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    .padding(horizontal = MaterialTheme.dimens.spacing.sm, vertical = MaterialTheme.dimens.spacing.xs),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.xs),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = mood.emoji, fontSize = 12.sp)
@@ -435,12 +441,16 @@ private fun MoodRevealPanel(
 private fun PreviewMomentCard() {
     AppTheme(darkTheme = true) {
         MomentCard(
-            moment = Moment(
+            moment = MomentUi(
                 id = "0",
                 title = "A quiet morning walk",
                 body = "The air was crisp and the sun had just begun to rise.",
                 createdAt = Clock.System.now(),
-                moods = listOf(Mood.CALM, Mood.REFLECTIVE)
+                moods = persistentListOf(Mood.CALM, Mood.REFLECTIVE),
+                tags = persistentListOf(),
+                attachments = persistentListOf(),
+                location = null,
+                isFavorite = false,
             ),
             formatter = DefaultMomentFormatter(TimeZone.UTC),
             onClick = {},
@@ -454,12 +464,16 @@ private fun PreviewMomentCard() {
 private fun PreviewMomentCardLight() {
     AppTheme(darkTheme = false) {
         MomentCard(
-            moment = Moment(
+            moment = MomentUi(
                 id = "0",
                 title = "Creative burst at midnight",
                 body = "Ideas flowing like a river. Wrote three pages without stopping.",
                 createdAt = Clock.System.now(),
-                moods = listOf(Mood.INSPIRED)
+                moods = persistentListOf(Mood.INSPIRED),
+                tags = persistentListOf(),
+                attachments = persistentListOf(),
+                location = null,
+                isFavorite = false,
             ),
             formatter = DefaultMomentFormatter(TimeZone.UTC),
             onClick = {},

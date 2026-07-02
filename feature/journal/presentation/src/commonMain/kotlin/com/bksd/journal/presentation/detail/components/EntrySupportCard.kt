@@ -23,62 +23,58 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.extended
+import com.bksd.journal.presentation.Res
+import com.bksd.journal.presentation.ai_support_title
 import com.bksd.reflection.domain.model.EntryAnalysis
 import com.bksd.reflection.domain.model.MomentReflection
 import com.bksd.reflection.domain.model.MoodValence
 import com.bksd.reflection.domain.support.SupportResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun EntrySupportCard(
     reflection: MomentReflection.Support,
     modifier: Modifier = Modifier,
 ) {
-    val dark = MaterialTheme.colorScheme.background.luminance() < 0.5f
-    val iconStart = Color(0xFF57B98F)
-    val iconEnd = Color(0xFF3E9B77)
-    val accent = if (dark) Color(0xFF8FD8B4) else Color(0xFF2E7D57)
-    val surface = if (dark) Color(0xFF18291F) else Color(0xFFE9F4ED)
-    val border = if (dark) Color.White.copy(alpha = 0.07f) else Color(0xFF3E9B77).copy(alpha = 0.24f)
-    val title = if (dark) Color.White else Color(0xFF16321F)
-    val body = if (dark) Color.White.copy(alpha = 0.87f) else Color(0xFF39463F)
-    val rowBg = if (dark) Color.White.copy(alpha = 0.06f) else Color.White
+    val c = MaterialTheme.colorScheme.extended.supportCard
 
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(22.dp))
-            .background(surface)
-            .border(1.dp, border, RoundedCornerShape(22.dp))
-            .padding(18.dp)
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.card))
+            .background(Brush.linearGradient(c.surfaceGradient))
+            .border(1.dp, c.border, RoundedCornerShape(MaterialTheme.dimens.radius.card))
+            .padding(MaterialTheme.dimens.spacing.xl)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .size(38.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(Brush.linearGradient(listOf(iconStart, iconEnd)))
+                    .size(MaterialTheme.dimens.icon.tile)
+                    .clip(RoundedCornerShape(MaterialTheme.dimens.radius.md))
+                    .background(Brush.linearGradient(listOf(c.iconStart, c.iconEnd)))
             ) {
                 Icon(
                     imageVector = Icons.Default.FavoriteBorder,
                     contentDescription = null,
                     tint = Color.White,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(MaterialTheme.dimens.icon.lg)
                 )
             }
-            Spacer(Modifier.width(11.dp))
+            Spacer(Modifier.width(MaterialTheme.dimens.spacing.md))
             Text(
-                text = "A moment of support",
+                text = stringResource(Res.string.ai_support_title),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.ExtraBold,
                 letterSpacing = (-0.2).sp,
-                color = title
+                color = c.title
             )
         }
 
@@ -87,21 +83,21 @@ fun EntrySupportCard(
             fontSize = 14.5.sp,
             lineHeight = 23.5.sp,
             fontWeight = FontWeight.Medium,
-            color = body,
-            modifier = Modifier.padding(top = 15.dp)
+            color = c.body,
+            modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.lg)
         )
 
         if (reflection.mentalHealthLines.isNotEmpty()) {
             Column(
-                verticalArrangement = Arrangement.spacedBy(9.dp),
-                modifier = Modifier.padding(top = 15.dp)
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
+                modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.lg)
             ) {
                 reflection.mentalHealthLines.forEach { resource ->
                     SupportResourceRow(
                         resource = resource,
-                        accent = accent,
-                        rowBackground = rowBg,
-                        labelColor = title
+                        accent = c.accent,
+                        rowBackground = c.rowBg,
+                        labelColor = c.title
                     )
                 }
             }
@@ -128,7 +124,7 @@ private fun EntrySupportCardPreview() {
                     "to carry it alone — reaching out to someone you trust can make a difference.",
                 mentalHealthLines = listOf(SupportResource("Support line", "0212 000 0000"))
             ),
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg)
         )
     }
 }

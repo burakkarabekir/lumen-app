@@ -36,6 +36,12 @@ import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.Res
 import com.bksd.core.design_system.sparkle
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.journal.presentation.Res as JournalRes
+import com.bksd.journal.presentation.empty_state_sparkle
+import com.bksd.journal.presentation.empty_state_subtitle
+import com.bksd.journal.presentation.empty_state_title
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import kotlin.math.PI
 import kotlin.math.cos
@@ -107,7 +113,7 @@ fun JournalEmptyState(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(48.dp),
+            .padding(MaterialTheme.dimens.spacing.huge),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
@@ -170,10 +176,10 @@ fun JournalEmptyState(
             // Sparkle icon — floating gently
             Icon(
                 imageVector = vectorResource(Res.drawable.sparkle),
-                contentDescription = "Sparkle",
+                contentDescription = stringResource(JournalRes.string.empty_state_sparkle),
                 tint = primaryColor,
                 modifier = Modifier
-                    .size(48.dp)
+                    .size(MaterialTheme.dimens.size.cancelIcon)
                     .offset(y = iconFloat.dp)
                     .graphicsLayer {
                         // Subtle scale pulse tied to inner glow
@@ -184,11 +190,11 @@ fun JournalEmptyState(
             )
         }
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.xxxl))
 
         // Title
         Text(
-            text = "Your first moment\nstarts here",
+            text = stringResource(JournalRes.string.empty_state_title),
             style = MaterialTheme.typography.headlineMedium.copy(
                 fontWeight = FontWeight.Bold
             ),
@@ -196,11 +202,11 @@ fun JournalEmptyState(
             textAlign = TextAlign.Center
         )
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.md))
 
         // Subtitle
         Text(
-            text = "Tap + to capture a thought, a feeling,\nor whatever's on your mind.",
+            text = stringResource(JournalRes.string.empty_state_subtitle),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center

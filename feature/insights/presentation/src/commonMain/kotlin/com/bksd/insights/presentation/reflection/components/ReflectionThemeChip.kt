@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,8 +17,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bksd.core.design_system.theme.dimens
 
 @Composable
 fun ReflectionThemeChip(
@@ -29,15 +30,15 @@ fun ReflectionThemeChip(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
         modifier = modifier
-            .clip(RoundedCornerShape(13.dp))
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.cardTight))
             .background(chipColor)
-            .padding(horizontal = 11.dp, vertical = 6.dp)
+            .padding(horizontal = MaterialTheme.dimens.spacing.md, vertical = MaterialTheme.dimens.spacing.sm)
     ) {
         Box(
             modifier = Modifier
-                .size(7.dp)
+                .size(MaterialTheme.dimens.icon.xs)
                 .clip(CircleShape)
                 .background(color)
         )
@@ -53,7 +54,7 @@ fun ReflectionThemeChip(
 @Preview
 @Composable
 private fun ReflectionThemeChipPreview() {
-    Box(modifier = Modifier.background(Color(0xFF20233A)).padding(12.dp)) {
+    Box(modifier = Modifier.background(Color(0xFF20233A)).padding(MaterialTheme.dimens.spacing.md)) {
         ReflectionThemeChip(
             label = "mornings",
             color = Color(0xFF7682D6),

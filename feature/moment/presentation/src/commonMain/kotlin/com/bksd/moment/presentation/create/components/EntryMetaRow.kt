@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 import com.bksd.moment.presentation.Res
 import com.bksd.moment.presentation.content_desc_location
@@ -52,7 +54,7 @@ fun EntryMetaRow(
     ) {
         Row(
             verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.spacedBy(9.dp)
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm)
         ) {
             Text(
                 text = dateHeadline,
@@ -75,22 +77,22 @@ fun EntryMetaRow(
             if (isFetchingLocation || locationName != null) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
                     modifier = Modifier
                         .height(LocationBoxHeight)
-                        .clip(RoundedCornerShape(14.dp))
+                        .clip(RoundedCornerShape(MaterialTheme.dimens.radius.cardTight))
                         .background(palette.pinBg)
-                        .padding(horizontal = 12.dp)
+                        .padding(horizontal = MaterialTheme.dimens.spacing.md)
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Place,
                         contentDescription = stringResource(Res.string.content_desc_location),
                         tint = palette.pinFg,
-                        modifier = Modifier.size(13.dp)
+                        modifier = Modifier.size(MaterialTheme.dimens.icon.xs)
                     )
                     if (isFetchingLocation) {
                         CircularProgressIndicator(
-                            modifier = Modifier.size(12.dp),
+                            modifier = Modifier.size(MaterialTheme.dimens.icon.xs),
                             strokeWidth = 2.dp,
                             color = palette.pinFg
                         )
@@ -109,7 +111,7 @@ fun EntryMetaRow(
                             contentDescription = stringResource(Res.string.content_desc_remove_location),
                             tint = palette.pinFg,
                             modifier = Modifier
-                                .size(12.dp)
+                                .size(MaterialTheme.dimens.icon.xs)
                                 .clickable(onClick = onRemoveLocation)
                         )
                     }
@@ -127,7 +129,7 @@ private fun EntryMetaRowPreview() {
         Row(
             modifier = Modifier
                 .background(palette.pageBg)
-                .padding(16.dp)
+                .padding(MaterialTheme.dimens.spacing.lg)
         ) {
             EntryMetaRow(
                 dateHeadline = "June 27",

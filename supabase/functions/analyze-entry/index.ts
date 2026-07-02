@@ -3,16 +3,32 @@
 // Pass 2: generate a warm reflection — ONLY when distress is NONE/MILD.
 // The distress gate lives here, in code, not in the model.
 //
+// Pass 3 (best-effort): generate an abstract AI cover image from the analysis
+// and upload it to the private "entry-covers" Storage bucket; a long-lived
+// signed URL is returned as coverImageUrl. Cover failures never fail the reflection.
+//
 // Deploy:
-//   supabase secrets set GEMINI_API_KEY=...        (free key from aistudio.google.com)
+//   supabase secrets set GEMINI_API_KEY=...        (key from aistudio.google.com; must have image-model access)
+//   # create the private bucket once (Studio > Storage, or SQL):
+//   #   insert into storage.buckets (id, name, public) values ('entry-covers','entry-covers',false);
 //   supabase functions deploy analyze-entry
-// Optional model override:
+// Optional model overrides:
 //   supabase secrets set GEMINI_MODEL=gemini-2.5-flash-lite
+//   supabase secrets set GEMINI_IMAGE_MODEL=gemini-2.5-flash-image
+// SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY are injected automatically at runtime.
 // JWT verification is ON by default, so only signed-in Lumen users can call this.
+
+import { createClient } from "jsr:@supabase/supabase-js@2"
 
 const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY")
 const GEMINI_MODEL = Deno.env.get("GEMINI_MODEL") ?? "gemini-2.5-flash"
+const GEMINI_IMAGE_MODEL = Deno.env.get("GEMINI_IMAGE_MODEL") ?? "gemini-2.5-flash-image"
 const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models"
+
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL")
+const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")
+const COVER_BUCKET = "entry-covers"
+const COVER_URL_TTL_SECONDS = 31_536_000
 
 const corsHeaders: Record<string, string> = {
   "Access-Control-Allow-Origin": "*",
@@ -44,6 +60,7 @@ interface AnalyzeResponse {
   analysis: EntryAnalysis
   feedback: string | null
   question: string | null
+  coverImageUrl: string | null
 }
 
 const ANALYSIS_SYSTEM = `
@@ -156,6 +173,68 @@ async function feedback(analysis: EntryAnalysis, trend?: string | null): Promise
   }
 }
 
+function buildCoverPrompt(analysis: EntryAnalysis): string {
+  const mood = analysis.moodValence.toLowerCase().replace(/_/g, " ")
+  const themes = analysis.themes.slice(0, 3).join(", ") || "a quiet everyday moment"
+  const emotions = analysis.dominantEmotions.slice(0, 2).join(", ")
+  return [
+    "A soft, abstract, painterly illustration for a private journal entry's header banner.",
+    `Evoke the feeling of: ${themes}${emotions ? ` (emotional tone: ${emotions})` : ""}.`,
+    `Overall mood: ${mood}.`,
+    "Atmospheric, calm, dreamlike, muted and harmonious colors, gentle gradients and light.",
+    "Wide 3:2 landscape composition suitable for a banner.",
+    "Absolutely no text, no words, no letters, no logos, no people, no faces, no recognizable figures.",
+  ].join(" ")
+}
+
+async function generateCoverImage(prompt: string): Promise<Uint8Array> {
+  const res = await fetch(`${GEMINI_URL}/${GEMINI_IMAGE_MODEL}:generateContent`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "x-goog-api-key": GEMINI_API_KEY!,
+    },
+    body: JSON.stringify({
+      contents: [{ role: "user", parts: [{ text: prompt }] }],
+      generationConfig: { responseModalities: ["TEXT", "IMAGE"] },
+    }),
+  })
+  if (!res.ok) throw new Error(`image ${res.status}: ${await res.text()}`)
+  const data = await res.json()
+  const parts = data?.candidates?.[0]?.content?.parts ?? []
+  const inline = parts.find((p: { inlineData?: { data?: string } }) => p?.inlineData?.data)?.inlineData
+  if (!inline?.data) throw new Error("image: no inline image data in response")
+  const binary = atob(inline.data)
+  const bytes = new Uint8Array(binary.length)
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i)
+  return bytes
+}
+
+async function uploadCover(bytes: Uint8Array): Promise<string> {
+  if (!SUPABASE_URL || !SERVICE_ROLE_KEY) throw new Error("storage: missing SUPABASE_URL / SERVICE_ROLE_KEY")
+  const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, { auth: { persistSession: false } })
+  const path = `${crypto.randomUUID()}.png`
+  const { error: upErr } = await supabase.storage
+    .from(COVER_BUCKET)
+    .upload(path, bytes, { contentType: "image/png", upsert: true })
+  if (upErr) throw new Error(`storage upload: ${upErr.message}`)
+  const { data, error: signErr } = await supabase.storage
+    .from(COVER_BUCKET)
+    .createSignedUrl(path, COVER_URL_TTL_SECONDS)
+  if (signErr || !data?.signedUrl) throw new Error(`storage sign: ${signErr?.message ?? "no url"}`)
+  return data.signedUrl
+}
+
+async function generateCover(analysis: EntryAnalysis): Promise<string | null> {
+  try {
+    const bytes = await generateCoverImage(buildCoverPrompt(analysis))
+    return await uploadCover(bytes)
+  } catch (e) {
+    console.error("cover generation failed:", e instanceof Error ? e.message : String(e))
+    return null
+  }
+}
+
 function json(body: unknown, status: number): Response {
   return new Response(JSON.stringify(body), {
     status,
@@ -181,11 +260,15 @@ Deno.serve(async (req: Request) => {
   try {
     const analysis = await analyze(payload.text, payload.mood)
     const needsSupport = analysis.distress === "ELEVATED" || analysis.distress === "CRISIS"
-    const fb = needsSupport ? null : await feedback(analysis, payload.trend)
+    const [fb, coverImageUrl] = await Promise.all([
+      needsSupport ? Promise.resolve(null) : feedback(analysis, payload.trend),
+      generateCover(analysis),
+    ])
     const response: AnalyzeResponse = {
       analysis,
       feedback: fb?.reflection ?? null,
       question: fb?.question ?? null,
+      coverImageUrl,
     }
     return json(response, 200)
   } catch (e) {

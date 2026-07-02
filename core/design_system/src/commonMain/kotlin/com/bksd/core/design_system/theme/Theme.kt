@@ -96,6 +96,10 @@ data class ExtendedColors(
     val navActiveText: Color,
     val navIdle: Color,
     val navPlus: Color,
+
+    val reflectionCard: ReflectionCardColors,
+    val supportCard: DistressCardColors,
+    val crisisCard: DistressCardColors,
 )
 
 val LightExtendedColors = ExtendedColors(
@@ -171,6 +175,10 @@ val LightExtendedColors = ExtendedColors(
     navActiveText = NavActiveTextLight,
     navIdle = NavIdleLight,
     navPlus = NavPlusLight,
+
+    reflectionCard = LightReflectionCardColors,
+    supportCard = LightSupportCardColors,
+    crisisCard = LightCrisisCardColors,
 )
 
 val DarkExtendedColors = ExtendedColors(
@@ -246,6 +254,10 @@ val DarkExtendedColors = ExtendedColors(
     navActiveText = NavActiveTextDark,
     navIdle = NavIdleDark,
     navPlus = NavPlusDark,
+
+    reflectionCard = DarkReflectionCardColors,
+    supportCard = DarkSupportCardColors,
+    crisisCard = DarkCrisisCardColors,
 )
 
 val LightColorScheme = lightColorScheme(

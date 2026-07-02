@@ -32,6 +32,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -47,9 +48,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.extended
+import com.bksd.core.design_system.theme.favorite
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
-
-private val FavoriteRed = Color(0xFFE5484D)
 
 @Composable
 fun DetailBottomActionBar(
@@ -85,15 +87,15 @@ fun DetailBottomActionBar(
                 )
             )
             .navigationBarsPadding()
-            .padding(horizontal = 16.dp, vertical = 14.dp)
+            .padding(horizontal = MaterialTheme.dimens.spacing.lg, vertical = MaterialTheme.dimens.spacing.lg)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(26.dp))
+                .clip(RoundedCornerShape(MaterialTheme.dimens.radius.xxl))
                 .background(animatedTrayColor)
-                .padding(7.dp)
+                .padding(MaterialTheme.dimens.spacing.sm)
         ) {
             AnimatedVisibility(
                 visible = !isEditing,
@@ -113,7 +115,7 @@ fun DetailBottomActionBar(
                         background = sideColor,
                         onClick = onDeleteClick
                     )
-                    Spacer(Modifier.width(10.dp))
+                    Spacer(Modifier.width(MaterialTheme.dimens.spacing.md))
                 }
             }
 
@@ -121,8 +123,8 @@ fun DetailBottomActionBar(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .weight(1f)
-                    .height(54.dp)
-                    .clip(RoundedCornerShape(18.dp))
+                    .height(MaterialTheme.dimens.size.fab)
+                    .clip(RoundedCornerShape(MaterialTheme.dimens.radius.xl))
                     .background(accent)
                     .clickable(enabled = !isSaving) {
                         if (isEditing) onSaveClick() else onEditClick()
@@ -130,7 +132,7 @@ fun DetailBottomActionBar(
             ) {
                 if (isSaving) {
                     CircularProgressIndicator(
-                        modifier = Modifier.size(22.dp),
+                        modifier = Modifier.size(MaterialTheme.dimens.icon.xl),
                         strokeWidth = 2.dp,
                         color = Color.White
                     )
@@ -145,13 +147,13 @@ fun DetailBottomActionBar(
                     ) { editing ->
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(9.dp)
+                            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm)
                         ) {
                             Icon(
                                 imageVector = if (editing) Icons.Default.Check else Icons.Default.Edit,
                                 contentDescription = null,
                                 tint = Color.White,
-                                modifier = Modifier.size(18.dp)
+                                modifier = Modifier.size(MaterialTheme.dimens.icon.md)
                             )
                             Text(
                                 text = if (editing) "Save Changes" else "Edit",
@@ -176,10 +178,10 @@ fun DetailBottomActionBar(
                 )
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Spacer(Modifier.width(10.dp))
+                    Spacer(Modifier.width(MaterialTheme.dimens.spacing.md))
                     DetailActionButton(
                         icon = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                        tint = if (isFavorite) FavoriteRed else palette.sub,
+                        tint = if (isFavorite) MaterialTheme.colorScheme.extended.favorite else palette.sub,
                         background = sideColor,
                         onClick = onFavoriteClick
                     )

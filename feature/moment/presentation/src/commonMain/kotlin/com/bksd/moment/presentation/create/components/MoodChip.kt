@@ -16,9 +16,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material3.MaterialTheme
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.extended
+import com.bksd.core.design_system.theme.moodHue
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 import com.bksd.core.domain.model.Mood
 
@@ -30,25 +33,25 @@ fun MoodChip(
     modifier: Modifier = Modifier,
 ) {
     val palette = rememberNewEntryPalette()
-    val visual = moodVisual(mood)
-    val background = if (isSelected) visual.hue else visual.hue.copy(alpha = 0.18f)
+    val hue = MaterialTheme.colorScheme.extended.moodHue(mood)
+    val background = if (isSelected) hue else hue.copy(alpha = 0.18f)
     val contentColor = if (isSelected) Color.White else palette.text
-    val iconTint = if (isSelected) Color.White else visual.hue
+    val iconTint = if (isSelected) Color.White else hue
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(7.dp),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
         modifier = modifier
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.lg))
             .background(background)
             .clickable(onClick = onClick)
-            .padding(start = 12.dp, end = 14.dp, top = 9.dp, bottom = 9.dp)
+            .padding(start = MaterialTheme.dimens.spacing.md, end = MaterialTheme.dimens.spacing.lg, top = MaterialTheme.dimens.spacing.sm, bottom = MaterialTheme.dimens.spacing.sm)
     ) {
         Icon(
-            imageVector = visual.icon,
+            imageVector = moodIcon(mood),
             contentDescription = null,
             tint = iconTint,
-            modifier = Modifier.size(16.dp)
+            modifier = Modifier.size(MaterialTheme.dimens.icon.sm)
         )
         Text(
             text = mood.label,
@@ -65,10 +68,10 @@ private fun MoodChipPreview() {
     AppTheme(darkTheme = true) {
         val palette = rememberNewEntryPalette()
         Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
             modifier = Modifier
                 .background(palette.pageBg)
-                .padding(16.dp)
+                .padding(MaterialTheme.dimens.spacing.lg)
         ) {
             MoodChip(mood = Mood.CALM, isSelected = true, onClick = {})
             MoodChip(mood = Mood.GRATEFUL, isSelected = false, onClick = {})

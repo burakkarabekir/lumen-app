@@ -23,67 +23,68 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.extended
+import com.bksd.journal.presentation.Res
+import com.bksd.journal.presentation.ai_analyzing_caption
+import com.bksd.journal.presentation.ai_analyzing_title
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun EntryAnalysisLoadingCard(
     modifier: Modifier = Modifier,
 ) {
-    val dark = MaterialTheme.colorScheme.background.luminance() < 0.5f
-    val surface = if (dark) Color.White.copy(alpha = 0.05f) else Color(0xFF4F46E5).copy(alpha = 0.05f)
-    val border = if (dark) Color.White.copy(alpha = 0.08f) else Color(0xFF4F46E5).copy(alpha = 0.13f)
-    val title = if (dark) Color.White else Color(0xFF22203A)
-    val sub = if (dark) Color.White.copy(alpha = 0.5f) else Color(0xFF8A867F)
+    val c = MaterialTheme.colorScheme.extended.reflectionCard
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(22.dp))
-            .background(surface)
-            .border(1.dp, border, RoundedCornerShape(22.dp))
-            .padding(18.dp)
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.card))
+            .background(Brush.linearGradient(c.loadingSurfaceGradient))
+            .border(1.dp, c.loadingBorder, RoundedCornerShape(MaterialTheme.dimens.radius.card))
+            .padding(MaterialTheme.dimens.spacing.xl)
     ) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .size(38.dp)
-                .clip(RoundedCornerShape(12.dp))
-                .background(Brush.linearGradient(listOf(Color(0xFF7682D6), Color(0xFFCF6F64))))
+                .size(MaterialTheme.dimens.icon.tile)
+                .clip(RoundedCornerShape(MaterialTheme.dimens.radius.md))
+                .background(Brush.linearGradient(listOf(c.iconStart, c.iconEnd)))
         ) {
             Icon(
                 imageVector = Icons.Default.AutoAwesome,
                 contentDescription = null,
                 tint = Color.White,
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(MaterialTheme.dimens.icon.lg)
             )
         }
-        Spacer(Modifier.width(13.dp))
+        Spacer(Modifier.width(MaterialTheme.dimens.spacing.md))
         Column(Modifier.weight(1f)) {
             Text(
-                text = "Analyzing your entry…",
+                text = stringResource(Res.string.ai_analyzing_title),
                 fontSize = 14.5.sp,
                 fontWeight = FontWeight.ExtraBold,
-                color = title
+                color = c.title
             )
-            Spacer(Modifier.size(2.dp))
+            Spacer(Modifier.size(MaterialTheme.dimens.spacing.xxs))
             Text(
-                text = "Your reflection will appear here in a moment.",
+                text = stringResource(Res.string.ai_analyzing_caption),
                 fontSize = 12.sp,
                 lineHeight = 17.sp,
-                color = sub
+                color = c.meta
             )
         }
-        Spacer(Modifier.width(12.dp))
+        Spacer(Modifier.width(MaterialTheme.dimens.spacing.md))
         CircularProgressIndicator(
-            modifier = Modifier.size(20.dp),
+            modifier = Modifier.size(MaterialTheme.dimens.icon.lg),
             strokeWidth = 2.dp,
-            color = Color(0xFF7682D6)
+            color = c.iconStart
         )
     }
 }
@@ -92,7 +93,7 @@ fun EntryAnalysisLoadingCard(
 @Composable
 private fun EntryAnalysisLoadingCardPreview() {
     AppTheme {
-        EntryAnalysisLoadingCard(modifier = Modifier.padding(16.dp))
+        EntryAnalysisLoadingCard(modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg))
     }
 }
 
@@ -100,6 +101,6 @@ private fun EntryAnalysisLoadingCardPreview() {
 @Composable
 private fun EntryAnalysisLoadingCardDarkPreview() {
     AppTheme(darkTheme = true) {
-        EntryAnalysisLoadingCard(modifier = Modifier.padding(16.dp))
+        EntryAnalysisLoadingCard(modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg))
     }
 }

@@ -3,11 +3,12 @@ package com.bksd.insights.presentation.reflection
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.insights.presentation.reflection.components.WeeklyReflectionCard
 import com.bksd.insights.presentation.reflection.components.WeeklyReflectionLoadingCard
@@ -34,12 +35,12 @@ fun WeeklyReflectionRoot(
                 reflection = reflection,
                 onViewFull = { viewModel.onAction(ReflectionAction.OnViewFull) }
             )
-            Spacer(Modifier.height(18.dp))
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))
         }
 
         state.isGenerating -> Column(modifier) {
             WeeklyReflectionLoadingCard()
-            Spacer(Modifier.height(18.dp))
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))
         }
 
         else -> Unit

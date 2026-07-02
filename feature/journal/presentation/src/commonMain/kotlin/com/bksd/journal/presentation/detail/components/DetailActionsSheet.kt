@@ -26,8 +26,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.journal.presentation.Res
 import com.bksd.journal.presentation.delete
 import com.bksd.journal.presentation.edit_entry
@@ -51,9 +51,9 @@ fun DetailActionsSheet(
         dragHandle = {
             Surface(
                 modifier = Modifier
-                    .padding(vertical = 12.dp)
-                    .width(32.dp)
-                    .height(4.dp),
+                    .padding(vertical = MaterialTheme.dimens.spacing.md)
+                    .width(MaterialTheme.dimens.icon.avatar)
+                    .height(MaterialTheme.dimens.icon.xs),
                 shape = MaterialTheme.shapes.small,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
             ) {}
@@ -83,7 +83,7 @@ private fun DetailActionsSheetContent(
     onFavoriteClick: () -> Unit,
     onDeleteClick: () -> Unit
 ) {
-    Spacer(modifier = Modifier.height(8.dp))
+    Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.sm))
 
     DetailSheetActionRow(
         icon = {
@@ -91,7 +91,7 @@ private fun DetailActionsSheetContent(
                 imageVector = Icons.Default.Edit,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(MaterialTheme.dimens.icon.xl)
             )
         },
         label = stringResource(Res.string.edit_entry),
@@ -105,7 +105,7 @@ private fun DetailActionsSheetContent(
                 imageVector = Icons.Default.FavoriteBorder,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(MaterialTheme.dimens.icon.xl)
             )
         },
         label = stringResource(Res.string.favorite),
@@ -116,7 +116,7 @@ private fun DetailActionsSheetContent(
     HorizontalDivider(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 4.dp),
+            .padding(horizontal = MaterialTheme.dimens.spacing.xxl, vertical = MaterialTheme.dimens.spacing.xs),
         color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
     )
 
@@ -126,7 +126,7 @@ private fun DetailActionsSheetContent(
                 imageVector = Icons.Default.Delete,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.error,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(MaterialTheme.dimens.icon.xl)
             )
         },
         label = stringResource(Res.string.delete),
@@ -134,7 +134,7 @@ private fun DetailActionsSheetContent(
         onClick = onDeleteClick
     )
 
-    Spacer(modifier = Modifier.height(8.dp).navigationBarsPadding())
+    Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.sm).navigationBarsPadding())
 }
 
 @Composable
@@ -152,12 +152,12 @@ private fun DetailSheetActionRow(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp, vertical = 16.dp),
+                .padding(horizontal = MaterialTheme.dimens.spacing.xxl, vertical = MaterialTheme.dimens.spacing.lg),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
             icon()
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(MaterialTheme.dimens.spacing.lg))
             Text(
                 text = label,
                 style = MaterialTheme.typography.bodyLarge,

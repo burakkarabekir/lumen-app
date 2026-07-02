@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,9 +28,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
+import com.bksd.insights.presentation.Res
 import com.bksd.insights.presentation.reflection.reflectionHexColor
+import com.bksd.insights.presentation.weekly_open
 import com.bksd.reflection.domain.model.StandoutEntry
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun StandoutMomentCard(
@@ -43,10 +48,10 @@ fun StandoutMomentCard(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(18.dp))
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.xl))
             .background(palette.surface)
             .clickable(onClick = onOpen)
-            .padding(18.dp)
+            .padding(MaterialTheme.dimens.spacing.xl)
     ) {
         Text(
             text = "“",
@@ -62,23 +67,23 @@ fun StandoutMomentCard(
                 lineHeight = 25.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = palette.text,
-                modifier = Modifier.padding(start = 20.dp, top = 4.dp)
+                modifier = Modifier.padding(start = MaterialTheme.dimens.spacing.xl, top = MaterialTheme.dimens.spacing.xs)
             )
-            Spacer(Modifier.height(14.dp))
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.lg))
             Box(modifier = Modifier.fillMaxWidth().height(1.dp).background(palette.hairline))
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth().padding(top = 13.dp)
+                modifier = Modifier.fillMaxWidth().padding(top = MaterialTheme.dimens.spacing.md)
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(9.dp)
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm)
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(26.dp)
-                            .clip(RoundedCornerShape(8.dp))
+                            .size(MaterialTheme.dimens.icon.xl)
+                            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.sm))
                             .background(reflectionHexColor(standout.colorHex))
                     )
                     Text(
@@ -90,7 +95,7 @@ fun StandoutMomentCard(
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = "Open",
+                        text = stringResource(Res.string.weekly_open),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
                         color = accent
@@ -99,7 +104,7 @@ fun StandoutMomentCard(
                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                         contentDescription = null,
                         tint = accent,
-                        modifier = Modifier.size(16.dp)
+                        modifier = Modifier.size(MaterialTheme.dimens.icon.sm)
                     )
                 }
             }
@@ -119,7 +124,7 @@ private fun StandoutMomentCardPreview() {
                 colorHex = "#C77FA8"
             ),
             onOpen = {},
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg)
         )
     }
 }

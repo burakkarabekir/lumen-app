@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.IosShare
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,17 +37,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.coverGradient
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.extended
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 import com.bksd.core.domain.location.LocationData
 import com.bksd.core.domain.model.AudioAttachment
-import com.bksd.core.domain.model.Moment
 import com.bksd.core.domain.model.Mood
+import com.bksd.journal.presentation.model.MomentUi
+import kotlinx.collections.immutable.persistentListOf
 import com.bksd.core.presentation.link.LinkConfirmationDialog
 import com.bksd.core.presentation.link.toOpenableWebUrl
 import com.bksd.journal.presentation.Res
@@ -60,6 +67,7 @@ import com.bksd.journal.presentation.detail.components.MomentDetailAttachments
 import com.bksd.journal.presentation.detail.components.MomentDetailMoodChip
 import com.bksd.journal.presentation.my_moment_fallback
 import com.bksd.journal.presentation.util.MomentFormatter
+import com.bksd.journal.presentation.word_count
 import com.bksd.reflection.domain.model.EntryAnalysis
 import com.bksd.reflection.domain.model.MomentAnalysisState
 import com.bksd.reflection.domain.model.MomentReflection
@@ -67,12 +75,10 @@ import org.jetbrains.compose.resources.stringResource
 import kotlin.time.Clock
 import kotlin.time.Instant
 
-private val CoverColors = listOf(Color(0xFF7682D6), Color(0xFF9281C6), Color(0xFFCF6F64))
-
 @Composable
 fun MomentDetailReadView(
     state: MomentDetailState,
-    moment: Moment,
+    moment: MomentUi,
     formatter: MomentFormatter,
     onAction: (MomentDetailAction) -> Unit,
     modifier: Modifier = Modifier
@@ -84,6 +90,7 @@ fun MomentDetailReadView(
     val audioUrl =
         moment.attachments.filterIsInstance<AudioAttachment>().firstOrNull()?.remoteUrl?.value
     val wordCount = moment.body?.trim()?.split(Regex("\\s+"))?.count { it.isNotBlank() } ?: 0
+    val coverImageUrl = (state.analysis as? MomentAnalysisState.Ready)?.reflection?.coverImageUrl
 
     Box(modifier = modifier.fillMaxSize().background(palette.pageBg)) {
         Column(modifier = Modifier.fillMaxSize().verticalScroll(scrollState)) {
@@ -91,8 +98,16 @@ fun MomentDetailReadView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(264.dp)
-                    .background(Brush.linearGradient(CoverColors))
+                    .background(Brush.linearGradient(MaterialTheme.colorScheme.extended.coverGradient))
             ) {
+                if (coverImageUrl != null) {
+                    AsyncImage(
+                        model = coverImageUrl,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.matchParentSize()
+                    )
+                }
                 Box(
                     modifier = Modifier
                         .matchParentSize()
@@ -107,19 +122,19 @@ fun MomentDetailReadView(
                 if (!locationName.isNullOrBlank()) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
                         modifier = Modifier
                             .align(Alignment.BottomStart)
-                            .padding(start = 20.dp, bottom = 40.dp)
-                            .clip(RoundedCornerShape(14.dp))
+                            .padding(start = MaterialTheme.dimens.spacing.xl, bottom = MaterialTheme.dimens.spacing.huge)
+                            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.cardTight))
                             .background(Color.White.copy(alpha = 0.2f))
-                            .padding(horizontal = 12.dp, vertical = 7.dp)
+                            .padding(horizontal = MaterialTheme.dimens.spacing.md, vertical = MaterialTheme.dimens.spacing.sm)
                     ) {
                         Icon(
                             imageVector = Icons.Default.Place,
                             contentDescription = null,
                             tint = Color.White,
-                            modifier = Modifier.size(13.dp)
+                            modifier = Modifier.size(MaterialTheme.dimens.icon.xs)
                         )
                         Text(
                             text = locationName,
@@ -134,11 +149,11 @@ fun MomentDetailReadView(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .offset(y = (-24).dp)
-                    .clip(RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
+                    .offset(y = -MaterialTheme.dimens.spacing.xxl)
+                    .clip(RoundedCornerShape(topStart = MaterialTheme.dimens.radius.xxl, topEnd = MaterialTheme.dimens.radius.xxl))
                     .background(palette.pageBg)
-                    .padding(horizontal = 22.dp)
-                    .padding(top = 24.dp, bottom = 140.dp)
+                    .padding(horizontal = MaterialTheme.dimens.spacing.xxl)
+                    .padding(top = MaterialTheme.dimens.spacing.xxl, bottom = 140.dp)
             ) {
                 Text(
                     text = formatter.formatTime(moment.createdAt),
@@ -146,7 +161,7 @@ fun MomentDetailReadView(
                     fontWeight = FontWeight.SemiBold,
                     color = palette.sub
                 )
-                Spacer(Modifier.height(7.dp))
+                Spacer(Modifier.height(MaterialTheme.dimens.spacing.sm))
                 Text(
                     text = moment.title.ifEmpty { stringResource(Res.string.my_moment_fallback) },
                     fontSize = 30.sp,
@@ -156,17 +171,17 @@ fun MomentDetailReadView(
                 )
 
                 if (moment.moods.isNotEmpty()) {
-                    Spacer(Modifier.height(14.dp))
+                    Spacer(Modifier.height(MaterialTheme.dimens.spacing.lg))
                     FlowRow(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
+                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm)
                     ) {
                         moment.moods.forEach { MomentDetailMoodChip(it) }
                     }
                 }
 
                 if (!moment.body.isNullOrBlank()) {
-                    Spacer(Modifier.height(20.dp))
+                    Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))
                     Text(
                         text = moment.body!!,
                         fontSize = 16.sp,
@@ -177,12 +192,12 @@ fun MomentDetailReadView(
 
                 when (val analysis = state.analysis) {
                     MomentAnalysisState.Pending -> {
-                        Spacer(Modifier.height(22.dp))
+                        Spacer(Modifier.height(MaterialTheme.dimens.spacing.xxl))
                         EntryAnalysisLoadingCard()
                     }
 
                     is MomentAnalysisState.Ready -> {
-                        Spacer(Modifier.height(22.dp))
+                        Spacer(Modifier.height(MaterialTheme.dimens.spacing.xxl))
                         when (val reflection = analysis.reflection) {
                             is MomentReflection.Reflection -> EntryAnalysisCard(reflection)
                             is MomentReflection.Support -> EntrySupportCard(reflection)
@@ -195,7 +210,7 @@ fun MomentDetailReadView(
                 }
 
                 if (moment.attachments.isNotEmpty()) {
-                    Spacer(Modifier.height(26.dp))
+                    Spacer(Modifier.height(MaterialTheme.dimens.spacing.xxl))
                     MomentDetailAttachments(
                         attachments = moment.attachments,
                         audioPlaybackState = state.audioPlaybackState,
@@ -211,15 +226,15 @@ fun MomentDetailReadView(
                     )
                 }
 
-                Spacer(Modifier.height(22.dp))
+                Spacer(Modifier.height(MaterialTheme.dimens.spacing.xxl))
                 HorizontalDivider(color = palette.hairline)
-                Spacer(Modifier.height(14.dp))
+                Spacer(Modifier.height(MaterialTheme.dimens.spacing.lg))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm)
                 ) {
                     Text(
-                        text = "$wordCount words",
+                        text = stringResource(Res.string.word_count, wordCount),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = palette.sub
@@ -240,8 +255,8 @@ fun MomentDetailReadView(
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .statusBarsPadding()
-                .padding(start = 18.dp, top = 8.dp)
-                .size(38.dp)
+                .padding(start = MaterialTheme.dimens.spacing.xl, top = MaterialTheme.dimens.spacing.sm)
+                .size(MaterialTheme.dimens.icon.tile)
                 .clip(CircleShape)
                 .background(Color(0x57141420))
                 .clickable { onAction(MomentDetailAction.OnNavigateBack) }
@@ -250,7 +265,7 @@ fun MomentDetailReadView(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                 contentDescription = stringResource(Res.string.content_desc_back),
                 tint = Color.White,
-                modifier = Modifier.size(22.dp)
+                modifier = Modifier.size(MaterialTheme.dimens.icon.xl)
             )
         }
 
@@ -259,8 +274,8 @@ fun MomentDetailReadView(
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .statusBarsPadding()
-                .padding(end = 18.dp, top = 8.dp)
-                .size(38.dp)
+                .padding(end = MaterialTheme.dimens.spacing.xl, top = MaterialTheme.dimens.spacing.sm)
+                .size(MaterialTheme.dimens.icon.tile)
                 .clip(CircleShape)
                 .background(Color(0x57141420))
                 .clickable { onAction(MomentDetailAction.OnShareClick) }
@@ -269,7 +284,7 @@ fun MomentDetailReadView(
                 imageVector = Icons.Default.IosShare,
                 contentDescription = stringResource(Res.string.content_desc_share),
                 tint = Color.White,
-                modifier = Modifier.size(18.dp)
+                modifier = Modifier.size(MaterialTheme.dimens.icon.md)
             )
         }
 
@@ -308,13 +323,16 @@ private fun MomentDetailReadViewPreview() {
                     )
                 )
             ),
-            moment = Moment(
+            moment = MomentUi(
                 id = "1",
                 title = "Morning pages",
                 body = "Woke up before the alarm and watched the fog roll off the hills. Coffee on the balcony, no phone — just the sound of the neighborhood waking up.",
                 createdAt = Clock.System.now(),
-                moods = listOf(Mood.CALM, Mood.GRATEFUL, Mood.PROUD),
-                location = LocationData(0.0, 0.0, "Mountain View, California")
+                moods = persistentListOf(Mood.CALM, Mood.GRATEFUL, Mood.PROUD),
+                tags = persistentListOf(),
+                attachments = persistentListOf(),
+                location = LocationData(0.0, 0.0, "Mountain View, California"),
+                isFavorite = false,
             ),
             formatter = object : MomentFormatter {
                 override fun formatTime(instant: Instant): String =

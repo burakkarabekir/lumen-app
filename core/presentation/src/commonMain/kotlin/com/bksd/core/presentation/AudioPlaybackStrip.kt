@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.component.visualizer.VisualizerStyle
 import com.bksd.core.design_system.component.visualizer.VoiceVisualizer
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.domain.model.PlaybackState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -94,14 +95,14 @@ private fun StandardStrip(
             playbackState = playbackState,
             onPlayClick = onPlayClick,
             onPauseClick = onPauseClick,
-            modifier = Modifier.size(40.dp),
+            modifier = Modifier.size(MaterialTheme.dimens.icon.tile),
             colors = IconButtonDefaults.filledIconButtonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary
             )
         )
 
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(MaterialTheme.dimens.spacing.lg))
 
         Column(modifier = Modifier.weight(1f)) {
             VoiceVisualizer(
@@ -109,13 +110,13 @@ private fun StandardStrip(
                 isActive = playbackState == PlaybackState.PLAYING,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(32.dp),
+                    .height(MaterialTheme.dimens.icon.avatar),
                 style = standardVisualizerStyle,
                 activeColor = MaterialTheme.colorScheme.primary
             )
 
             Row(
-                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                modifier = Modifier.fillMaxWidth().padding(top = MaterialTheme.dimens.spacing.sm),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
@@ -147,17 +148,17 @@ private fun CompactStrip(
     Row(
         modifier = modifier
             .width(IntrinsicSize.Max)
-            .clip(RoundedCornerShape(28.dp))
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.xxl))
             .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f))
-            .padding(6.dp),
+            .padding(MaterialTheme.dimens.spacing.sm),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.lg)
     ) {
         AudioPlaybackButton(
             playbackState = playbackState,
             onPlayClick = onPlayClick,
             onPauseClick = onPauseClick,
-            modifier = Modifier.size(36.dp),
+            modifier = Modifier.size(MaterialTheme.dimens.icon.avatar),
             colors = IconButtonDefaults.filledIconButtonColors(
                 containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
                 contentColor = MaterialTheme.colorScheme.primary
@@ -171,7 +172,7 @@ private fun CompactStrip(
         }
 
         Box(
-            modifier = Modifier.padding(end = 12.dp),
+            modifier = Modifier.padding(end = MaterialTheme.dimens.spacing.md),
             contentAlignment = Alignment.CenterStart
         ) {
             // Invisible text to maintain fixed max width of the container

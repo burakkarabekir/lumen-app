@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.component.button.AppButton
 import com.bksd.core.design_system.component.button.AppButtonStyle
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.LumenBase500
 import com.bksd.core.design_system.theme.LumenBase900
 import com.bksd.core.design_system.theme.LumenBrand500
@@ -126,7 +127,7 @@ internal fun OnboardingScreen(
                     )
                 }
             } else {
-                Spacer(modifier = Modifier.size(48.dp))
+                Spacer(modifier = Modifier.size(MaterialTheme.dimens.spacing.huge))
             }
         }
 
@@ -240,7 +241,7 @@ internal fun OnboardingScreen(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp),
+                .height(MaterialTheme.dimens.size.fab),
             style = AppButtonStyle.PRIMARY
         )
 
@@ -262,7 +263,7 @@ private fun PageIndicator(
         repeat(totalPages) { index ->
             Box(
                 modifier = Modifier
-                    .size(if (index == currentPage) 10.dp else 8.dp)
+                    .size(if (index == currentPage) MaterialTheme.dimens.icon.xs else MaterialTheme.dimens.icon.xs)
                     .clip(CircleShape)
                     .background(
                         if (index == currentPage) LumenBrand500

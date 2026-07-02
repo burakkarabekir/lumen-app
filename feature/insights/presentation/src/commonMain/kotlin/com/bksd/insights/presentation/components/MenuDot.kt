@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,8 +17,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 
 @Composable
 internal fun MenuDot(
@@ -29,7 +30,7 @@ internal fun MenuDot(
 ) {
     Box(
         modifier = modifier
-            .size(26.dp)
+            .size(MaterialTheme.dimens.icon.xl)
             .clip(CircleShape)
             .background(bg)
             .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier),
@@ -39,7 +40,7 @@ internal fun MenuDot(
             imageVector = icon,
             contentDescription = null,
             tint = tint,
-            modifier = Modifier.size(16.dp)
+            modifier = Modifier.size(MaterialTheme.dimens.icon.sm)
         )
     }
 }
@@ -48,7 +49,7 @@ internal fun MenuDot(
 @Composable
 private fun MenuDotPreview() {
     AppTheme {
-        Box(Modifier.background(Color(0xFF30344F)).padding(8.dp)) {
+        Box(Modifier.background(Color(0xFF30344F)).padding(MaterialTheme.dimens.spacing.sm)) {
             MenuDot(tint = Color.White.copy(alpha = 0.7f), bg = Color.White.copy(alpha = 0.12f))
         }
     }

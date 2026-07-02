@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.destructiveSecondaryOutline
 import com.bksd.core.design_system.theme.disabledFill
 import com.bksd.core.design_system.theme.disabledOutline
@@ -123,11 +124,11 @@ fun AppButton(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .padding(6.dp)
+                .padding(MaterialTheme.dimens.spacing.sm)
         ) {
             CircularProgressIndicator(
                 modifier = Modifier
-                    .size(15.dp)
+                    .size(MaterialTheme.dimens.icon.sm)
                     .alpha(
                         alpha = if (isLoading) 1f else 0f
                     ),
@@ -136,7 +137,7 @@ fun AppButton(
             )
             Row(
                 horizontalArrangement = Arrangement.spacedBy(
-                    8.dp,
+                    MaterialTheme.dimens.spacing.sm,
                     Alignment.CenterHorizontally
                 ),
                 verticalAlignment = Alignment.CenterVertically,

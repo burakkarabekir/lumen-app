@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +19,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.extended
 import com.bksd.core.design_system.theme.rememberInsightsPalette
 import com.bksd.insights.presentation.StreakAccent
 import kotlin.math.min
@@ -26,7 +29,7 @@ import kotlin.math.min
 internal fun DotProgress(count: Int, colors: StreakColors, ringColor: Color) {
     val dots = min(count, 12)
     Box(
-        modifier = Modifier.fillMaxWidth().height(12.dp),
+        modifier = Modifier.fillMaxWidth().height(MaterialTheme.dimens.icon.xs),
         contentAlignment = Alignment.Center
     ) {
         Box(
@@ -44,10 +47,10 @@ internal fun DotProgress(count: Int, colors: StreakColors, ringColor: Color) {
             repeat(dots) {
                 Box(
                     modifier = Modifier
-                        .size(9.dp)
+                        .size(MaterialTheme.dimens.icon.xs)
                         .clip(CircleShape)
                         .background(ringColor)
-                        .padding(1.5.dp)
+                        .padding(MaterialTheme.dimens.spacing.xxs)
                 ) {
                     Box(
                         modifier = Modifier
@@ -66,10 +69,10 @@ internal fun DotProgress(count: Int, colors: StreakColors, ringColor: Color) {
 private fun DotProgressPreview() {
     AppTheme {
         val palette = rememberInsightsPalette()
-        Box(Modifier.background(palette.surface).padding(16.dp)) {
+        Box(Modifier.background(palette.surface).padding(MaterialTheme.dimens.spacing.lg)) {
             DotProgress(
                 count = 7,
-                colors = streakColors(StreakAccent.CORAL, palette),
+                colors = streakColors(StreakAccent.CORAL, palette, MaterialTheme.colorScheme.extended),
                 ringColor = palette.surface
             )
         }
