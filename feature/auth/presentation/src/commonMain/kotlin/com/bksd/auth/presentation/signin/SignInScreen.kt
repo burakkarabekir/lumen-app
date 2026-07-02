@@ -29,9 +29,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.bksd.auth.presentation.Res
 import com.bksd.auth.presentation.btn_sign_in
+import com.bksd.auth.presentation.continue_with_google
 import com.bksd.auth.presentation.forgot_password
 import com.bksd.auth.presentation.label_email
 import com.bksd.auth.presentation.label_password
@@ -39,6 +39,7 @@ import com.bksd.auth.presentation.no_account_prompt
 import com.bksd.auth.presentation.remember_me
 import com.bksd.auth.presentation.sign_in_subtitle
 import com.bksd.auth.presentation.sign_up_link
+import com.bksd.auth.presentation.signin.components.SocialLoginDivider
 import com.bksd.auth.presentation.welcome_back
 import com.bksd.core.design_system.component.button.AppButton
 import com.bksd.core.design_system.component.button.AppButtonStyle
@@ -47,6 +48,9 @@ import com.bksd.core.design_system.theme.LumenBase600
 import com.bksd.core.design_system.theme.LumenBrand500
 import com.bksd.core.design_system.theme.LumenRadius
 import com.bksd.core.design_system.theme.LumenSpacing
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.presentation.auth.GoogleSignInResult
+import com.bksd.core.presentation.auth.rememberGoogleSignInLauncher
 import com.bksd.core.presentation.util.ObserveAsEvents
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -84,6 +88,17 @@ internal fun SignInScreen(
     onAction: (SignInAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val googleLauncher = rememberGoogleSignInLauncher { result ->
+        when (result) {
+            is GoogleSignInResult.Success ->
+                onAction(SignInAction.OnGoogleIdTokenReceived(result.idToken))
+            GoogleSignInResult.Cancelled ->
+                onAction(SignInAction.OnGoogleSignInFailed(cancelled = true))
+            is GoogleSignInResult.Failed ->
+                onAction(SignInAction.OnGoogleSignInFailed(cancelled = false))
+        }
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -197,10 +212,27 @@ internal fun SignInScreen(
             onClick = { onAction(SignInAction.OnSignInClick) },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp),
+                .height(MaterialTheme.dimens.size.fab),
             enabled = state.isSubmitEnabled,
             isLoading = state.isLoading,
             style = AppButtonStyle.PRIMARY
+        )
+
+        Spacer(modifier = Modifier.height(LumenSpacing.lg))
+
+        SocialLoginDivider()
+
+        Spacer(modifier = Modifier.height(LumenSpacing.lg))
+
+        AppButton(
+            text = stringResource(Res.string.continue_with_google),
+            onClick = { googleLauncher.launch() },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(MaterialTheme.dimens.size.fab),
+            enabled = !state.isLoading && !state.isSocialLoading,
+            isLoading = state.isSocialLoading,
+            style = AppButtonStyle.SECONDARY
         )
 
         Spacer(modifier = Modifier.weight(1f))

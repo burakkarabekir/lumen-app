@@ -25,9 +25,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.profile.presentation.Res
 import com.bksd.profile.presentation.momentum_pro_description
 import com.bksd.profile.presentation.momentum_pro_title
@@ -45,9 +45,9 @@ fun MomentumProCard(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.lg))
             .background(MaterialTheme.colorScheme.surfaceVariant)
-            .padding(16.dp),
+            .padding(MaterialTheme.dimens.spacing.lg),
         verticalAlignment = Alignment.CenterVertically
     ) {
         // Icon
@@ -55,9 +55,9 @@ fun MomentumProCard(
             imageVector = Icons.Default.Favorite,
             contentDescription = null,
             tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(MaterialTheme.dimens.icon.xl)
         )
-        Spacer(modifier = Modifier.width(12.dp))
+        Spacer(modifier = Modifier.width(MaterialTheme.dimens.spacing.md))
 
         // Copy
         Column(
@@ -68,7 +68,7 @@ fun MomentumProCard(
                 style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
                 color = MaterialTheme.colorScheme.onSurface
             )
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.xs))
             Text(
                 text = stringResource(Res.string.momentum_pro_description),
                 style = MaterialTheme.typography.bodySmall,
@@ -77,19 +77,19 @@ fun MomentumProCard(
             )
         }
 
-        Spacer(modifier = Modifier.width(12.dp))
+        Spacer(modifier = Modifier.width(MaterialTheme.dimens.spacing.md))
 
         // Upgrade button
         Box(
             modifier = Modifier
-                .clip(RoundedCornerShape(20.dp))
+                .clip(RoundedCornerShape(MaterialTheme.dimens.radius.xl))
                 .background(MaterialTheme.colorScheme.primary)
                 .clickable { onUpgradeClick() }
-                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .padding(horizontal = MaterialTheme.dimens.spacing.lg, vertical = MaterialTheme.dimens.spacing.sm)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.xs)
             ) {
                 Text(
                     text = stringResource(Res.string.upgrade_button),
@@ -100,7 +100,7 @@ fun MomentumProCard(
                     imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.size(14.dp)
+                    modifier = Modifier.size(MaterialTheme.dimens.icon.xs)
                 )
             }
         }

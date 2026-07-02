@@ -2,15 +2,8 @@ package com.bksd.journal.data.remote
 
 import com.bksd.core.domain.location.LocationData
 import com.bksd.core.domain.mapper.Mapper
-import com.bksd.core.domain.model.Attachment
-import com.bksd.core.domain.model.AttachmentId
-import com.bksd.core.domain.model.AudioAttachment
-import com.bksd.core.domain.model.LinkAttachment
-import com.bksd.core.domain.model.PhotoAttachment
-import com.bksd.core.domain.model.Url
-import com.bksd.core.domain.model.VideoAttachment
-import com.bksd.journal.domain.model.Moment
-import com.bksd.journal.domain.model.Mood
+import com.bksd.core.domain.model.Moment
+import com.bksd.core.domain.model.Mood
 import kotlin.time.Instant
 
 class MomentDtoMapper : Mapper<MomentDto, Moment> {
@@ -23,7 +16,8 @@ class MomentDtoMapper : Mapper<MomentDto, Moment> {
         moods = input.moods.mapNotNull { name -> Mood.entries.find { it.name == name } },
         tags = input.tags,
         attachments = input.attachments.map { it.toAttachment() },
-        location = input.location?.toLocationData()
+        location = input.location?.toLocationData(),
+        isFavorite = input.isFavorite
     )
 
     private fun LocationDto.toLocationData(): LocationData = LocationData(
@@ -31,31 +25,4 @@ class MomentDtoMapper : Mapper<MomentDto, Moment> {
         longitude = longitude,
         displayName = displayName
     )
-
-    private fun AttachmentDto.toAttachment(): Attachment {
-        val attachmentId = AttachmentId(id)
-        return when (this) {
-            is AttachmentDto.Photo -> PhotoAttachment(
-                id = attachmentId,
-                remoteUrl = Url(remoteUrl)
-            )
-
-            is AttachmentDto.Video -> VideoAttachment(
-                id = attachmentId,
-                remoteUrl = Url(remoteUrl),
-                durationMs = durationMs
-            )
-
-            is AttachmentDto.Audio -> AudioAttachment(
-                id = attachmentId,
-                remoteUrl = Url(remoteUrl),
-                durationMs = durationMs
-            )
-
-            is AttachmentDto.Link -> LinkAttachment(
-                id = attachmentId,
-                url = Url(url)
-            )
-        }
-    }
 }

@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.primary95
 
 @Composable
@@ -46,7 +47,7 @@ fun SpeakingBubbleFab(
                 } else SolidColor(Color.Transparent),
                 shape = CircleShape
             )
-            .padding(6.dp)
+            .padding(MaterialTheme.dimens.spacing.sm)
             .background(
                 color = if (showBubble) {
                     MaterialTheme.colorScheme.primary95
@@ -55,7 +56,7 @@ fun SpeakingBubbleFab(
                 },
                 shape = CircleShape
             )
-            .padding(4.dp)
+            .padding(MaterialTheme.dimens.spacing.xs)
             .background(
                 brush = if (isPressed) {
                     colors.primaryPressed

@@ -27,9 +27,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.component.visualizer.VisualizerStyle
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.component.visualizer.VoiceVisualizer
+import com.bksd.moment.presentation.Res
+import com.bksd.moment.presentation.cancel_recording
+import com.bksd.moment.presentation.done
+import com.bksd.moment.presentation.recording_in_progress
 import com.bksd.moment.presentation.create.RecordingUiState
 import kotlinx.collections.immutable.persistentListOf
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * Modal bottom sheet for voice recording.
@@ -55,19 +61,19 @@ fun VoiceRecordingBottomSheet(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 32.dp)
-                .padding(bottom = 48.dp),
+                .padding(horizontal = MaterialTheme.dimens.spacing.xxxl)
+                .padding(bottom = MaterialTheme.dimens.spacing.huge),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Title
             Text(
-                text = "Recording your memories...",
+                text = stringResource(Res.string.recording_in_progress),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.xxxl))
 
             // Timer
             val elapsed = when (recordingState) {
@@ -82,7 +88,7 @@ fun VoiceRecordingBottomSheet(
                 letterSpacing = 2.sp
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.xxl))
 
             // Visualizer
             val amplitudes = when (recordingState) {
@@ -94,7 +100,7 @@ fun VoiceRecordingBottomSheet(
                 isActive = recordingState is RecordingUiState.Recording,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(64.dp),
+                    .height(MaterialTheme.dimens.size.topBar),
                 style = VisualizerStyle(
                     barWidth = 4.dp,
                     barSpacing = 3.dp,
@@ -104,7 +110,7 @@ fun VoiceRecordingBottomSheet(
                 activeColor = MaterialTheme.colorScheme.primary
             )
 
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.huge))
 
             // Controls: Cancel — Pause indicator — Done
             Row(
@@ -115,7 +121,7 @@ fun VoiceRecordingBottomSheet(
                 // Cancel button
                 FilledIconButton(
                     onClick = onCancelClick,
-                    modifier = Modifier.size(56.dp),
+                    modifier = Modifier.size(MaterialTheme.dimens.size.fab),
                     shape = CircleShape,
                     colors = IconButtonDefaults.filledIconButtonColors(
                         containerColor = MaterialTheme.colorScheme.errorContainer,
@@ -124,15 +130,15 @@ fun VoiceRecordingBottomSheet(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = "Cancel Recording",
-                        modifier = Modifier.size(28.dp)
+                        contentDescription = stringResource(Res.string.cancel_recording),
+                        modifier = Modifier.size(MaterialTheme.dimens.icon.xl)
                     )
                 }
 
                 // Done button
                 FilledIconButton(
                     onClick = onDoneClick,
-                    modifier = Modifier.size(56.dp),
+                    modifier = Modifier.size(MaterialTheme.dimens.size.fab),
                     shape = CircleShape,
                     colors = IconButtonDefaults.filledIconButtonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
@@ -141,8 +147,8 @@ fun VoiceRecordingBottomSheet(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Check,
-                        contentDescription = "Done",
-                        modifier = Modifier.size(28.dp)
+                        contentDescription = stringResource(Res.string.done),
+                        modifier = Modifier.size(MaterialTheme.dimens.icon.xl)
                     )
                 }
             }

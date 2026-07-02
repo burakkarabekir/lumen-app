@@ -15,7 +15,6 @@ kotlin {
                 implementation(projects.feature.journal.domain)
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.jetbrains.kotlinx.collections.immutable)
-                implementation(libs.firebase.firestore)
                 implementation(libs.kermit)
             }
         }
@@ -23,7 +22,6 @@ kotlin {
         androidMain {
             dependencies {
                 implementation(libs.koin.android)
-                implementation(project.dependencies.platform(libs.firebase.bom))
             }
         }
     }

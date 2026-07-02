@@ -1,5 +1,8 @@
 package com.bksd.profile.presentation
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 data class ProfileState(
     val name: String = "",
     val photoUrl: String? = null,
@@ -10,4 +13,6 @@ data class ProfileState(
     val isAvatarLoading: Boolean = false,
     val hasNotificationBadge: Boolean = false,
     val isSigningOut: Boolean = false,
+    val entriesCount: Int = 0,
+    val weeklyStreak: Int = 0,
 )

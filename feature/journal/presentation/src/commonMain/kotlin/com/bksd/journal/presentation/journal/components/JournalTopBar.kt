@@ -10,8 +10,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,12 +39,21 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Dp
 import com.bksd.core.design_system.component.AppAvatar
 import com.bksd.core.design_system.component.divider.AppDivider
+import com.bksd.core.design_system.component.layout.AppBarStyle
+import com.bksd.core.design_system.component.layout.AppTopBar
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.journal.presentation.Res
+import com.bksd.journal.presentation.content_desc_back
+import com.bksd.journal.presentation.content_desc_clear_search
+import com.bksd.journal.presentation.content_desc_profile
+import com.bksd.journal.presentation.content_desc_search
+import com.bksd.journal.presentation.search_moments_hint
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun JournalTopBar(
@@ -59,14 +66,11 @@ fun JournalTopBar(
     val totalDuration = 500
     val fadeOutDuration = 150
     val organicEasing = remember { CubicBezierEasing(0.42f, 0.0f, 0.58f, 1.0f) }
-    val headerHeight = 52.dp
+    val headerHeight = MaterialTheme.dimens.size.topBar
 
     var isSearchMode by remember { mutableStateOf(false) }
 
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    Column {
         AnimatedContent(
             targetState = isSearchMode,
             transitionSpec = {
@@ -99,25 +103,44 @@ fun JournalTopBar(
             },
             label = "LumenMorphingSearch"
         ) { searchActive ->
-            Box(modifier = Modifier.fillMaxWidth().height(headerHeight)) {
-                if (searchActive) {
-                    SearchBar(
-                        query = searchQuery,
-                        onQueryChange = onSearchQueryChange,
-                        headerHeight = headerHeight,
-                        onBack = {
-                            isSearchMode = false
-                            onSearchQueryChange("")
+            if (searchActive) {
+                SearchBar(
+                    query = searchQuery,
+                    onQueryChange = onSearchQueryChange,
+                    headerHeight = headerHeight,
+                    onBack = {
+                        isSearchMode = false
+                        onSearchModeChanged(false)
+                        onSearchQueryChange("")
+                    }
+                )
+            } else {
+                AppTopBar(
+                    title = "Lumen",
+                    style = AppBarStyle.Root,
+                    actions = {
+                        IconButton(
+                            onClick = {
+                                isSearchMode = true
+                                onSearchModeChanged(true)
+                            },
+                            modifier = Modifier.graphicsLayer { clip = true }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = stringResource(Res.string.content_desc_search),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                         }
-                    )
-                } else {
-                    DefaultHeader(
-                        headerHeight = headerHeight,
-                        profilePhotoUrl = profilePhotoUrl,
-                        onProfileClick = onProfileClick,
-                        onSearchClick = { isSearchMode = true }
-                    )
-                }
+                        AppAvatar(
+                            photoUrl = profilePhotoUrl,
+                            size = MaterialTheme.dimens.icon.avatar,
+                            contentDescription = stringResource(Res.string.content_desc_profile),
+                            onClick = onProfileClick,
+                            modifier = Modifier.graphicsLayer { clip = true }
+                        )
+                    }
+                )
             }
         }
         AppDivider()
@@ -125,61 +148,14 @@ fun JournalTopBar(
 }
 
 @Composable
-private fun DefaultHeader(
-    headerHeight: androidx.compose.ui.unit.Dp,
-    profilePhotoUrl: String?,
-    onProfileClick: () -> Unit,
-    onSearchClick: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(headerHeight)
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(horizontal = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        AppAvatar(
-            photoUrl = profilePhotoUrl,
-            size = 36.dp,
-            contentDescription = "Profile",
-            onClick = onProfileClick,
-            modifier = Modifier.graphicsLayer { clip = true }
-        )
-
-        Text(
-            text = "Lumen",
-            style = MaterialTheme.typography.headlineSmall.copy(
-                fontWeight = FontWeight.Bold,
-            ),
-            color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.weight(1f)
-        )
-
-        IconButton(
-            onClick = onSearchClick,
-            modifier = Modifier.graphicsLayer { clip = true }
-        ) {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = "Search",
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-    }
-}
-
-@Composable
 private fun SearchBar(
-    headerHeight: androidx.compose.ui.unit.Dp,
+    headerHeight: Dp,
     query: String,
     onQueryChange: (String) -> Unit,
     onBack: () -> Unit
 ) {
     val focusRequester = remember { FocusRequester() }
 
-    // Auto-focus when search bar appears
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
     }
@@ -189,18 +165,18 @@ private fun SearchBar(
             .fillMaxWidth()
             .height(headerHeight)
             .background(MaterialTheme.colorScheme.surface)
-            .padding(horizontal = 4.dp),
+            .padding(horizontal = MaterialTheme.dimens.spacing.xs),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         IconButton(
             onClick = onBack,
             modifier = Modifier
-                .size(40.dp)
+                .size(MaterialTheme.dimens.icon.tile)
                 .graphicsLayer { clip = true }
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Back",
+                contentDescription = stringResource(Res.string.content_desc_back),
                 tint = MaterialTheme.colorScheme.onSurface
             )
         }
@@ -215,14 +191,14 @@ private fun SearchBar(
             cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
             modifier = Modifier
                 .weight(1f)
-                .clip(RoundedCornerShape(12.dp))
+                .clip(RoundedCornerShape(MaterialTheme.dimens.radius.md))
                 .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
-                .padding(horizontal = 12.dp, vertical = 10.dp)
+                .padding(horizontal = MaterialTheme.dimens.spacing.md, vertical = MaterialTheme.dimens.spacing.md)
                 .focusRequester(focusRequester),
             decorationBox = { innerTextField ->
                 if (query.isEmpty()) {
                     Text(
-                        text = "Search moments…",
+                        text = stringResource(Res.string.search_moments_hint),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
                     )
@@ -236,14 +212,14 @@ private fun SearchBar(
             IconButton(
                 onClick = { onQueryChange("") },
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(MaterialTheme.dimens.icon.tile)
                     .graphicsLayer { clip = true }
             ) {
                 Icon(
                     imageVector = Icons.Default.Close,
-                    contentDescription = "Clear search",
+                    contentDescription = stringResource(Res.string.content_desc_clear_search),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(MaterialTheme.dimens.icon.lg)
                 )
             }
         }

@@ -10,6 +10,7 @@ data class SignUpState(
     val password: String = "",
     val isLoading: Boolean = false,
     val error: UiText? = null,
+    val awaitingConfirmation: Boolean = false,
 ) {
     val isSubmitEnabled: Boolean get() = fullName.isNotBlank() && email.isNotBlank() && password.length >= 8 && !isLoading
 }

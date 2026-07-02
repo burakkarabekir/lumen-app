@@ -40,7 +40,6 @@ include(":core:data")
 include(":feature:journal:data")
 include(":feature:journal:domain")
 include(":feature:journal:presentation")
-include(":feature:moment:data")
 include(":feature:moment:domain")
 include(":feature:moment:presentation")
 
@@ -50,6 +49,7 @@ include(":feature:auth:data")
 include(":feature:auth:domain")
 include(":feature:auth:presentation")
 
+include(":feature:insights:domain")
 include(":feature:insights:presentation")
 
 include(":feature:profile:data")
@@ -58,3 +58,6 @@ include(":feature:profile:presentation")
 
 include(":feature:paywall:domain")
 include(":feature:paywall:presentation")
+
+include(":feature:reflection:domain")
+include(":feature:reflection:data")

@@ -13,7 +13,9 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(projects.core.domain)
-                implementation(projects.feature.journal.domain)
+                implementation(projects.feature.insights.domain)
+                implementation(projects.feature.reflection.domain)
+                implementation(libs.kotlinx.datetime)
             }
         }
     }

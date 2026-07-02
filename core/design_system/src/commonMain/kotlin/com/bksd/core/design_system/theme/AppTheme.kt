@@ -17,7 +17,10 @@ fun AppTheme(
     val colorScheme = if (themeState.useDarkTheme) DarkColorScheme else LightColorScheme
     val extendedScheme = if (themeState.useDarkTheme) DarkExtendedColors else LightExtendedColors
 
-    CompositionLocalProvider(LocalExtendedColors provides extendedScheme) {
+    CompositionLocalProvider(
+        LocalExtendedColors provides extendedScheme,
+        LocalAppDimens provides AppDimens(),
+    ) {
         MaterialTheme(
             colorScheme = colorScheme,
             typography = Typography,

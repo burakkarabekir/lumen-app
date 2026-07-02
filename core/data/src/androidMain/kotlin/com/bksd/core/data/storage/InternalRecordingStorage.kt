@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.UUID
+import kotlin.coroutines.cancellation.CancellationException
 
 class InternalRecordingStorage(
     private val context: Context
@@ -33,8 +34,9 @@ class InternalRecordingStorage(
                 tempFile.delete()
 
                 destinationFile.absolutePath
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
-                e.printStackTrace()
                 null
             }
         }

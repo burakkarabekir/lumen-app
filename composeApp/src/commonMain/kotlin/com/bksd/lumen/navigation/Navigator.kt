@@ -60,7 +60,15 @@ class Navigator(
 
     fun navigateToInsights() = navigate(Route.Main.Insights)
 
-    fun navigateToProfile() = navigate(Route.Main.Profile)
+    fun navigateToProfile() = navigate(Route.Profile)
+
+    fun navigateToEditProfile() = navigate(Route.EditProfile)
+
+    fun navigateToAbout() = navigate(Route.About)
+
+    fun navigateToHelp() = navigate(Route.Help)
+
+    fun navigateToWeeklyReflection() = navigate(Route.WeeklyReflection)
 
     // ==================== Auth Navigation ====================
 
@@ -72,7 +80,7 @@ class Navigator(
 
     // ==================== Detail Navigation ====================
 
-    fun navigateToMomentDetail(momentId: String) = navigate(Route.MomentDetail(momentId))
+    fun navigateToMomentDetail(momentId: String, isEditing: Boolean = false) = navigate(Route.MomentDetail(momentId, isEditing))
 
     fun navigateToCreateMoment() = navigate(Route.CreateMoment)
 

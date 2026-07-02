@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.theme.PreviewAppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberThemeController
 import com.bksd.core.domain.theme.AppThemeMode
 import com.bksd.profile.presentation.Res
@@ -74,15 +75,15 @@ internal fun ThemeSelectorSheetContent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-                .padding(bottom = 48.dp)
+                .padding(horizontal = MaterialTheme.dimens.spacing.xxl)
+                .padding(bottom = MaterialTheme.dimens.spacing.huge)
         ) {
             Text(
                 text = stringResource(Res.string.theme_selector_title),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.padding(bottom = 16.dp),
+                modifier = Modifier.padding(bottom = MaterialTheme.dimens.spacing.lg),
             )
 
             ThemeOptionRow(
@@ -120,7 +121,7 @@ private fun ThemeOptionRow(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() }
-            .padding(vertical = 16.dp),
+            .padding(vertical = MaterialTheme.dimens.spacing.lg),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
@@ -135,7 +136,7 @@ private fun ThemeOptionRow(
         )
 
         if (isSelected) {
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(MaterialTheme.dimens.spacing.sm))
             Icon(
                 imageVector = Icons.Default.Check,
                 contentDescription = null,
@@ -154,7 +155,7 @@ private fun ThemeSelectorSheetDarkPreview() {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(24.dp)
+                .padding(MaterialTheme.dimens.spacing.xxl)
         ) {
             ThemeOptionRow(label = "System", isSelected = false, onClick = {})
             ThemeOptionRow(label = "Light", isSelected = false, onClick = {})
@@ -170,7 +171,7 @@ private fun ThemeSelectorSheetLightPreview() {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(24.dp)
+                .padding(MaterialTheme.dimens.spacing.xxl)
         ) {
             ThemeOptionRow(label = "System", isSelected = true, onClick = {})
             ThemeOptionRow(label = "Light", isSelected = false, onClick = {})

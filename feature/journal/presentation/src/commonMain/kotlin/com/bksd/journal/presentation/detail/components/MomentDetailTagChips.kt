@@ -15,8 +15,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -29,12 +29,12 @@ fun MomentDetailTagChips(
 ) {
     FlowRow(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm)
     ) {
         tags.forEach { tag ->
             Surface(
-                shape = RoundedCornerShape(20.dp),
+                shape = RoundedCornerShape(MaterialTheme.dimens.radius.xl),
                 color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
             ) {
                 if (isEditing) {
@@ -45,17 +45,17 @@ fun MomentDetailTagChips(
                             text = "#$tag",
                             style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(start = 14.dp, top = 8.dp, bottom = 8.dp)
+                            modifier = Modifier.padding(start = MaterialTheme.dimens.spacing.lg, top = MaterialTheme.dimens.spacing.sm, bottom = MaterialTheme.dimens.spacing.sm)
                         )
                         IconButton(
                             onClick = { onTagRemove(tag) },
-                            modifier = Modifier.size(28.dp)
+                            modifier = Modifier.size(MaterialTheme.dimens.icon.xl)
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Close,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f),
-                                modifier = Modifier.size(14.dp)
+                                modifier = Modifier.size(MaterialTheme.dimens.icon.xs)
                             )
                         }
                     }
@@ -64,7 +64,7 @@ fun MomentDetailTagChips(
                         text = "#$tag",
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp)
+                        modifier = Modifier.padding(horizontal = MaterialTheme.dimens.spacing.lg, vertical = MaterialTheme.dimens.spacing.sm)
                     )
                 }
             }

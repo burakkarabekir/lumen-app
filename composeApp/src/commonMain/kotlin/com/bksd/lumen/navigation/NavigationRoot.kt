@@ -26,6 +26,7 @@ import com.bksd.auth.presentation.signup.SignUpRoot
 import com.bksd.core.design_system.component.layout.AppScaffold
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.insights.presentation.InsightsRoot
+import com.bksd.insights.presentation.reflection.full.WeeklyReflectionDetailRoot
 import com.bksd.journal.presentation.detail.MomentDetailRoot
 import com.bksd.journal.presentation.journal.JournalRoot
 import com.bksd.lumen.main.MainEvent
@@ -35,6 +36,9 @@ import com.bksd.lumen.navigation.route.Route.Companion.shouldShowBottomBar
 import com.bksd.moment.presentation.create.CreateMomentRoot
 import com.bksd.onboarding.presentation.OnboardingRoot
 import com.bksd.paywall.presentation.PaywallRoot
+import com.bksd.profile.presentation.AboutRoot
+import com.bksd.profile.presentation.EditProfileRoot
+import com.bksd.profile.presentation.HelpRoot
 import com.bksd.profile.presentation.ProfileRoot
 import kotlinx.collections.immutable.toImmutableSet
 import org.koin.compose.koinInject
@@ -90,7 +94,8 @@ fun NavigationRoot(
                     selectedKey = navigationState.topLevelRoute,
                     onSelectKey = {
                         navigator.navigate(it)
-                    }
+                    },
+                    onAddClick = { navigator.navigateToCreateMoment() }
                 )
             }
         }
@@ -145,26 +150,57 @@ fun NavigationRoot(
 
                     entry<Route.Main.Journal> {
                         JournalRoot(
-                            onNavigateToDetail = { momentId ->
-                                navigator.navigateToMomentDetail(momentId)
+                            onNavigateToDetail = { momentId, isEditing ->
+                                navigator.navigateToMomentDetail(momentId, isEditing)
                             },
-                            onNavigateToCreate = { navigator.navigateToCreateMoment() }
+                            onNavigateToProfile = { navigator.navigateToProfile() }
                         )
                     }
                     entry<Route.Main.Insights> {
-                        InsightsRoot()
+                        InsightsRoot(
+                            onViewFullReflection = { navigator.navigateToWeeklyReflection() }
+                        )
                     }
-                    entry<Route.Main.Profile> {
+                    entry<Route.Profile> {
                         ProfileRoot(
+                            onBack = { navigator.goBack() },
                             onNavigateToSignIn = { navigator.navigateToSignIn() },
-                            onNavigateToPaywall = { navigator.navigateToPaywall() }
+                            onNavigateToPaywall = { navigator.navigateToPaywall() },
+                            onNavigateToEditProfile = { navigator.navigateToEditProfile() },
+                            onNavigateToAbout = { navigator.navigateToAbout() },
+                            onNavigateToHelp = { navigator.navigateToHelp() }
+                        )
+                    }
+
+                    entry<Route.EditProfile> {
+                        EditProfileRoot(
+                            onBack = { navigator.goBack() }
+                        )
+                    }
+
+                    entry<Route.About> {
+                        AboutRoot(
+                            onBack = { navigator.goBack() }
+                        )
+                    }
+
+                    entry<Route.Help> {
+                        HelpRoot(
+                            onBack = { navigator.goBack() }
                         )
                     }
 
                     entry<Route.MomentDetail> { backStackEntry ->
                         MomentDetailRoot(
                             momentId = backStackEntry.momentId,
+                            isEditing = backStackEntry.isEditing,
                             onNavigateBack = navigator::goBack
+                        )
+                    }
+                    entry<Route.WeeklyReflection> {
+                        WeeklyReflectionDetailRoot(
+                            onBack = navigator::goBack,
+                            onOpenMoment = { navigator.navigateToMomentDetail(it) }
                         )
                     }
                     entry<Route.CreateMoment> {

@@ -1,7 +1,7 @@
 package com.bksd.moment.presentation.create
 
 import com.bksd.core.domain.model.MediaType
-import com.bksd.journal.domain.model.Mood
+import com.bksd.core.domain.model.Mood
 import kotlinx.datetime.LocalDate
 
 sealed interface CreateMomentAction {
@@ -13,6 +13,7 @@ sealed interface CreateMomentAction {
     data class OnDateSelect(val date: LocalDate) : CreateMomentAction
     data object OnSaveClick : CreateMomentAction
     data object OnBackClick : CreateMomentAction
+    data class OnToggleAiAnalysis(val enabled: Boolean) : CreateMomentAction
 
     // Media & Location Actions
     data object OnAddLocationClick : CreateMomentAction

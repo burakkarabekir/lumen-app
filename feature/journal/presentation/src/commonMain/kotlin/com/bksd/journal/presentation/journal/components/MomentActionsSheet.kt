@@ -26,10 +26,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.journal.presentation.Res
 import com.bksd.journal.presentation.add_favorite
+import com.bksd.journal.presentation.delete
 import com.bksd.journal.presentation.edit_entry
 import com.bksd.journal.presentation.remove_favorite
 import org.jetbrains.compose.resources.stringResource
@@ -53,9 +54,9 @@ fun MomentActionsSheet(
         dragHandle = {
             Surface(
                 modifier = Modifier
-                    .padding(vertical = 12.dp)
-                    .width(32.dp)
-                    .height(4.dp),
+                    .padding(vertical = MaterialTheme.dimens.spacing.md)
+                    .width(MaterialTheme.dimens.icon.avatar)
+                    .height(MaterialTheme.dimens.icon.xs),
                 shape = MaterialTheme.shapes.small,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
             ) {}
@@ -87,7 +88,7 @@ private fun MomentActionsSheetContent(
     onFavoriteClick: () -> Unit,
     onDeleteClick: () -> Unit
 ) {
-    Spacer(modifier = Modifier.height(8.dp))
+    Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.sm))
 
     SheetActionRow(
         icon = {
@@ -95,7 +96,7 @@ private fun MomentActionsSheetContent(
                 imageVector = Icons.Default.Edit,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(MaterialTheme.dimens.icon.xl)
             )
         },
         label = stringResource(Res.string.edit_entry),
@@ -109,7 +110,7 @@ private fun MomentActionsSheetContent(
                 imageVector = Icons.Default.FavoriteBorder,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(MaterialTheme.dimens.icon.xl)
             )
         },
         label = when (isLiked) {
@@ -123,7 +124,7 @@ private fun MomentActionsSheetContent(
     HorizontalDivider(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp, vertical = 4.dp),
+            .padding(horizontal = MaterialTheme.dimens.spacing.xxl, vertical = MaterialTheme.dimens.spacing.xs),
         color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
     )
 
@@ -133,15 +134,15 @@ private fun MomentActionsSheetContent(
                 imageVector = Icons.Default.Delete,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.error,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(MaterialTheme.dimens.icon.xl)
             )
         },
-        label = "Delete",
+        label = stringResource(Res.string.delete),
         labelColor = MaterialTheme.colorScheme.error,
         onClick = onDeleteClick
     )
 
-    Spacer(modifier = Modifier.height(8.dp).navigationBarsPadding())
+    Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.sm).navigationBarsPadding())
 }
 
 @Composable
@@ -159,12 +160,12 @@ private fun SheetActionRow(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp, vertical = 16.dp),
+                .padding(horizontal = MaterialTheme.dimens.spacing.xxl, vertical = MaterialTheme.dimens.spacing.lg),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
             icon()
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(MaterialTheme.dimens.spacing.lg))
             Text(
                 text = label,
                 style = MaterialTheme.typography.bodyLarge,

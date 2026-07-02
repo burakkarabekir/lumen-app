@@ -1,19 +1,17 @@
 package com.bksd.auth.data
 
 import com.bksd.auth.domain.AuthRepository
-import com.bksd.core.data.remote.firebase.FirebaseAuthDataSource
+import com.bksd.core.data.remote.supabase.SupabaseAuthDataSource
 import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.Result
-import com.bksd.profile.domain.repository.ProfileRepository
 import kotlinx.coroutines.flow.Flow
 
 class AuthRepositoryImpl(
-    private val firebaseAuthDataSource: FirebaseAuthDataSource,
-    private val profileRepository: ProfileRepository,
+    private val authDataSource: SupabaseAuthDataSource,
 ) : AuthRepository {
 
     override suspend fun signIn(email: String, password: String): Result<Unit, AppError> {
-        return firebaseAuthDataSource.signIn(email, password)
+        return authDataSource.signIn(email, password)
     }
 
     override suspend fun signUp(
@@ -21,27 +19,25 @@ class AuthRepositoryImpl(
         password: String,
         fullName: String
     ): Result<Unit, AppError> {
-        val signUpResult = firebaseAuthDataSource.signUp(email, password)
-        if (signUpResult is Result.Error) return signUpResult
-        return firebaseAuthDataSource.updateDisplayName(fullName)
+        return authDataSource.signUp(email, password, fullName)
+    }
+
+    override suspend fun signInWithGoogle(idToken: String): Result<Unit, AppError> {
+        return authDataSource.signInWithGoogle(idToken)
     }
 
     override suspend fun resetPassword(email: String): Result<Unit, AppError> {
-        return firebaseAuthDataSource.resetPassword(email)
+        return authDataSource.resetPassword(email)
     }
 
     override suspend fun signOut(): Result<Unit, AppError> {
-        return firebaseAuthDataSource.signOut()
-    }
-
-    override suspend fun clearUserData() {
-        profileRepository.clearUserData()
+        return authDataSource.signOut()
     }
 
     override fun getSignedInUserId(): String? {
-        return firebaseAuthDataSource.getSignedInUserId()
+        return authDataSource.getSignedInUserId()
     }
 
     override val authState: Flow<Boolean>
-        get() = firebaseAuthDataSource.authState
+        get() = authDataSource.authState
 }

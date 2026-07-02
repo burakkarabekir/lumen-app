@@ -1,13 +1,8 @@
 package com.bksd.journal.data.local
 
 import com.bksd.core.domain.mapper.Mapper
-import com.bksd.core.domain.model.Attachment
-import com.bksd.core.domain.model.AudioAttachment
-import com.bksd.core.domain.model.LinkAttachment
-import com.bksd.core.domain.model.PhotoAttachment
-import com.bksd.core.domain.model.VideoAttachment
-import com.bksd.journal.data.remote.AttachmentDto
-import com.bksd.journal.domain.model.Moment
+import com.bksd.core.domain.model.Moment
+import com.bksd.journal.data.remote.toAttachmentDto
 import kotlinx.serialization.json.Json
 
 class DomainToEntityMapper(
@@ -25,30 +20,7 @@ class DomainToEntityMapper(
         locationLongitude = input.location?.longitude,
         locationDisplayName = input.location?.displayName,
         attachments = json.encodeToString(input.attachments.map { it.toAttachmentDto() }),
+        isFavorite = input.isFavorite,
         pendingSync = input.pendingSync
     )
-
-    private fun Attachment.toAttachmentDto(): AttachmentDto = when (this) {
-        is PhotoAttachment -> AttachmentDto.Photo(
-            id = id.value,
-            remoteUrl = remoteUrl.value
-        )
-
-        is VideoAttachment -> AttachmentDto.Video(
-            id = id.value,
-            remoteUrl = remoteUrl.value,
-            durationMs = durationMs
-        )
-
-        is AudioAttachment -> AttachmentDto.Audio(
-            id = id.value,
-            remoteUrl = remoteUrl.value,
-            durationMs = durationMs
-        )
-
-        is LinkAttachment -> AttachmentDto.Link(
-            id = id.value,
-            url = url.value
-        )
-    }
 }

@@ -2,16 +2,21 @@ package com.bksd.journal.presentation.detail
 
 import androidx.lifecycle.viewModelScope
 import com.bksd.core.domain.error.Result
+import com.bksd.core.domain.model.PlaybackState
+import com.bksd.core.domain.storage.AudioPlayer
 import com.bksd.core.presentation.util.BaseViewModel
 import com.bksd.core.presentation.util.UiText
+import com.bksd.core.presentation.util.toUiText
 import com.bksd.journal.domain.usecase.DeleteMomentUseCase
 import com.bksd.journal.domain.usecase.GetMomentUseCase
+import com.bksd.journal.domain.usecase.UpdateMomentUseCase
+import com.bksd.reflection.domain.usecase.ObserveEntryAnalysisUseCase
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -19,60 +24,30 @@ import kotlinx.coroutines.flow.update
 class MomentDetailViewModel(
     private val getMomentUseCase: GetMomentUseCase,
     private val deleteMomentUseCase: DeleteMomentUseCase,
-    private val momentId: String
+    private val updateMomentUseCase: UpdateMomentUseCase,
+    private val observeEntryAnalysis: ObserveEntryAnalysisUseCase,
+    private val audioPlayer: AudioPlayer,
+    private val momentId: String,
+    private val initialIsEditing: Boolean = false
 ) : BaseViewModel<MomentDetailAction, MomentDetailEvent>() {
 
     private var hasLoadedInitialData = false
 
-    private val isLoading = MutableStateFlow(true)
-    private val error = MutableStateFlow<UiText?>(null)
-    private val momentState = MutableStateFlow<com.bksd.journal.domain.model.Moment?>(null)
-    private val isEditing = MutableStateFlow(false)
-    private val isBodyExpanded = MutableStateFlow(false)
-    private val editTitle = MutableStateFlow("")
-    private val editBody = MutableStateFlow("")
-    private val editMoods = MutableStateFlow(emptySet<com.bksd.journal.domain.model.Mood>())
-    private val editTags = MutableStateFlow(emptyList<String>())
-    private val isSaving = MutableStateFlow(false)
+    private val _state = MutableStateFlow(MomentDetailState(isLoading = true))
 
-    @Suppress("UNCHECKED_CAST")
-    val state: StateFlow<MomentDetailState> = combine(
-        listOf(
-            isLoading,
-            momentState,
-            error,
-            isEditing,
-            isBodyExpanded,
-            editTitle,
-            editBody,
-            editMoods,
-            editTags,
-            isSaving
-        )
-    ) { values ->
-        MomentDetailState(
-            isLoading = values[0] as Boolean,
-            moment = values[1] as? com.bksd.journal.domain.model.Moment,
-            error = values[2] as? UiText,
-            isEditing = values[3] as Boolean,
-            isBodyExpanded = values[4] as Boolean,
-            editTitle = values[5] as String,
-            editBody = values[6] as String,
-            editMoods = (values[7] as Set<com.bksd.journal.domain.model.Mood>).toPersistentSet(),
-            editTags = (values[8] as List<String>).toPersistentList(),
-            isSaving = values[9] as Boolean
-        )
-    }
+    val state: StateFlow<MomentDetailState> = _state
         .onStart {
             if (!hasLoadedInitialData) {
                 loadMoment()
+                observeAudio()
+                observeAnalysis()
                 hasLoadedInitialData = true
             }
         }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000L),
-            initialValue = MomentDetailState()
+            initialValue = _state.value
         )
 
     override fun onAction(action: MomentDetailAction) {
@@ -83,18 +58,103 @@ class MomentDetailViewModel(
             MomentDetailAction.OnSaveChanges -> handleSaveChanges()
             MomentDetailAction.OnCancelEdit -> exitEditMode()
             MomentDetailAction.OnDeleteClick -> handleDelete()
-            MomentDetailAction.OnShareClick -> Unit
-            MomentDetailAction.OnFavoriteToggle -> Unit
-            MomentDetailAction.OnToggleBodyExpand -> isBodyExpanded.update { !it }
-            is MomentDetailAction.OnTitleChange -> editTitle.update { action.title }
-            is MomentDetailAction.OnBodyChange -> editBody.update { action.body }
+            MomentDetailAction.OnShareClick -> handleShare()
+            MomentDetailAction.OnFavoriteToggle -> toggleFavorite()
+            MomentDetailAction.OnToggleBodyExpand -> {
+                _state.update { it.copy(isBodyExpanded = !it.isBodyExpanded) }
+            }
+            is MomentDetailAction.OnTitleChange -> {
+                _state.update { it.copy(editTitle = action.title) }
+            }
+            is MomentDetailAction.OnBodyChange -> {
+                _state.update { it.copy(editBody = action.body) }
+            }
             is MomentDetailAction.OnMoodToggle -> toggleMood(action.mood)
-            is MomentDetailAction.OnTagRemove -> editTags.update { it - action.tag }
+            is MomentDetailAction.OnTagRemove -> {
+                _state.update { it.copy(editTags = (it.editTags - action.tag).toPersistentList()) }
+            }
+            is MomentDetailAction.OnAudioPlayClick -> playAudio(action.url)
+            MomentDetailAction.OnAudioPauseClick -> launch { audioPlayer.pause() }
+            MomentDetailAction.OnLocationRemove -> _state.update { it.copy(editLocation = null) }
+            is MomentDetailAction.OnDateChange -> _state.update { it.copy(editCreatedAt = action.date) }
+            is MomentDetailAction.OnAttachmentRemove -> _state.update {
+                it.copy(
+                    editAttachments = it.editAttachments
+                        .filter { att -> att.id != action.id }
+                        .toPersistentList()
+                )
+            }
         }
     }
 
+    private fun handleShare() {
+        if (_state.value.moment == null) return
+        sendEvent(MomentDetailEvent.ShowShareSheet)
+    }
+
+    private fun playAudio(url: String) {
+        _state.update { it.copy(playingAudioUrl = url) }
+        launch {
+            if (audioPlayer.playbackState.value == PlaybackState.PAUSED) {
+                audioPlayer.resume()
+            } else {
+                audioPlayer.play(url)
+            }
+        }
+    }
+
+    private fun observeAudio() {
+        launch {
+            audioPlayer.playbackState.collect { st ->
+                _state.update { it.copy(audioPlaybackState = st) }
+            }
+        }
+        launch {
+            audioPlayer.currentPositionMs.collect { ms ->
+                _state.update { it.copy(audioPositionFormatted = formatMs(ms)) }
+            }
+        }
+        launch {
+            audioPlayer.durationMs.collect { ms ->
+                _state.update { it.copy(audioDurationFormatted = formatMs(ms)) }
+            }
+        }
+        launch {
+            audioPlayer.playbackAmplitudes.collect { amps ->
+                _state.update { it.copy(audioAmplitudes = amps.toImmutableList()) }
+            }
+        }
+    }
+
+    private fun observeAnalysis() {
+        launch {
+            observeEntryAnalysis(momentId).collect { analysisState ->
+                _state.update { it.copy(analysis = analysisState) }
+            }
+        }
+    }
+
+    private fun formatMs(ms: Long): String {
+        val total = ms / 1000
+        val minutes = total / 60
+        val seconds = total % 60
+        return "$minutes:${seconds.toString().padStart(2, '0')}"
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        audioPlayer.release()
+    }
+
+    private fun toggleFavorite() {
+        val moment = _state.value.moment ?: return
+        val updated = moment.copy(isFavorite = !moment.isFavorite)
+        _state.update { it.copy(moment = updated) }
+        launch { updateMomentUseCase(updated) }
+    }
+
     private fun handleNavigateBack() {
-        if (isEditing.value) {
+        if (_state.value.isEditing) {
             exitEditMode()
         } else {
             sendEvent(MomentDetailEvent.NavigateBack)
@@ -102,56 +162,92 @@ class MomentDetailViewModel(
     }
 
     private fun enterEditMode() {
-        val moment = momentState.value ?: return
-        editTitle.update { moment.title }
-        editBody.update { moment.body.orEmpty() }
-        editMoods.update { moment.moods.toSet() }
-        editTags.update { moment.tags }
-        isEditing.update { true }
-    }
-
-    private fun exitEditMode() {
-        isEditing.update { false }
-    }
-
-    private fun handleSaveChanges() {
-        isSaving.update { true }
-        launch {
-            val moment = momentState.value ?: return@launch
-            val updated = moment.copy(
-                title = editTitle.value,
-                body = editBody.value.ifEmpty { null },
-                moods = editMoods.value.toList(),
-                tags = editTags.value
+        val moment = _state.value.moment ?: return
+        _state.update {
+            it.copy(
+                isEditing = true,
+                editTitle = moment.title,
+                editBody = moment.body.orEmpty(),
+                editMoods = moment.moods.toSet().toPersistentSet(),
+                editTags = moment.tags.toPersistentList(),
+                editLocation = moment.location,
+                editCreatedAt = moment.createdAt,
+                editAttachments = moment.attachments.toPersistentList()
             )
-            momentState.update { updated }
-            isEditing.update { false }
-            isSaving.update { false }
-            sendEvent(MomentDetailEvent.ShowSuccess(UiText.Dynamic("Changes saved")))
         }
     }
 
-    private fun toggleMood(mood: com.bksd.journal.domain.model.Mood) {
-        editMoods.update { current ->
-            if (mood in current) current - mood else current + mood
+    private fun exitEditMode() {
+        _state.update { it.copy(isEditing = false) }
+    }
+
+    private fun handleSaveChanges() {
+        val current = _state.value
+        val moment = current.moment ?: return
+
+        _state.update { it.copy(isSaving = true) }
+
+        val updated = moment.copy(
+            title = current.editTitle,
+            body = current.editBody.ifEmpty { null },
+            moods = current.editMoods.toList(),
+            tags = current.editTags.toList(),
+            location = current.editLocation,
+            createdAt = current.editCreatedAt ?: moment.createdAt,
+            attachments = current.editAttachments.toList()
+        )
+
+        launch {
+            when (val result = updateMomentUseCase(updated)) {
+                is Result.Success -> {
+                    _state.update {
+                        it.copy(
+                            moment = updated,
+                            isEditing = false,
+                            isSaving = false
+                        )
+                    }
+                    sendEvent(MomentDetailEvent.ShowSuccess(UiText.Dynamic("Changes saved")))
+                }
+
+                is Result.Error -> {
+                    _state.update { it.copy(isSaving = false) }
+                    sendEvent(
+                        MomentDetailEvent.ShowError(
+                            result.error.toUiText()
+                        )
+                    )
+                }
+            }
+        }
+    }
+
+    private fun toggleMood(mood: com.bksd.core.domain.model.Mood) {
+        _state.update { current ->
+            val updated = if (mood in current.editMoods) {
+                current.editMoods - mood
+            } else {
+                current.editMoods + mood
+            }
+            current.copy(editMoods = updated.toPersistentSet())
         }
     }
 
     private fun loadMoment() {
-        isLoading.update { true }
-        error.update { null }
+        _state.update { it.copy(isLoading = true, error = null) }
         launch {
             when (val result = getMomentUseCase(momentId)) {
                 is Result.Error -> {
-                    val errorText = UiText.Dynamic(result.error.toString())
-                    error.update { errorText }
-                    isLoading.update { false }
+                    val errorText = result.error.toUiText()
+                    _state.update { it.copy(error = errorText, isLoading = false) }
                     sendEvent(MomentDetailEvent.ShowError(errorText))
                 }
 
                 is Result.Success -> {
-                    momentState.update { result.data }
-                    isLoading.update { false }
+                    _state.update { it.copy(moment = result.data, isLoading = false) }
+                    if (initialIsEditing) {
+                        enterEditMode()
+                    }
                 }
             }
         }
@@ -166,7 +262,7 @@ class MomentDetailViewModel(
                 }
 
                 is Result.Error -> {
-                    val errorText = UiText.Dynamic(result.error.toString())
+                    val errorText = result.error.toUiText()
                     sendEvent(MomentDetailEvent.ShowError(errorText))
                 }
             }

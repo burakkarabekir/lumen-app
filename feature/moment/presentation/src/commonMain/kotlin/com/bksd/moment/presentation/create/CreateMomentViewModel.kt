@@ -15,16 +15,19 @@ import com.bksd.core.domain.model.DraftLink
 import com.bksd.core.domain.model.DraftPhoto
 import com.bksd.core.domain.model.DraftVideo
 import com.bksd.core.domain.model.MediaType
+import com.bksd.core.domain.model.Moment
 import com.bksd.core.domain.model.PlaybackState
 import com.bksd.core.domain.model.Url
 import com.bksd.core.domain.repository.MediaRepository
 import com.bksd.core.domain.storage.AudioPlayer
 import com.bksd.core.domain.storage.VoiceRecorder
+import com.bksd.core.presentation.util.ApplicationScope
 import com.bksd.core.presentation.util.BaseViewModel
 import com.bksd.core.presentation.util.UiText
 import com.bksd.core.presentation.util.toFormattedTime
-import com.bksd.journal.domain.model.Moment
 import com.bksd.moment.domain.usecase.SaveMomentUseCase
+import com.bksd.reflection.domain.usecase.RequestEntryAnalysisUseCase
+import kotlinx.coroutines.launch
 import com.bksd.moment.presentation.Res
 import com.bksd.moment.presentation.create.mappers.toLocationData
 import com.bksd.moment.presentation.create.mappers.toLocationInfoUiModel
@@ -51,6 +54,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.getString
 import kotlin.time.Clock
 import kotlin.uuid.ExperimentalUuidApi
@@ -62,7 +67,10 @@ class CreateMomentViewModel(
     private val voiceRecorder: VoiceRecorder,
     private val audioPlayer: AudioPlayer,
     private val locationProvider: LocationProvider,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val clock: Clock,
+    private val applicationScope: ApplicationScope,
+    private val requestEntryAnalysis: RequestEntryAnalysisUseCase,
 ) : BaseViewModel<CreateMomentAction, CreateMomentEvent>() {
 
     private var hasLoadedInitialData = false
@@ -82,10 +90,17 @@ class CreateMomentViewModel(
         )
 
     fun initState() {
-        val now = Clock.System.now()
+        val now = clock.now()
         launch {
             val formatted = getString(Res.string.timestamp_today_format, now.toFormattedTime())
-            updateState { it.copy(timestampFormatted = formatted) }
+            val date = now.toLocalDateTime(TimeZone.currentSystemDefault()).date
+            val month = date.month.name.lowercase().replaceFirstChar { it.uppercase() }
+            updateState {
+                it.copy(
+                    timestampFormatted = formatted,
+                    dateHeadline = "$month ${date.day}"
+                )
+            }
         }
 
         launch { voiceRecorder.isRecording.collect { updateRecordingState() } }
@@ -211,6 +226,8 @@ class CreateMomentViewModel(
             is CreateMomentAction.OnDateSelect -> updateState { it.copy(selectedDate = action.date) }
             CreateMomentAction.OnBackClick -> sendEvent(CreateMomentEvent.NavigateBack)
             CreateMomentAction.OnSaveClick -> saveMoment()
+            is CreateMomentAction.OnToggleAiAnalysis ->
+                updateState { it.copy(analyzeWithAi = action.enabled) }
 
             // Attachments
             is CreateMomentAction.OnRemoveAttachment -> removeAttachment(action.id)
@@ -469,6 +486,7 @@ class CreateMomentViewModel(
                     is Result.Error -> {
                         updateState { it.copy(isSaving = false) }
                         sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_attachment_save_failed)))
+                        cleanupUploaded(uploadedAttachments)
                         return@launch
                     }
                 }
@@ -478,7 +496,7 @@ class CreateMomentViewModel(
                 id = momentId,
                 title = currentState.title.trim().takeIf { it.isNotBlank() } ?: "Untitled",
                 body = currentState.body.takeIf { it.isNotBlank() },
-                createdAt = Clock.System.now(),
+                createdAt = clock.now(),
                 moods = currentState.selectedMoods.toList(),
                 tags = currentState.tags.toList(),
                 attachments = uploadedAttachments.toList(),
@@ -492,13 +510,32 @@ class CreateMomentViewModel(
             when (result) {
                 is Result.Error -> {
                     sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_moment_save_failed)))
+                    cleanupUploaded(uploadedAttachments)
                 }
 
                 is Result.Success -> {
+                    if (currentState.analyzeWithAi) {
+                        val entryText = listOfNotNull(
+                            currentState.title.trim().takeIf { it.isNotBlank() },
+                            currentState.body.trim().takeIf { it.isNotBlank() }
+                        ).joinToString("\n\n")
+                        if (entryText.isNotBlank()) {
+                            val mood = currentState.selectedMoods
+                                .joinToString(", ") { it.label }
+                                .takeIf { it.isNotBlank() }
+                            applicationScope.launch {
+                                requestEntryAnalysis(momentId, entryText, mood)
+                            }
+                        }
+                    }
                     sendEvent(CreateMomentEvent.ShowSaveSuccess(UiText.Resource(Res.string.success_moment_saved)))
                     sendEvent(CreateMomentEvent.NavigateBack)
                 }
             }
         }
+    }
+
+    private suspend fun cleanupUploaded(attachments: List<Attachment>) {
+        attachments.forEach { mediaRepository.deleteAttachment(it) }
     }
 }

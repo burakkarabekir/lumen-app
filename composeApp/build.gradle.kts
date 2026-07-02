@@ -27,10 +27,10 @@ kotlin {
             implementation(projects.feature.journal.domain)
             implementation(projects.feature.journal.presentation)
 
-            implementation(projects.feature.moment.data)
             implementation(projects.feature.moment.domain)
             implementation(projects.feature.moment.presentation)
 
+            implementation(projects.feature.insights.domain)
             implementation(projects.feature.insights.presentation)
 
             implementation(projects.feature.profile.data)
@@ -39,6 +39,9 @@ kotlin {
 
             implementation(projects.feature.paywall.domain)
             implementation(projects.feature.paywall.presentation)
+
+            implementation(projects.feature.reflection.domain)
+            implementation(projects.feature.reflection.data)
 
             implementation(libs.bundles.compose)
 

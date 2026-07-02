@@ -7,25 +7,23 @@ applicationId = "com.bksd.lumen"
 credentials = "1.6.0"
 googleid = "1.2.0"
 kotlinxCoroutinesPlayServices = "1.11.0"
-playServicesLocation = "21.3.0"
+playServicesLocation = "21.4.0"
 versionCode = "1"
 versionName = "1.0"
 
-firebase-gitlive = "2.4.0"
-firebase-bom = "34.13.0"
-google-services = "4.4.4"
+supabase = "3.6.0"
 
 # ==================== Build Tools ====================
 agp = "9.2.1"
 androidTools = "32.2.1"
-kotlin = "2.3.21"
+kotlin = "2.4.0"
 ksp = "2.3.7"
-buildkonfig = "0.21.0"
+buildkonfig = "0.22.0"
 androidDesugarJdkLibs = "2.1.5"
 
 # ==================== Compose ====================
-composeBom = "2026.05.00"
-compose-multiplatform = "1.11.0"
+composeBom = "2026.06.01"
+compose-multiplatform = "1.11.1"
 compose-material3 = "1.11.0-alpha07"
 compose-icons = "1.7.3"
 
@@ -39,27 +37,27 @@ jetbrains-adaptive = "1.3.0-alpha07"
 # ==================== AndroidX ====================
 androidx-activity = "1.13.0"
 androidx-appcompat = "1.7.1"
-androidx-core = "1.18.0"
-androidx-lifecycle-runtime-compose = "2.11.0-beta01"
-androidx-lifecycle = "2.11.0-beta01"
+androidx-core = "1.19.0"
+androidx-lifecycle-runtime-compose = "2.11.0-beta02"
+androidx-lifecycle = "2.11.0"
 androidx-splashscreen = "1.2.0"
 
 # ==================== Data & Storage ====================
 room = "2.8.4"
-sqlite = "2.6.2"
+sqlite = "2.7.0"
 datastore = "1.2.1"
 
 # ==================== Networking ====================
 ktor = "3.5.0"
 
 # ==================== Dependency Injection ====================
-koin = "4.2.1"
+koin = "4.2.2"
 kotzilla = "2.1.3"
 
 # ==================== Kotlinx ====================
 kotlinx-serialization = "1.11.0"
 kotlinx-coroutines = "1.11.0"
-kotlinx-collections-immutable = "0.4.0"
+kotlinx-collections-immutable = "0.5.0"
 kotlinx-datetime = "0.8.0"
 
 # ==================== Permissions ====================
@@ -79,15 +77,14 @@ navigation3Lifecycle = "2.10.0"
 kotlinStdlib = "2.3.21"
 core = "1.7.0"
 
-coil = "3.4.0"
-coil-network = "3.4.0"
+coil = "3.5.0"
+coil-network = "3.5.0"
 
 [libraries]
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
 androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
 androidx-lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "androidx-lifecycle" }
 
-google-firebase-auth = { module = "com.google.firebase:firebase-auth" }
 googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
 insert-koin-koin-android = { module = "io.insert-koin:koin-android" }
 insert-koin-koin-core = { module = "io.insert-koin:koin-core" }
@@ -190,11 +187,11 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 # ==================== Moko Permissions ====================
 moko-permissions = { module = "dev.icerock.moko:permissions", version.ref = "moko-permissions" }
 moko-permissions-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = "moko-permissions" }
-moko-permissions-notifications = { module = "dev.icerock.moko:permissions-notifications", version.ref = "moko-permissions" }
 moko-permissions-microphone = { module = "dev.icerock.moko:permissions-microphone", version.ref = "moko-permissions" }
 moko-permissions-location = { module = "dev.icerock.moko:permissions-location", version.ref = "moko-permissions" }
 moko-permissions-camera = { module = "dev.icerock.moko:permissions-camera", version.ref = "moko-permissions" }
 moko-permissions-gallery = { module = "dev.icerock.moko:permissions-gallery", version.ref = "moko-permissions" }
+moko-permissions-notifications = { module = "dev.icerock.moko:permissions-notifications", version.ref = "moko-permissions" }
 
 # ==================== Logging ====================
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
@@ -214,15 +211,12 @@ androidx-core = { group = "androidx.test", name = "core", version.ref = "core" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil-network" }
 
-firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase-gitlive" }
-firebase-common = { module = "dev.gitlive:firebase-common", version.ref = "firebase-gitlive" }
-firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebase-gitlive" }
-firebase-storage = { module = "dev.gitlive:firebase-storage", version.ref = "firebase-gitlive" }
-firebase-analytics = { module = "dev.gitlive:firebase-analytics", version.ref = "firebase-gitlive" }
-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
+supabase-auth = { module = "io.github.jan-tennert.supabase:auth-kt", version.ref = "supabase" }
+supabase-postgrest = { module = "io.github.jan-tennert.supabase:postgrest-kt", version.ref = "supabase" }
+supabase-storage = { module = "io.github.jan-tennert.supabase:storage-kt", version.ref = "supabase" }
+supabase-functions = { module = "io.github.jan-tennert.supabase:functions-kt", version.ref = "supabase" }
 
 [plugins]
-googleServices = { id = "com.google.gms.google-services", version.ref = "google-services" }
 # ==================== Convention Plugins ====================
 convention-android-application = { id = "com.bksd.convention.android.application", version = "unspecified" }
 convention-android-application-compose = { id = "com.bksd.convention.android.application.compose", version = "unspecified" }
@@ -248,15 +242,11 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 # ==================== Compose Plugins ====================
 compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-compose-stability-analyzer = { id = "com.github.skydoves.compose.stability.analyzer", version = "0.7.5" }
 
 # ==================== Build Tools Plugins ====================
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
 buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
-
-# ==================== Analytics Plugins ====================
-kotzilla = { id = "io.kotzilla.kotzilla-plugin", version.ref = "kotzilla" }
 
 [bundles]
 # ==================== Compose (AndroidX) ====================
@@ -368,16 +358,16 @@ moko-permissions-core = [
     "moko-permissions-compose"
 ]
 
-moko-permissions-all = [
-    "moko-permissions",
-    "moko-permissions-compose",
-    "moko-permissions-notifications",
-    "moko-permissions-gallery"
-]
-
 # ==================== Analytics ====================
 analytics = [
     "kotzilla-sdk-compose"
+]
+
+supabase = [
+    "supabase-auth",
+    "supabase-postgrest",
+    "supabase-storage",
+    "supabase-functions",
 ]
 
 # ==================== Testing ====================

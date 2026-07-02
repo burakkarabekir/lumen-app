@@ -24,6 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.PreviewAppTheme
+import com.bksd.core.design_system.theme.dimens
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun PricingTierCard(
@@ -43,7 +45,7 @@ fun PricingTierCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable { onSelect() },
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(MaterialTheme.dimens.radius.lg),
             border = BorderStroke(
                 width = if (isSelected) 2.dp else 1.dp,
                 color = borderColor
@@ -51,7 +53,7 @@ fun PricingTierCard(
             color = MaterialTheme.colorScheme.surface
         ) {
             Row(
-                modifier = Modifier.padding(horizontal = 20.dp, vertical = 18.dp),
+                modifier = Modifier.padding(horizontal = MaterialTheme.dimens.spacing.xl, vertical = MaterialTheme.dimens.spacing.xl),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(modifier = Modifier.weight(1f)) {
@@ -62,7 +64,7 @@ fun PricingTierCard(
                         ),
                         color = MaterialTheme.colorScheme.onSurface
                     )
-                    Spacer(modifier = Modifier.height(2.dp))
+                    Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.xxs))
                     Text(
                         text = tier.subtitle,
                         style = MaterialTheme.typography.labelSmall.copy(
@@ -86,12 +88,12 @@ fun PricingTierCard(
                             ),
                             color = MaterialTheme.colorScheme.onSurface
                         )
-                        Spacer(modifier = Modifier.width(2.dp))
+                        Spacer(modifier = Modifier.width(MaterialTheme.dimens.spacing.xxs))
                         Text(
                             text = tier.period,
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
-                            modifier = Modifier.padding(bottom = 3.dp)
+                            modifier = Modifier.padding(bottom = MaterialTheme.dimens.spacing.xs)
                         )
                     }
                     tier.monthlyBreakdown?.let { breakdown ->
@@ -109,13 +111,13 @@ fun PricingTierCard(
             Box(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .padding(end = 16.dp)
-                    .clip(RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp))
+                    .padding(end = MaterialTheme.dimens.spacing.lg)
+                    .clip(RoundedCornerShape(bottomStart = MaterialTheme.dimens.radius.sm, bottomEnd = MaterialTheme.dimens.radius.sm))
                     .background(MaterialTheme.colorScheme.primary)
-                    .padding(horizontal = 10.dp, vertical = 4.dp)
+                    .padding(horizontal = MaterialTheme.dimens.spacing.md, vertical = MaterialTheme.dimens.spacing.xs)
             ) {
                 Text(
-                    text = "POPULAR CHOICE",
+                    text = stringResource(Res.string.popular_choice),
                     style = MaterialTheme.typography.labelSmall.copy(
                         fontWeight = FontWeight.Bold,
                         fontSize = 9.sp,

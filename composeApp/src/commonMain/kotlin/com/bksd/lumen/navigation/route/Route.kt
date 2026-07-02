@@ -35,17 +35,29 @@ sealed interface Route : NavKey {
 
         @Serializable
         data object Insights : Main
-
-        @Serializable
-        data object Profile : Main
     }
 
     // ==================== Detail / Sub-screen Routes ====================
     @Serializable
-    data class MomentDetail(val momentId: String) : Route
+    data class MomentDetail(val momentId: String, val isEditing: Boolean = false) : Route
 
     @Serializable
     data object CreateMoment : Route
+
+    @Serializable
+    data object Profile : Route
+
+    @Serializable
+    data object EditProfile : Route
+
+    @Serializable
+    data object About : Route
+
+    @Serializable
+    data object Help : Route
+
+    @Serializable
+    data object WeeklyReflection : Route
 
     @Serializable
     data object Paywall : Route
@@ -54,8 +66,7 @@ sealed interface Route : NavKey {
         fun NavKey.shouldShowBottomBar(): Boolean =
             when (this) {
                 Main.Journal,
-                Main.Insights,
-                Main.Profile -> true
+                Main.Insights -> true
 
                 else -> false
             }

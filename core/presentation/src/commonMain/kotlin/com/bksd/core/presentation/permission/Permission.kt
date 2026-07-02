@@ -7,5 +7,6 @@ enum class Permission {
     RECORD_AUDIO,
     LOCATION,
     CAMERA,
-    GALLERY
+    GALLERY,
+    NOTIFICATION
 }

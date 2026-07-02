@@ -10,4 +10,7 @@ sealed interface ProfileAction {
     data object OnUploadPictureClick : ProfileAction
     data class OnPictureSelected(val bytes: ByteArray, val mimeType: String?) : ProfileAction
     data object OnSettingsClick : ProfileAction
+    data object OnEditProfileClick : ProfileAction
+    data object OnAboutClick : ProfileAction
+    data object OnHelpClick : ProfileAction
 }

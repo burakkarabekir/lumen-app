@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.journal.presentation.Res
 import com.bksd.journal.presentation.add_reflection
 import com.bksd.journal.presentation.content_desc_bookmark
@@ -43,25 +44,25 @@ fun MomentDetailActionButtons(
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.md)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm)
         ) {
             OutlinedButton(
                 onClick = onAddReflectionClick,
                 modifier = Modifier.weight(1f),
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(MaterialTheme.dimens.radius.md),
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.NoteAdd,
                     contentDescription = null,
-                    modifier = Modifier.size(18.dp)
+                    modifier = Modifier.size(MaterialTheme.dimens.icon.md)
                 )
-                Spacer(modifier = Modifier.size(8.dp))
+                Spacer(modifier = Modifier.size(MaterialTheme.dimens.spacing.sm))
                 Text(text = stringResource(Res.string.add_reflection))
             }
 
@@ -77,8 +78,8 @@ fun MomentDetailActionButtons(
             onClick = onExportPdfClick,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp),
-            shape = RoundedCornerShape(24.dp),
+                .height(MaterialTheme.dimens.size.cancelIcon),
+            shape = RoundedCornerShape(MaterialTheme.dimens.radius.xxl),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary
             )
@@ -86,9 +87,9 @@ fun MomentDetailActionButtons(
             Icon(
                 imageVector = Icons.Default.PictureAsPdf,
                 contentDescription = null,
-                modifier = Modifier.size(18.dp)
+                modifier = Modifier.size(MaterialTheme.dimens.icon.md)
             )
-            Spacer(modifier = Modifier.size(8.dp))
+            Spacer(modifier = Modifier.size(MaterialTheme.dimens.spacing.sm))
             Text(text = stringResource(Res.string.export_to_pdf))
         }
     }
@@ -102,7 +103,7 @@ private fun MomentDetailActionButtonsPreview() {
             onAddReflectionClick = {},
             onBookmarkClick = {},
             onExportPdfClick = {},
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg)
         )
     }
 }

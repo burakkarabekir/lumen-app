@@ -2,16 +2,18 @@ package com.bksd.journal.presentation.journal
 
 import androidx.lifecycle.viewModelScope
 import com.bksd.core.domain.error.Result
+import com.bksd.core.domain.model.Moment
 import com.bksd.core.domain.storage.AudioPlayer
 import com.bksd.core.domain.storage.SessionStorage
 import com.bksd.core.presentation.util.BaseViewModel
-import com.bksd.core.presentation.util.UiText
-import com.bksd.journal.domain.model.Moment
-import com.bksd.journal.domain.model.applyFilter
+import com.bksd.core.presentation.util.toUiText
 import com.bksd.journal.domain.usecase.DeleteMomentUseCase
 import com.bksd.journal.domain.usecase.GetPagedMomentsUseCase
 import com.bksd.journal.domain.usecase.SyncMomentsUseCase
+import com.bksd.journal.domain.usecase.UpdateMomentUseCase
 import com.bksd.journal.presentation.journal.JournalViewModel.Companion.LOAD_MORE_SIZE
+import com.bksd.journal.presentation.util.groupMomentsByDate
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,10 +30,11 @@ class JournalViewModel(
     private val getPagedMomentsUseCase: GetPagedMomentsUseCase,
     private val syncMomentsUseCase: SyncMomentsUseCase,
     private val deleteMomentUseCase: DeleteMomentUseCase,
+    private val updateMomentUseCase: UpdateMomentUseCase,
     private val sessionStorage: SessionStorage,
     private val clock: Clock,
     private val timeZone: TimeZone,
-    private val audioPlayer: AudioPlayer
+    private val audioPlayer: AudioPlayer,
 ) : BaseViewModel<JournalAction, JournalEvent>() {
 
     companion object {
@@ -56,6 +59,11 @@ class JournalViewModel(
     init {
         syncFromRemote(limit = INITIAL_PAGE_SIZE, offset = 0)
         observeMoments()
+        launch {
+            sessionStorage.observeProfilePhotoUrl().collect { url ->
+                _state.update { it.copy(profilePhotoUrl = url) }
+            }
+        }
     }
 
     /**
@@ -79,14 +87,7 @@ class JournalViewModel(
 
     override fun onAction(action: JournalAction) {
         when (action) {
-            JournalAction.OnCreateNewClick -> sendEvent(JournalEvent.NavigateToCreate)
-
             is JournalAction.OnMomentClick -> sendEvent(JournalEvent.NavigateToDetail(action.id))
-
-            is JournalAction.OnFilterSelect -> {
-                _state.update { it.copy(selectedFilter = action.filter) }
-                reloadMoments()
-            }
 
             is JournalAction.OnSearchQueryChange -> {
                 _state.update { it.copy(searchQuery = action.query) }
@@ -104,25 +105,28 @@ class JournalViewModel(
                 launch { audioPlayer.pause() }
             }
 
-            JournalAction.OnProfileClick -> {
-                // Handled by the screen via event if needed
-            }
+            JournalAction.OnProfileClick -> sendEvent(JournalEvent.NavigateToProfile)
 
             is JournalAction.OnDeleteMoment -> {
                 launch {
                     val result = deleteMomentUseCase(action.id)
                     if (result is Result.Error) {
-                        sendEvent(JournalEvent.ShowError(UiText.Dynamic(result.error.toString())))
+                        sendEvent(JournalEvent.ShowError(result.error.toUiText()))
                     }
                 }
             }
 
             is JournalAction.OnEditMoment -> {
-                sendEvent(JournalEvent.NavigateToDetail(action.id))
+                sendEvent(JournalEvent.NavigateToDetail(action.id, isEditing = true))
             }
 
-            is JournalAction.OnFavoriteToggle -> Unit
+            is JournalAction.OnFavoriteToggle -> toggleFavorite(action.id)
         }
+    }
+
+    private fun toggleFavorite(id: String) {
+        val moment = _state.value.moments.find { it.id == id } ?: return
+        launch { updateMomentUseCase(moment.copy(isFavorite = !moment.isFavorite)) }
     }
 
     // ──────────────────────────────────────────────────────────────
@@ -140,11 +144,15 @@ class JournalViewModel(
             getPagedMomentsUseCase(limit = currentPageSize, offset = 0)
                 .collect { moments ->
                     _state.update { current ->
-                        val filtered = moments.applyFilter(current.selectedFilter)
-                        val searched = applySearch(filtered, current.searchQuery)
+                        val searched = applySearch(moments, current.searchQuery)
 
                         current.copy(
                             moments = searched.toPersistentList(),
+                            sections = groupMomentsByDate(
+                                searched,
+                                today,
+                                timeZone
+                            ).toImmutableList(),
                             isLoading = false,
                             isLoadingMore = false,
                             hasMorePages = moments.size >= currentPageSize,
@@ -188,7 +196,7 @@ class JournalViewModel(
             _state.update { it.copy(isSyncing = true, error = null) }
             when (val result = syncMomentsUseCase(limit = limit, offset = offset)) {
                 is Result.Error -> {
-                    val errorText = UiText.Dynamic(result.error.toString())
+                    val errorText = result.error.toUiText()
                     _state.update { it.copy(isSyncing = false, error = errorText) }
                     sendEvent(JournalEvent.ShowError(errorText))
                 }

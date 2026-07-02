@@ -14,10 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
-import com.bksd.journal.domain.model.Mood
+import com.bksd.core.domain.model.Mood
 
 @Composable
 fun MoodTag(
@@ -35,10 +35,10 @@ fun MoodTag(
             .graphicsLayer {
                 alpha = alphaProvider()
             }
-            .clip(RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.sm))
             .background(backgroundColor)
-            .padding(horizontal = 8.dp, vertical = 4.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
+            .padding(horizontal = MaterialTheme.dimens.spacing.sm, vertical = MaterialTheme.dimens.spacing.xs),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.xs),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(text = mood.emoji, style = MaterialTheme.typography.labelSmall)

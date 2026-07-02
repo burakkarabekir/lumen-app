@@ -25,6 +25,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.component.button.AppButton
 import com.bksd.core.design_system.component.button.AppButtonStyle
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.moment.presentation.Res
+import com.bksd.moment.presentation.add_link
+import com.bksd.moment.presentation.done
+import com.bksd.moment.presentation.link_url_hint
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * Modal bottom sheet for adding a link URL.
@@ -48,8 +54,8 @@ fun LinkEntryBottomSheet(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-                .padding(bottom = 48.dp)
+                .padding(horizontal = MaterialTheme.dimens.spacing.xxl)
+                .padding(bottom = MaterialTheme.dimens.spacing.huge)
         ) {
             // Title
             Row(
@@ -60,36 +66,36 @@ fun LinkEntryBottomSheet(
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(MaterialTheme.dimens.spacing.sm))
                 Text(
-                    text = "Add Link",
+                    text = stringResource(Res.string.add_link),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.xxl))
 
             // URL Input
             OutlinedTextField(
                 value = linkInput,
                 onValueChange = onInputChange,
-                placeholder = { Text("https://...") },
+                placeholder = { Text(stringResource(Res.string.link_url_hint)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
-                shape = RoundedCornerShape(12.dp),
+                shape = RoundedCornerShape(MaterialTheme.dimens.radius.md),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = MaterialTheme.colorScheme.primary,
                     unfocusedBorderColor = MaterialTheme.colorScheme.outline
                 )
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.xxl))
 
             // Done Button
             AppButton(
-                text = "Done",
+                text = stringResource(Res.string.done),
                 onClick = onDoneClick,
                 modifier = Modifier.fillMaxWidth(),
                 enabled = linkInput.isNotBlank(),

@@ -22,11 +22,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.Res
 import com.bksd.core.design_system.component.divider.AppDivider
 import com.bksd.core.design_system.navigate_back
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import org.jetbrains.compose.resources.stringResource
 
 
@@ -45,7 +45,6 @@ fun AppTopBar(
         AppBarStyle.Root -> TextAlign.Start
         AppBarStyle.Child -> TextAlign.Center
     }
-
     Surface(
         modifier = modifier.fillMaxWidth(),
         color = MaterialTheme.colorScheme.surface,
@@ -53,21 +52,21 @@ fun AppTopBar(
             Column {
                 Row(
                     modifier = Modifier
-                        .height(64.dp)
+                        .height(MaterialTheme.dimens.size.topBar)
                         .then(
                             if (titleTextAlign == TextAlign.Start) {
                                 Modifier
                                     .padding(
-                                        top = 16.dp,
-                                        start = 12.dp,
-                                        end = 12.dp,
-                                        bottom = 8.dp
+                                        top = MaterialTheme.dimens.spacing.lg,
+                                        start = MaterialTheme.dimens.spacing.md,
+                                        end = MaterialTheme.dimens.spacing.md,
+                                        bottom = MaterialTheme.dimens.spacing.sm
                                     )
                             } else {
                                 Modifier
                             }
                         ),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.md),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     when (style) {
@@ -88,7 +87,7 @@ fun AppTopBar(
                                 .weight(1f)
                         )
                         if (titleTextAlign == TextAlign.Center) {
-                            Spacer(modifier = Modifier.width(48.dp))
+                            Spacer(modifier = Modifier.width(MaterialTheme.dimens.spacing.huge))
                         }
                     } else {
                         titleContent?.invoke()

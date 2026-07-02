@@ -7,4 +7,6 @@ sealed interface SignInAction {
     data object OnSignInClick : SignInAction
     data object OnSignUpClick : SignInAction
     data object OnForgotPasswordClick : SignInAction
+    data class OnGoogleIdTokenReceived(val idToken: String) : SignInAction
+    data class OnGoogleSignInFailed(val cancelled: Boolean) : SignInAction
 }

@@ -14,6 +14,7 @@ import com.bksd.core.domain.storage.VoiceRecorder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,6 +24,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.UUID
+import kotlin.coroutines.cancellation.CancellationException
 
 class AndroidVoiceRecorder(
     private val context: Context
@@ -41,7 +43,7 @@ class AndroidVoiceRecorder(
     override val elapsedMs: StateFlow<Long> = _elapsedMs.asStateFlow()
 
     private var timerJob: Job? = null
-    private val scope = CoroutineScope(Dispatchers.Main)
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     override fun hasPermission(): Boolean {
         return ContextCompat.checkSelfPermission(
@@ -74,8 +76,9 @@ class AndroidVoiceRecorder(
 
             startTimer()
             Result.Success(Unit)
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
-            e.printStackTrace()
             cleanup()
             Result.Error(AppError.Media(MediaErrorType.RECORDING_FAILED))
         }
@@ -96,8 +99,9 @@ class AndroidVoiceRecorder(
             } else {
                 Result.Error(AppError.Media(MediaErrorType.RECORDING_FAILED))
             }
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
-            e.printStackTrace()
             cleanup()
             Result.Error(AppError.Media(MediaErrorType.RECORDING_FAILED))
         }

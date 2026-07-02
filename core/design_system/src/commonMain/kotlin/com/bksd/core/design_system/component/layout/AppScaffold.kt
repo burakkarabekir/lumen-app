@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.union
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 
 @Composable
 fun AppScaffold(
@@ -53,7 +55,7 @@ private fun Preview() {
                 AppSurface {
                     Text(
                         text = "App Scaffold",
-                        modifier = Modifier.padding(16.dp)
+                        modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg)
                     )
                 }
             }
@@ -69,7 +71,7 @@ private fun PreviewDark() {
             content = {
                 Text(
                     text = "App Scaffold",
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg)
                 )
             }
         )

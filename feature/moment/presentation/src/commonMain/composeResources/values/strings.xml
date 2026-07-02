@@ -1,19 +1,24 @@
 <resources>
     <!-- Screen UI -->
-    <string name="create_moment_title">Create Moment</string>
+    <string name="title_placeholder">Title</string>
     <string name="content_desc_close">Close</string>
     <string name="content_desc_location">Location</string>
     <string name="add_location">Add Location</string>
     <string name="content_desc_remove_location">Remove Location</string>
     <string name="body_placeholder">Reflect on your day... What\'s on your mind?</string>
-    <string name="section_add_to_entry">ADD TO ENTRY</string>
     <string name="label_mic">Mic</string>
     <string name="label_camera">Camera</string>
     <string name="label_photo">Photo</string>
     <string name="label_video">Video</string>
     <string name="label_link">Link</string>
-    <string name="section_how_feeling">HOW ARE YOU FEELING?</string>
-    <string name="save_moment">Save Moment</string>
+    <string name="new_entry_title">New Entry</string>
+    <string name="action_save">Save</string>
+    <string name="label_place">Place</string>
+    <string name="label_voice">Voice</string>
+    <string name="mood_section_title">How are you feeling?</string>
+    <string name="mood_section_subtitle">Pick the moods that fit your moment.</string>
+    <string name="mood_more">%1$s more</string>
+    <string name="mood_less">Less</string>
 
     <!-- Snackbar / Permission -->
     <string name="permission_mic_denied">Microphone permission denied.</string>
@@ -39,4 +44,19 @@
     <string name="success_moment_saved">Moment saved!</string>
     <string name="timestamp_today_format">Today, %1$s</string>
     <string name="error_camera_permission_denied">Camera permission is required to take photos</string>
+
+    <!-- AI Analysis Opt-In -->
+    <string name="ai_optin_title">Yes, analyze this entry with AI</string>
+    <string name="ai_optin_caption">Get a reflection on your mood and themes right after you save.</string>
+
+    <!-- Attachments -->
+    <string name="add_link">Add Link</string>
+    <string name="remove_link">Remove Link</string>
+    <string name="link_url_hint">https://...</string>
+    <string name="done">Done</string>
+    <string name="recording_in_progress">Recording your memories...</string>
+    <string name="cancel_recording">Cancel Recording</string>
+    <string name="toggle_attachments">Toggle Attachments</string>
+    <string name="attachment_count_single">%1$d Attachment</string>
+    <string name="attachment_count_plural">%1$d Attachments</string>
 </resources>

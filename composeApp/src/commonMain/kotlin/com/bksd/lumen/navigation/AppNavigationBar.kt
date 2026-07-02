@@ -1,128 +1,95 @@
 package com.bksd.lumen.navigation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalRippleConfiguration
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavKey
 import com.bksd.core.design_system.theme.AppTheme
-import com.bksd.core.design_system.theme.labelXSmall
+import com.bksd.core.design_system.theme.extended
 import com.bksd.lumen.navigation.route.Route
 
 @Composable
 fun AppNavigationBar(
     selectedKey: NavKey,
     onSelectKey: (NavKey) -> Unit,
+    onAddClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Surface(
+    val extended = MaterialTheme.colorScheme.extended
+    Row(
         modifier = modifier
-            .padding(horizontal = 64.dp, vertical = 8.dp)
-            .windowInsetsPadding(WindowInsets.navigationBars),
-        shape = CircleShape,
-        color = MaterialTheme.colorScheme.surfaceContainer,
-        shadowElevation = 8.dp,
-        tonalElevation = 2.dp,
+            .fillMaxWidth()
+            .windowInsetsPadding(WindowInsets.navigationBars)
+            .padding(bottom = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(11.dp, Alignment.CenterHorizontally),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        CompositionLocalProvider(LocalRippleConfiguration provides null) {
-            Row {
-                TOP_LEVEL_DESTINATIONS.forEach { (topLevelDestination, data) ->
-                    val isSelected = topLevelDestination == selectedKey
-                    NavigationBarItem(
-                        onClick = { onSelectKey(topLevelDestination) },
-                        selected = isSelected,
-                        icon = {
-                            Box(
-                                modifier = Modifier
-                                    .size(36.dp)
-                                    .clip(CircleShape)
-                                    .then(
-                                        if (isSelected) {
-                                            Modifier.background(
-                                                color = MaterialTheme.colorScheme.primary,
-                                                shape = CircleShape
-                                            )
-                                        } else Modifier
-                                    ),
-                                contentAlignment = Alignment.Center,
-                            ) {
-                                Icon(
-                                    modifier = Modifier.size(24.dp),
-                                    imageVector = data.icon,
-                                    contentDescription = data.title,
-                                    tint = if (isSelected) {
-                                        MaterialTheme.colorScheme.onPrimary
-                                    } else {
-                                        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
-                                    }
-                                )
-                            }
-                        },
-                        label = {
-                            Text(
-                                data.title,
-                                maxLines = 1,
-                                style = MaterialTheme.typography.labelXSmall
-                            )
-                        },
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = MaterialTheme.colorScheme.onPrimary,
-                            selectedTextColor = MaterialTheme.colorScheme.primary,
-                            indicatorColor = Color.Transparent,
-                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                                alpha = 0.5f
-                            ),
-                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(
-                                alpha = 0.5f
-                            ),
-                            disabledIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            disabledTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    )
-                }
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            modifier = Modifier
+                .clip(RoundedCornerShape(25.dp))
+                .background(extended.navCapsule)
+                .border(1.dp, extended.navBorder, RoundedCornerShape(25.dp))
+                .padding(6.dp)
+        ) {
+            TOP_LEVEL_DESTINATIONS.forEach { (key, data) ->
+                NavTab(
+                    icon = data.icon,
+                    label = data.title,
+                    selected = key == selectedKey,
+                    onClick = { onSelectKey(key) }
+                )
             }
+        }
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(52.dp)
+                .clip(CircleShape)
+                .background(extended.navCapsule)
+                .border(1.dp, extended.navBorder, CircleShape)
+                .clickable(onClick = onAddClick)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = "New entry",
+                tint = extended.navPlus,
+                modifier = Modifier.size(24.dp)
+            )
         }
     }
 }
 
 @Preview
 @Composable
-fun Preview() {
-    AppTheme {
-        AppNavigationBar(
-            selectedKey = Route.Main.Journal,
-            onSelectKey = {}
-        )
-    }
-}
-
-@Preview
-@Composable
-fun PreviewDark() {
+private fun AppNavigationBarPreview() {
     AppTheme(darkTheme = true) {
         AppNavigationBar(
             selectedKey = Route.Main.Journal,
-            onSelectKey = {}
+            onSelectKey = {},
+            onAddClick = {}
         )
     }
 }

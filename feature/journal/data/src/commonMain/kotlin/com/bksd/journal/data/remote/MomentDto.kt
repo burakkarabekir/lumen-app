@@ -8,17 +8,19 @@ data class MomentDto(
     val id: String,
     val title: String,
     val body: String? = null,
-    val createdAtMs: Long,
+    @SerialName("created_at_ms") val createdAtMs: Long,
     val moods: List<String> = emptyList(),
     val tags: List<String> = emptyList(),
     val location: LocationDto? = null,
-    val attachments: List<AttachmentDto> = emptyList()
+    val attachments: List<AttachmentDto> = emptyList(),
+    @SerialName("is_favorite") val isFavorite: Boolean = false,
+    @SerialName("user_id") val userId: String? = null,
 )
 
 @Serializable
 data class LocationDto(
-    val latitude: Double = 0.0,
-    val longitude: Double = 0.0,
+    val latitude: Double,
+    val longitude: Double,
     val displayName: String? = null
 )
 

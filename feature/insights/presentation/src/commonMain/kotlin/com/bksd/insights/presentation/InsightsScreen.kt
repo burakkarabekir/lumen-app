@@ -1,220 +1,114 @@
 package com.bksd.insights.presentation
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bksd.core.design_system.component.layout.AppBarStyle
-import com.bksd.core.design_system.component.layout.AppSurface
-import com.bksd.core.design_system.component.layout.AppTopBar
-import com.bksd.core.presentation.util.ObserveAsEvents
+import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.rememberInsightsPalette
 import com.bksd.insights.presentation.Res
-import com.bksd.insights.presentation.adjustment
-import com.bksd.insights.presentation.consistency_trend
 import com.bksd.insights.presentation.insights_title
-import com.bksd.insights.presentation.medium_breakdown
-import com.bksd.insights.presentation.mindset_synthesis
-import com.bksd.insights.presentation.peak_activity
-import com.bksd.insights.presentation.power_user_analytics
-import com.bksd.insights.presentation.recurring_theme
+import com.bksd.insights.presentation.section_stats
+import com.bksd.insights.presentation.section_streaks
+import com.bksd.insights.presentation.components.EmptyStreakCard
+import com.bksd.insights.presentation.components.EntriesCard
+import com.bksd.insights.presentation.components.SampleInsightsState
+import com.bksd.insights.presentation.components.SectionLabel
+import com.bksd.insights.presentation.components.StreaksCarousel
+import com.bksd.insights.presentation.components.VisitedPlacesCard
+import com.bksd.insights.presentation.components.WrittenJournaledRow
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.viewmodel.koinViewModel
 
-@Composable
-fun InsightsRoot() {
-    val viewModel = koinViewModel<InsightsViewModel>()
-    val state by viewModel.state.collectAsState()
-
-    ObserveAsEvents(viewModel.events) { event ->
-        when (event) {
-            is InsightsEvent.ShowError -> {
-                // TODO: Handle error display
-            }
-        }
-    }
-
-    InsightsScreen(
-        state = state,
-        onAction = viewModel::onAction
-    )
-}
-
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun InsightsScreen(
     state: InsightsState,
-    onAction: (InsightsAction) -> Unit
+    onAction: (InsightsAction) -> Unit,
+    reflectionSlot: @Composable () -> Unit = {}
 ) {
-    AppSurface(
-        enableScrolling = true,
-        header = {
-            // ==================== Top Bar ====================
-            AppTopBar(
-                title = stringResource(Res.string.insights_title),
-                style = AppBarStyle.Root
-            )
-        }
+    val palette = rememberInsightsPalette()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(palette.pageBg)
+            .verticalScroll(rememberScrollState())
+            .statusBarsPadding()
+            .padding(horizontal = MaterialTheme.dimens.spacing.xl)
+            .padding(top = MaterialTheme.dimens.spacing.md)
     ) {
         Text(
-            text = stringResource(Res.string.power_user_analytics),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
-            modifier = Modifier.padding(start = 16.dp)
+            text = stringResource(Res.string.insights_title),
+            fontSize = 27.sp,
+            fontWeight = FontWeight.ExtraBold,
+            letterSpacing = (-0.6).sp,
+            color = palette.text
+        )
+        Spacer(Modifier.height(MaterialTheme.dimens.spacing.lg))
+
+        SectionLabel(stringResource(Res.string.section_streaks), palette)
+        Spacer(Modifier.height(MaterialTheme.dimens.spacing.sm))
+        if (state.hasActiveStreak) {
+            StreaksCarousel(state = state, palette = palette)
+        } else {
+            EmptyStreakCard(onSetReminder = {})
+        }
+
+        Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))
+        reflectionSlot()
+        SectionLabel(stringResource(Res.string.section_stats), palette)
+        Spacer(Modifier.height(MaterialTheme.dimens.spacing.sm))
+        EntriesCard(
+            entries = state.entries,
+            selectedRange = state.selectedRange,
+            rangeOptions = state.rangeOptions,
+            onRangeSelect = { onAction(InsightsAction.OnStatsRangeSelect(it)) }
         )
 
-        Spacer(modifier = Modifier.height(28.dp))
-
-        // ==================== Peak Activity Card ====================
-        InsightCard(
-            title = stringResource(Res.string.peak_activity)
-        ) {
-            Text(
-                text = "\"${state.peakActivityInsight}\"",
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface,
-                fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
-            )
+        if (state.places.isNotEmpty()) {
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.md))
+            VisitedPlacesCard(places = state.places)
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(Modifier.height(MaterialTheme.dimens.spacing.md))
+        WrittenJournaledRow(writtenWords = state.writtenWords, journaled = state.journaled)
 
-        // ==================== Consistency Trend Card ====================
-        state.consistencyTrend?.let { trend ->
-            InsightCard(
-                title = stringResource(Res.string.consistency_trend)
-            ) {
-                Text(
-                    text = trend.title,
-                    style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = trend.description,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f),
-                    lineHeight = 22.sp
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // ==================== Medium Breakdown Card ====================
-        state.mediumBreakdown?.let { medium ->
-            InsightCard(
-                title = stringResource(Res.string.medium_breakdown)
-            ) {
-                Text(
-                    text = medium.description,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-                Row(
-                    verticalAlignment = Alignment.Bottom,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Text(
-                        text = medium.correlation,
-                        style = MaterialTheme.typography.headlineMedium.copy(
-                            fontWeight = FontWeight.Bold
-                        ),
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                    Text(
-                        text = medium.metric,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
-                        modifier = Modifier.padding(bottom = 4.dp)
-                    )
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // ==================== Mindset Synthesis Card ====================
-        state.mindsetSynthesis?.let { synthesis ->
-            InsightCard(
-                title = stringResource(Res.string.mindset_synthesis)
-            ) {
-                Text(
-                    text = synthesis.summary,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f),
-                    lineHeight = 22.sp
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    SynthesisChip(
-                        label = stringResource(Res.string.recurring_theme),
-                        value = synthesis.recurringTheme
-                    )
-                    SynthesisChip(
-                        label = stringResource(Res.string.adjustment),
-                        value = synthesis.adjustment
-                    )
-                    SynthesisChip(
-                        label = synthesis.reflectionPrompt,
-                        value = null
-                    )
-                }
-            }
-        }
-
-        // Bottom spacing for nav bar
-        Spacer(modifier = Modifier.height(128.dp))
+        Spacer(Modifier.height(120.dp))
     }
 }
 
+@Preview
 @Composable
-private fun SynthesisChip(
-    label: String,
-    value: String?,
-    modifier: Modifier = Modifier
-) {
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant)
-            .padding(horizontal = 14.dp, vertical = 10.dp)
-    ) {
-        Column {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
-            )
-            if (value != null) {
-                Spacer(modifier = Modifier.height(2.dp))
-                Text(
-                    text = value,
-                    style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        }
+private fun InsightsScreenPreviewLight() {
+    AppTheme {
+        InsightsScreen(state = SampleInsightsState, onAction = {})
+    }
+}
+
+@Preview
+@Composable
+private fun InsightsScreenPreviewDark() {
+    AppTheme(darkTheme = true) {
+        InsightsScreen(state = SampleInsightsState, onAction = {})
+    }
+}
+
+@Preview
+@Composable
+private fun InsightsScreenPreviewEmpty() {
+    AppTheme {
+        InsightsScreen(state = InsightsState(), onAction = {})
     }
 }

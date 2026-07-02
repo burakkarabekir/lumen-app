@@ -27,10 +27,12 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import com.bksd.auth.presentation.Res
 import com.bksd.auth.presentation.already_have_account
 import com.bksd.auth.presentation.btn_sign_up
+import com.bksd.auth.presentation.check_your_email
+import com.bksd.auth.presentation.confirmation_link_sent
 import com.bksd.auth.presentation.create_your_space
 import com.bksd.auth.presentation.label_email
 import com.bksd.auth.presentation.label_full_name
@@ -41,10 +43,12 @@ import com.bksd.auth.presentation.sign_up_subtitle
 import com.bksd.auth.presentation.terms_agreement
 import com.bksd.core.design_system.component.button.AppButton
 import com.bksd.core.design_system.component.button.AppButtonStyle
+import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.LumenBase600
 import com.bksd.core.design_system.theme.LumenBrand500
 import com.bksd.core.design_system.theme.LumenRadius
 import com.bksd.core.design_system.theme.LumenSpacing
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.presentation.util.ObserveAsEvents
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -83,12 +87,43 @@ fun SignUpRoot(
     )
 }
 
+@Preview
+@Composable
+private fun SignUpScreenPreview() {
+    AppTheme {
+        SignUpScreen(
+            state = SignUpState(),
+            onAction = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun SignUpScreenPreviewDark() {
+    AppTheme(darkTheme = true) {
+        SignUpScreen(
+            state = SignUpState(),
+            onAction = {}
+        )
+    }
+}
+
 @Composable
 internal fun SignUpScreen(
     state: SignUpState,
     onAction: (SignUpAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    if (state.awaitingConfirmation) {
+        SignUpConfirmationPanel(
+            email = state.email,
+            onSignInClick = { onAction(SignUpAction.OnSignInClick) },
+            modifier = modifier
+        )
+        return
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -195,7 +230,7 @@ internal fun SignUpScreen(
             onClick = { onAction(SignUpAction.OnSignUpClick) },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp),
+                .height(MaterialTheme.dimens.size.fab),
             enabled = state.isSubmitEnabled,
             isLoading = state.isLoading,
             style = AppButtonStyle.PRIMARY
@@ -229,5 +264,49 @@ internal fun SignUpScreen(
                 modifier = Modifier.clickable { onAction(SignUpAction.OnSignInClick) }
             )
         }
+    }
+}
+
+@Composable
+private fun SignUpConfirmationPanel(
+    email: String,
+    onSignInClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .padding(LumenSpacing.xxl),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = stringResource(Res.string.check_your_email),
+            style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold),
+            color = MaterialTheme.colorScheme.onBackground,
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(LumenSpacing.md))
+
+        Text(
+            text = stringResource(Res.string.confirmation_link_sent, email),
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(horizontal = LumenSpacing.md)
+        )
+
+        Spacer(modifier = Modifier.height(LumenSpacing.xxxl))
+
+        AppButton(
+            text = stringResource(Res.string.sign_in_link),
+            onClick = onSignInClick,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(MaterialTheme.dimens.size.fab),
+            style = AppButtonStyle.PRIMARY
+        )
     }
 }

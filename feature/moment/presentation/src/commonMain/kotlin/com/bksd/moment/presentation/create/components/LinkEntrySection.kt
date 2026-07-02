@@ -24,7 +24,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.dp
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.moment.presentation.Res
+import com.bksd.moment.presentation.add_link
+import com.bksd.moment.presentation.link_url_hint
+import com.bksd.moment.presentation.remove_link
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun LinkEntrySection(
@@ -45,42 +50,42 @@ fun LinkEntrySection(
                 OutlinedTextField(
                     value = input,
                     onValueChange = onInputChange,
-                    placeholder = { Text("https://...") },
+                    placeholder = { Text(stringResource(Res.string.link_url_hint)) },
                     modifier = Modifier.weight(1f),
                     singleLine = true,
-                    shape = RoundedCornerShape(12.dp),
+                    shape = RoundedCornerShape(MaterialTheme.dimens.radius.md),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = MaterialTheme.colorScheme.primary,
                         unfocusedBorderColor = MaterialTheme.colorScheme.outline
                     )
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(MaterialTheme.dimens.spacing.sm))
                 IconButton(
                     onClick = onAddClick,
                     modifier = Modifier
-                        .size(48.dp)
-                        .clip(RoundedCornerShape(12.dp))
+                        .size(MaterialTheme.dimens.size.cancelIcon)
+                        .clip(RoundedCornerShape(MaterialTheme.dimens.radius.md))
                         .background(MaterialTheme.colorScheme.primaryContainer)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
-                        contentDescription = "Add Link",
+                        contentDescription = stringResource(Res.string.add_link),
                         tint = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.lg))
         }
 
         if (links.isNotEmpty()) {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm)) {
                 links.forEach { link ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clip(RoundedCornerShape(12.dp))
+                            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.md))
                             .background(MaterialTheme.colorScheme.surfaceVariant)
-                            .padding(horizontal = 16.dp, vertical = 12.dp),
+                            .padding(horizontal = MaterialTheme.dimens.spacing.lg, vertical = MaterialTheme.dimens.spacing.md),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
@@ -92,11 +97,11 @@ fun LinkEntrySection(
                         )
                         IconButton(
                             onClick = { onRemoveClick(link) },
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(MaterialTheme.dimens.icon.xl)
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Close,
-                                contentDescription = "Remove Link",
+                                contentDescription = stringResource(Res.string.remove_link),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }

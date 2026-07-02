@@ -9,18 +9,20 @@ import com.bksd.core.domain.storage.AudioPlayer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlin.coroutines.cancellation.CancellationException
 
 class AndroidAudioPlayer : AudioPlayer {
 
     private var mediaPlayer: MediaPlayer? = null
     private var progressJob: Job? = null
-    private val scope = CoroutineScope(Dispatchers.Main)
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     private val _playbackState = MutableStateFlow(PlaybackState.STOPPED)
     override val playbackState: StateFlow<PlaybackState> = _playbackState.asStateFlow()
@@ -56,8 +58,9 @@ class AndroidAudioPlayer : AudioPlayer {
             startProgressTracking()
 
             Result.Success(Unit)
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
-            e.printStackTrace()
             releaseInternal()
             Result.Error(AppError.Media(MediaErrorType.UNSUPPORTED_FORMAT))
         }

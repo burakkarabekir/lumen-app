@@ -2,6 +2,7 @@ package com.bksd.journal.domain.model
 
 import com.bksd.core.domain.model.AudioAttachment
 import com.bksd.core.domain.model.LinkAttachment
+import com.bksd.core.domain.model.Moment
 import com.bksd.core.domain.model.PhotoAttachment
 import com.bksd.core.domain.model.VideoAttachment
 

@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 
 /**
  * A reusable circular avatar component that:
@@ -128,7 +129,7 @@ fun AppAvatar(
             Box(
                 modifier = Modifier
                     .size(badgeSize)
-                    .offset(x = 2.dp, y = 2.dp)
+                    .offset(x = MaterialTheme.dimens.spacing.xxs, y = MaterialTheme.dimens.spacing.xxs)
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.primary)
                     .clickable(role = Role.Button, onClick = onEditClick),

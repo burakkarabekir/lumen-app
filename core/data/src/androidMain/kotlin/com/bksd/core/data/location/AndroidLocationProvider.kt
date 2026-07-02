@@ -22,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import java.util.Locale
+import kotlin.coroutines.cancellation.CancellationException
 import kotlin.coroutines.resume
 
 class AndroidLocationProvider(
@@ -134,6 +135,8 @@ class AndroidLocationProvider(
                     val addresses = geocoder.getFromLocation(lat, lon, 1)
                     formatAddress(addresses.orEmpty())
                 }
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
                 null
             }

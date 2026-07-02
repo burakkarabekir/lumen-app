@@ -71,6 +71,35 @@ data class ExtendedColors(
     val accentTeal: Color,
     val accentIndigo: Color,
     val accentGrey: Color,
+
+    val insightsPageBg: Color,
+    val insightsLabel: Color,
+    val insightsSurface: Color,
+    val insightsText: Color,
+    val insightsSub: Color,
+    val insightsHairline: Color,
+    val insightsDotGray: Color,
+
+    val newEntryPageBg: Color,
+    val newEntrySurface: Color,
+    val newEntryText: Color,
+    val newEntryBodyText: Color,
+    val newEntrySub: Color,
+    val newEntryHairline: Color,
+    val newEntryPinBg: Color,
+    val newEntryPinFg: Color,
+    val newEntrySaveBg: Color,
+
+    val navCapsule: Color,
+    val navBorder: Color,
+    val navActiveFill: Color,
+    val navActiveText: Color,
+    val navIdle: Color,
+    val navPlus: Color,
+
+    val reflectionCard: ReflectionCardColors,
+    val supportCard: DistressCardColors,
+    val crisisCard: DistressCardColors,
 )
 
 val LightExtendedColors = ExtendedColors(
@@ -121,6 +150,35 @@ val LightExtendedColors = ExtendedColors(
     accentTeal = LumenAccentTeal,
     accentIndigo = LumenAccentIndigo,
     accentGrey = LumenAccentGrey,
+
+    insightsPageBg = InsightsPageBgLight,
+    insightsLabel = InsightsLabelLight,
+    insightsSurface = InsightsSurfaceLight,
+    insightsText = InsightsTextLight,
+    insightsSub = InsightsSubLight,
+    insightsHairline = InsightsHairlineLight,
+    insightsDotGray = InsightsDotGrayLight,
+
+    newEntryPageBg = LumenBase0,
+    newEntrySurface = LumenBase100,
+    newEntryText = NewEntryTextLight,
+    newEntryBodyText = NewEntryBodyTextLight,
+    newEntrySub = NewEntrySubLight,
+    newEntryHairline = NewEntryHairlineLight,
+    newEntryPinBg = NewEntryPinBgLight,
+    newEntryPinFg = NewEntryPinFgLight,
+    newEntrySaveBg = NewEntrySaveBg,
+
+    navCapsule = NavCapsuleLight,
+    navBorder = NavBorderLight,
+    navActiveFill = NavActiveFillLight,
+    navActiveText = NavActiveTextLight,
+    navIdle = NavIdleLight,
+    navPlus = NavPlusLight,
+
+    reflectionCard = LightReflectionCardColors,
+    supportCard = LightSupportCardColors,
+    crisisCard = LightCrisisCardColors,
 )
 
 val DarkExtendedColors = ExtendedColors(
@@ -171,6 +229,35 @@ val DarkExtendedColors = ExtendedColors(
     accentTeal = LumenAccentTeal,
     accentIndigo = LumenAccentIndigo,
     accentGrey = LumenAccentGrey,
+
+    insightsPageBg = InsightsPageBgDark,
+    insightsLabel = InsightsLabelDark,
+    insightsSurface = InsightsSurfaceDark,
+    insightsText = InsightsTextDark,
+    insightsSub = InsightsSubDark,
+    insightsHairline = InsightsHairlineDark,
+    insightsDotGray = InsightsDotGrayDark,
+
+    newEntryPageBg = LumenBase1000,
+    newEntrySurface = LumenBase900,
+    newEntryText = NewEntryTextDark,
+    newEntryBodyText = NewEntryBodyTextDark,
+    newEntrySub = NewEntrySubDark,
+    newEntryHairline = NewEntryHairlineDark,
+    newEntryPinBg = NewEntryPinBgDark,
+    newEntryPinFg = NewEntryPinFgDark,
+    newEntrySaveBg = NewEntrySaveBg,
+
+    navCapsule = NavCapsuleDark,
+    navBorder = NavBorderDark,
+    navActiveFill = NavActiveFillDark,
+    navActiveText = NavActiveTextDark,
+    navIdle = NavIdleDark,
+    navPlus = NavPlusDark,
+
+    reflectionCard = DarkReflectionCardColors,
+    supportCard = DarkSupportCardColors,
+    crisisCard = DarkCrisisCardColors,
 )
 
 val LightColorScheme = lightColorScheme(

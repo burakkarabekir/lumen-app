@@ -2,9 +2,9 @@ package com.bksd.journal.presentation.journal.components
 
 import com.bksd.core.domain.model.AudioAttachment
 import com.bksd.core.domain.model.LinkAttachment
+import com.bksd.core.domain.model.Moment
 import com.bksd.core.domain.model.PhotoAttachment
 import com.bksd.core.domain.model.VideoAttachment
-import com.bksd.journal.domain.model.Moment
 
 internal enum class CardMediaType { PHOTO, VIDEO, AUDIO, LINK, TEXT }
 

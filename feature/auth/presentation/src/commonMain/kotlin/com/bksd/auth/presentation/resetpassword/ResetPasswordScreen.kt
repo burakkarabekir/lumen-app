@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import com.bksd.auth.presentation.Res
 import com.bksd.auth.presentation.back_to_sign_in
 import com.bksd.auth.presentation.btn_send_link
@@ -35,6 +35,8 @@ import com.bksd.auth.presentation.reset_password_title
 import com.bksd.auth.presentation.reset_success_message
 import com.bksd.core.design_system.component.button.AppButton
 import com.bksd.core.design_system.component.button.AppButtonStyle
+import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.LumenBase600
 import com.bksd.core.design_system.theme.LumenBrand500
 import com.bksd.core.design_system.theme.LumenRadius
@@ -69,6 +71,28 @@ fun ResetPasswordRoot(
         onAction = viewModel::onAction,
         modifier = modifier
     )
+}
+
+@Preview
+@Composable
+private fun ResetPasswordScreenPreview() {
+    AppTheme {
+        ResetPasswordScreen(
+            state = ResetPasswordState(),
+            onAction = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun ResetPasswordScreenPreviewDark() {
+    AppTheme(darkTheme = true) {
+        ResetPasswordScreen(
+            state = ResetPasswordState(),
+            onAction = {}
+        )
+    }
 }
 
 @Composable
@@ -147,7 +171,7 @@ internal fun ResetPasswordScreen(
             onClick = { onAction(ResetPasswordAction.OnSubmitClick) },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp),
+                .height(MaterialTheme.dimens.size.fab),
             enabled = state.isSubmitEnabled,
             isLoading = state.isLoading,
             style = AppButtonStyle.PRIMARY

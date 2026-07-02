@@ -18,8 +18,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -30,15 +30,15 @@ fun MomentDetailMetadataRow(
 ) {
     FlowRow(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm)
     ) {
         MetadataChip(
             icon = {
                 Icon(
                     Icons.Default.CalendarToday,
                     contentDescription = null,
-                    modifier = Modifier.size(14.dp)
+                    modifier = Modifier.size(MaterialTheme.dimens.icon.xs)
                 )
             },
             text = formattedDateTime
@@ -50,7 +50,7 @@ fun MomentDetailMetadataRow(
                     Icon(
                         Icons.Default.LocationOn,
                         contentDescription = null,
-                        modifier = Modifier.size(14.dp)
+                        modifier = Modifier.size(MaterialTheme.dimens.icon.xs)
                     )
                 },
                 text = locationName
@@ -67,13 +67,13 @@ private fun MetadataChip(
 ) {
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(MaterialTheme.dimens.radius.xl),
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+            modifier = Modifier.padding(horizontal = MaterialTheme.dimens.spacing.md, vertical = MaterialTheme.dimens.spacing.sm),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(6.dp)
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm)
         ) {
             icon()
             Text(

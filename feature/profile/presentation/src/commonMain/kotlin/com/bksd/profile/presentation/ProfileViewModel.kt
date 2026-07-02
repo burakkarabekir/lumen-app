@@ -4,7 +4,11 @@ import androidx.lifecycle.viewModelScope
 import com.bksd.auth.domain.usecase.SignOutUseCase
 import com.bksd.core.domain.error.Result
 import com.bksd.core.presentation.util.BaseViewModel
-import com.bksd.profile.domain.usecase.GetUserProfileUseCase
+import com.bksd.core.presentation.util.toUiText
+import com.bksd.insights.domain.calculator.InsightsCalculator
+import com.bksd.insights.domain.model.InsightsRange
+import com.bksd.insights.domain.usecase.ObserveAllMomentsUseCase
+import com.bksd.profile.domain.usecase.ObserveUserProfileUseCase
 import com.bksd.profile.domain.usecase.SetProfileAvatarUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -13,9 +17,11 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
 class ProfileViewModel(
-    private val getUserProfileUseCase: GetUserProfileUseCase,
+    private val observeUserProfileUseCase: ObserveUserProfileUseCase,
     private val setProfileAvatarUseCase: SetProfileAvatarUseCase,
     private val signOutUseCase: SignOutUseCase,
+    private val observeAllMoments: ObserveAllMomentsUseCase,
+    private val insightsCalculator: InsightsCalculator,
 ) : BaseViewModel<ProfileAction, ProfileEvent>() {
 
     private var hasLoadedInitialData = false
@@ -24,7 +30,8 @@ class ProfileViewModel(
     val state = _state
         .onStart {
             if (!hasLoadedInitialData) {
-                loadUserProfile()
+                observeProfile()
+                observeStats()
                 hasLoadedInitialData = true
             }
         }
@@ -34,24 +41,40 @@ class ProfileViewModel(
             initialValue = ProfileState()
         )
 
-    private fun loadUserProfile() {
+    private fun observeProfile() {
         launch {
-            when (val result = getUserProfileUseCase()) {
-                is Result.Success -> {
-                    val profile = result.data
-                    _state.update {
-                        it.copy(
-                            name = profile.displayName,
-                            photoUrl = profile.photoUrl,
-                            jobTitle = profile.jobTitle,
-                            joinYear = profile.joinYear,
-                            isPremium = profile.isPremium,
-                            isProfileLoading = false
-                        )
+            observeUserProfileUseCase().collect { result ->
+                when (result) {
+                    is Result.Success -> {
+                        val profile = result.data
+                        _state.update {
+                            it.copy(
+                                name = profile.displayName,
+                                photoUrl = profile.photoUrl,
+                                jobTitle = profile.jobTitle,
+                                joinYear = profile.joinYear,
+                                isPremium = profile.isPremium,
+                                isProfileLoading = false
+                            )
+                        }
+                    }
+
+                    is Result.Error -> {
+                        _state.update { it.copy(isProfileLoading = false) }
                     }
                 }
-                is Result.Error -> {
-                    _state.update { it.copy(isProfileLoading = false) }
+            }
+        }
+    }
+
+    private fun observeStats() {
+        launch {
+            observeAllMoments().collect { moments ->
+                val weeklyStreak = insightsCalculator
+                    .compute(moments, InsightsRange.AllTime)
+                    .currentWeekly?.length ?: 0
+                _state.update {
+                    it.copy(entriesCount = moments.size, weeklyStreak = weeklyStreak)
                 }
             }
         }
@@ -62,6 +85,9 @@ class ProfileViewModel(
             ProfileAction.OnSignOutClick -> handleSignOut()
             ProfileAction.OnUpgradeClick -> sendEvent(ProfileEvent.NavigateToPaywall)
             ProfileAction.OnUploadPictureClick -> sendEvent(ProfileEvent.OpenPhotoPicker)
+            ProfileAction.OnEditProfileClick -> sendEvent(ProfileEvent.NavigateToEditProfile)
+            ProfileAction.OnAboutClick -> sendEvent(ProfileEvent.NavigateToAbout)
+            ProfileAction.OnHelpClick -> sendEvent(ProfileEvent.NavigateToHelp)
 
             is ProfileAction.OnPictureSelected -> {
                 _state.update { it.copy(isAvatarLoading = true) }
@@ -71,7 +97,7 @@ class ProfileViewModel(
                             _state.update { it.copy(photoUrl = result.data, isAvatarLoading = false) }
                         }
                         is Result.Error -> {
-                            sendEvent(ProfileEvent.PermissionError(result.error.toString()))
+                            sendEvent(ProfileEvent.PermissionError(result.error.toUiText()))
                             _state.update { it.copy(isAvatarLoading = false) }
                         }
                     }
@@ -93,7 +119,7 @@ class ProfileViewModel(
             _state.update { it.copy(isSigningOut = false) }
             when (result) {
                 is Result.Success -> sendEvent(ProfileEvent.SignOutSuccess)
-                is Result.Error -> sendEvent(ProfileEvent.SignOutError(result.error.toString()))
+                is Result.Error -> sendEvent(ProfileEvent.SignOutError(result.error.toUiText()))
             }
         }
     }

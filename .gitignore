@@ -5,6 +5,7 @@
 xcuserdata
 !src/**/build/
 local.properties
+config.properties
 .idea
 .DS_Store
 captures
@@ -21,3 +22,7 @@ node_modules/
 # Firebase config files (contain API keys)
 **/google-services.json
 **/GoogleService-Info.plist
+
+build-logic/*/bin/
+.vscode/
+.agents/

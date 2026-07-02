@@ -32,10 +32,13 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.component.button.AppButton
 import com.bksd.core.design_system.component.button.AppButtonStyle
+import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.LumenBase500
 import com.bksd.core.design_system.theme.LumenBase900
 import com.bksd.core.design_system.theme.LumenBrand500
@@ -67,14 +70,34 @@ fun OnboardingRoot(
     )
 }
 
+@Preview
+@Composable
+private fun OnboardingScreenPreview() {
+    AppTheme {
+        OnboardingScreen(
+            state = OnboardingState(),
+            onAction = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun OnboardingScreenPreviewDark() {
+    AppTheme(darkTheme = true) {
+        OnboardingScreen(
+            state = OnboardingState(),
+            onAction = {}
+        )
+    }
+}
+
 @Composable
 internal fun OnboardingScreen(
     state: OnboardingState,
     onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    onboardingSteps[state.currentStep]
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -104,7 +127,7 @@ internal fun OnboardingScreen(
                     )
                 }
             } else {
-                Spacer(modifier = Modifier.size(48.dp))
+                Spacer(modifier = Modifier.size(MaterialTheme.dimens.spacing.huge))
             }
         }
 
@@ -218,7 +241,7 @@ internal fun OnboardingScreen(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp),
+                .height(MaterialTheme.dimens.size.fab),
             style = AppButtonStyle.PRIMARY
         )
 
@@ -240,7 +263,7 @@ private fun PageIndicator(
         repeat(totalPages) { index ->
             Box(
                 modifier = Modifier
-                    .size(if (index == currentPage) 10.dp else 8.dp)
+                    .size(if (index == currentPage) MaterialTheme.dimens.icon.xs else MaterialTheme.dimens.icon.xs)
                     .clip(CircleShape)
                     .background(
                         if (index == currentPage) LumenBrand500
