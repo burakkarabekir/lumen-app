@@ -11,5 +11,6 @@ interface AuthRepository {
     suspend fun resetPassword(email: String): Result<Unit, AppError>
     suspend fun signOut(): Result<Unit, AppError>
     fun getSignedInUserId(): String?
+    fun getDisplayName(): String?
     val authState: Flow<Boolean>
 }

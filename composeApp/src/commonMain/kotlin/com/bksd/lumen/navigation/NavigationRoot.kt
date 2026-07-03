@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.SnackbarHostState
@@ -33,6 +34,9 @@ import com.bksd.lumen.main.MainEvent
 import com.bksd.lumen.main.MainViewModel
 import com.bksd.lumen.navigation.route.Route
 import com.bksd.lumen.navigation.route.Route.Companion.shouldShowBottomBar
+import com.bksd.lumen.welcome.LoginWelcomeSignal
+import com.bksd.lumen.welcome.WelcomeGate
+import com.bksd.lumen.welcome.WelcomeGreeting
 import com.bksd.moment.presentation.create.CreateMomentRoot
 import com.bksd.onboarding.presentation.OnboardingRoot
 import com.bksd.paywall.presentation.PaywallRoot
@@ -60,6 +64,7 @@ fun NavigationRoot(
     )
 
     val navigator = koinInject<Navigator> { parametersOf(navigationState) }
+    val welcomeSignal = koinInject<LoginWelcomeSignal>()
     val snackbarHostState = remember { SnackbarHostState() }
 
     var navigationReady by remember { mutableStateOf(false) }
@@ -81,10 +86,10 @@ fun NavigationRoot(
 
     if (!navigationReady) return
 
-    AppScaffold(
-        snackbarHostState = snackbarHostState,
-        modifier = modifier,
-        bottomBar = {
+    Box(modifier = modifier.fillMaxSize()) {
+        AppScaffold(
+            snackbarHostState = snackbarHostState,
+            bottomBar = {
             AnimatedVisibility(
                 visible = navigationState.currentRoute.shouldShowBottomBar(),
                 enter = fadeIn(),
@@ -128,6 +133,7 @@ fun NavigationRoot(
                     entry<Route.Auth.SignIn> {
                         SignInRoot(
                             onNavigateToHome = {
+                                welcomeSignal.request(WelcomeGreeting.RETURNING)
                                 navigator.clearBackstackAndNavigate(Route.Main.Journal)
                             },
                             onNavigateToSignUp = { navigator.navigateToSignUp() },
@@ -137,6 +143,7 @@ fun NavigationRoot(
                     entry<Route.Auth.SignUp> {
                         SignUpRoot(
                             onNavigateToHome = {
+                                welcomeSignal.request(WelcomeGreeting.NEW)
                                 navigator.clearBackstackAndNavigate(Route.Main.Journal)
                             },
                             onNavigateToSignIn = { navigator.navigateToSignIn() }
@@ -216,5 +223,8 @@ fun NavigationRoot(
                 }
             )
         )
+        }
+
+        WelcomeGate()
     }
 }
