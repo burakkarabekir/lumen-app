@@ -62,6 +62,7 @@ import com.bksd.journal.presentation.content_desc_share
 import com.bksd.journal.presentation.detail.components.EntryAnalysisCard
 import com.bksd.journal.presentation.detail.components.EntryAnalysisLoadingCard
 import com.bksd.journal.presentation.detail.components.EntryCrisisCard
+import com.bksd.journal.presentation.detail.components.EntryReflectionUpsellCard
 import com.bksd.journal.presentation.detail.components.EntrySupportCard
 import com.bksd.journal.presentation.detail.components.MomentDetailAttachments
 import com.bksd.journal.presentation.detail.components.MomentDetailMoodChip
@@ -203,6 +204,13 @@ fun MomentDetailReadView(
                             is MomentReflection.Support -> EntrySupportCard(reflection)
                             is MomentReflection.Crisis -> EntryCrisisCard(reflection)
                         }
+                    }
+
+                    MomentAnalysisState.QuotaExceeded -> {
+                        Spacer(Modifier.height(MaterialTheme.dimens.spacing.xxl))
+                        EntryReflectionUpsellCard(
+                            onUnlock = { onAction(MomentDetailAction.OnUpgradeClick) }
+                        )
                     }
 
                     MomentAnalysisState.Failed,

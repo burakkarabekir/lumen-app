@@ -10,6 +10,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun InsightsRoot(
     onViewFullReflection: () -> Unit,
+    onNavigateToPaywall: () -> Unit,
 ) {
     val viewModel = koinViewModel<InsightsViewModel>()
     val state by viewModel.state.collectAsState()
@@ -23,6 +24,11 @@ fun InsightsRoot(
     InsightsScreen(
         state = state,
         onAction = viewModel::onAction,
-        reflectionSlot = { WeeklyReflectionRoot(onViewFullReflection = onViewFullReflection) }
+        reflectionSlot = {
+            WeeklyReflectionRoot(
+                onViewFullReflection = onViewFullReflection,
+                onNavigateToPaywall = onNavigateToPaywall,
+            )
+        }
     )
 }

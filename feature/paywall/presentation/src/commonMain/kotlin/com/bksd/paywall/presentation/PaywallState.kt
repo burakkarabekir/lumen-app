@@ -1,5 +1,6 @@
 package com.bksd.paywall.presentation
 
+import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -12,7 +13,8 @@ data class PaywallState(
 
 data class PaywallFeatureUi(
     val title: String,
-    val description: String
+    val description: String,
+    val icon: ImageVector
 )
 
 data class BillingTierUi(
@@ -22,6 +24,11 @@ data class BillingTierUi(
     val period: String,
     val subtitle: String,
     val monthlyBreakdown: String? = null,
-    val isPopularChoice: Boolean = false,
+    val badge: PaywallBadge? = null,
     val hasFreeTrial: Boolean = false
 )
+
+enum class PaywallBadge {
+    POPULAR,
+    BEST_VALUE
+}

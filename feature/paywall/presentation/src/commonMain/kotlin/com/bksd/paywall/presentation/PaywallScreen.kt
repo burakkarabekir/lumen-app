@@ -13,7 +13,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ShowChart
+import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -23,6 +26,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,6 +41,9 @@ import com.bksd.paywall.presentation.components.HeroCard
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+
+private const val TERMS_URL = "https://lumen.app/terms"
+private const val PRIVACY_URL = "https://lumen.app/privacy"
 
 @Composable
 fun PaywallRoot(
@@ -63,6 +70,7 @@ internal fun PaywallScreen(
     state: PaywallState,
     onAction: (PaywallAction) -> Unit
 ) {
+    val uriHandler = LocalUriHandler.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -146,12 +154,37 @@ internal fun PaywallScreen(
             Text(
                 text = stringResource(Res.string.legal_text),
                 style = MaterialTheme.typography.labelSmall.copy(
-                    letterSpacing = 0.5.sp,
                     lineHeight = 16.sp
                 ),
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.35f),
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
                 textAlign = TextAlign.Center
             )
+
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.sm))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(Res.string.terms_of_use),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+                    modifier = Modifier.clickable { runCatching { uriHandler.openUri(TERMS_URL) } }
+                )
+                Text(
+                    text = "   ·   ",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f)
+                )
+                Text(
+                    text = stringResource(Res.string.privacy_policy),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+                    modifier = Modifier.clickable { runCatching { uriHandler.openUri(PRIVACY_URL) } }
+                )
+            }
 
             Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.xxxl))
         }
@@ -163,12 +196,11 @@ internal fun PaywallScreen(
 private fun PaywallScreenPreview() {
     val yearlyTier = BillingTierUi(
         id = "yearly",
-        displayName = "Yearly Access",
+        displayName = "Yearly",
         price = "$79.99",
-        period = "/yr",
-        subtitle = "7-DAY FREE TRIAL",
-        monthlyBreakdown = "$6.66 per month",
-        isPopularChoice = true,
+        period = "per year",
+        subtitle = "5-day free trial · $6.66/mo",
+        badge = PaywallBadge.BEST_VALUE,
         hasFreeTrial = true
     )
 
@@ -177,16 +209,19 @@ private fun PaywallScreenPreview() {
             state = PaywallState(
                 features = persistentListOf(
                     PaywallFeatureUi(
-                        "Unlimited Multimedia",
-                        "Rich entries with high-resolution photos and voice recordings."
+                        title = "Unlimited Multimedia",
+                        description = "Enrich entries with high-resolution photos, video, and voice recordings.",
+                        icon = Icons.Default.Image
                     ),
                     PaywallFeatureUi(
-                        "AI Weekly Summaries",
-                        "Personalized reflection insights delivered every Sunday morning."
+                        title = "AI Weekly Reflections",
+                        description = "Personal, written insights on your moods and themes every Sunday.",
+                        icon = Icons.Default.AutoAwesome
                     ),
                     PaywallFeatureUi(
-                        "Advanced Analytics",
-                        "Visualize your emotional journey and mood trends over time."
+                        title = "Advanced Analytics",
+                        description = "Visualize your emotional journey and mood trends over time.",
+                        icon = Icons.AutoMirrored.Filled.ShowChart
                     )
                 ),
                 tiers = persistentListOf(
@@ -195,8 +230,9 @@ private fun PaywallScreenPreview() {
                         id = "monthly",
                         displayName = "Monthly",
                         price = "$9.99",
-                        period = "/mo",
-                        subtitle = "Standard access"
+                        period = "per month",
+                        subtitle = "Billed monthly",
+                        badge = PaywallBadge.POPULAR
                     )
                 ),
                 selectedTier = yearlyTier,

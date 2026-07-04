@@ -2,6 +2,7 @@ package com.bksd.paywall.presentation
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,9 +10,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -19,13 +26,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.PreviewAppTheme
 import com.bksd.core.design_system.theme.dimens
-import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun PricingTierCard(
@@ -53,9 +59,42 @@ fun PricingTierCard(
             color = MaterialTheme.colorScheme.surface
         ) {
             Row(
-                modifier = Modifier.padding(horizontal = MaterialTheme.dimens.spacing.xl, vertical = MaterialTheme.dimens.spacing.xl),
+                modifier = Modifier.padding(
+                    horizontal = MaterialTheme.dimens.spacing.lg,
+                    vertical = MaterialTheme.dimens.spacing.lg
+                ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                Box(
+                    modifier = Modifier
+                        .size(MaterialTheme.dimens.icon.lg)
+                        .clip(CircleShape)
+                        .background(
+                            if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent
+                        )
+                        .border(
+                            width = 1.5.dp,
+                            color = if (isSelected) {
+                                Color.Transparent
+                            } else {
+                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+                            },
+                            shape = CircleShape
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    if (isSelected) {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onPrimary,
+                            modifier = Modifier.size(MaterialTheme.dimens.icon.xs)
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.width(MaterialTheme.dimens.spacing.md))
+
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = tier.displayName,
@@ -67,10 +106,7 @@ fun PricingTierCard(
                     Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.xxs))
                     Text(
                         text = tier.subtitle,
-                        style = MaterialTheme.typography.labelSmall.copy(
-                            fontWeight = if (tier.hasFreeTrial) FontWeight.SemiBold else FontWeight.Normal,
-                            letterSpacing = if (tier.hasFreeTrial) 0.5.sp else 0.sp
-                        ),
+                        style = MaterialTheme.typography.labelSmall,
                         color = if (tier.hasFreeTrial && isSelected) {
                             MaterialTheme.colorScheme.primary
                         } else {
@@ -78,6 +114,8 @@ fun PricingTierCard(
                         }
                     )
                 }
+
+                Spacer(modifier = Modifier.width(MaterialTheme.dimens.spacing.md))
 
                 Column(horizontalAlignment = Alignment.End) {
                     Row(verticalAlignment = Alignment.Bottom) {
@@ -107,25 +145,16 @@ fun PricingTierCard(
             }
         }
 
-        if (tier.isPopularChoice) {
-            Box(
+        tier.badge?.let { badge ->
+            PricingTierBadge(
+                badge = badge,
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .padding(end = MaterialTheme.dimens.spacing.lg)
-                    .clip(RoundedCornerShape(bottomStart = MaterialTheme.dimens.radius.sm, bottomEnd = MaterialTheme.dimens.radius.sm))
-                    .background(MaterialTheme.colorScheme.primary)
-                    .padding(horizontal = MaterialTheme.dimens.spacing.md, vertical = MaterialTheme.dimens.spacing.xs)
-            ) {
-                Text(
-                    text = stringResource(Res.string.popular_choice),
-                    style = MaterialTheme.typography.labelSmall.copy(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 9.sp,
-                        letterSpacing = 0.8.sp
-                    ),
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-            }
+                    .offset(
+                        x = -MaterialTheme.dimens.spacing.lg,
+                        y = -MaterialTheme.dimens.spacing.sm
+                    )
+            )
         }
     }
 }
@@ -137,12 +166,11 @@ private fun PricingTierCardYearlyPreview() {
         PricingTierCard(
             tier = BillingTierUi(
                 id = "yearly",
-                displayName = "Yearly Access",
+                displayName = "Yearly",
                 price = "$79.99",
-                period = "/yr",
-                subtitle = "7-DAY FREE TRIAL",
-                monthlyBreakdown = "$6.66 per month",
-                isPopularChoice = true,
+                period = "per year",
+                subtitle = "5-day free trial · $6.66/mo",
+                badge = PaywallBadge.BEST_VALUE,
                 hasFreeTrial = true
             ),
             isSelected = true,
@@ -160,8 +188,9 @@ private fun PricingTierCardMonthlyPreview() {
                 id = "monthly",
                 displayName = "Monthly",
                 price = "$9.99",
-                period = "/mo",
-                subtitle = "Standard access"
+                period = "per month",
+                subtitle = "Billed monthly",
+                badge = PaywallBadge.POPULAR
             ),
             isSelected = false,
             onSelect = {}

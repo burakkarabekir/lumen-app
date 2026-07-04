@@ -58,6 +58,10 @@ val ExtendedColors.paywallHeroGradient: List<Color>
 val ExtendedColors.aiIconGradient: List<Color>
     get() = listOf(AiIconGradientStart, AiIconGradientEnd)
 
+val ExtendedColors.bestValueBadgeGradient: List<Color>
+    get() = listOf(PaywallBestValueBadgeStart, PaywallBestValueBadgeEnd)
+val ExtendedColors.bestValueBadgeText: Color get() = PaywallBestValueBadgeText
+
 val ExtendedColors.entryToolbarPhoto: Color get() = EntryToolbarPhoto
 val ExtendedColors.entryToolbarVideo: Color get() = EntryToolbarVideo
 val ExtendedColors.entryToolbarNote: Color get() = EntryToolbarNote

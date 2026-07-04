@@ -59,6 +59,7 @@ class MomentDetailViewModel(
             MomentDetailAction.OnCancelEdit -> exitEditMode()
             MomentDetailAction.OnDeleteClick -> handleDelete()
             MomentDetailAction.OnShareClick -> handleShare()
+            MomentDetailAction.OnUpgradeClick -> sendEvent(MomentDetailEvent.NavigateToPaywall)
             MomentDetailAction.OnFavoriteToggle -> toggleFavorite()
             MomentDetailAction.OnToggleBodyExpand -> {
                 _state.update { it.copy(isBodyExpanded = !it.isBodyExpanded) }

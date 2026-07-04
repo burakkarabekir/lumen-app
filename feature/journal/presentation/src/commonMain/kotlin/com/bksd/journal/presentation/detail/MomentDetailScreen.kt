@@ -40,6 +40,7 @@ fun MomentDetailRoot(
     momentId: String,
     isEditing: Boolean = false,
     onNavigateBack: () -> Unit,
+    onNavigateToPaywall: () -> Unit,
 ) {
     val viewModel = koinViewModel<MomentDetailViewModel>(parameters = { parametersOf(momentId, isEditing) })
     val formatter = koinInject<MomentFormatter>()
@@ -49,6 +50,7 @@ fun MomentDetailRoot(
         when (event) {
             is MomentDetailEvent.NavigateBack -> onNavigateBack()
             is MomentDetailEvent.ShowShareSheet -> showShareSheet = true
+            is MomentDetailEvent.NavigateToPaywall -> onNavigateToPaywall()
             is MomentDetailEvent.ShowError -> Unit
             is MomentDetailEvent.ShowSuccess -> Unit
         }

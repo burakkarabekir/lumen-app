@@ -12,11 +12,13 @@ import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.insights.presentation.reflection.components.WeeklyReflectionCard
 import com.bksd.insights.presentation.reflection.components.WeeklyReflectionLoadingCard
+import com.bksd.insights.presentation.reflection.components.WeeklyReflectionLockedCard
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun WeeklyReflectionRoot(
     onViewFullReflection: () -> Unit,
+    onNavigateToPaywall: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val viewModel = koinViewModel<ReflectionViewModel>()
@@ -25,11 +27,19 @@ fun WeeklyReflectionRoot(
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
             ReflectionEvent.NavigateToFullReflection -> onViewFullReflection()
+            ReflectionEvent.NavigateToPaywall -> onNavigateToPaywall()
         }
     }
 
     val reflection = state.reflection
     when {
+        !state.isPremium -> Column(modifier) {
+            WeeklyReflectionLockedCard(
+                onUnlock = { viewModel.onAction(ReflectionAction.OnUnlock) }
+            )
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))
+        }
+
         reflection != null -> Column(modifier) {
             WeeklyReflectionCard(
                 reflection = reflection,

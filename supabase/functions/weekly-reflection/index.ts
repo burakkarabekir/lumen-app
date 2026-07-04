@@ -6,9 +6,14 @@
 //   supabase functions deploy weekly-reflection
 // JWT verification is ON by default — only signed-in users can call this.
 
+import { createClient } from "jsr:@supabase/supabase-js@2"
+
 const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY")
 const GEMINI_MODEL = Deno.env.get("GEMINI_MODEL") ?? "gemini-2.5-flash"
 const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models"
+
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL")
+const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")
 
 const corsHeaders: Record<string, string> = {
   "Access-Control-Allow-Origin": "*",
@@ -98,6 +103,33 @@ function json(body: unknown, status: number): Response {
   })
 }
 
+// The Supabase gateway already verified the JWT (verify_jwt=on); read the user id from its `sub`.
+function userIdFromJwt(req: Request): string | null {
+  const token = (req.headers.get("Authorization") ?? "").replace(/^Bearer\s+/i, "")
+  const parts = token.split(".")
+  if (parts.length < 2) return null
+  try {
+    const b64 = parts[1].replace(/-/g, "+").replace(/_/g, "/")
+    const pad = b64.length % 4 ? "=".repeat(4 - (b64.length % 4)) : ""
+    const payload = JSON.parse(atob(b64 + pad))
+    return typeof payload?.sub === "string" ? payload.sub : null
+  } catch {
+    return null
+  }
+}
+
+// Weekly reflection is premium-only for free users (quota = 0); premium bypasses. Fails closed on error.
+async function consumeCredit(userId: string, kind: "analyze" | "weekly"): Promise<{ allowed: boolean; info: Record<string, unknown> }> {
+  const supabase = createClient(SUPABASE_URL!, SERVICE_ROLE_KEY!, { auth: { persistSession: false } })
+  const { data, error } = await supabase.rpc("consume_ai_credit", { p_user_id: userId, p_kind: kind })
+  if (error) {
+    console.error("consume_ai_credit failed:", error.message)
+    return { allowed: false, info: { error: "quota_check_failed" } }
+  }
+  const info = (data ?? {}) as Record<string, unknown>
+  return { allowed: Boolean(info.allowed), info }
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders })
   if (req.method !== "POST") return json({ error: "method not allowed" }, 405)
@@ -113,6 +145,12 @@ Deno.serve(async (req: Request) => {
     ? payload.entries.map((e) => String(e ?? "").trim()).filter((e) => e.length > 0)
     : []
   if (entries.length === 0) return json({ error: "no entries to reflect on" }, 400)
+
+  if (!SUPABASE_URL || !SERVICE_ROLE_KEY) return json({ error: "server misconfigured" }, 500)
+  const userId = userIdFromJwt(req)
+  if (!userId) return json({ error: "unauthorized" }, 401)
+  const gate = await consumeCredit(userId, "weekly")
+  if (!gate.allowed) return json({ error: "quota_exceeded", ...gate.info }, 402)
 
   const user = entries.map((e, i) => `Entry ${i + 1}:\n${e}`).join("\n\n")
 

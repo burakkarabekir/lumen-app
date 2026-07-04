@@ -1,7 +1,9 @@
 package com.bksd.paywall.domain.usecase
 
 import com.bksd.paywall.domain.model.BillingPeriod
+import com.bksd.paywall.domain.model.FeatureIcon
 import com.bksd.paywall.domain.model.PaywallConfig
+import com.bksd.paywall.domain.model.PlanBadge
 import com.bksd.paywall.domain.model.PremiumFeature
 import com.bksd.paywall.domain.model.SubscriptionPlan
 
@@ -12,26 +14,28 @@ class GetPaywallConfigUseCase {
             features = listOf(
                 PremiumFeature(
                     title = "Unlimited Multimedia",
-                    description = "Rich entries with high-resolution photos and voice recordings."
+                    description = "Enrich entries with high-resolution photos, video, and voice recordings.",
+                    icon = FeatureIcon.MULTIMEDIA
                 ),
                 PremiumFeature(
-                    title = "AI Weekly Summaries",
-                    description = "Personalized reflection insights delivered every Sunday morning."
+                    title = "AI Weekly Reflections",
+                    description = "Personal, written insights on your moods and themes every Sunday.",
+                    icon = FeatureIcon.AI_REFLECTION
                 ),
                 PremiumFeature(
                     title = "Advanced Analytics",
-                    description = "Visualize your emotional journey and mood trends over time."
+                    description = "Visualize your emotional journey and mood trends over time.",
+                    icon = FeatureIcon.ANALYTICS
                 )
             ),
             plans = listOf(
                 SubscriptionPlan(
                     id = "yearly",
-                    name = "Yearly Access",
+                    name = "Yearly",
                     price = "$79.99",
                     period = BillingPeriod.YEARLY,
-                    subtitle = "7-DAY FREE TRIAL",
-                    monthlyEquivalent = "$6.66 per month",
-                    isPopularChoice = true,
+                    subtitle = "5-day free trial · $6.66/mo",
+                    badge = PlanBadge.BEST_VALUE,
                     hasFreeTrial = true
                 ),
                 SubscriptionPlan(
@@ -39,7 +43,8 @@ class GetPaywallConfigUseCase {
                     name = "Monthly",
                     price = "$9.99",
                     period = BillingPeriod.MONTHLY,
-                    subtitle = "Standard access"
+                    subtitle = "Billed monthly",
+                    badge = PlanBadge.POPULAR
                 )
             ),
             defaultPlanId = "yearly"

@@ -38,6 +38,7 @@ private fun AppError.toStringResource(): StringResource = when (this) {
         NetworkErrorType.UNAUTHORIZED -> Res.string.error_network_unauthorized
         NetworkErrorType.CONFLICT -> Res.string.error_network_conflict
         NetworkErrorType.TOO_MANY_REQUESTS -> Res.string.error_network_too_many_requests
+        NetworkErrorType.QUOTA_EXCEEDED -> Res.string.error_network_too_many_requests
         NetworkErrorType.NO_INTERNET -> Res.string.error_network_no_internet
         NetworkErrorType.SERVER_ERROR -> Res.string.error_network_server
         NetworkErrorType.SERIALIZATION -> Res.string.error_network_serialization

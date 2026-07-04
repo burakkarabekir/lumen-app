@@ -3,6 +3,8 @@ package com.bksd.lumen.di
 import com.bksd.auth.data.di.authDataModule
 import com.bksd.auth.domain.di.authDomainModule
 import com.bksd.auth.presentation.di.authPresentationModule
+import com.bksd.core.billing.RevenueCatInitializer
+import com.bksd.core.billing.di.billingModule
 import com.bksd.core.data.di.coreDataModule
 import com.bksd.insights.domain.di.insightsDomainModule
 import com.bksd.insights.presentation.di.insightsPresentationModule
@@ -27,6 +29,7 @@ fun initKoin(config: KoinAppDeclaration? = null) {
         config?.invoke(this)
         modules(
             appModule,
+            billingModule,
             coreDataModule,
             navigationModule,
             // Feature modules
@@ -50,4 +53,5 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             reflectionDataModule
         )
     }
+    RevenueCatInitializer.configure()
 }

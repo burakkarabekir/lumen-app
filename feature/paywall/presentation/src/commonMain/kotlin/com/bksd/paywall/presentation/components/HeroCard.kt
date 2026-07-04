@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
@@ -23,7 +22,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.bksd.core.design_system.theme.PreviewAppTheme
+import com.bksd.core.design_system.theme.aiIconGradient
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
 import com.bksd.core.design_system.theme.paywallHeroGradient
@@ -51,16 +53,18 @@ fun HeroCard(
         ) {
             Box(
                 modifier = Modifier
-                    .size(MaterialTheme.dimens.size.cancelIcon)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
+                    .size(MaterialTheme.dimens.size.topBar)
+                    .clip(RoundedCornerShape(MaterialTheme.dimens.radius.xxl))
+                    .background(
+                        Brush.linearGradient(colors = MaterialTheme.colorScheme.extended.aiIconGradient)
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Default.AutoAwesome,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(MaterialTheme.dimens.icon.xl)
+                    tint = Color.White,
+                    modifier = Modifier.size(MaterialTheme.dimens.icon.avatar)
                 )
             }
 
@@ -87,5 +91,13 @@ fun HeroCard(
                 textAlign = TextAlign.Center
             )
         }
+    }
+}
+
+@Preview
+@Composable
+private fun HeroCardPreview() {
+    PreviewAppTheme(darkTheme = true) {
+        HeroCard()
     }
 }

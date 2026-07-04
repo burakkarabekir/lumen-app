@@ -4,6 +4,7 @@ package com.bksd.moment.presentation.create
 
 import androidx.lifecycle.viewModelScope
 import com.bksd.auth.domain.AuthRepository
+import com.bksd.core.domain.billing.ObserveEntitlementUseCase
 import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.LocationErrorType
 import com.bksd.core.domain.error.Result
@@ -71,9 +72,11 @@ class CreateMomentViewModel(
     private val clock: Clock,
     private val applicationScope: ApplicationScope,
     private val requestEntryAnalysis: RequestEntryAnalysisUseCase,
+    private val observeEntitlement: ObserveEntitlementUseCase,
 ) : BaseViewModel<CreateMomentAction, CreateMomentEvent>() {
 
     private var hasLoadedInitialData = false
+    private var isPremium = false
 
     private val _state = MutableStateFlow(CreateMomentState())
     val state = _state
@@ -103,6 +106,7 @@ class CreateMomentViewModel(
             }
         }
 
+        launch { observeEntitlement().collect { isPremium = it.isPlus } }
         launch { voiceRecorder.isRecording.collect { updateRecordingState() } }
         launch { voiceRecorder.elapsedMs.collect { updateRecordingState() } }
         launch { voiceRecorder.amplitudes.collect { updateRecordingState() } }
@@ -248,16 +252,22 @@ class CreateMomentViewModel(
             }
 
             // Media
-            CreateMomentAction.OnCameraClick -> sendEvent(CreateMomentEvent.RequestCameraPermission)
+            CreateMomentAction.OnCameraClick ->
+                if (isPremium) sendEvent(CreateMomentEvent.RequestCameraPermission)
+                else sendEvent(CreateMomentEvent.NavigateToPaywall)
             CreateMomentAction.OnCameraPermissionGranted -> sendEvent(CreateMomentEvent.LaunchCamera)
             CreateMomentAction.OnCameraPermissionDenied -> {
                 sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_camera_permission_denied)))
             }
             CreateMomentAction.OnPhotoClick -> sendEvent(CreateMomentEvent.LaunchPhotoPicker)
-            CreateMomentAction.OnVideoClick -> sendEvent(CreateMomentEvent.LaunchVideoPicker)
+            CreateMomentAction.OnVideoClick ->
+                if (isPremium) sendEvent(CreateMomentEvent.LaunchVideoPicker)
+                else sendEvent(CreateMomentEvent.NavigateToPaywall)
             CreateMomentAction.OnFilePickClick -> sendEvent(CreateMomentEvent.LaunchFilePicker)
             is CreateMomentAction.OnMediaPicked -> handleMediaPicked(action)
-            CreateMomentAction.OnMicClick -> sendEvent(CreateMomentEvent.RequestAudioPermission)
+            CreateMomentAction.OnMicClick ->
+                if (isPremium) sendEvent(CreateMomentEvent.RequestAudioPermission)
+                else sendEvent(CreateMomentEvent.NavigateToPaywall)
 
             CreateMomentAction.OnAudioPermissionGranted -> {
                 launch {

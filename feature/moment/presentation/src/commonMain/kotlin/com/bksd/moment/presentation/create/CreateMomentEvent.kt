@@ -4,6 +4,7 @@ import com.bksd.core.presentation.util.UiText
 
 sealed interface CreateMomentEvent {
     data object NavigateBack : CreateMomentEvent
+    data object NavigateToPaywall : CreateMomentEvent
     data class ShowSaveSuccess(val message: UiText) : CreateMomentEvent
     data class ShowError(val error: UiText) : CreateMomentEvent
 
