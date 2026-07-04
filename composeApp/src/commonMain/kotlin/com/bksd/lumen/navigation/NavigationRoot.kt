@@ -30,6 +30,7 @@ import com.bksd.insights.presentation.InsightsRoot
 import com.bksd.insights.presentation.reflection.full.WeeklyReflectionDetailRoot
 import com.bksd.journal.presentation.detail.MomentDetailRoot
 import com.bksd.journal.presentation.journal.JournalRoot
+import com.bksd.lumen.consent.ConsentGate
 import com.bksd.lumen.main.MainEvent
 import com.bksd.lumen.main.MainViewModel
 import com.bksd.lumen.navigation.route.Route
@@ -229,5 +230,7 @@ fun NavigationRoot(
         }
 
         WelcomeGate()
+
+        ConsentGate()
     }
 }

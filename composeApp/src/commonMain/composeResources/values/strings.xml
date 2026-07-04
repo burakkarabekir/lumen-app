@@ -6,6 +6,14 @@
     <string name="welcome_greeting_returning">Welcome back,</string>
     <string name="welcome_greeting_new">Welcome to Lumen,</string>
 
+    <!-- OAuth consent gate -->
+    <string name="consent_gate_title">Agree to continue</string>
+    <string name="consent_gate_body_prefix">To keep using Lumen, please review and agree to our </string>
+    <string name="consent_terms">Terms of Service</string>
+    <string name="consent_and"> and </string>
+    <string name="consent_privacy">Privacy Policy</string>
+    <string name="consent_gate_button">I Agree &amp; Continue</string>
+
     <!-- Recording Status Messages -->
     <string name="microphone_permission_denied">Ready to practice?</string>
     <string name="permission_open_settings">Open Settings</string>

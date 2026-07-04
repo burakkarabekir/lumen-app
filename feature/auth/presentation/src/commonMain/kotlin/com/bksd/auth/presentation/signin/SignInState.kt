@@ -1,6 +1,7 @@
 package com.bksd.auth.presentation.signin
 
 import androidx.compose.runtime.Immutable
+import com.bksd.auth.presentation.isValidEmail
 import com.bksd.core.presentation.util.UiText
 
 @Immutable
@@ -12,5 +13,7 @@ data class SignInState(
     val error: UiText? = null,
     val rememberMe: Boolean = false,
 ) {
-    val isSubmitEnabled: Boolean get() = email.isNotBlank() && password.isNotBlank() && !isLoading && !isSocialLoading
+    val emailError: Boolean get() = email.isNotBlank() && !email.isValidEmail()
+    val isSubmitEnabled: Boolean
+        get() = email.isValidEmail() && password.isNotBlank() && !isLoading && !isSocialLoading
 }

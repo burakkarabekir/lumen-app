@@ -2,6 +2,7 @@ package com.bksd.core.data.remote.supabase
 
 import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.Result
+import com.bksd.core.domain.legal.LegalConfig
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.Google
@@ -40,7 +41,10 @@ class SupabaseAuthDataSource(
         auth.signUpWith(Email) {
             this.email = email
             this.password = password
-            this.data = buildJsonObject { put("full_name", fullName) }
+            this.data = buildJsonObject {
+                put("full_name", fullName)
+                put("policy_version", LegalConfig.POLICY_VERSION)
+            }
         }
         Unit
     }
