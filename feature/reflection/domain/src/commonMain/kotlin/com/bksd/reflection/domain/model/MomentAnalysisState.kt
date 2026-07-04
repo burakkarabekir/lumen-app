@@ -5,4 +5,5 @@ sealed interface MomentAnalysisState {
     data object Pending : MomentAnalysisState
     data class Ready(val reflection: MomentReflection) : MomentAnalysisState
     data object Failed : MomentAnalysisState
+    data object QuotaExceeded : MomentAnalysisState
 }

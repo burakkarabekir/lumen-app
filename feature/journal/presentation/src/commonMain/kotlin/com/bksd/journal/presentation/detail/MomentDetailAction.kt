@@ -12,6 +12,7 @@ sealed interface MomentDetailAction {
     data object OnCancelEdit : MomentDetailAction
     data object OnDeleteClick : MomentDetailAction
     data object OnShareClick : MomentDetailAction
+    data object OnUpgradeClick : MomentDetailAction
     data object OnFavoriteToggle : MomentDetailAction
     data object OnToggleBodyExpand : MomentDetailAction
     data class OnTitleChange(val title: String) : MomentDetailAction

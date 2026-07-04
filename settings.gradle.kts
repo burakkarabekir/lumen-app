@@ -36,6 +36,7 @@ include(":core:presentation")
 include(":core:domain")
 include(":core:design_system")
 include(":core:data")
+include(":core:billing")
 
 include(":feature:journal:data")
 include(":feature:journal:domain")

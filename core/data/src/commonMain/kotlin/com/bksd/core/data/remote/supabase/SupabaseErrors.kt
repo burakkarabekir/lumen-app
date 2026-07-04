@@ -61,6 +61,7 @@ private fun mapAuthError(e: AuthRestException): AppError = when (e.errorCode) {
 private fun mapHttpStatus(status: Int): AppError = when (status) {
     401, 403 -> AppError.Network(NetworkErrorType.UNAUTHORIZED)
     408, 504 -> AppError.Network(NetworkErrorType.REQUEST_TIMEOUT)
+    402 -> AppError.Network(NetworkErrorType.QUOTA_EXCEEDED)
     409 -> AppError.Network(NetworkErrorType.CONFLICT)
     429 -> AppError.Network(NetworkErrorType.TOO_MANY_REQUESTS)
     in 500..599 -> AppError.Network(NetworkErrorType.SERVER_ERROR)

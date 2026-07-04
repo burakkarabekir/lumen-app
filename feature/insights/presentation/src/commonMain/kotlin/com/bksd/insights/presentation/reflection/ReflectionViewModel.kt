@@ -1,6 +1,7 @@
 package com.bksd.insights.presentation.reflection
 
 import androidx.lifecycle.viewModelScope
+import com.bksd.core.domain.billing.ObserveEntitlementUseCase
 import com.bksd.core.domain.error.Result
 import com.bksd.core.presentation.util.BaseViewModel
 import com.bksd.insights.domain.usecase.ObserveAllMomentsUseCase
@@ -17,6 +18,7 @@ class ReflectionViewModel(
     private val observeWeeklyReflection: ObserveWeeklyReflectionUseCase,
     private val generateWeeklyReflection: GenerateWeeklyReflectionUseCase,
     private val observeAllMoments: ObserveAllMomentsUseCase,
+    private val observeEntitlement: ObserveEntitlementUseCase,
 ) : BaseViewModel<ReflectionAction, ReflectionEvent>() {
 
     private var started = false
@@ -27,7 +29,7 @@ class ReflectionViewModel(
             if (!started) {
                 started = true
                 observeCache()
-                generateIfStale()
+                observePremiumAndGenerate()
             }
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000L), ReflectionState())
@@ -35,6 +37,7 @@ class ReflectionViewModel(
     override fun onAction(action: ReflectionAction) {
         when (action) {
             ReflectionAction.OnViewFull -> sendEvent(ReflectionEvent.NavigateToFullReflection)
+            ReflectionAction.OnUnlock -> sendEvent(ReflectionEvent.NavigateToPaywall)
         }
     }
 
@@ -42,6 +45,15 @@ class ReflectionViewModel(
         launch {
             observeWeeklyReflection().collect { reflection ->
                 _state.update { it.copy(reflection = reflection) }
+            }
+        }
+    }
+
+    private fun observePremiumAndGenerate() {
+        launch {
+            observeEntitlement().collect { entitlement ->
+                _state.update { it.copy(isPremium = entitlement.isPlus) }
+                if (entitlement.isPlus) generateIfStale()
             }
         }
     }

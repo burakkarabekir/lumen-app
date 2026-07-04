@@ -21,6 +21,7 @@ enum class NetworkErrorType {
     UNAUTHORIZED,
     CONFLICT,
     TOO_MANY_REQUESTS,
+    QUOTA_EXCEEDED,
     NO_INTERNET,
     SERVER_ERROR,
     SERIALIZATION

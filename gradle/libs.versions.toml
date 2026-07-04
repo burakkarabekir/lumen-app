@@ -80,6 +80,8 @@ core = "1.7.0"
 coil = "3.5.0"
 coil-network = "3.5.0"
 
+revenuecat = "3.2.0"
+
 [libraries]
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
 androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
@@ -215,6 +217,8 @@ supabase-auth = { module = "io.github.jan-tennert.supabase:auth-kt", version.ref
 supabase-postgrest = { module = "io.github.jan-tennert.supabase:postgrest-kt", version.ref = "supabase" }
 supabase-storage = { module = "io.github.jan-tennert.supabase:storage-kt", version.ref = "supabase" }
 supabase-functions = { module = "io.github.jan-tennert.supabase:functions-kt", version.ref = "supabase" }
+
+revenuecat-purchases = { module = "com.revenuecat.purchases:purchases-kmp-core", version.ref = "revenuecat" }
 
 [plugins]
 # ==================== Convention Plugins ====================

@@ -13,6 +13,7 @@
 		896271B72F4FC16800D6545E /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 896271B62F4FC16800D6545E /* FirebaseStorage */; };
 		897B9E602FEDC76C00E38C0C /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 897B9E5F2FEDC76C00E38C0C /* GoogleSignIn */; };
 		897B9E622FEDC76C00E38C0C /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 897B9E612FEDC76C00E38C0C /* GoogleSignInSwift */; };
+		8950631E2FF9398000786EEB /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 8950631D2FF9398000786EEB /* RevenueCat */; };
 		89D6A4D52F5486590051E935 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 89D6A4D42F5486590051E935 /* FirebaseCore */; };
 /* End PBXBuildFile section */
 
@@ -58,6 +59,7 @@
 				896271B32F4FC16800D6545E /* FirebaseAuth in Frameworks */,
 				896271B52F4FC16800D6545E /* FirebaseFirestore in Frameworks */,
 				897B9E602FEDC76C00E38C0C /* GoogleSignIn in Frameworks */,
+				8950631E2FF9398000786EEB /* RevenueCat in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,6 +119,7 @@
 				89D6A4D42F5486590051E935 /* FirebaseCore */,
 				897B9E5F2FEDC76C00E38C0C /* GoogleSignIn */,
 				897B9E612FEDC76C00E38C0C /* GoogleSignInSwift */,
+				8950631D2FF9398000786EEB /* RevenueCat */,
 			);
 			productName = iosApp;
 			productReference = 431994F69CF2507EA5FCB5BA /* Lumen.app */;
@@ -149,6 +152,7 @@
 			packageReferences = (
 				896271AF2F4FC16800D6545E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				897B9E5E2FEDC76C00E38C0C /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				8950631C2FF9398000786EEB /* XCRemoteSwiftPackageReference "purchases-ios-spm" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3BFB7831A4037E11EB454DFA /* Products */;
@@ -408,6 +412,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		8950631C2FF9398000786EEB /* XCRemoteSwiftPackageReference "purchases-ios-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.80.2;
+			};
+		};
 		896271AF2F4FC16800D6545E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -461,6 +473,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 896271AF2F4FC16800D6545E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCore;
+		};
+		8950631D2FF9398000786EEB /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8950631C2FF9398000786EEB /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
+			productName = RevenueCat;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

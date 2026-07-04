@@ -165,7 +165,8 @@ fun NavigationRoot(
                     }
                     entry<Route.Main.Insights> {
                         InsightsRoot(
-                            onViewFullReflection = { navigator.navigateToWeeklyReflection() }
+                            onViewFullReflection = { navigator.navigateToWeeklyReflection() },
+                            onNavigateToPaywall = { navigator.navigateToPaywall() }
                         )
                     }
                     entry<Route.Profile> {
@@ -201,7 +202,8 @@ fun NavigationRoot(
                         MomentDetailRoot(
                             momentId = backStackEntry.momentId,
                             isEditing = backStackEntry.isEditing,
-                            onNavigateBack = navigator::goBack
+                            onNavigateBack = navigator::goBack,
+                            onNavigateToPaywall = { navigator.navigateToPaywall() }
                         )
                     }
                     entry<Route.WeeklyReflection> {
@@ -213,6 +215,7 @@ fun NavigationRoot(
                     entry<Route.CreateMoment> {
                         CreateMomentRoot(
                             onNavigateBack = { navigator.goBack() },
+                            onNavigateToPaywall = { navigator.navigateToPaywall() }
                         )
                     }
                     entry<Route.Paywall> {

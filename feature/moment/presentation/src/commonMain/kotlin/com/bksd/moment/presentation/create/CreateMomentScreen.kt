@@ -75,6 +75,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun CreateMomentRoot(
     onNavigateBack: () -> Unit,
+    onNavigateToPaywall: () -> Unit,
 ) {
     val viewModel: CreateMomentViewModel = koinViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -108,6 +109,7 @@ fun CreateMomentRoot(
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
             is CreateMomentEvent.NavigateBack -> onNavigateBack()
+            is CreateMomentEvent.NavigateToPaywall -> onNavigateToPaywall()
             is CreateMomentEvent.ShowError -> coroutineScope.launch {
                 val message = event.error.asStringAsync()
                 if (message.contains("disabled", ignoreCase = true)) {

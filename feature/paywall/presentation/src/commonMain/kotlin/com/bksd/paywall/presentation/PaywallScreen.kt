@@ -23,6 +23,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,6 +38,9 @@ import com.bksd.paywall.presentation.components.HeroCard
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+
+private const val TERMS_URL = "https://lumen.app/terms"
+private const val PRIVACY_URL = "https://lumen.app/privacy"
 
 @Composable
 fun PaywallRoot(
@@ -63,6 +67,7 @@ internal fun PaywallScreen(
     state: PaywallState,
     onAction: (PaywallAction) -> Unit
 ) {
+    val uriHandler = LocalUriHandler.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -146,12 +151,37 @@ internal fun PaywallScreen(
             Text(
                 text = stringResource(Res.string.legal_text),
                 style = MaterialTheme.typography.labelSmall.copy(
-                    letterSpacing = 0.5.sp,
                     lineHeight = 16.sp
                 ),
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.35f),
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
                 textAlign = TextAlign.Center
             )
+
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.sm))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(Res.string.terms_of_use),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+                    modifier = Modifier.clickable { runCatching { uriHandler.openUri(TERMS_URL) } }
+                )
+                Text(
+                    text = "   ·   ",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f)
+                )
+                Text(
+                    text = stringResource(Res.string.privacy_policy),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+                    modifier = Modifier.clickable { runCatching { uriHandler.openUri(PRIVACY_URL) } }
+                )
+            }
 
             Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.xxxl))
         }
