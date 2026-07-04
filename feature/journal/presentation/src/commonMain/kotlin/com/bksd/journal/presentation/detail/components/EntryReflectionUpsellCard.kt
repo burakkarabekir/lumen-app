@@ -69,7 +69,7 @@ fun EntryReflectionUpsellCard(
             text = "Unlock Plus",
             onClick = onUnlock,
             style = AppButtonStyle.PRIMARY,
-            modifier = Modifier.fillMaxWidth(),
+            cornerRadius = MaterialTheme.dimens.radius.lg,
         )
     }
 }

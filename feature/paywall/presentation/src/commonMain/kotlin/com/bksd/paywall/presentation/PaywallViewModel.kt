@@ -45,7 +45,8 @@ class PaywallViewModel(
                 _stateFlow.update {
                     it.copy(
                         tiers = tiers,
-                        selectedTier = tiers.firstOrNull { tier -> tier.isPopularChoice } ?: tiers.first(),
+                        selectedTier = tiers.firstOrNull { tier -> tier.badge == PaywallBadge.BEST_VALUE }
+                            ?: tiers.first(),
                     )
                 }
             }
@@ -89,7 +90,7 @@ class PaywallViewModel(
 private fun BillingProduct.toTierUi(): BillingTierUi = BillingTierUi(
     id = id,
     displayName = when (period) {
-        BillingPeriod.YEARLY -> "Yearly Access"
+        BillingPeriod.YEARLY -> "Yearly"
         BillingPeriod.MONTHLY -> "Monthly"
         BillingPeriod.WEEKLY -> "Weekly"
         BillingPeriod.LIFETIME -> "Lifetime"
@@ -97,13 +98,23 @@ private fun BillingProduct.toTierUi(): BillingTierUi = BillingTierUi(
     },
     price = priceLabel,
     period = when (period) {
-        BillingPeriod.YEARLY -> "/yr"
-        BillingPeriod.MONTHLY -> "/mo"
-        BillingPeriod.WEEKLY -> "/wk"
+        BillingPeriod.YEARLY -> "per year"
+        BillingPeriod.MONTHLY -> "per month"
+        BillingPeriod.WEEKLY -> "per week"
         else -> ""
     },
-    subtitle = if (hasFreeTrial) "FREE TRIAL" else "",
+    subtitle = when {
+        hasFreeTrial -> "5-day free trial"
+        period == BillingPeriod.YEARLY -> "Billed annually"
+        period == BillingPeriod.WEEKLY -> "Billed weekly"
+        period == BillingPeriod.LIFETIME -> "One-time purchase"
+        else -> "Billed monthly"
+    },
     monthlyBreakdown = null,
-    isPopularChoice = period == BillingPeriod.YEARLY,
+    badge = when (period) {
+        BillingPeriod.YEARLY -> PaywallBadge.BEST_VALUE
+        BillingPeriod.MONTHLY -> PaywallBadge.POPULAR
+        else -> null
+    },
     hasFreeTrial = hasFreeTrial,
 )

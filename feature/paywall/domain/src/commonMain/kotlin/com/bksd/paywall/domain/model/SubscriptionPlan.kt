@@ -7,11 +7,16 @@ data class SubscriptionPlan(
     val period: BillingPeriod,
     val subtitle: String,
     val monthlyEquivalent: String? = null,
-    val isPopularChoice: Boolean = false,
+    val badge: PlanBadge? = null,
     val hasFreeTrial: Boolean = false
 )
 
 enum class BillingPeriod {
     MONTHLY,
     YEARLY
+}
+
+enum class PlanBadge {
+    POPULAR,
+    BEST_VALUE
 }
