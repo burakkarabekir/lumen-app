@@ -10,6 +10,7 @@ interface AuthRepository {
     suspend fun signInWithGoogle(idToken: String): Result<Unit, AppError>
     suspend fun resetPassword(email: String): Result<Unit, AppError>
     suspend fun signOut(): Result<Unit, AppError>
+    suspend fun deleteAccount(): Result<Unit, AppError>
     fun getSignedInUserId(): String?
     fun getDisplayName(): String?
     val authState: Flow<Boolean>

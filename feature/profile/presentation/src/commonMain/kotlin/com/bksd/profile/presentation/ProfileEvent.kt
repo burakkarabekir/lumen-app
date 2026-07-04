@@ -4,6 +4,7 @@ import com.bksd.core.presentation.util.UiText
 
 sealed interface ProfileEvent {
     data object SignOutSuccess : ProfileEvent
+    data object DeleteAccountSuccess : ProfileEvent
     data object NavigateToPaywall : ProfileEvent
     data object NavigateToEditProfile : ProfileEvent
     data object NavigateToAbout : ProfileEvent
@@ -11,4 +12,5 @@ sealed interface ProfileEvent {
     data object OpenPhotoPicker : ProfileEvent
     data class PermissionError(val error: UiText) : ProfileEvent
     data class SignOutError(val error: UiText) : ProfileEvent
+    data class DeleteAccountError(val error: UiText) : ProfileEvent
 }

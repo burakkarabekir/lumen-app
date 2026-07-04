@@ -18,10 +18,12 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Cloud
+import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -29,6 +31,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -95,6 +98,7 @@ fun ProfileRoot(
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
             ProfileEvent.SignOutSuccess -> onNavigateToSignIn()
+            ProfileEvent.DeleteAccountSuccess -> onNavigateToSignIn()
             ProfileEvent.NavigateToPaywall -> onNavigateToPaywall()
             ProfileEvent.NavigateToEditProfile -> onNavigateToEditProfile()
             ProfileEvent.NavigateToAbout -> onNavigateToAbout()
@@ -112,6 +116,12 @@ fun ProfileRoot(
             }
 
             is ProfileEvent.SignOutError -> {
+                scope.launch {
+                    snackbarHostState.showSnackbar(event.error.asStringAsync())
+                }
+            }
+
+            is ProfileEvent.DeleteAccountError -> {
                 scope.launch {
                     snackbarHostState.showSnackbar(event.error.asStringAsync())
                 }
@@ -229,6 +239,16 @@ internal fun ProfileScreen(
                     accent = MaterialTheme.colorScheme.extended.profileAccentGreen,
                     onClick = { onAction(ProfileAction.OnDataExportClick) }
                 )
+                HorizontalDivider(
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
+                    modifier = Modifier.padding(start = MaterialTheme.dimens.spacing.massive)
+                )
+                ProfileSettingsRow(
+                    icon = Icons.Default.DeleteForever,
+                    label = stringResource(Res.string.delete_account),
+                    accent = MaterialTheme.colorScheme.error,
+                    onClick = { onAction(ProfileAction.OnDeleteAccountClick) }
+                )
             }
 
             Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))
@@ -296,6 +316,50 @@ internal fun ProfileScreen(
 
                 if (showRemindersSheet) {
                     RemindersSheet(onDismiss = { showRemindersSheet = false })
+                }
+
+                if (state.showDeleteDialog) {
+                    AlertDialog(
+                        onDismissRequest = {
+                            if (!state.isDeletingAccount) onAction(ProfileAction.OnDismissDeleteAccount)
+                        },
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Default.DeleteForever,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.error
+                            )
+                        },
+                        title = { Text(stringResource(Res.string.delete_account_title)) },
+                        text = { Text(stringResource(Res.string.delete_account_message)) },
+                        confirmButton = {
+                            TextButton(
+                                onClick = { onAction(ProfileAction.OnConfirmDeleteAccount) },
+                                enabled = !state.isDeletingAccount
+                            ) {
+                                if (state.isDeletingAccount) {
+                                    CircularProgressIndicator(
+                                        modifier = Modifier.size(MaterialTheme.dimens.icon.sm),
+                                        strokeWidth = 2.dp,
+                                        color = MaterialTheme.colorScheme.error
+                                    )
+                                } else {
+                                    Text(
+                                        text = stringResource(Res.string.delete_account_confirm),
+                                        color = MaterialTheme.colorScheme.error
+                                    )
+                                }
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(
+                                onClick = { onAction(ProfileAction.OnDismissDeleteAccount) },
+                                enabled = !state.isDeletingAccount
+                            ) {
+                                Text(stringResource(Res.string.action_cancel))
+                            }
+                        }
+                    )
                 }
         }
         }

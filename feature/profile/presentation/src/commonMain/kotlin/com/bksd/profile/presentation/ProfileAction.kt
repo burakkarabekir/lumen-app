@@ -13,4 +13,7 @@ sealed interface ProfileAction {
     data object OnEditProfileClick : ProfileAction
     data object OnAboutClick : ProfileAction
     data object OnHelpClick : ProfileAction
+    data object OnDeleteAccountClick : ProfileAction
+    data object OnConfirmDeleteAccount : ProfileAction
+    data object OnDismissDeleteAccount : ProfileAction
 }

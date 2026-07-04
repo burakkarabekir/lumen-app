@@ -34,6 +34,10 @@ class AuthRepositoryImpl(
         return authDataSource.signOut()
     }
 
+    override suspend fun deleteAccount(): Result<Unit, AppError> {
+        return authDataSource.deleteAccount()
+    }
+
     override fun getSignedInUserId(): String? {
         return authDataSource.getSignedInUserId()
     }

@@ -4,11 +4,14 @@ import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.Result
 import com.bksd.core.domain.legal.LegalConfig
 import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.auth.SignOutScope
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.Google
 import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.auth.providers.builtin.IDToken
 import io.github.jan.supabase.auth.status.SessionStatus
+import io.github.jan.supabase.functions.functions
+import io.ktor.http.isSuccess
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -50,6 +53,15 @@ class SupabaseAuthDataSource(
     }
 
     suspend fun signOut(): Result<Unit, AppError> = supabaseCall { auth.signOut() }
+
+    suspend fun deleteAccount(): Result<Unit, AppError> = supabaseCall {
+        val response = client.functions.invoke("delete-account")
+        if (!response.status.isSuccess()) {
+            throw IllegalStateException("delete_account_failed_${response.status.value}")
+        }
+        runCatching { auth.signOut(SignOutScope.LOCAL) }
+        Unit
+    }
 
     suspend fun resetPassword(email: String): Result<Unit, AppError> =
         supabaseCall { auth.resetPasswordForEmail(email) }

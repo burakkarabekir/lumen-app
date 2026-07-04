@@ -210,10 +210,10 @@ async function generateCoverImage(prompt: string): Promise<Uint8Array> {
   return bytes
 }
 
-async function uploadCover(bytes: Uint8Array): Promise<string> {
+async function uploadCover(bytes: Uint8Array, userId: string): Promise<string> {
   if (!SUPABASE_URL || !SERVICE_ROLE_KEY) throw new Error("storage: missing SUPABASE_URL / SERVICE_ROLE_KEY")
   const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, { auth: { persistSession: false } })
-  const path = `${crypto.randomUUID()}.png`
+  const path = `${userId}/${crypto.randomUUID()}.png`
   const { error: upErr } = await supabase.storage
     .from(COVER_BUCKET)
     .upload(path, bytes, { contentType: "image/png", upsert: true })
@@ -225,10 +225,10 @@ async function uploadCover(bytes: Uint8Array): Promise<string> {
   return data.signedUrl
 }
 
-async function generateCover(analysis: EntryAnalysis): Promise<string | null> {
+async function generateCover(analysis: EntryAnalysis, userId: string): Promise<string | null> {
   try {
     const bytes = await generateCoverImage(buildCoverPrompt(analysis))
-    return await uploadCover(bytes)
+    return await uploadCover(bytes, userId)
   } catch (e) {
     console.error("cover generation failed:", e instanceof Error ? e.message : String(e))
     return null
@@ -295,7 +295,7 @@ Deno.serve(async (req: Request) => {
     const needsSupport = analysis.distress === "ELEVATED" || analysis.distress === "CRISIS"
     const [fb, coverImageUrl] = await Promise.all([
       needsSupport ? Promise.resolve(null) : feedback(analysis, payload.trend),
-      generateCover(analysis),
+      generateCover(analysis, userId),
     ])
     const response: AnalyzeResponse = {
       analysis,

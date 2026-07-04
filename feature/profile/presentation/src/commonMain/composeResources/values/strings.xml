@@ -9,6 +9,10 @@
     <string name="app_theme">App Theme</string>
     <string name="notifications">Notifications</string>
     <string name="sign_out">Sign Out</string>
+    <string name="delete_account">Delete account</string>
+    <string name="delete_account_title">Delete account?</string>
+    <string name="delete_account_message">This permanently deletes your account and all your entries, photos, and reflections. This can\'t be undone.</string>
+    <string name="delete_account_confirm">Delete</string>
     <string name="section_data_privacy">Data &amp; Privacy</string>
     <string name="section_support">Support</string>
     <string name="reminders">Reminders</string>
