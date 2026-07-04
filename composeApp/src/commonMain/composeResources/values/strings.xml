@@ -2,6 +2,10 @@
     <string name="home">Home</string>
     <string name="home_greeting">Hi, </string>
 
+    <!-- Post-login welcome animation -->
+    <string name="welcome_greeting_returning">Welcome back,</string>
+    <string name="welcome_greeting_new">Welcome to Lumen,</string>
+
     <!-- Recording Status Messages -->
     <string name="microphone_permission_denied">Ready to practice?</string>
     <string name="permission_open_settings">Open Settings</string>

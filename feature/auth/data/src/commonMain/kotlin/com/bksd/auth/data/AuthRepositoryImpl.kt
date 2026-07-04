@@ -38,6 +38,10 @@ class AuthRepositoryImpl(
         return authDataSource.getSignedInUserId()
     }
 
+    override fun getDisplayName(): String? {
+        return authDataSource.getDisplayName()
+    }
+
     override val authState: Flow<Boolean>
         get() = authDataSource.authState
 }
