@@ -47,21 +47,21 @@ class SignInViewModel(
     }
 
     private fun signInWithGoogle(idToken: String) {
-        _state.update { it.copy(isSocialLoading = true, error = null) }
+        _state.update { it.copy(loadingSocialProvider = SocialProvider.GOOGLE, error = null) }
         launch { handleSocialSignInResult(googleSignInUseCase(idToken)) }
     }
 
     private fun signInWithApple(idToken: String, nonce: String?) {
-        _state.update { it.copy(isSocialLoading = true, error = null) }
+        _state.update { it.copy(loadingSocialProvider = SocialProvider.APPLE, error = null) }
         launch { handleSocialSignInResult(appleSignInUseCase(idToken, nonce)) }
     }
 
     private fun onSocialSignInFailed(cancelled: Boolean) {
         if (cancelled) {
-            _state.update { it.copy(isSocialLoading = false) }
+            _state.update { it.copy(loadingSocialProvider = null) }
         } else {
             val errorText = AppError.Auth(AuthErrorType.SOCIAL_LOGIN_FAILED).toUiText()
-            _state.update { it.copy(isSocialLoading = false, error = errorText) }
+            _state.update { it.copy(loadingSocialProvider = null, error = errorText) }
             sendEvent(SignInEvent.SignInError(errorText))
         }
     }
@@ -91,7 +91,7 @@ class SignInViewModel(
         when (result) {
             is Result.Success -> {
                 sessionStorage.setRememberMe(true)
-                _state.update { it.copy(isSocialLoading = false) }
+                _state.update { it.copy(loadingSocialProvider = null) }
                 sendEvent(SignInEvent.SignInSuccess)
             }
 
@@ -99,10 +99,10 @@ class SignInViewModel(
                 val isCancelled = result.error is AppError.Auth &&
                         (result.error as AppError.Auth).type == AuthErrorType.SOCIAL_LOGIN_CANCELLED
                 if (isCancelled) {
-                    _state.update { it.copy(isSocialLoading = false) }
+                    _state.update { it.copy(loadingSocialProvider = null) }
                 } else {
                     val errorText = result.error.toUiText()
-                    _state.update { it.copy(isSocialLoading = false, error = errorText) }
+                    _state.update { it.copy(loadingSocialProvider = null, error = errorText) }
                     sendEvent(SignInEvent.SignInError(errorText))
                 }
             }

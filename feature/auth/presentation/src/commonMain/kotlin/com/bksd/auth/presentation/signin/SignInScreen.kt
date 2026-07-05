@@ -207,7 +207,7 @@ internal fun SignInScreen(
                 .fillMaxWidth()
                 .height(MaterialTheme.dimens.size.fab),
             enabled = !state.isLoading && !state.isSocialLoading,
-            isLoading = state.isSocialLoading,
+            isLoading = state.loadingSocialProvider == SocialProvider.GOOGLE,
             style = AppButtonStyle.SECONDARY
         )
 
@@ -220,7 +220,7 @@ internal fun SignInScreen(
                     .fillMaxWidth()
                     .height(MaterialTheme.dimens.size.fab),
                 enabled = !state.isLoading && !state.isSocialLoading,
-                isLoading = state.isSocialLoading,
+                isLoading = state.loadingSocialProvider == SocialProvider.APPLE,
             )
         }
     }

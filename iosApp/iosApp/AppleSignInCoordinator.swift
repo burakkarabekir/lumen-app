@@ -15,7 +15,11 @@ final class AppleSignInCoordinator: NSObject,
         self.onResult = onResult
         self.retained = self
 
-        let nonce = Self.randomNonce()
+        guard let nonce = Self.randomNonce() else {
+            onResult(nil, nil, "nonce_generation_failed")
+            retained = nil
+            return
+        }
         self.rawNonce = nonce
 
         let provider = ASAuthorizationAppleIDProvider()
@@ -65,10 +69,12 @@ final class AppleSignInCoordinator: NSObject,
         return window ?? ASPresentationAnchor()
     }
 
-    private static func randomNonce(length: Int = 32) -> String {
+    private static func randomNonce(length: Int = 32) -> String? {
         let charset = Array("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_")
         var bytes = [UInt8](repeating: 0, count: length)
-        _ = SecRandomCopyBytes(kSecRandomDefault, length, &bytes)
+        guard SecRandomCopyBytes(kSecRandomDefault, length, &bytes) == errSecSuccess else {
+            return nil
+        }
         return String(bytes.map { charset[Int($0) % charset.count] })
     }
 
