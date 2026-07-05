@@ -7,6 +7,7 @@ struct iOSApp: App {
         AppBootstrap.configureSentry()
         AppBootstrap.initKoin()
         AppBootstrap.configureGoogleSignIn()
+        AppBootstrap.configureAppleSignIn()
     }
 
     var body: some Scene {

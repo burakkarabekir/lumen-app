@@ -1,5 +1,6 @@
 package com.bksd.auth.domain.di
 
+import com.bksd.auth.domain.usecase.AppleSignInUseCase
 import com.bksd.auth.domain.usecase.DeleteAccountUseCase
 import com.bksd.auth.domain.usecase.GoogleSignInUseCase
 import com.bksd.auth.domain.usecase.ResetPasswordUseCase
@@ -17,4 +18,5 @@ val authDomainModule = module {
     factory { DeleteAccountUseCase(get(), getAll<LocalDataCleaner>(), get()) }
     factoryOf(::ResetPasswordUseCase)
     factoryOf(::GoogleSignInUseCase)
+    factoryOf(::AppleSignInUseCase)
 }

@@ -6,6 +6,7 @@ import com.bksd.core.domain.legal.LegalConfig
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.SignOutScope
 import io.github.jan.supabase.auth.auth
+import io.github.jan.supabase.auth.providers.Apple
 import io.github.jan.supabase.auth.providers.Google
 import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.auth.providers.builtin.IDToken
@@ -71,6 +72,15 @@ class SupabaseAuthDataSource(
             auth.signInWith(IDToken) {
                 this.idToken = idToken
                 provider = Google
+            }
+        }
+
+    suspend fun signInWithApple(idToken: String, nonce: String?): Result<Unit, AppError> =
+        supabaseCall {
+            auth.signInWith(IDToken) {
+                this.idToken = idToken
+                this.nonce = nonce
+                provider = Apple
             }
         }
 

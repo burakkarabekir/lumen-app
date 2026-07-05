@@ -33,13 +33,16 @@ import com.bksd.auth.presentation.no_account_prompt
 import com.bksd.auth.presentation.remember_me
 import com.bksd.auth.presentation.sign_in_subtitle
 import com.bksd.auth.presentation.sign_up_link
+import com.bksd.auth.presentation.signin.components.ContinueWithAppleButton
 import com.bksd.auth.presentation.signin.components.SocialLoginDivider
 import com.bksd.auth.presentation.welcome_back
 import com.bksd.core.design_system.component.button.AppButton
 import com.bksd.core.design_system.component.button.AppButtonStyle
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.presentation.auth.AppleSignInResult
 import com.bksd.core.presentation.auth.GoogleSignInResult
+import com.bksd.core.presentation.auth.rememberAppleSignInLauncher
 import com.bksd.core.presentation.auth.rememberGoogleSignInLauncher
 import com.bksd.core.presentation.util.ObserveAsEvents
 import org.jetbrains.compose.resources.stringResource
@@ -87,6 +90,19 @@ internal fun SignInScreen(
 
             is GoogleSignInResult.Failed ->
                 onAction(SignInAction.OnGoogleSignInFailed(cancelled = false))
+        }
+    }
+
+    val appleLauncher = rememberAppleSignInLauncher { result ->
+        when (result) {
+            is AppleSignInResult.Success ->
+                onAction(SignInAction.OnAppleIdTokenReceived(result.idToken, result.nonce))
+
+            AppleSignInResult.Cancelled ->
+                onAction(SignInAction.OnAppleSignInFailed(cancelled = true))
+
+            is AppleSignInResult.Failed ->
+                onAction(SignInAction.OnAppleSignInFailed(cancelled = false))
         }
     }
 
@@ -194,6 +210,19 @@ internal fun SignInScreen(
             isLoading = state.isSocialLoading,
             style = AppButtonStyle.SECONDARY
         )
+
+        if (appleLauncher != null) {
+            Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.md))
+
+            ContinueWithAppleButton(
+                onClick = { appleLauncher.launch() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(MaterialTheme.dimens.size.fab),
+                enabled = !state.isLoading && !state.isSocialLoading,
+                isLoading = state.isSocialLoading,
+            )
+        }
     }
 }
 

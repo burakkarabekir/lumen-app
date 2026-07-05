@@ -55,4 +55,13 @@ enum AppBootstrap {
             }
         }
     }
+
+    static func configureAppleSignIn() {
+        AppleSignInSetupKt.setAppleSignInProvider { onResult in
+            let coordinator = AppleSignInCoordinator()
+            coordinator.start { idToken, nonce, error in
+                onResult(idToken, nonce, error)
+            }
+        }
+    }
 }

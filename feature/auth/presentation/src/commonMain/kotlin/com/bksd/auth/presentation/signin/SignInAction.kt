@@ -9,4 +9,6 @@ sealed interface SignInAction {
     data object OnForgotPasswordClick : SignInAction
     data class OnGoogleIdTokenReceived(val idToken: String) : SignInAction
     data class OnGoogleSignInFailed(val cancelled: Boolean) : SignInAction
+    data class OnAppleIdTokenReceived(val idToken: String, val nonce: String?) : SignInAction
+    data class OnAppleSignInFailed(val cancelled: Boolean) : SignInAction
 }

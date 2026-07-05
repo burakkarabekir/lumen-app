@@ -14,6 +14,7 @@
     <string name="btn_apple">Apple</string>
     <string name="btn_google">Google</string>
     <string name="continue_with_google">Continue with Google</string>
+    <string name="continue_with_apple">Continue with Apple</string>
 
     <!-- SignUpScreen -->
     <string name="create_your_space">Create Your Space</string>

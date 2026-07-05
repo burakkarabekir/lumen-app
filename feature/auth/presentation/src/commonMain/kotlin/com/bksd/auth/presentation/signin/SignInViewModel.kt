@@ -1,5 +1,6 @@
 package com.bksd.auth.presentation.signin
 
+import com.bksd.auth.domain.usecase.AppleSignInUseCase
 import com.bksd.auth.domain.usecase.GoogleSignInUseCase
 import com.bksd.auth.domain.usecase.SignInUseCase
 import com.bksd.core.domain.error.AppError
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.update
 class SignInViewModel(
     private val signInUseCase: SignInUseCase,
     private val googleSignInUseCase: GoogleSignInUseCase,
+    private val appleSignInUseCase: AppleSignInUseCase,
     private val sessionStorage: SessionStorage,
 ) : BaseViewModel<SignInAction, SignInEvent>() {
 
@@ -38,7 +40,9 @@ class SignInViewModel(
             SignInAction.OnForgotPasswordClick -> sendEvent(SignInEvent.NavigateToForgotPassword)
 
             is SignInAction.OnGoogleIdTokenReceived -> signInWithGoogle(action.idToken)
-            is SignInAction.OnGoogleSignInFailed -> onGoogleSignInFailed(action.cancelled)
+            is SignInAction.OnGoogleSignInFailed -> onSocialSignInFailed(action.cancelled)
+            is SignInAction.OnAppleIdTokenReceived -> signInWithApple(action.idToken, action.nonce)
+            is SignInAction.OnAppleSignInFailed -> onSocialSignInFailed(action.cancelled)
         }
     }
 
@@ -47,7 +51,12 @@ class SignInViewModel(
         launch { handleSocialSignInResult(googleSignInUseCase(idToken)) }
     }
 
-    private fun onGoogleSignInFailed(cancelled: Boolean) {
+    private fun signInWithApple(idToken: String, nonce: String?) {
+        _state.update { it.copy(isSocialLoading = true, error = null) }
+        launch { handleSocialSignInResult(appleSignInUseCase(idToken, nonce)) }
+    }
+
+    private fun onSocialSignInFailed(cancelled: Boolean) {
         if (cancelled) {
             _state.update { it.copy(isSocialLoading = false) }
         } else {
