@@ -30,6 +30,7 @@ import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
 import com.bksd.core.design_system.theme.profileAccentIndigo
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun ProfileSettingsRow(
@@ -85,7 +86,7 @@ fun ProfileSettingsRow(
         if (showBadge) {
             Box(
                 modifier = Modifier
-                    .size(MaterialTheme.dimens.icon.xs)
+                    .size(8.dp)
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.error)
             )

@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.dimens
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun ReflectionThemeChip(
@@ -38,7 +39,7 @@ fun ReflectionThemeChip(
     ) {
         Box(
             modifier = Modifier
-                .size(MaterialTheme.dimens.icon.xs)
+                .size(7.dp)
                 .clip(CircleShape)
                 .background(color)
         )

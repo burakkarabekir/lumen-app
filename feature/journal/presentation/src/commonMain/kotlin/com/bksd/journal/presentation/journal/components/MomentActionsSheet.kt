@@ -56,7 +56,7 @@ fun MomentActionsSheet(
                 modifier = Modifier
                     .padding(vertical = MaterialTheme.dimens.spacing.md)
                     .width(MaterialTheme.dimens.icon.avatar)
-                    .height(MaterialTheme.dimens.icon.xs),
+                    .height(MaterialTheme.dimens.spacing.xs),
                 shape = MaterialTheme.shapes.small,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
             ) {}
