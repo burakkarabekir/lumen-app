@@ -22,8 +22,6 @@
     <string name="help_center">Help Center</string>
     <string name="about_lumen">About Lumen</string>
     <string name="member_since_prefix">Member since %1$s</string>
-    <string name="momentum_pro_title">Momentum Pro</string>
-    <string name="momentum_pro_description">Unlock advanced AI insights, unlimited cloud storage, and exclusive themes.</string>
     <string name="upgrade_button">Upgrade</string>
     <string name="theme_selector_title">App Theme</string>
     <string name="theme_system">System</string>
