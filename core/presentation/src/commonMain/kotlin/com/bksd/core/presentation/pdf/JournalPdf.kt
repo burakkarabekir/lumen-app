@@ -13,8 +13,4 @@ data class JournalPdfContent(
     val entries: List<JournalPdfEntry>,
 )
 
-/**
- * Renders [content] into a single PDF document and returns the raw bytes.
- * Android uses android.graphics.pdf.PdfDocument; iOS uses UIGraphicsPDFRenderer.
- */
 expect fun generateJournalPdf(content: JournalPdfContent): ByteArray

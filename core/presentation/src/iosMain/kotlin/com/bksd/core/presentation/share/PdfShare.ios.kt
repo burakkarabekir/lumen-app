@@ -30,8 +30,6 @@ actual fun rememberPdfShareAction(): PdfShareAction {
                 applicationActivities = null,
             )
             val root = UIApplication.sharedApplication.keyWindow?.rootViewController
-            // Required on iPad, where the share sheet is a popover; without an anchor
-            // UIKit throws and the app crashes.
             root?.view?.let { rootView ->
                 controller.popoverPresentationController?.sourceView = rootView
                 controller.popoverPresentationController?.sourceRect =

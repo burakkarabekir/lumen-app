@@ -39,8 +39,6 @@ fun LockGate(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     if (!state.loaded) {
-        // Cover the app with an opaque, touch-absorbing surface until we know whether
-        // the app should be locked — prevents a flash of private content on cold start.
         Box(
             modifier = modifier
                 .fillMaxSize()
@@ -74,8 +72,6 @@ fun LockGate(
 
     LaunchedEffect(locked) {
         if (locked) {
-            // If the device can no longer authenticate (all biometrics removed and no
-            // device credential), never trap the user — release the lock.
             if (!authenticator.isAvailable()) {
                 locked = false
                 return@LaunchedEffect
