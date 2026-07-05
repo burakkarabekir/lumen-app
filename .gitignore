@@ -2,6 +2,9 @@
 .kotlin
 .gradle
 **/build/
+androidApp/release/
+*.aab
+*.apk
 xcuserdata
 !src/**/build/
 local.properties

@@ -6,7 +6,11 @@ import GoogleSignIn
 struct iOSApp: App {
 
     init() {
-        InitKoinKt.doInitKoin()
+        #if DEBUG
+        InitKoinKt.doInitKoin(isDebug: true, config: nil)
+        #else
+        InitKoinKt.doInitKoin(isDebug: false, config: nil)
+        #endif
         GoogleSignInSetupKt.setGoogleSignInProvider { onResult in
             guard let presenting = UIApplication.shared.topViewController else {
                 onResult(nil, "No presenting view controller")
