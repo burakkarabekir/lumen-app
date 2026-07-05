@@ -6,6 +6,11 @@ sealed interface ProfileEvent {
     data object SignOutSuccess : ProfileEvent
     data object DeleteAccountSuccess : ProfileEvent
     data object NavigateToPaywall : ProfileEvent
+    data object NavigateToManagePremium : ProfileEvent
+    data object NavigateToCloudSync : ProfileEvent
+    data object NavigateToLockPrivacy : ProfileEvent
+    data object NavigateToExportJournal : ProfileEvent
+    data object NavigateToLegal : ProfileEvent
     data object NavigateToEditProfile : ProfileEvent
     data object NavigateToAbout : ProfileEvent
     data object NavigateToHelp : ProfileEvent

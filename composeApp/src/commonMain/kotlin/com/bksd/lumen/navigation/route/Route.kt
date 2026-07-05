@@ -62,6 +62,24 @@ sealed interface Route : NavKey {
     @Serializable
     data object Paywall : Route
 
+    @Serializable
+    data object ManagePremium : Route
+
+    @Serializable
+    data object CloudSync : Route
+
+    @Serializable
+    data object LockPrivacy : Route
+
+    @Serializable
+    data object ExportJournal : Route
+
+    @Serializable
+    data object Legal : Route
+
+    @Serializable
+    data class LegalDocument(val url: String, val title: String) : Route
+
     companion object {
         fun NavKey.shouldShowBottomBar(): Boolean =
             when (this) {

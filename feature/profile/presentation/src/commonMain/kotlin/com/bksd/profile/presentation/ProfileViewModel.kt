@@ -86,6 +86,11 @@ class ProfileViewModel(
         when (action) {
             ProfileAction.OnSignOutClick -> handleSignOut()
             ProfileAction.OnUpgradeClick -> sendEvent(ProfileEvent.NavigateToPaywall)
+            ProfileAction.OnManagePremiumClick -> sendEvent(ProfileEvent.NavigateToManagePremium)
+            ProfileAction.OnCloudSyncClick -> sendEvent(ProfileEvent.NavigateToCloudSync)
+            ProfileAction.OnPrivacyClick -> sendEvent(ProfileEvent.NavigateToLockPrivacy)
+            ProfileAction.OnDataExportClick -> sendEvent(ProfileEvent.NavigateToExportJournal)
+            ProfileAction.OnLegalClick -> sendEvent(ProfileEvent.NavigateToLegal)
             ProfileAction.OnUploadPictureClick -> sendEvent(ProfileEvent.OpenPhotoPicker)
             ProfileAction.OnEditProfileClick -> sendEvent(ProfileEvent.NavigateToEditProfile)
             ProfileAction.OnAboutClick -> sendEvent(ProfileEvent.NavigateToAbout)
@@ -109,8 +114,6 @@ class ProfileViewModel(
                 }
             }
 
-            ProfileAction.OnPrivacyClick,
-            ProfileAction.OnDataExportClick,
             ProfileAction.OnThemeClick,
             ProfileAction.OnNotificationsClick,
             ProfileAction.OnSettingsClick -> Unit

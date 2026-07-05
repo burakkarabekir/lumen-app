@@ -86,6 +86,18 @@ class Navigator(
 
     fun navigateToPaywall() = navigate(Route.Paywall)
 
+    fun navigateToManagePremium() = navigate(Route.ManagePremium)
+
+    fun navigateToCloudSync() = navigate(Route.CloudSync)
+
+    fun navigateToLockPrivacy() = navigate(Route.LockPrivacy)
+
+    fun navigateToExportJournal() = navigate(Route.ExportJournal)
+
+    fun navigateToLegal() = navigate(Route.Legal)
+
+    fun navigateToLegalDocument(url: String, title: String) = navigate(Route.LegalDocument(url, title))
+
     fun navigateToOnboarding() = navigate(Route.Onboarding)
 
     // ==================== Back Navigation ====================

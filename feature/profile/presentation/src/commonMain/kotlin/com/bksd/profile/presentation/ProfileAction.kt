@@ -3,6 +3,9 @@ package com.bksd.profile.presentation
 sealed interface ProfileAction {
     data object OnSignOutClick : ProfileAction
     data object OnUpgradeClick : ProfileAction
+    data object OnManagePremiumClick : ProfileAction
+    data object OnCloudSyncClick : ProfileAction
+    data object OnLegalClick : ProfileAction
     data object OnPrivacyClick : ProfileAction
     data object OnDataExportClick : ProfileAction
     data object OnThemeClick : ProfileAction

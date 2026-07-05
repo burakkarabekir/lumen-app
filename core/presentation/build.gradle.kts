@@ -35,6 +35,8 @@ kotlin {
         androidMain {
             dependencies {
                 implementation(libs.androidx.activity.compose)
+                implementation(libs.androidx.biometric)
+                implementation(libs.androidx.fragment)
                 implementation(libs.play.services.location)
                 implementation(libs.androidx.credentials)
                 implementation(libs.androidx.credentials.play.services.auth)
