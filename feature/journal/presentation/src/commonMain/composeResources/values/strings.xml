@@ -9,12 +9,12 @@
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="are_you_sure">Are you sure?</string>
-    <string name="your_data_won_t_be_saved">Your data won\'t be saved.</string>
+    <string name="your_data_won_t_be_saved">Your data won&apos;t be saved.</string>
     <string name="add_mood">Add mood</string>
     <string name="add_title">Add title…</string>
     <string name="add_description">Add Description…</string>
     <string name="discard_recording">Discard recording?</string>
-    <string name="this_cannot_be_undone">This can\'t be undone.</string>
+    <string name="this_cannot_be_undone">This can&apos;t be undone.</string>
     <string name="topic">Topic</string>
     <string name="remove_topic">Remove topic %s</string>
 
@@ -78,7 +78,7 @@
     <string name="ai_analyzing_title">Analyzing your entry…</string>
     <string name="ai_analyzing_caption">Your reflection will appear here in a moment.</string>
     <string name="ai_support_title">A moment of support</string>
-    <string name="ai_crisis_title">You\'re not alone</string>
+    <string name="ai_crisis_title">You&apos;re not alone</string>
     <string name="ai_call_resource">Call %1$s</string>
 
     <!-- JournalTopBar -->
@@ -90,7 +90,7 @@
     <!-- JournalEmptyState -->
     <string name="empty_state_sparkle">Sparkle</string>
     <string name="empty_state_title">Your first moment\nstarts here</string>
-    <string name="empty_state_subtitle">Tap + to capture a thought, a feeling,\nor whatever\'s on your mind.</string>
+    <string name="empty_state_subtitle">Tap + to capture a thought, a feeling,\nor whatever&apos;s on your mind.</string>
 
     <!-- MomentDetailReadView -->
     <string name="word_count">%1$d words</string>
