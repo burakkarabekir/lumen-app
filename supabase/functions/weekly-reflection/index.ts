@@ -7,7 +7,7 @@
 // JWT verification is ON by default — only signed-in users can call this.
 
 import { createClient } from "jsr:@supabase/supabase-js@2"
-import { withSentry } from "../_shared/sentry.ts"
+import { captureError, withSentry } from "../_shared/sentry.ts"
 
 const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY")
 const GEMINI_MODEL = Deno.env.get("GEMINI_MODEL") ?? "gemini-2.5-flash"
@@ -178,6 +178,7 @@ Deno.serve(withSentry("weekly-reflection", async (req: Request) => {
     }
     return json(response, 200)
   } catch (e) {
+    await captureError(e, { function: "weekly-reflection" })
     return json({ error: `weekly reflection failed: ${e instanceof Error ? e.message : String(e)}` }, 502)
   }
 }))

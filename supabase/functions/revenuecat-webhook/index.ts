@@ -14,7 +14,7 @@
 // SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY are injected automatically at runtime.
 
 import { createClient } from "jsr:@supabase/supabase-js@2"
-import { withSentry } from "../_shared/sentry.ts"
+import { captureError, withSentry } from "../_shared/sentry.ts"
 
 const SECRET = Deno.env.get("REVENUECAT_WEBHOOK_SECRET")
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")
@@ -147,6 +147,7 @@ Deno.serve(withSentry("revenuecat-webhook", async (req: Request) => {
   }, { onConflict: "user_id" })
   if (upErr) {
     console.error("subscriptions upsert failed:", upErr.message)
+    await captureError(upErr, { function: "revenuecat-webhook" })
     return json({ error: "db upsert failed" }, 500)
   }
 

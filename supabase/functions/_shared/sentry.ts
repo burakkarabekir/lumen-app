@@ -24,6 +24,15 @@ function ensureInit(): boolean {
   return true
 }
 
+export async function captureError(
+  error: unknown,
+  tags: Record<string, string> = {},
+): Promise<void> {
+  if (!ensureInit()) return
+  Sentry.captureException(error, { tags })
+  await Sentry.flush(2000)
+}
+
 export function withSentry(
   name: string,
   handler: (req: Request) => Promise<Response>,
@@ -32,12 +41,7 @@ export function withSentry(
   return async (req: Request) => {
     if (!enabled) return handler(req)
     try {
-      const res = await handler(req)
-      if (res.status >= 500) {
-        Sentry.captureMessage(`${name} responded ${res.status}`, "error")
-        await Sentry.flush(2000)
-      }
-      return res
+      return await handler(req)
     } catch (e) {
       Sentry.captureException(e, { tags: { function: name } })
       await Sentry.flush(2000)

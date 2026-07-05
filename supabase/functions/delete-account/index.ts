@@ -1,5 +1,5 @@
 import { createClient, SupabaseClient } from "jsr:@supabase/supabase-js@2"
-import { withSentry } from "../_shared/sentry.ts"
+import { captureError, withSentry } from "../_shared/sentry.ts"
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")
 const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")
@@ -57,7 +57,10 @@ Deno.serve(withSentry("delete-account", async (req: Request) => {
   }
 
   const { error } = await supabase.auth.admin.deleteUser(uid)
-  if (error) return json({ error: "delete_failed", detail: error.message }, 500)
+  if (error) {
+    await captureError(error, { function: "delete-account" })
+    return json({ error: "delete_failed", detail: error.message }, 500)
+  }
 
   return json({ success: true }, 200)
 }))
