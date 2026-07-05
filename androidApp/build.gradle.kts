@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     implementation(projects.composeApp)
+    implementation(projects.core.data)
     implementation(libs.koin.android)
     implementation(libs.androidx.splashscreen)
     implementation(libs.androidx.core.ktx)

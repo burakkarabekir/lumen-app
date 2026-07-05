@@ -68,6 +68,9 @@ moko-permissions = "0.20.1"
 # ==================== Logging ====================
 kermit = "2.1.0"
 
+# ==================== Monitoring ====================
+sentry = "8.0.0"
+
 # ==================== Testing ====================
 junit = "4.13.2"
 androidx-testExt = "1.3.0"
@@ -201,6 +204,9 @@ moko-permissions-notifications = { module = "dev.icerock.moko:permissions-notifi
 
 # ==================== Logging ====================
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
+
+# ==================== Monitoring ====================
+sentry-android = { module = "io.sentry:sentry-android", version.ref = "sentry" }
 
 # ==================== Testing ====================
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }

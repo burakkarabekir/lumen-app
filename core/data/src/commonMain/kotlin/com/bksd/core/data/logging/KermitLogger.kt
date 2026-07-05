@@ -24,5 +24,6 @@ object KermitLogger: AppLogger {
 
     override fun error(message: String, throwable: Throwable?) {
         Logger.e(message, throwable)
+        throwable?.let { CrashReporter.capture(it) }
     }
 }
