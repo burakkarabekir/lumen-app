@@ -1,4 +1,5 @@
 import { createClient, SupabaseClient } from "jsr:@supabase/supabase-js@2"
+import { withSentry } from "../_shared/sentry.ts"
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")
 const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")
@@ -38,7 +39,7 @@ async function removeFolder(supabase: SupabaseClient, bucket: string, prefix: st
   if (files.length) await supabase.storage.from(bucket).remove(files)
 }
 
-Deno.serve(async (req: Request) => {
+Deno.serve(withSentry("delete-account", async (req: Request) => {
   if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405)
   if (!SUPABASE_URL || !SERVICE_ROLE_KEY) return json({ error: "server_misconfigured" }, 500)
 
@@ -59,4 +60,4 @@ Deno.serve(async (req: Request) => {
   if (error) return json({ error: "delete_failed", detail: error.message }, 500)
 
   return json({ success: true }, 200)
-})
+}))

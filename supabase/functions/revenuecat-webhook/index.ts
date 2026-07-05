@@ -14,6 +14,7 @@
 // SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY are injected automatically at runtime.
 
 import { createClient } from "jsr:@supabase/supabase-js@2"
+import { withSentry } from "../_shared/sentry.ts"
 
 const SECRET = Deno.env.get("REVENUECAT_WEBHOOK_SECRET")
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")
@@ -107,7 +108,7 @@ function isActive(status: string, periodEnd: string | null): boolean {
   return true
 }
 
-Deno.serve(async (req: Request) => {
+Deno.serve(withSentry("revenuecat-webhook", async (req: Request) => {
   if (req.method !== "POST") return json({ error: "method not allowed" }, 405)
   if (!SECRET) return json({ error: "server misconfigured: missing REVENUECAT_WEBHOOK_SECRET" }, 500)
   if (req.headers.get("Authorization") !== SECRET) return json({ error: "unauthorized" }, 401)
@@ -154,4 +155,4 @@ Deno.serve(async (req: Request) => {
   if (profErr) console.error("profiles mirror failed:", profErr.message)
 
   return json({ ok: true, user_id: appUserId, status: row.status, premium }, 200)
-})
+}))
