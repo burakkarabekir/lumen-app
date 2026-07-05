@@ -24,7 +24,7 @@ SHOTS = [
     ("moment.png", "Reflect with AI insight"),
     ("insights.png", "See your patterns"),
     ("lock.png", "Private by design"),
-    ("premium.png", "Unlock Lumen Plus"),
+    ("premium.png", "Unlimited AI reflections"),
 ]
 
 PRESETS = {"ios": (1290, 2796), "android": (1080, 1920)}
