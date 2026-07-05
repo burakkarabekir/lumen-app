@@ -5,6 +5,8 @@
 androidApp/release/
 *.aab
 *.apk
+screenshots/raw/
+screenshots/framed/
 xcuserdata
 !src/**/build/
 local.properties
