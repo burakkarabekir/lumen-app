@@ -19,6 +19,7 @@ fun App() {
 
     CompositionLocalProvider(LocalThemeController provides themeViewModel) {
         AppTheme(themeState = themeState) {
+            SystemBarsAppearance(darkTheme = themeState.useDarkTheme)
             NavigationRoot()
         }
     }
