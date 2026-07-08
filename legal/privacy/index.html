@@ -55,12 +55,12 @@
 
 <h2>2. What data we collect</h2>
 <ul>
-  <li><strong>Account data</strong> — your email address, display name, and (if you sign in with Google) your Google account identifier and profile photo URL.</li>
+  <li><strong>Account data</strong> — your email address, display name, and (if you sign in with Google or Apple) the account identifier from that provider and, for Google, your profile photo URL. If you use Sign in with Apple with &ldquo;Hide My Email,&rdquo; Apple gives us a private relay address instead of your real email.</li>
   <li><strong>Journal content</strong> — the entries you create: text, titles, moods, tags, and any photos, voice recordings, or videos you attach, plus location data <em>only if you choose to add it</em> to an entry.</li>
   <li><strong>AI reflection data</strong> — the entry content you submit for AI reflection (see Section 4).</li>
   <li><strong>Subscription data</strong> — your Lumen Plus entitlement status, product identifiers, and purchase/renewal state. Payment card details are handled by Apple or Google, not by us.</li>
   <li><strong>Consent records</strong> — a log of the version of these documents you accepted and when, kept as proof of consent.</li>
-  <li><strong>Technical data</strong> — app version, device type and operating system, and any crash reports the app stores share with us. We do not use third-party analytics or advertising trackers.</li>
+  <li><strong>Technical data</strong> — app version, device type and operating system, and crash and error diagnostics collected via Sentry (see Section 6) and the app stores. We do not use advertising trackers and do not profile you for marketing.</li>
 </ul>
 
 <h2>3. How we use your data</h2>
@@ -96,7 +96,9 @@
   <li><strong>Supabase</strong> — database, file storage, and authentication hosting.</li>
   <li><strong>Google (Gemini)</strong> — AI reflection generation.</li>
   <li><strong>Google Sign-In</strong> — optional authentication.</li>
+  <li><strong>Sign in with Apple</strong> — optional authentication.</li>
   <li><strong>RevenueCat</strong> — subscription management and entitlement tracking.</li>
+  <li><strong>Sentry</strong> — crash and error monitoring, with data processed in the European Union. We strip personal identifiers before sending and never transmit your journal content.</li>
   <li><strong>Apple App Store / Google Play</strong> — payment processing and billing.</li>
 </ul>
 <p>We do not sell your personal data.</p>
