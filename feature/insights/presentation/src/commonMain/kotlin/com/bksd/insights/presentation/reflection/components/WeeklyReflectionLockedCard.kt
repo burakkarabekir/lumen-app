@@ -68,6 +68,7 @@ fun WeeklyReflectionLockedCard(
         AppButton(
             text = "Unlock Plus",
             onClick = onUnlock,
+            modifier = Modifier.fillMaxWidth(),
             style = AppButtonStyle.PRIMARY,
             cornerRadius = MaterialTheme.dimens.radius.lg,
         )

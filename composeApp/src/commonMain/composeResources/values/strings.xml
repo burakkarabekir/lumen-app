@@ -6,6 +6,21 @@
     <string name="welcome_greeting_returning">Welcome back,</string>
     <string name="welcome_greeting_new">Welcome to Lumen,</string>
 
+    <!-- OAuth consent gate -->
+    <string name="consent_gate_title">Agree to continue</string>
+    <string name="consent_gate_body_prefix">To keep using Lumen, please review and agree to our </string>
+    <string name="consent_terms">Terms of Service</string>
+    <string name="consent_and"> and </string>
+    <string name="consent_privacy">Privacy Policy</string>
+    <string name="consent_gate_button">I Agree &amp; Continue</string>
+
+    <!-- App lock gate -->
+    <string name="lock_gate_title">Lumen is locked</string>
+    <string name="lock_gate_subtitle">Unlock to continue to your journal.</string>
+    <string name="lock_gate_unlock">Unlock</string>
+    <string name="lock_gate_prompt_title">Unlock Lumen</string>
+    <string name="lock_gate_prompt_subtitle">Confirm it&apos;s you to open your journal.</string>
+
     <!-- Recording Status Messages -->
     <string name="microphone_permission_denied">Ready to practice?</string>
     <string name="permission_open_settings">Open Settings</string>

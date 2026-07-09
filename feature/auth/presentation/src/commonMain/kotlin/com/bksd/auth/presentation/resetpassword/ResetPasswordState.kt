@@ -1,6 +1,7 @@
 package com.bksd.auth.presentation.resetpassword
 
 import androidx.compose.runtime.Immutable
+import com.bksd.auth.presentation.isValidEmail
 import com.bksd.core.presentation.util.UiText
 
 @Immutable
@@ -10,5 +11,6 @@ data class ResetPasswordState(
     val isSuccess: Boolean = false,
     val error: UiText? = null,
 ) {
-    val isSubmitEnabled: Boolean get() = email.isNotBlank() && !isLoading
+    val emailError: Boolean get() = email.isNotBlank() && !email.isValidEmail()
+    val isSubmitEnabled: Boolean get() = email.isValidEmail() && !isLoading
 }

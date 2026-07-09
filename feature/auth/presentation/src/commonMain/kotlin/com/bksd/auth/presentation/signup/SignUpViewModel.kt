@@ -27,6 +27,9 @@ class SignUpViewModel(
             is SignUpAction.OnPasswordChange ->
                 _state.update { it.copy(password = action.password, error = null) }
 
+            is SignUpAction.OnTermsToggle ->
+                _state.update { it.copy(agreedToTerms = action.agreed) }
+
             SignUpAction.OnSignUpClick -> signUp()
             SignUpAction.OnSignInClick -> sendEvent(SignUpEvent.NavigateToSignIn)
             SignUpAction.OnPrivacyClick -> sendEvent(SignUpEvent.OpenPrivacyPolicy)

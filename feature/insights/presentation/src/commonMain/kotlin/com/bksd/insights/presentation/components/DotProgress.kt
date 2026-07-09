@@ -29,7 +29,7 @@ import kotlin.math.min
 internal fun DotProgress(count: Int, colors: StreakColors, ringColor: Color) {
     val dots = min(count, 12)
     Box(
-        modifier = Modifier.fillMaxWidth().height(MaterialTheme.dimens.icon.xs),
+        modifier = Modifier.fillMaxWidth().height(MaterialTheme.dimens.spacing.md),
         contentAlignment = Alignment.Center
     ) {
         Box(
@@ -47,7 +47,7 @@ internal fun DotProgress(count: Int, colors: StreakColors, ringColor: Color) {
             repeat(dots) {
                 Box(
                     modifier = Modifier
-                        .size(MaterialTheme.dimens.icon.xs)
+                        .size(9.dp)
                         .clip(CircleShape)
                         .background(ringColor)
                         .padding(MaterialTheme.dimens.spacing.xxs)

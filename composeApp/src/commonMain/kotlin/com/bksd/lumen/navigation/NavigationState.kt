@@ -106,7 +106,14 @@ val serializersConfig = SavedStateConfiguration {
             // Sub-screens
             subclass(Route.MomentDetail::class, Route.MomentDetail.serializer())
             subclass(Route.CreateMoment::class, Route.CreateMoment.serializer())
+            subclass(Route.WeeklyReflection::class, Route.WeeklyReflection.serializer())
             subclass(Route.Paywall::class, Route.Paywall.serializer())
+            subclass(Route.ManagePremium::class, Route.ManagePremium.serializer())
+            subclass(Route.CloudSync::class, Route.CloudSync.serializer())
+            subclass(Route.LockPrivacy::class, Route.LockPrivacy.serializer())
+            subclass(Route.ExportJournal::class, Route.ExportJournal.serializer())
+            subclass(Route.Legal::class, Route.Legal.serializer())
+            subclass(Route.LegalDocument::class, Route.LegalDocument.serializer())
         }
     }
 }

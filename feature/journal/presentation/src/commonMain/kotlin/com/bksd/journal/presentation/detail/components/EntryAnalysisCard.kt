@@ -122,7 +122,7 @@ fun EntryAnalysisCard(
                     ) {
                         Box(
                             modifier = Modifier
-                                .size(MaterialTheme.dimens.icon.xs)
+                                .size(7.dp)
                                 .clip(CircleShape)
                                 .background(ReflectionChipDots[index % ReflectionChipDots.size])
                         )

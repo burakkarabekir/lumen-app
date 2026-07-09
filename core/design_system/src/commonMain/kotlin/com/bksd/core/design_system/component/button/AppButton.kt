@@ -25,8 +25,6 @@ import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.destructiveSecondaryOutline
 import com.bksd.core.design_system.theme.disabledFill
 import com.bksd.core.design_system.theme.disabledOutline
-import com.bksd.core.design_system.theme.textDisabled
-import com.bksd.core.design_system.theme.textSecondary
 
 
 @Composable
@@ -46,7 +44,7 @@ fun AppButton(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
                 disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-                disabledContentColor = MaterialTheme.colorScheme.textDisabled
+                disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
             )
         }
 
@@ -55,16 +53,16 @@ fun AppButton(
                 containerColor = MaterialTheme.colorScheme.error,
                 contentColor = MaterialTheme.colorScheme.onError,
                 disabledContainerColor = MaterialTheme.colorScheme.disabledFill,
-                disabledContentColor = MaterialTheme.colorScheme.textDisabled
+                disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
             )
         }
 
         AppButtonStyle.SECONDARY -> {
             ButtonDefaults.buttonColors(
                 containerColor = Color.Transparent,
-                contentColor = MaterialTheme.colorScheme.textSecondary,
+                contentColor = MaterialTheme.colorScheme.onSurface,
                 disabledContainerColor = Color.Transparent,
-                disabledContentColor = MaterialTheme.colorScheme.textDisabled
+                disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
             )
         }
 
@@ -73,7 +71,7 @@ fun AppButton(
                 containerColor = Color.Transparent,
                 contentColor = MaterialTheme.colorScheme.error,
                 disabledContainerColor = Color.Transparent,
-                disabledContentColor = MaterialTheme.colorScheme.textDisabled
+                disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
             )
         }
 
@@ -82,7 +80,7 @@ fun AppButton(
                 containerColor = Color.Transparent,
                 contentColor = MaterialTheme.colorScheme.error,
                 disabledContainerColor = Color.Transparent,
-                disabledContentColor = MaterialTheme.colorScheme.textDisabled
+                disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
             )
         }
     }
@@ -97,7 +95,10 @@ fun AppButton(
         AppButtonStyle.DESTRUCTIVE_PRIMARY,
             -> defaultBorderStroke.takeIf { !enabled }
 
-        AppButtonStyle.SECONDARY -> defaultBorderStroke
+        AppButtonStyle.SECONDARY -> BorderStroke(
+            width = 1.dp,
+            color = MaterialTheme.colorScheme.outline
+        )
         AppButtonStyle.DESTRUCTIVE_SECONDARY -> {
             val borderColor = if (enabled) {
                 MaterialTheme.colorScheme.destructiveSecondaryOutline

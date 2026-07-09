@@ -7,14 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8950631E2FF9398000786EEB /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 8950631D2FF9398000786EEB /* RevenueCat */; };
 		896271B12F4FC16800D6545E /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 896271B02F4FC16800D6545E /* FirebaseAnalytics */; };
 		896271B32F4FC16800D6545E /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 896271B22F4FC16800D6545E /* FirebaseAuth */; };
 		896271B52F4FC16800D6545E /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 896271B42F4FC16800D6545E /* FirebaseFirestore */; };
 		896271B72F4FC16800D6545E /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 896271B62F4FC16800D6545E /* FirebaseStorage */; };
 		897B9E602FEDC76C00E38C0C /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 897B9E5F2FEDC76C00E38C0C /* GoogleSignIn */; };
 		897B9E622FEDC76C00E38C0C /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 897B9E612FEDC76C00E38C0C /* GoogleSignInSwift */; };
-		8950631E2FF9398000786EEB /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 8950631D2FF9398000786EEB /* RevenueCat */; };
 		89D6A4D52F5486590051E935 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 89D6A4D42F5486590051E935 /* FirebaseCore */; };
+		B204DF7688E34F148AF52C76 /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = 4A7A94256BA34291B2D51AA1 /* Sentry */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +61,7 @@
 				896271B52F4FC16800D6545E /* FirebaseFirestore in Frameworks */,
 				897B9E602FEDC76C00E38C0C /* GoogleSignIn in Frameworks */,
 				8950631E2FF9398000786EEB /* RevenueCat in Frameworks */,
+				B204DF7688E34F148AF52C76 /* Sentry in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,6 +104,7 @@
 				C517893AE2664FFA08E1E252 /* Sources */,
 				6265013470E6ABE0ADE602A1 /* Frameworks */,
 				17F90D3D01363AB8DF4FC562 /* Resources */,
+				1217C9CB864E4BC3A652F23B /* Upload Debug Symbols to Sentry */,
 			);
 			buildRules = (
 			);
@@ -120,6 +123,7 @@
 				897B9E5F2FEDC76C00E38C0C /* GoogleSignIn */,
 				897B9E612FEDC76C00E38C0C /* GoogleSignInSwift */,
 				8950631D2FF9398000786EEB /* RevenueCat */,
+				4A7A94256BA34291B2D51AA1 /* Sentry */,
 			);
 			productName = iosApp;
 			productReference = 431994F69CF2507EA5FCB5BA /* Lumen.app */;
@@ -153,6 +157,7 @@
 				896271AF2F4FC16800D6545E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				897B9E5E2FEDC76C00E38C0C /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				8950631C2FF9398000786EEB /* XCRemoteSwiftPackageReference "purchases-ios-spm" */,
+				253D6CE7FA174A549BF20150 /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3BFB7831A4037E11EB454DFA /* Products */;
@@ -175,6 +180,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1217C9CB864E4BC3A652F23B /* Upload Debug Symbols to Sentry */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+			);
+			name = "Upload Debug Symbols to Sentry";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script is responsible for uploading debug symbols and source context for Sentry.\nif which sentry-cli >/dev/null; then\n  export SENTRY_ORG=ba9fe1d37581\n  export SENTRY_PROJECT=lumen-app-ios\n  ERROR=$(sentry-cli debug-files upload --include-sources \"$DWARF_DSYM_FOLDER_PATH\" 2>&1 >/dev/null)\n  if [ ! $? -eq 0 ]; then\n    echo \"warning: sentry-cli - $ERROR\"\n  fi\nelse\n  echo \"warning: sentry-cli not installed, download from https://github.com/getsentry/sentry-cli/releases\"\nfi\n";
+		};
 		1B27871514909F0E53EEFD3F /* Compile Kotlin Framework */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -216,9 +236,11 @@
 				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
 				DEVELOPMENT_TEAM = "${TEAM_ID}";
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iosApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -245,9 +267,11 @@
 				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
 				DEVELOPMENT_TEAM = "${TEAM_ID}";
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iosApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -412,6 +436,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		253D6CE7FA174A549BF20150 /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/getsentry/sentry-cocoa/";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
 		8950631C2FF9398000786EEB /* XCRemoteSwiftPackageReference "purchases-ios-spm" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/RevenueCat/purchases-ios-spm.git";
@@ -439,6 +471,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4A7A94256BA34291B2D51AA1 /* Sentry */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 253D6CE7FA174A549BF20150 /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			productName = Sentry;
+		};
+		8950631D2FF9398000786EEB /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8950631C2FF9398000786EEB /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
+			productName = RevenueCat;
+		};
 		896271B02F4FC16800D6545E /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 896271AF2F4FC16800D6545E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
@@ -473,11 +515,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 896271AF2F4FC16800D6545E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCore;
-		};
-		8950631D2FF9398000786EEB /* RevenueCat */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 8950631C2FF9398000786EEB /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
-			productName = RevenueCat;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

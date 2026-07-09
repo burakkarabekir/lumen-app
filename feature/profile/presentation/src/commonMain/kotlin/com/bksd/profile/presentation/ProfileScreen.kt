@@ -18,10 +18,14 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Cloud
+import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.Gavel
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.WorkspacePremium
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -29,6 +33,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -50,6 +55,7 @@ import com.bksd.core.design_system.component.layout.AppTopBar
 import com.bksd.core.design_system.theme.PreviewAppTheme
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
+import com.bksd.core.design_system.theme.profileAccentAmber
 import com.bksd.core.design_system.theme.profileAccentGreen
 import com.bksd.core.design_system.theme.profileAccentIndigo
 import com.bksd.core.design_system.theme.profileAccentViolet
@@ -74,6 +80,11 @@ fun ProfileRoot(
     onBack: () -> Unit,
     onNavigateToSignIn: () -> Unit,
     onNavigateToPaywall: () -> Unit,
+    onNavigateToManagePremium: () -> Unit,
+    onNavigateToCloudSync: () -> Unit,
+    onNavigateToLockPrivacy: () -> Unit,
+    onNavigateToExportJournal: () -> Unit,
+    onNavigateToLegal: () -> Unit,
     onNavigateToEditProfile: () -> Unit,
     onNavigateToAbout: () -> Unit,
     onNavigateToHelp: () -> Unit,
@@ -95,7 +106,13 @@ fun ProfileRoot(
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
             ProfileEvent.SignOutSuccess -> onNavigateToSignIn()
+            ProfileEvent.DeleteAccountSuccess -> onNavigateToSignIn()
             ProfileEvent.NavigateToPaywall -> onNavigateToPaywall()
+            ProfileEvent.NavigateToManagePremium -> onNavigateToManagePremium()
+            ProfileEvent.NavigateToCloudSync -> onNavigateToCloudSync()
+            ProfileEvent.NavigateToLockPrivacy -> onNavigateToLockPrivacy()
+            ProfileEvent.NavigateToExportJournal -> onNavigateToExportJournal()
+            ProfileEvent.NavigateToLegal -> onNavigateToLegal()
             ProfileEvent.NavigateToEditProfile -> onNavigateToEditProfile()
             ProfileEvent.NavigateToAbout -> onNavigateToAbout()
             ProfileEvent.NavigateToHelp -> onNavigateToHelp()
@@ -112,6 +129,12 @@ fun ProfileRoot(
             }
 
             is ProfileEvent.SignOutError -> {
+                scope.launch {
+                    snackbarHostState.showSnackbar(event.error.asStringAsync())
+                }
+            }
+
+            is ProfileEvent.DeleteAccountError -> {
                 scope.launch {
                     snackbarHostState.showSnackbar(event.error.asStringAsync())
                 }
@@ -176,6 +199,22 @@ internal fun ProfileScreen(
                 modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg)
             )
 
+            SectionHeader(stringResource(Res.string.section_subscription))
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.sm))
+            SettingsGroup {
+                ProfileSettingsRow(
+                    icon = Icons.Default.WorkspacePremium,
+                    label = stringResource(Res.string.manage_premium),
+                    accent = MaterialTheme.colorScheme.extended.profileAccentAmber,
+                    trailingValue = stringResource(
+                        if (state.isPremium) Res.string.plan_plus else Res.string.plan_free
+                    ),
+                    onClick = { onAction(ProfileAction.OnManagePremiumClick) }
+                )
+            }
+
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))
+
             SectionHeader(stringResource(Res.string.section_preferences))
             Spacer(Modifier.height(MaterialTheme.dimens.spacing.sm))
             SettingsGroup {
@@ -207,7 +246,7 @@ internal fun ProfileScreen(
                     accent = MaterialTheme.colorScheme.extended.profileAccentGreen,
                     trailingValue = "On",
                     trailingColor = MaterialTheme.colorScheme.extended.profileAccentGreen,
-                    onClick = {}
+                    onClick = { onAction(ProfileAction.OnCloudSyncClick) }
                 )
                 HorizontalDivider(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
@@ -228,6 +267,16 @@ internal fun ProfileScreen(
                     label = stringResource(Res.string.export_journal),
                     accent = MaterialTheme.colorScheme.extended.profileAccentGreen,
                     onClick = { onAction(ProfileAction.OnDataExportClick) }
+                )
+                HorizontalDivider(
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
+                    modifier = Modifier.padding(start = MaterialTheme.dimens.spacing.massive)
+                )
+                ProfileSettingsRow(
+                    icon = Icons.Default.DeleteForever,
+                    label = stringResource(Res.string.delete_account),
+                    accent = MaterialTheme.colorScheme.error,
+                    onClick = { onAction(ProfileAction.OnDeleteAccountClick) }
                 )
             }
 
@@ -251,6 +300,16 @@ internal fun ProfileScreen(
                     label = stringResource(Res.string.about_lumen),
                     accent = MaterialTheme.colorScheme.extended.profileAccentViolet,
                     onClick = { onAction(ProfileAction.OnAboutClick) }
+                )
+                HorizontalDivider(
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
+                    modifier = Modifier.padding(start = MaterialTheme.dimens.spacing.massive)
+                )
+                ProfileSettingsRow(
+                    icon = Icons.Default.Gavel,
+                    label = stringResource(Res.string.terms_privacy),
+                    accent = MaterialTheme.colorScheme.extended.profileAccentViolet,
+                    onClick = { onAction(ProfileAction.OnLegalClick) }
                 )
             }
 
@@ -296,6 +355,50 @@ internal fun ProfileScreen(
 
                 if (showRemindersSheet) {
                     RemindersSheet(onDismiss = { showRemindersSheet = false })
+                }
+
+                if (state.showDeleteDialog) {
+                    AlertDialog(
+                        onDismissRequest = {
+                            if (!state.isDeletingAccount) onAction(ProfileAction.OnDismissDeleteAccount)
+                        },
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Default.DeleteForever,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.error
+                            )
+                        },
+                        title = { Text(stringResource(Res.string.delete_account_title)) },
+                        text = { Text(stringResource(Res.string.delete_account_message)) },
+                        confirmButton = {
+                            TextButton(
+                                onClick = { onAction(ProfileAction.OnConfirmDeleteAccount) },
+                                enabled = !state.isDeletingAccount
+                            ) {
+                                if (state.isDeletingAccount) {
+                                    CircularProgressIndicator(
+                                        modifier = Modifier.size(MaterialTheme.dimens.icon.sm),
+                                        strokeWidth = 2.dp,
+                                        color = MaterialTheme.colorScheme.error
+                                    )
+                                } else {
+                                    Text(
+                                        text = stringResource(Res.string.delete_account_confirm),
+                                        color = MaterialTheme.colorScheme.error
+                                    )
+                                }
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(
+                                onClick = { onAction(ProfileAction.OnDismissDeleteAccount) },
+                                enabled = !state.isDeletingAccount
+                            ) {
+                                Text(stringResource(Res.string.action_cancel))
+                            }
+                        }
+                    )
                 }
         }
         }

@@ -151,9 +151,9 @@ val LightExtendedColors = ExtendedColors(
     accentIndigo = LumenAccentIndigo,
     accentGrey = LumenAccentGrey,
 
-    insightsPageBg = InsightsPageBgLight,
+    insightsPageBg = LumenBase0,
     insightsLabel = InsightsLabelLight,
-    insightsSurface = InsightsSurfaceLight,
+    insightsSurface = LumenBase100,
     insightsText = InsightsTextLight,
     insightsSub = InsightsSubLight,
     insightsHairline = InsightsHairlineLight,
@@ -230,9 +230,9 @@ val DarkExtendedColors = ExtendedColors(
     accentIndigo = LumenAccentIndigo,
     accentGrey = LumenAccentGrey,
 
-    insightsPageBg = InsightsPageBgDark,
+    insightsPageBg = LumenBase1000,
     insightsLabel = InsightsLabelDark,
-    insightsSurface = InsightsSurfaceDark,
+    insightsSurface = LumenBase900,
     insightsText = InsightsTextDark,
     insightsSub = InsightsSubDark,
     insightsHairline = InsightsHairlineDark,

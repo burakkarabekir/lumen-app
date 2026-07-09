@@ -65,7 +65,7 @@ fun RecurringThemesCard(
                     ) {
                         Box(
                             modifier = Modifier
-                                .size(MaterialTheme.dimens.icon.xs)
+                                .size(9.dp)
                                 .clip(CircleShape)
                                 .background(color)
                         )
@@ -91,14 +91,14 @@ fun RecurringThemesCard(
                     modifier = Modifier
                         .padding(top = MaterialTheme.dimens.spacing.md)
                         .fillMaxWidth()
-                        .height(MaterialTheme.dimens.icon.xs)
+                        .height(6.dp)
                         .clip(RoundedCornerShape(MaterialTheme.dimens.radius.xs))
                         .background(trackColor)
                 ) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth(theme.count.toFloat() / maxCount)
-                            .height(MaterialTheme.dimens.icon.xs)
+                            .height(6.dp)
                             .clip(RoundedCornerShape(MaterialTheme.dimens.radius.xs))
                             .background(color)
                     )

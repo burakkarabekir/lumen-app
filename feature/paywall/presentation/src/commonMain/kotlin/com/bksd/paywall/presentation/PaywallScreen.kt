@@ -35,6 +35,7 @@ import com.bksd.core.design_system.component.button.AppButton
 import com.bksd.core.design_system.component.button.AppButtonStyle
 import com.bksd.core.design_system.theme.PreviewAppTheme
 import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.domain.legal.LegalConfig
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.paywall.presentation.components.FeatureRow
 import com.bksd.paywall.presentation.components.HeroCard
@@ -42,8 +43,8 @@ import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
-private const val TERMS_URL = "https://lumen.app/terms"
-private const val PRIVACY_URL = "https://lumen.app/privacy"
+private const val TERMS_URL = LegalConfig.TERMS_URL
+private const val PRIVACY_URL = LegalConfig.PRIVACY_URL
 
 @Composable
 fun PaywallRoot(

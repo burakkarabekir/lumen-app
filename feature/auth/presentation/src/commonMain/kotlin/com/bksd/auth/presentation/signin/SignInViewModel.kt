@@ -1,5 +1,6 @@
 package com.bksd.auth.presentation.signin
 
+import com.bksd.auth.domain.usecase.AppleSignInUseCase
 import com.bksd.auth.domain.usecase.GoogleSignInUseCase
 import com.bksd.auth.domain.usecase.SignInUseCase
 import com.bksd.core.domain.error.AppError
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.update
 class SignInViewModel(
     private val signInUseCase: SignInUseCase,
     private val googleSignInUseCase: GoogleSignInUseCase,
+    private val appleSignInUseCase: AppleSignInUseCase,
     private val sessionStorage: SessionStorage,
 ) : BaseViewModel<SignInAction, SignInEvent>() {
 
@@ -38,21 +40,28 @@ class SignInViewModel(
             SignInAction.OnForgotPasswordClick -> sendEvent(SignInEvent.NavigateToForgotPassword)
 
             is SignInAction.OnGoogleIdTokenReceived -> signInWithGoogle(action.idToken)
-            is SignInAction.OnGoogleSignInFailed -> onGoogleSignInFailed(action.cancelled)
+            is SignInAction.OnGoogleSignInFailed -> onSocialSignInFailed(action.cancelled)
+            is SignInAction.OnAppleIdTokenReceived -> signInWithApple(action.idToken, action.nonce)
+            is SignInAction.OnAppleSignInFailed -> onSocialSignInFailed(action.cancelled)
         }
     }
 
     private fun signInWithGoogle(idToken: String) {
-        _state.update { it.copy(isSocialLoading = true, error = null) }
+        _state.update { it.copy(loadingSocialProvider = SocialProvider.GOOGLE, error = null) }
         launch { handleSocialSignInResult(googleSignInUseCase(idToken)) }
     }
 
-    private fun onGoogleSignInFailed(cancelled: Boolean) {
+    private fun signInWithApple(idToken: String, nonce: String?) {
+        _state.update { it.copy(loadingSocialProvider = SocialProvider.APPLE, error = null) }
+        launch { handleSocialSignInResult(appleSignInUseCase(idToken, nonce)) }
+    }
+
+    private fun onSocialSignInFailed(cancelled: Boolean) {
         if (cancelled) {
-            _state.update { it.copy(isSocialLoading = false) }
+            _state.update { it.copy(loadingSocialProvider = null) }
         } else {
             val errorText = AppError.Auth(AuthErrorType.SOCIAL_LOGIN_FAILED).toUiText()
-            _state.update { it.copy(isSocialLoading = false, error = errorText) }
+            _state.update { it.copy(loadingSocialProvider = null, error = errorText) }
             sendEvent(SignInEvent.SignInError(errorText))
         }
     }
@@ -82,7 +91,7 @@ class SignInViewModel(
         when (result) {
             is Result.Success -> {
                 sessionStorage.setRememberMe(true)
-                _state.update { it.copy(isSocialLoading = false) }
+                _state.update { it.copy(loadingSocialProvider = null) }
                 sendEvent(SignInEvent.SignInSuccess)
             }
 
@@ -90,10 +99,10 @@ class SignInViewModel(
                 val isCancelled = result.error is AppError.Auth &&
                         (result.error as AppError.Auth).type == AuthErrorType.SOCIAL_LOGIN_CANCELLED
                 if (isCancelled) {
-                    _state.update { it.copy(isSocialLoading = false) }
+                    _state.update { it.copy(loadingSocialProvider = null) }
                 } else {
                     val errorText = result.error.toUiText()
-                    _state.update { it.copy(isSocialLoading = false, error = errorText) }
+                    _state.update { it.copy(loadingSocialProvider = null, error = errorText) }
                     sendEvent(SignInEvent.SignInError(errorText))
                 }
             }

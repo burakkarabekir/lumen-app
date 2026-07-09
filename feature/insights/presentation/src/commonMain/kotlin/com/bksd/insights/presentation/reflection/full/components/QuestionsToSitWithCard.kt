@@ -51,7 +51,7 @@ fun QuestionsToSitWithCard(
                 Box(
                     modifier = Modifier
                         .padding(top = MaterialTheme.dimens.spacing.sm)
-                        .size(MaterialTheme.dimens.icon.xs)
+                        .size(7.dp)
                         .clip(CircleShape)
                         .background(accent)
                 )

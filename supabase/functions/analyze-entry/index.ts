@@ -19,6 +19,7 @@
 // JWT verification is ON by default, so only signed-in Lumen users can call this.
 
 import { createClient } from "jsr:@supabase/supabase-js@2"
+import { captureError, withSentry } from "../_shared/sentry.ts"
 
 const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY")
 const GEMINI_MODEL = Deno.env.get("GEMINI_MODEL") ?? "gemini-2.5-flash"
@@ -210,10 +211,10 @@ async function generateCoverImage(prompt: string): Promise<Uint8Array> {
   return bytes
 }
 
-async function uploadCover(bytes: Uint8Array): Promise<string> {
+async function uploadCover(bytes: Uint8Array, userId: string): Promise<string> {
   if (!SUPABASE_URL || !SERVICE_ROLE_KEY) throw new Error("storage: missing SUPABASE_URL / SERVICE_ROLE_KEY")
   const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, { auth: { persistSession: false } })
-  const path = `${crypto.randomUUID()}.png`
+  const path = `${userId}/${crypto.randomUUID()}.png`
   const { error: upErr } = await supabase.storage
     .from(COVER_BUCKET)
     .upload(path, bytes, { contentType: "image/png", upsert: true })
@@ -225,10 +226,10 @@ async function uploadCover(bytes: Uint8Array): Promise<string> {
   return data.signedUrl
 }
 
-async function generateCover(analysis: EntryAnalysis): Promise<string | null> {
+async function generateCover(analysis: EntryAnalysis, userId: string): Promise<string | null> {
   try {
     const bytes = await generateCoverImage(buildCoverPrompt(analysis))
-    return await uploadCover(bytes)
+    return await uploadCover(bytes, userId)
   } catch (e) {
     console.error("cover generation failed:", e instanceof Error ? e.message : String(e))
     return null
@@ -269,7 +270,7 @@ async function consumeCredit(userId: string, kind: "analyze" | "weekly"): Promis
   return { allowed: Boolean(info.allowed), info }
 }
 
-Deno.serve(async (req: Request) => {
+Deno.serve(withSentry("analyze-entry", async (req: Request) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders })
   if (req.method !== "POST") return json({ error: "method not allowed" }, 405)
   if (!GEMINI_API_KEY) return json({ error: "server misconfigured: missing GEMINI_API_KEY" }, 500)
@@ -295,7 +296,7 @@ Deno.serve(async (req: Request) => {
     const needsSupport = analysis.distress === "ELEVATED" || analysis.distress === "CRISIS"
     const [fb, coverImageUrl] = await Promise.all([
       needsSupport ? Promise.resolve(null) : feedback(analysis, payload.trend),
-      generateCover(analysis),
+      generateCover(analysis, userId),
     ])
     const response: AnalyzeResponse = {
       analysis,
@@ -305,6 +306,7 @@ Deno.serve(async (req: Request) => {
     }
     return json(response, 200)
   } catch (e) {
+    await captureError(e, { function: "analyze-entry" })
     return json({ error: `analysis failed: ${e instanceof Error ? e.message : String(e)}` }, 502)
   }
-})
+}))

@@ -59,6 +59,7 @@ import com.bksd.reflection.domain.model.WeeklyMomentInsights
 import com.bksd.reflection.domain.model.WeeklyReflection
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun WeeklyReflectionDetailRoot(
@@ -215,7 +216,7 @@ private fun SummaryPill(text: String) {
             .background(c.pillBg)
             .padding(horizontal = MaterialTheme.dimens.spacing.md, vertical = MaterialTheme.dimens.spacing.xs)
     ) {
-        Box(modifier = Modifier.size(MaterialTheme.dimens.icon.xs).clip(CircleShape).background(c.pillContent))
+        Box(modifier = Modifier.size(6.dp).clip(CircleShape).background(c.pillContent))
         Text(text = text, fontSize = 10.5.sp, fontWeight = FontWeight.Bold, color = c.pillContent)
     }
 }

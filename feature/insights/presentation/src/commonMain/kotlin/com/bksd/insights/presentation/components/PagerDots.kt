@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.InsightsPalette
 import com.bksd.core.design_system.theme.dimens
@@ -32,8 +33,8 @@ internal fun PagerDots(count: Int, current: Int, palette: InsightsPalette) {
             Box(
                 modifier = Modifier
                     .padding(horizontal = MaterialTheme.dimens.spacing.xs)
-                    .height(MaterialTheme.dimens.icon.xs)
-                    .width(if (active) MaterialTheme.dimens.icon.md else MaterialTheme.dimens.icon.xs)
+                    .height(6.dp)
+                    .width(if (active) 18.dp else 6.dp)
                     .clip(CircleShape)
                     .background(if (active) palette.sub else palette.dotGray)
             )

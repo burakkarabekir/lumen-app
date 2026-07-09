@@ -5,7 +5,9 @@ import androidx.compose.runtime.remember
 import kotlinx.cinterop.BetaInteropApi
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.addressOf
+import kotlinx.cinterop.useContents
 import kotlinx.cinterop.usePinned
+import platform.CoreGraphics.CGRectMake
 import platform.Foundation.NSData
 import platform.Foundation.create
 import platform.UIKit.UIActivityViewController
@@ -13,6 +15,7 @@ import platform.UIKit.UIApplication
 import platform.UIKit.UIImage
 import platform.UIKit.UIImageWriteToSavedPhotosAlbum
 import platform.UIKit.UIPasteboard
+import platform.UIKit.popoverPresentationController
 
 @OptIn(ExperimentalForeignApi::class, BetaInteropApi::class)
 private fun ByteArray.toNSData(): NSData {
@@ -33,8 +36,15 @@ actual fun rememberShareImageActions(): ShareImageActions {
                     activityItems = listOf(image),
                     applicationActivities = null
                 )
-                UIApplication.sharedApplication.keyWindow?.rootViewController
-                    ?.presentViewController(controller, animated = true, completion = null)
+                val root = UIApplication.sharedApplication.keyWindow?.rootViewController
+                root?.view?.let { rootView ->
+                    controller.popoverPresentationController?.sourceView = rootView
+                    controller.popoverPresentationController?.sourceRect =
+                        rootView.bounds.useContents {
+                            CGRectMake(size.width / 2, size.height / 2, 0.0, 0.0)
+                        }
+                }
+                root?.presentViewController(controller, animated = true, completion = null)
             },
             onSave = { png ->
                 val image = UIImage(data = png.toNSData())

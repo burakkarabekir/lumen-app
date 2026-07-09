@@ -4,6 +4,8 @@ import com.bksd.lumen.convention.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import java.io.FileInputStream
+import java.util.Properties
 
 class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -12,6 +14,11 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 apply("com.android.application")
             }
 
+            val keystorePropertiesFile = target.rootProject.file("keystore.properties")
+            val hasKeystore = keystorePropertiesFile.exists()
+            val keystoreProperties = Properties().apply {
+                if (hasKeystore) FileInputStream(keystorePropertiesFile).use { load(it) }
+            }
 
             extensions.configure<ApplicationExtension> {
                 namespace = "com.bksd.lumen"
@@ -23,6 +30,18 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                     versionCode = libs.findVersion("versionCode").get().toString().toInt()
                     versionName = libs.findVersion("versionName").get().toString()
                 }
+
+                if (hasKeystore) {
+                    signingConfigs {
+                        create("release") {
+                            storeFile = target.rootProject.file(keystoreProperties.getProperty("storeFile"))
+                            storePassword = keystoreProperties.getProperty("storePassword")
+                            keyAlias = keystoreProperties.getProperty("keyAlias")
+                            keyPassword = keystoreProperties.getProperty("keyPassword")
+                        }
+                    }
+                }
+
                 packaging {
                     resources {
                         excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -30,7 +49,17 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 }
                 buildTypes {
                     getByName("release") {
-                        isMinifyEnabled = false
+                        isMinifyEnabled = true
+                        isShrinkResources = true
+                        proguardFiles(
+                            getDefaultProguardFile("proguard-android-optimize.txt"),
+                            "proguard-rules.pro",
+                        )
+                        signingConfig = if (hasKeystore) {
+                            signingConfigs.getByName("release")
+                        } else {
+                            signingConfigs.getByName("debug")
+                        }
                     }
                 }
 

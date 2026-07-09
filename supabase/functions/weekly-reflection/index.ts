@@ -7,6 +7,7 @@
 // JWT verification is ON by default — only signed-in users can call this.
 
 import { createClient } from "jsr:@supabase/supabase-js@2"
+import { captureError, withSentry } from "../_shared/sentry.ts"
 
 const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY")
 const GEMINI_MODEL = Deno.env.get("GEMINI_MODEL") ?? "gemini-2.5-flash"
@@ -130,7 +131,7 @@ async function consumeCredit(userId: string, kind: "analyze" | "weekly"): Promis
   return { allowed: Boolean(info.allowed), info }
 }
 
-Deno.serve(async (req: Request) => {
+Deno.serve(withSentry("weekly-reflection", async (req: Request) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders })
   if (req.method !== "POST") return json({ error: "method not allowed" }, 405)
   if (!GEMINI_API_KEY) return json({ error: "server misconfigured: missing GEMINI_API_KEY" }, 500)
@@ -177,6 +178,7 @@ Deno.serve(async (req: Request) => {
     }
     return json(response, 200)
   } catch (e) {
+    await captureError(e, { function: "weekly-reflection" })
     return json({ error: `weekly reflection failed: ${e instanceof Error ? e.message : String(e)}` }, 502)
   }
-})
+}))

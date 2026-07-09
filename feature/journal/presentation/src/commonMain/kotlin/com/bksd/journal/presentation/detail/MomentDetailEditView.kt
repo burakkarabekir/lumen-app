@@ -414,6 +414,7 @@ fun MomentDetailEditView(
             initialSelectedDateMillis = initialDateMillis
         )
         DatePickerDialog(
+            modifier = Modifier.padding(16.dp),
             onDismissRequest = { showDatePicker = false },
             confirmButton = {
                 TextButton(onClick = {
@@ -426,7 +427,10 @@ fun MomentDetailEditView(
                 TextButton(onClick = { showDatePicker = false }) { Text(stringResource(Res.string.cancel)) }
             }
         ) {
-            DatePicker(state = datePickerState)
+            DatePicker(
+                state = datePickerState,
+                modifier = Modifier.padding(horizontal = MaterialTheme.dimens.spacing.sm)
+            )
         }
     }
 

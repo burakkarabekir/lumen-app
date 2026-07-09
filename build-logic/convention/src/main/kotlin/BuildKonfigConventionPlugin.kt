@@ -27,8 +27,10 @@ class BuildKonfigConventionPlugin : Plugin<Project> {
 
                     val supabaseUrl = configProperties.getProperty("SUPABASE_URL") ?: ""
                     val supabaseAnonKey = configProperties.getProperty("SUPABASE_ANON_KEY") ?: ""
+                    val sentryDsnAndroid = configProperties.getProperty("SENTRY_DSN_ANDROID") ?: ""
                     buildConfigField(FieldSpec.Type.STRING, "SUPABASE_URL", supabaseUrl)
                     buildConfigField(FieldSpec.Type.STRING, "SUPABASE_ANON_KEY", supabaseAnonKey)
+                    buildConfigField(FieldSpec.Type.STRING, "SENTRY_DSN_ANDROID", sentryDsnAndroid)
                 }
             }
         }

@@ -2,6 +2,7 @@ package com.bksd.lumen.di
 
 import com.bksd.auth.data.di.authDataModule
 import com.bksd.auth.domain.di.authDomainModule
+import com.bksd.core.data.logging.configureAppLogging
 import com.bksd.auth.presentation.di.authPresentationModule
 import com.bksd.core.billing.RevenueCatInitializer
 import com.bksd.core.billing.di.billingModule
@@ -24,7 +25,8 @@ import com.bksd.reflection.domain.di.reflectionDomainModule
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
 
-fun initKoin(config: KoinAppDeclaration? = null) {
+fun initKoin(isDebug: Boolean = false, config: KoinAppDeclaration? = null) {
+    configureAppLogging(isDebug)
     startKoin {
         config?.invoke(this)
         modules(

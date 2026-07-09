@@ -5,7 +5,7 @@
     <string name="content_desc_location">Location</string>
     <string name="add_location">Add Location</string>
     <string name="content_desc_remove_location">Remove Location</string>
-    <string name="body_placeholder">Reflect on your day... What\'s on your mind?</string>
+    <string name="body_placeholder">Reflect on your day... What&apos;s on your mind?</string>
     <string name="label_mic">Mic</string>
     <string name="label_camera">Camera</string>
     <string name="label_photo">Photo</string>

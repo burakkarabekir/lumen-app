@@ -1,6 +1,7 @@
 package com.bksd.profile.presentation
 
 import androidx.lifecycle.viewModelScope
+import com.bksd.auth.domain.usecase.DeleteAccountUseCase
 import com.bksd.auth.domain.usecase.SignOutUseCase
 import com.bksd.core.domain.error.Result
 import com.bksd.core.presentation.util.BaseViewModel
@@ -20,6 +21,7 @@ class ProfileViewModel(
     private val observeUserProfileUseCase: ObserveUserProfileUseCase,
     private val setProfileAvatarUseCase: SetProfileAvatarUseCase,
     private val signOutUseCase: SignOutUseCase,
+    private val deleteAccountUseCase: DeleteAccountUseCase,
     private val observeAllMoments: ObserveAllMomentsUseCase,
     private val insightsCalculator: InsightsCalculator,
 ) : BaseViewModel<ProfileAction, ProfileEvent>() {
@@ -84,10 +86,18 @@ class ProfileViewModel(
         when (action) {
             ProfileAction.OnSignOutClick -> handleSignOut()
             ProfileAction.OnUpgradeClick -> sendEvent(ProfileEvent.NavigateToPaywall)
+            ProfileAction.OnManagePremiumClick -> sendEvent(ProfileEvent.NavigateToManagePremium)
+            ProfileAction.OnCloudSyncClick -> sendEvent(ProfileEvent.NavigateToCloudSync)
+            ProfileAction.OnPrivacyClick -> sendEvent(ProfileEvent.NavigateToLockPrivacy)
+            ProfileAction.OnDataExportClick -> sendEvent(ProfileEvent.NavigateToExportJournal)
+            ProfileAction.OnLegalClick -> sendEvent(ProfileEvent.NavigateToLegal)
             ProfileAction.OnUploadPictureClick -> sendEvent(ProfileEvent.OpenPhotoPicker)
             ProfileAction.OnEditProfileClick -> sendEvent(ProfileEvent.NavigateToEditProfile)
             ProfileAction.OnAboutClick -> sendEvent(ProfileEvent.NavigateToAbout)
             ProfileAction.OnHelpClick -> sendEvent(ProfileEvent.NavigateToHelp)
+            ProfileAction.OnDeleteAccountClick -> _state.update { it.copy(showDeleteDialog = true) }
+            ProfileAction.OnDismissDeleteAccount -> _state.update { it.copy(showDeleteDialog = false) }
+            ProfileAction.OnConfirmDeleteAccount -> handleDeleteAccount()
 
             is ProfileAction.OnPictureSelected -> {
                 _state.update { it.copy(isAvatarLoading = true) }
@@ -104,8 +114,6 @@ class ProfileViewModel(
                 }
             }
 
-            ProfileAction.OnPrivacyClick,
-            ProfileAction.OnDataExportClick,
             ProfileAction.OnThemeClick,
             ProfileAction.OnNotificationsClick,
             ProfileAction.OnSettingsClick -> Unit
@@ -120,6 +128,18 @@ class ProfileViewModel(
             when (result) {
                 is Result.Success -> sendEvent(ProfileEvent.SignOutSuccess)
                 is Result.Error -> sendEvent(ProfileEvent.SignOutError(result.error.toUiText()))
+            }
+        }
+    }
+
+    private fun handleDeleteAccount() {
+        _state.update { it.copy(isDeletingAccount = true) }
+        launch {
+            val result = deleteAccountUseCase()
+            _state.update { it.copy(isDeletingAccount = false, showDeleteDialog = false) }
+            when (result) {
+                is Result.Success -> sendEvent(ProfileEvent.DeleteAccountSuccess)
+                is Result.Error -> sendEvent(ProfileEvent.DeleteAccountError(result.error.toUiText()))
             }
         }
     }

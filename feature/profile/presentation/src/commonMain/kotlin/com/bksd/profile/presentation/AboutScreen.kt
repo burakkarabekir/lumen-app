@@ -31,6 +31,7 @@ import com.bksd.core.design_system.theme.profileAccentAmber
 import com.bksd.core.design_system.theme.profileAccentIndigo
 import com.bksd.core.design_system.theme.profileAccentViolet
 import com.bksd.core.domain.appinfo.AppInfoProvider
+import com.bksd.core.domain.legal.LegalConfig
 import com.bksd.profile.presentation.components.AboutFooter
 import com.bksd.profile.presentation.components.AboutHeader
 import com.bksd.profile.presentation.components.ProfileSettingsRow
@@ -39,10 +40,8 @@ import com.bksd.profile.presentation.components.SettingsGroup
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 
-private const val PrivacyPolicyUrl = "https://lumenjournal.app/privacy"
-private const val TermsUrl = "https://lumenjournal.app/terms"
-private const val WebsiteUrl = "https://lumenjournal.app"
-private const val LicensesUrl = "https://lumenjournal.app/licenses"
+private const val WebsiteUrl = "https://lumenjournalapp.com"
+private const val LicensesUrl = "https://lumenjournalapp.com/licenses"
 
 @Composable
 fun AboutRoot(onBack: () -> Unit) {
@@ -91,7 +90,7 @@ internal fun AboutScreen(
                     icon = Icons.Default.Lock,
                     label = stringResource(Res.string.about_privacy_policy),
                     accent = MaterialTheme.colorScheme.extended.profileAccentViolet,
-                    onClick = { runCatching { uriHandler.openUri(PrivacyPolicyUrl) } }
+                    onClick = { runCatching { uriHandler.openUri(LegalConfig.PRIVACY_URL) } }
                 )
                 HorizontalDivider(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
@@ -101,7 +100,7 @@ internal fun AboutScreen(
                     icon = Icons.Default.Description,
                     label = stringResource(Res.string.about_terms),
                     accent = MaterialTheme.colorScheme.extended.profileAccentViolet,
-                    onClick = { runCatching { uriHandler.openUri(TermsUrl) } }
+                    onClick = { runCatching { uriHandler.openUri(LegalConfig.TERMS_URL) } }
                 )
                 HorizontalDivider(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),

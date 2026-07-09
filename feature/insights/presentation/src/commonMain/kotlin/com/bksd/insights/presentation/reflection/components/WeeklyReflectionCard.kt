@@ -119,7 +119,7 @@ fun WeeklyReflectionCard(
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(MaterialTheme.dimens.icon.xs)
+                            .size(6.dp)
                             .clip(CircleShape)
                             .background(colors.pillContent)
                     )

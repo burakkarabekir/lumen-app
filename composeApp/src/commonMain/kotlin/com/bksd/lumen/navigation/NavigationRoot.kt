@@ -8,7 +8,6 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,7 +17,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.bksd.auth.presentation.resetpassword.ResetPasswordRoot
@@ -30,6 +28,8 @@ import com.bksd.insights.presentation.InsightsRoot
 import com.bksd.insights.presentation.reflection.full.WeeklyReflectionDetailRoot
 import com.bksd.journal.presentation.detail.MomentDetailRoot
 import com.bksd.journal.presentation.journal.JournalRoot
+import com.bksd.lumen.consent.ConsentGate
+import com.bksd.lumen.lock.LockGate
 import com.bksd.lumen.main.MainEvent
 import com.bksd.lumen.main.MainViewModel
 import com.bksd.lumen.navigation.route.Route
@@ -41,8 +41,14 @@ import com.bksd.moment.presentation.create.CreateMomentRoot
 import com.bksd.onboarding.presentation.OnboardingRoot
 import com.bksd.paywall.presentation.PaywallRoot
 import com.bksd.profile.presentation.AboutRoot
+import com.bksd.profile.presentation.CloudSyncRoot
 import com.bksd.profile.presentation.EditProfileRoot
+import com.bksd.profile.presentation.ExportJournalRoot
 import com.bksd.profile.presentation.HelpRoot
+import com.bksd.profile.presentation.LegalDocumentRoot
+import com.bksd.profile.presentation.LegalRoot
+import com.bksd.profile.presentation.LockPrivacyRoot
+import com.bksd.profile.presentation.ManagePremiumRoot
 import com.bksd.profile.presentation.ProfileRoot
 import kotlinx.collections.immutable.toImmutableSet
 import org.koin.compose.koinInject
@@ -107,8 +113,7 @@ fun NavigationRoot(
     ) {
         NavDisplay(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 24.dp),
+                .fillMaxSize(),
             onBack = navigator::goBack,
             transitionSpec = {
                 slideInHorizontally { it } + fadeIn() togetherWith
@@ -174,6 +179,11 @@ fun NavigationRoot(
                             onBack = { navigator.goBack() },
                             onNavigateToSignIn = { navigator.navigateToSignIn() },
                             onNavigateToPaywall = { navigator.navigateToPaywall() },
+                            onNavigateToManagePremium = { navigator.navigateToManagePremium() },
+                            onNavigateToCloudSync = { navigator.navigateToCloudSync() },
+                            onNavigateToLockPrivacy = { navigator.navigateToLockPrivacy() },
+                            onNavigateToExportJournal = { navigator.navigateToExportJournal() },
+                            onNavigateToLegal = { navigator.navigateToLegal() },
                             onNavigateToEditProfile = { navigator.navigateToEditProfile() },
                             onNavigateToAbout = { navigator.navigateToAbout() },
                             onNavigateToHelp = { navigator.navigateToHelp() }
@@ -223,11 +233,54 @@ fun NavigationRoot(
                             onDismiss = { navigator.goBack() }
                         )
                     }
+                    entry<Route.ManagePremium> {
+                        ManagePremiumRoot(
+                            onBack = { navigator.goBack() },
+                            onNavigateToPaywall = { navigator.navigateToPaywall() }
+                        )
+                    }
+                    entry<Route.CloudSync> {
+                        CloudSyncRoot(
+                            onBack = { navigator.goBack() }
+                        )
+                    }
+                    entry<Route.LockPrivacy> {
+                        LockPrivacyRoot(
+                            onBack = { navigator.goBack() },
+                            onOpenDocument = { url, title ->
+                                navigator.navigateToLegalDocument(url, title)
+                            }
+                        )
+                    }
+                    entry<Route.ExportJournal> {
+                        ExportJournalRoot(
+                            onBack = { navigator.goBack() }
+                        )
+                    }
+                    entry<Route.Legal> {
+                        LegalRoot(
+                            onBack = { navigator.goBack() },
+                            onOpenDocument = { url, title ->
+                                navigator.navigateToLegalDocument(url, title)
+                            }
+                        )
+                    }
+                    entry<Route.LegalDocument> { backStackEntry ->
+                        LegalDocumentRoot(
+                            url = backStackEntry.url,
+                            title = backStackEntry.title,
+                            onBack = { navigator.goBack() }
+                        )
+                    }
                 }
             )
         )
         }
 
         WelcomeGate()
+
+        ConsentGate()
+
+        LockGate()
     }
 }

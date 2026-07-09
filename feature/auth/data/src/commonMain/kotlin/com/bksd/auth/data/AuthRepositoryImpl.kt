@@ -26,12 +26,20 @@ class AuthRepositoryImpl(
         return authDataSource.signInWithGoogle(idToken)
     }
 
+    override suspend fun signInWithApple(idToken: String, nonce: String?): Result<Unit, AppError> {
+        return authDataSource.signInWithApple(idToken, nonce)
+    }
+
     override suspend fun resetPassword(email: String): Result<Unit, AppError> {
         return authDataSource.resetPassword(email)
     }
 
     override suspend fun signOut(): Result<Unit, AppError> {
         return authDataSource.signOut()
+    }
+
+    override suspend fun deleteAccount(): Result<Unit, AppError> {
+        return authDataSource.deleteAccount()
     }
 
     override fun getSignedInUserId(): String? {

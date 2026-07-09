@@ -19,7 +19,7 @@
     <string name="weekly_private_to_you">Private to you</string>
     <string name="weekly_reflecting">Reflecting on your week…</string>
     <string name="weekly_back">Back</string>
-    <string name="weekly_no_reflection">No weekly reflection yet. Write a few entries this week and it\'ll appear here.</string>
+    <string name="weekly_no_reflection">No weekly reflection yet. Write a few entries this week and it&apos;ll appear here.</string>
     <string name="weekly_emotional_arc">YOUR EMOTIONAL ARC</string>
     <string name="weekly_brightest_on">Brightest on %1$s</string>
     <string name="weekly_arc_empty">Add a few entries this week to see your arc.</string>
@@ -34,8 +34,8 @@
 
     <!-- Streak cards -->
     <string name="current_streak">Current Streak</string>
-    <string name="journaled_every_day_since_prefix">You\'ve journaled every day since</string>
-    <string name="journaled_once_a_week_since_prefix">You\'ve journaled at least once a week since</string>
+    <string name="journaled_every_day_since_prefix">You&apos;ve journaled every day since</string>
+    <string name="journaled_once_a_week_since_prefix">You&apos;ve journaled at least once a week since</string>
     <string name="journal_today_to_start">Journal today to start a daily streak.</string>
     <string name="no_current_streak">No Current Streak</string>
     <string name="journal_every_day_to_build">Journal every day to build a streak.</string>
