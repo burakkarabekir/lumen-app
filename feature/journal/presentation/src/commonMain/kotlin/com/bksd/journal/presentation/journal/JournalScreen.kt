@@ -2,13 +2,15 @@ package com.bksd.journal.presentation.journal
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -111,57 +113,62 @@ fun JournalScreen(
             }
     }
 
-    AppSurface(
-        header = {
-            JournalTopBar(
-                searchQuery = state.searchQuery,
-                profilePhotoUrl = state.profilePhotoUrl,
-                onSearchQueryChange = { onAction(JournalAction.OnSearchQueryChange(it)) },
-                onProfileClick = { onAction(JournalAction.OnProfileClick) },
-                onSearchModeChanged = {}
-            )
-        }
-    ) {
-        when {
-            state.isLoading -> {
-                Box(
-                    modifier = Modifier.fillMaxSize().weight(1f),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
-                }
+    AppSurface {
+        LazyColumn(
+            state = listState,
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = WindowInsets.statusBars.asPaddingValues(),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.md)
+        ) {
+            item {
+                JournalTopBar(
+                    searchQuery = state.searchQuery,
+                    profilePhotoUrl = state.profilePhotoUrl,
+                    onSearchQueryChange = { onAction(JournalAction.OnSearchQueryChange(it)) },
+                    onProfileClick = { onAction(JournalAction.OnProfileClick) },
+                    onSearchModeChanged = {}
+                )
             }
 
-            state.sections.isEmpty() -> {
-                val message = if (state.searchQuery.isNotBlank()) {
-                    "No results for \"${state.searchQuery}\""
-                } else {
-                    stringResource(Res.string.no_moments_day)
+            when {
+                state.isLoading -> {
+                    item {
+                        Box(
+                            modifier = Modifier.fillParentMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+                        }
+                    }
                 }
-                Box(
-                    modifier = Modifier.fillMaxSize().weight(1f),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = message,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
+
+                state.sections.isEmpty() -> {
+                    item {
+                        val message = if (state.searchQuery.isNotBlank()) {
+                            "No results for \"${state.searchQuery}\""
+                        } else {
+                            stringResource(Res.string.no_moments_day)
+                        }
+                        Box(
+                            modifier = Modifier.fillParentMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = message,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    }
                 }
-            }
 
-            else -> {
-                LazyColumn(
-                    state = listState,
-                    modifier = Modifier.fillMaxSize().weight(1f),
-                    contentPadding = PaddingValues(horizontal = MaterialTheme.dimens.spacing.lg),
-                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.md)
-                ) {
-                    item { Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.xs)) }
-
+                else -> {
                     state.sections.forEach { section ->
                         item(key = "header_${section.header}") {
-                            JournalSectionHeader(text = section.header)
+                            JournalSectionHeader(
+                                text = section.header,
+                                modifier = Modifier.padding(horizontal = MaterialTheme.dimens.spacing.lg)
+                            )
                         }
 
                         items(
@@ -172,6 +179,7 @@ fun JournalScreen(
                                 moment = moment,
                                 formatter = formatter,
                                 timeZone = timeZone,
+                                modifier = Modifier.padding(horizontal = MaterialTheme.dimens.spacing.lg),
                                 audioPlaybackState = if (state.playingAudioMomentId == moment.id) state.audioPlaybackState else PlaybackState.STOPPED,
                                 audioCurrentPosition = if (state.playingAudioMomentId == moment.id && state.audioCurrentPositionMs > 0)
                                     formatter.formatDuration(state.audioCurrentPositionMs) else "0:00",

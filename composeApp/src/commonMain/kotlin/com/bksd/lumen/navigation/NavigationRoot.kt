@@ -8,7 +8,6 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,7 +17,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.bksd.auth.presentation.resetpassword.ResetPasswordRoot
@@ -115,8 +113,7 @@ fun NavigationRoot(
     ) {
         NavDisplay(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 24.dp),
+                .fillMaxSize(),
             onBack = navigator::goBack,
             transitionSpec = {
                 slideInHorizontally { it } + fadeIn() togetherWith
