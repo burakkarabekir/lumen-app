@@ -38,6 +38,7 @@ class ReflectionViewModel(
         when (action) {
             ReflectionAction.OnViewFull -> sendEvent(ReflectionEvent.NavigateToFullReflection)
             ReflectionAction.OnUnlock -> sendEvent(ReflectionEvent.NavigateToPaywall)
+            ReflectionAction.OnRetry -> generate()
         }
     }
 

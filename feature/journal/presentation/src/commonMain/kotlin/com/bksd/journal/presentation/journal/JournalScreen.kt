@@ -41,6 +41,7 @@ import com.bksd.core.presentation.link.LinkConfirmationDialog
 import com.bksd.core.presentation.link.toOpenableWebUrl
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.journal.presentation.Res
+import com.bksd.journal.presentation.components.DeleteMomentConfirmDialog
 import com.bksd.journal.presentation.journal.components.JournalSectionHeader
 import com.bksd.journal.presentation.journal.components.JournalTopBar
 import com.bksd.journal.presentation.journal.components.MomentCard
@@ -242,6 +243,13 @@ fun JournalScreen(
                     pendingLink = null
                 },
                 onDismiss = { pendingLink = null }
+            )
+        }
+
+        state.pendingDeleteMomentId?.let {
+            DeleteMomentConfirmDialog(
+                onConfirm = { onAction(JournalAction.OnConfirmDeleteMoment) },
+                onDismiss = { onAction(JournalAction.OnDismissDeleteMoment) }
             )
         }
     }

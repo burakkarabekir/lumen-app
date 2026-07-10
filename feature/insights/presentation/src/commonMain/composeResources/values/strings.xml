@@ -18,6 +18,9 @@
     <string name="weekly_view_full">View full reflection</string>
     <string name="weekly_private_to_you">Private to you</string>
     <string name="weekly_reflecting">Reflecting on your week…</string>
+    <string name="weekly_reflection_failed_title">Weekly reflection unavailable</string>
+    <string name="weekly_reflection_failed_caption">We couldn\'t put together your weekly reflection.</string>
+    <string name="weekly_reflection_retry">Try again</string>
     <string name="weekly_back">Back</string>
     <string name="weekly_no_reflection">No weekly reflection yet. Write a few entries this week and it&apos;ll appear here.</string>
     <string name="weekly_emotional_arc">YOUR EMOTIONAL ARC</string>

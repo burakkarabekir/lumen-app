@@ -20,6 +20,7 @@ data class JournalState(
     val sections: ImmutableList<JournalSection> = persistentListOf(),
     val searchQuery: String = "",
     val profilePhotoUrl: String? = null,
+    val pendingDeleteMomentId: String? = null,
     val visibleDate: LocalDate,
 
     // Audio playback

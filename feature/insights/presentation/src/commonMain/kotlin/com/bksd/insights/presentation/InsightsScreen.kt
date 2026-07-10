@@ -63,7 +63,7 @@ internal fun InsightsScreen(
         if (state.hasActiveStreak) {
             StreaksCarousel(state = state, palette = palette)
         } else {
-            EmptyStreakCard(onSetReminder = {})
+            EmptyStreakCard()
         }
 
         Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))

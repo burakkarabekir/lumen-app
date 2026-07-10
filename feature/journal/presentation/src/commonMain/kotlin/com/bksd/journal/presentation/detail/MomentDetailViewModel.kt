@@ -10,7 +10,9 @@ import com.bksd.core.presentation.util.toUiText
 import com.bksd.journal.domain.usecase.DeleteMomentUseCase
 import com.bksd.journal.domain.usecase.GetMomentUseCase
 import com.bksd.journal.domain.usecase.UpdateMomentUseCase
+import com.bksd.reflection.domain.model.MomentAnalysisState
 import com.bksd.reflection.domain.usecase.ObserveEntryAnalysisUseCase
+import com.bksd.reflection.domain.usecase.RequestEntryAnalysisUseCase
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentSet
@@ -26,6 +28,7 @@ class MomentDetailViewModel(
     private val deleteMomentUseCase: DeleteMomentUseCase,
     private val updateMomentUseCase: UpdateMomentUseCase,
     private val observeEntryAnalysis: ObserveEntryAnalysisUseCase,
+    private val requestEntryAnalysis: RequestEntryAnalysisUseCase,
     private val audioPlayer: AudioPlayer,
     private val momentId: String,
     private val initialIsEditing: Boolean = false
@@ -57,9 +60,12 @@ class MomentDetailViewModel(
             MomentDetailAction.OnEditClick -> enterEditMode()
             MomentDetailAction.OnSaveChanges -> handleSaveChanges()
             MomentDetailAction.OnCancelEdit -> exitEditMode()
-            MomentDetailAction.OnDeleteClick -> handleDelete()
+            MomentDetailAction.OnDeleteClick -> _state.update { it.copy(showDeleteDialog = true) }
+            MomentDetailAction.OnConfirmDelete -> handleDelete()
+            MomentDetailAction.OnDismissDelete -> _state.update { it.copy(showDeleteDialog = false) }
             MomentDetailAction.OnShareClick -> handleShare()
             MomentDetailAction.OnUpgradeClick -> sendEvent(MomentDetailEvent.NavigateToPaywall)
+            MomentDetailAction.OnRetryAnalysis -> handleRetryAnalysis()
             MomentDetailAction.OnFavoriteToggle -> toggleFavorite()
             MomentDetailAction.OnToggleBodyExpand -> {
                 _state.update { it.copy(isBodyExpanded = !it.isBodyExpanded) }
@@ -255,6 +261,7 @@ class MomentDetailViewModel(
     }
 
     private fun handleDelete() {
+        _state.update { it.copy(isDeleting = true, showDeleteDialog = false) }
         launch {
             when (val result = deleteMomentUseCase(momentId)) {
                 is Result.Success -> {
@@ -263,10 +270,28 @@ class MomentDetailViewModel(
                 }
 
                 is Result.Error -> {
+                    _state.update { it.copy(isDeleting = false, showDeleteDialog = false) }
                     val errorText = result.error.toUiText()
                     sendEvent(MomentDetailEvent.ShowError(errorText))
                 }
             }
         }
+    }
+
+    private fun handleRetryAnalysis() {
+        val moment = _state.value.moment ?: return
+        if (_state.value.analysis == MomentAnalysisState.Pending) return
+
+        val entryText = listOfNotNull(
+            moment.title.trim().takeIf { it.isNotBlank() },
+            moment.body?.trim()?.takeIf { it.isNotBlank() }
+        ).joinToString("\n\n")
+        if (entryText.isBlank()) return
+
+        val mood = moment.moods
+            .joinToString(", ") { it.label }
+            .takeIf { it.isNotBlank() }
+
+        launch { requestEntryAnalysis(moment.id, entryText, mood) }
     }
 }

@@ -60,6 +60,7 @@ import com.bksd.journal.presentation.Res
 import com.bksd.journal.presentation.content_desc_back
 import com.bksd.journal.presentation.content_desc_share
 import com.bksd.journal.presentation.detail.components.EntryAnalysisCard
+import com.bksd.journal.presentation.detail.components.EntryAnalysisErrorCard
 import com.bksd.journal.presentation.detail.components.EntryAnalysisLoadingCard
 import com.bksd.journal.presentation.detail.components.EntryCrisisCard
 import com.bksd.journal.presentation.detail.components.EntryReflectionUpsellCard
@@ -213,7 +214,13 @@ fun MomentDetailReadView(
                         )
                     }
 
-                    MomentAnalysisState.Failed,
+                    MomentAnalysisState.Failed -> {
+                        Spacer(Modifier.height(MaterialTheme.dimens.spacing.xxl))
+                        EntryAnalysisErrorCard(
+                            onRetry = { onAction(MomentDetailAction.OnRetryAnalysis) }
+                        )
+                    }
+
                     MomentAnalysisState.None -> Unit
                 }
 

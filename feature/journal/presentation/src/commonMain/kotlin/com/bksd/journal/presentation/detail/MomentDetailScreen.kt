@@ -23,6 +23,7 @@ import com.bksd.core.domain.location.LocationData
 import com.bksd.core.domain.model.Moment
 import com.bksd.core.domain.model.Mood
 import com.bksd.core.presentation.util.ObserveAsEvents
+import com.bksd.journal.presentation.components.DeleteMomentConfirmDialog
 import com.bksd.journal.presentation.detail.components.DetailBottomActionBar
 import com.bksd.journal.presentation.detail.share.ShareMomentSheet
 import com.bksd.journal.presentation.detail.share.shareCardDateLabel
@@ -116,6 +117,14 @@ fun MomentDetailScreen(
                     onFavoriteClick = { onAction(MomentDetailAction.OnFavoriteToggle) },
                     modifier = Modifier.align(Alignment.BottomCenter)
                 )
+
+                if (state.showDeleteDialog) {
+                    DeleteMomentConfirmDialog(
+                        onConfirm = { onAction(MomentDetailAction.OnConfirmDelete) },
+                        onDismiss = { onAction(MomentDetailAction.OnDismissDelete) },
+                        isDeleting = state.isDeleting
+                    )
+                }
             }
         }
 
