@@ -68,6 +68,8 @@
     <string name="remove_favorite">Remove Favorite</string>
     <string name="favorite">Favorite</string>
     <string name="delete">Delete</string>
+    <string name="delete_moment_title">Delete this moment?</string>
+    <string name="delete_moment_message">This permanently deletes this entry. This can\'t be undone.</string>
     <string name="content_desc_share">Share</string>
 
     <!-- AI Entry Analysis -->
@@ -77,6 +79,9 @@
     <string name="ai_reflection_disclaimer">Lumen AI can make mistakes. Reflections are private to you.</string>
     <string name="ai_analyzing_title">Analyzing your entry…</string>
     <string name="ai_analyzing_caption">Your reflection will appear here in a moment.</string>
+    <string name="ai_analysis_failed_title">Reflection unavailable</string>
+    <string name="ai_analysis_failed_caption">We couldn\'t generate a reflection for this moment.</string>
+    <string name="ai_analysis_retry">Try again</string>
     <string name="ai_support_title">A moment of support</string>
     <string name="ai_crisis_title">You&apos;re not alone</string>
     <string name="ai_call_resource">Call %1$s</string>

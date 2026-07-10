@@ -14,6 +14,7 @@ data class ReflectionState(
 sealed interface ReflectionAction {
     data object OnViewFull : ReflectionAction
     data object OnUnlock : ReflectionAction
+    data object OnRetry : ReflectionAction
 }
 
 sealed interface ReflectionEvent {

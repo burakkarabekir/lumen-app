@@ -7,4 +7,7 @@ import androidx.compose.ui.Modifier
 expect fun AppWebView(
     url: String,
     modifier: Modifier = Modifier,
+    reloadTrigger: Int = 0,
+    onLoadingChange: (Boolean) -> Unit = {},
+    onError: () -> Unit = {},
 )

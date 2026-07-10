@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.insights.presentation.reflection.components.WeeklyReflectionCard
+import com.bksd.insights.presentation.reflection.components.WeeklyReflectionErrorCard
 import com.bksd.insights.presentation.reflection.components.WeeklyReflectionLoadingCard
 import com.bksd.insights.presentation.reflection.components.WeeklyReflectionLockedCard
 import org.koin.compose.viewmodel.koinViewModel
@@ -50,6 +51,13 @@ fun WeeklyReflectionRoot(
 
         state.isGenerating -> Column(modifier) {
             WeeklyReflectionLoadingCard()
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))
+        }
+
+        state.error -> Column(modifier) {
+            WeeklyReflectionErrorCard(
+                onRetry = { viewModel.onAction(ReflectionAction.OnRetry) }
+            )
             Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))
         }
 

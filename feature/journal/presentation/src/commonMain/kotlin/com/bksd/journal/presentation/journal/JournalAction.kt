@@ -8,6 +8,8 @@ sealed interface JournalAction {
     data class OnSearchQueryChange(val query: String) : JournalAction
     data object OnProfileClick : JournalAction
     data class OnDeleteMoment(val id: String) : JournalAction
+    data object OnConfirmDeleteMoment : JournalAction
+    data object OnDismissDeleteMoment : JournalAction
     data class OnEditMoment(val id: String) : JournalAction
     data class OnFavoriteToggle(val id: String) : JournalAction
 }

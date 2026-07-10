@@ -108,11 +108,21 @@ class JournalViewModel(
             JournalAction.OnProfileClick -> sendEvent(JournalEvent.NavigateToProfile)
 
             is JournalAction.OnDeleteMoment -> {
+                _state.update { it.copy(pendingDeleteMomentId = action.id) }
+            }
+
+            JournalAction.OnDismissDeleteMoment -> {
+                _state.update { it.copy(pendingDeleteMomentId = null) }
+            }
+
+            JournalAction.OnConfirmDeleteMoment -> {
+                val id = _state.value.pendingDeleteMomentId ?: return
                 launch {
-                    val result = deleteMomentUseCase(action.id)
+                    val result = deleteMomentUseCase(id)
                     if (result is Result.Error) {
                         sendEvent(JournalEvent.ShowError(result.error.toUiText()))
                     }
+                    _state.update { it.copy(pendingDeleteMomentId = null) }
                 }
             }
 

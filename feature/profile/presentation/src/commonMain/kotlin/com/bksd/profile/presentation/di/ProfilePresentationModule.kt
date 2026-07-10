@@ -3,6 +3,7 @@ package com.bksd.profile.presentation.di
 import com.bksd.profile.presentation.CloudSyncViewModel
 import com.bksd.profile.presentation.EditProfileViewModel
 import com.bksd.profile.presentation.ExportJournalViewModel
+import com.bksd.profile.presentation.LegalDocumentViewModel
 import com.bksd.profile.presentation.LockPrivacyViewModel
 import com.bksd.profile.presentation.ManagePremiumViewModel
 import com.bksd.profile.presentation.ProfileViewModel
@@ -18,4 +19,5 @@ val profilePresentationModule = module {
     viewModelOf(::ManagePremiumViewModel)
     viewModelOf(::ExportJournalViewModel)
     viewModelOf(::LockPrivacyViewModel)
+    viewModelOf(::LegalDocumentViewModel)
 }
