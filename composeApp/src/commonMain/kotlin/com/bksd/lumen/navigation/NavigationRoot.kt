@@ -8,7 +8,9 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.SnackbarDuration
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
@@ -24,15 +27,15 @@ import com.bksd.auth.presentation.resetpassword.ResetPasswordRoot
 import com.bksd.auth.presentation.signin.SignInRoot
 import com.bksd.auth.presentation.signup.SignUpRoot
 import com.bksd.core.design_system.component.layout.AppScaffold
+import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.domain.connectivity.NetworkMonitor
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.insights.presentation.InsightsRoot
 import com.bksd.insights.presentation.reflection.full.WeeklyReflectionDetailRoot
 import com.bksd.journal.presentation.detail.MomentDetailRoot
 import com.bksd.journal.presentation.journal.JournalRoot
-import com.bksd.lumen.Res
+import com.bksd.lumen.connectivity.ConnectivityBanner
 import com.bksd.lumen.consent.ConsentGate
-import com.bksd.lumen.no_connection
 import com.bksd.lumen.lock.LockGate
 import com.bksd.lumen.main.MainEvent
 import com.bksd.lumen.main.MainViewModel
@@ -55,7 +58,6 @@ import com.bksd.profile.presentation.LockPrivacyRoot
 import com.bksd.profile.presentation.ManagePremiumRoot
 import com.bksd.profile.presentation.ProfileRoot
 import kotlinx.collections.immutable.toImmutableSet
-import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -80,7 +82,6 @@ fun NavigationRoot(
 
     val networkMonitor = koinInject<NetworkMonitor>()
     val isOnline by networkMonitor.isOnline.collectAsState(initial = true)
-    val noConnectionMessage = stringResource(Res.string.no_connection)
 
     var navigationReady by remember { mutableStateOf(false) }
 
@@ -100,15 +101,6 @@ fun NavigationRoot(
     }
 
     if (!navigationReady) return
-
-    LaunchedEffect(isOnline, noConnectionMessage) {
-        if (!isOnline) {
-            snackbarHostState.showSnackbar(
-                message = noConnectionMessage,
-                duration = SnackbarDuration.Indefinite,
-            )
-        }
-    }
 
     Box(modifier = modifier.fillMaxSize()) {
         AppScaffold(
@@ -294,6 +286,14 @@ fun NavigationRoot(
             )
         )
         }
+
+        ConnectivityBanner(
+            isOnline = isOnline,
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .statusBarsPadding()
+                .padding(top = MaterialTheme.dimens.size.topBar)
+        )
 
         WelcomeGate()
 
