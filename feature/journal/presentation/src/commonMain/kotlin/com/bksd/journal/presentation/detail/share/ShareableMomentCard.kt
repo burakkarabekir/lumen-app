@@ -32,7 +32,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
+import coil3.compose.SubcomposeAsyncImage
 import com.bksd.core.design_system.theme.PreviewAppTheme
 import com.bksd.core.design_system.theme.ShareStyle
 import com.bksd.core.design_system.theme.dimens
@@ -74,11 +74,18 @@ fun ShareableMomentCard(
             )
     ) {
         if (style == ShareStyle.PHOTO && photoUrl != null) {
-            AsyncImage(
+            SubcomposeAsyncImage(
                 model = photoUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                error = {
+                    Box(
+                        Modifier.fillMaxSize().background(
+                            Brush.linearGradient(listOf(colors.backgroundTop, colors.backgroundBottom))
+                        )
+                    )
+                }
             )
             Box(
                 modifier = Modifier

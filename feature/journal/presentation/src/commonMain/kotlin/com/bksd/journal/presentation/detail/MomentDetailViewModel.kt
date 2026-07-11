@@ -1,6 +1,7 @@
 package com.bksd.journal.presentation.detail
 
 import androidx.lifecycle.viewModelScope
+import com.bksd.core.domain.connectivity.NetworkMonitor
 import com.bksd.core.domain.error.Result
 import com.bksd.core.domain.model.PlaybackState
 import com.bksd.core.domain.storage.AudioPlayer
@@ -18,6 +19,9 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
@@ -30,6 +34,7 @@ class MomentDetailViewModel(
     private val observeEntryAnalysis: ObserveEntryAnalysisUseCase,
     private val requestEntryAnalysis: RequestEntryAnalysisUseCase,
     private val audioPlayer: AudioPlayer,
+    private val networkMonitor: NetworkMonitor,
     private val momentId: String,
     private val initialIsEditing: Boolean = false
 ) : BaseViewModel<MomentDetailAction, MomentDetailEvent>() {
@@ -44,6 +49,7 @@ class MomentDetailViewModel(
                 loadMoment()
                 observeAudio()
                 observeAnalysis()
+                observeConnectivity()
                 hasLoadedInitialData = true
             }
         }
@@ -138,6 +144,20 @@ class MomentDetailViewModel(
             observeEntryAnalysis(momentId).collect { analysisState ->
                 _state.update { it.copy(analysis = analysisState) }
             }
+        }
+    }
+
+    private fun observeConnectivity() {
+        launch {
+            networkMonitor.isOnline
+                .distinctUntilChanged()
+                .drop(1)
+                .filter { it }
+                .collect {
+                    if (_state.value.analysis == MomentAnalysisState.Failed) {
+                        handleRetryAnalysis()
+                    }
+                }
         }
     }
 

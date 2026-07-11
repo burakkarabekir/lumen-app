@@ -42,6 +42,7 @@
     <string name="error_attachment_save_failed">Failed to save attachment.</string>
     <string name="error_moment_save_failed">Failed to save moment</string>
     <string name="success_moment_saved">Moment saved!</string>
+    <string name="success_moment_saved_without_attachment">Moment saved. An attachment failed to upload — check your connection.</string>
     <string name="timestamp_today_format">Today, %1$s</string>
     <string name="error_camera_permission_denied">Camera permission is required to take photos</string>
 
