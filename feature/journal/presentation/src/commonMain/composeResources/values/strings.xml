@@ -80,8 +80,8 @@
     <string name="ai_analyzing_title">Analyzing your entry…</string>
     <string name="ai_analyzing_caption">Your reflection will appear here in a moment.</string>
     <string name="ai_analysis_failed_title">Reflection unavailable</string>
-    <string name="ai_analysis_failed_caption">We couldn\'t generate a reflection for this moment.</string>
-    <string name="ai_analysis_offline_title">You\'re offline</string>
+    <string name="ai_analysis_failed_caption">We couldn't generate a reflection for this moment.</string>
+    <string name="ai_analysis_offline_title">You're offline</string>
     <string name="ai_analysis_offline_caption">A reflection will be added once you reconnect.</string>
     <string name="ai_analysis_retry">Try again</string>
     <string name="ai_support_title">A moment of support</string>

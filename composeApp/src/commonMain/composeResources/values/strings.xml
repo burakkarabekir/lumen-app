@@ -5,6 +5,7 @@
     <!-- Post-login welcome animation -->
     <string name="welcome_greeting_returning">Welcome back,</string>
     <string name="welcome_greeting_new">Welcome to Lumen,</string>
+    <string name="welcome_greeting_first">Welcome,</string>
 
     <!-- OAuth consent gate -->
     <string name="consent_gate_title">Agree to continue</string>

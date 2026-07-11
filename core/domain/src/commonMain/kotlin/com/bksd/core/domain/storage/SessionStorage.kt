@@ -13,4 +13,7 @@ interface SessionStorage {
 
     suspend fun getLocalDataOwner(): String?
     suspend fun setLocalDataOwner(uid: String?)
+
+    suspend fun setFirstLoginPending()
+    suspend fun consumeFirstLoginPending(): Boolean
 }

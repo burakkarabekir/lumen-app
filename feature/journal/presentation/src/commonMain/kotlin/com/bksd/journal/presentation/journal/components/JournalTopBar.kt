@@ -41,6 +41,7 @@ fun JournalTopBar(
     onSearchClose: () -> Unit,
     onSearchQueryChange: (String) -> Unit,
     onProfileClick: () -> Unit,
+    searchAvailable: Boolean = true,
     modifier: Modifier = Modifier,
 ) {
     val headerHeight = MaterialTheme.dimens.size.topBar
@@ -67,15 +68,17 @@ fun JournalTopBar(
                 ) {
                     LumenWordmark()
                     Spacer(Modifier.weight(1f))
-                    IconButton(
-                        onClick = onSearchActivate,
-                        modifier = Modifier.graphicsLayer { alpha = searchIconAlpha() },
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = stringResource(Res.string.content_desc_search),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
+                    if (searchAvailable) {
+                        IconButton(
+                            onClick = onSearchActivate,
+                            modifier = Modifier.graphicsLayer { alpha = searchIconAlpha() },
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = stringResource(Res.string.content_desc_search),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
                     }
                     AppAvatar(
                         photoUrl = profilePhotoUrl,

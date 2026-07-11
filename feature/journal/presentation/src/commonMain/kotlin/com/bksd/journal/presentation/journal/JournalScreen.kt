@@ -98,6 +98,7 @@ fun JournalScreen(
 ) {
     val uriHandler = LocalUriHandler.current
     var pendingLink by remember { mutableStateOf<String?>(null) }
+    val hasEntries = state.sections.isNotEmpty() || state.searchQuery.isNotBlank()
 
     val collapseThresholdPx = with(LocalDensity.current) { 56.dp.toPx() }
     val searchIconAlpha by remember {
@@ -137,6 +138,7 @@ fun JournalScreen(
                 onSearchClose = { onAction(JournalAction.OnSearchActiveChange(false)) },
                 onSearchQueryChange = { onAction(JournalAction.OnSearchQueryChange(it)) },
                 onProfileClick = { onAction(JournalAction.OnProfileClick) },
+                searchAvailable = hasEntries,
             )
         }
     ) {
@@ -145,7 +147,7 @@ fun JournalScreen(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.md)
         ) {
-            if (!state.isSearchActive) {
+            if (!state.isSearchActive && hasEntries) {
                 item(key = "search_pill") {
                     JournalSearchField(
                         onClick = { onAction(JournalAction.OnSearchActiveChange(true)) },
