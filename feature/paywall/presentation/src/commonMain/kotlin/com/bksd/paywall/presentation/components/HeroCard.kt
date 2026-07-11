@@ -28,7 +28,6 @@ import com.bksd.core.design_system.theme.PreviewAppTheme
 import com.bksd.core.design_system.theme.aiIconGradient
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
-import com.bksd.core.design_system.theme.paywallHeroGradient
 import com.bksd.paywall.presentation.Res
 import com.bksd.paywall.presentation.paywall_subtitle
 import com.bksd.paywall.presentation.paywall_title
@@ -96,7 +95,15 @@ fun HeroCard(
 
 @Preview
 @Composable
-private fun HeroCardPreview() {
+private fun HeroCardLightPreview() {
+    PreviewAppTheme(darkTheme = false) {
+        HeroCard()
+    }
+}
+
+@Preview
+@Composable
+private fun HeroCardDarkPreview() {
     PreviewAppTheme(darkTheme = true) {
         HeroCard()
     }

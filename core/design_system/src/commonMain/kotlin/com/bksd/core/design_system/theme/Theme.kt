@@ -97,6 +97,8 @@ data class ExtendedColors(
     val navIdle: Color,
     val navPlus: Color,
 
+    val paywallHeroGradient: List<Color>,
+
     val reflectionCard: ReflectionCardColors,
     val supportCard: DistressCardColors,
     val crisisCard: DistressCardColors,
@@ -176,6 +178,8 @@ val LightExtendedColors = ExtendedColors(
     navIdle = NavIdleLight,
     navPlus = NavPlusLight,
 
+    paywallHeroGradient = listOf(LumenBrand800, LumenBrand900),
+
     reflectionCard = LightReflectionCardColors,
     supportCard = LightSupportCardColors,
     crisisCard = LightCrisisCardColors,
@@ -254,6 +258,8 @@ val DarkExtendedColors = ExtendedColors(
     navActiveText = NavActiveTextDark,
     navIdle = NavIdleDark,
     navPlus = NavPlusDark,
+
+    paywallHeroGradient = listOf(PaywallHeroGradientStart, PaywallHeroGradientEnd),
 
     reflectionCard = DarkReflectionCardColors,
     supportCard = DarkSupportCardColors,
