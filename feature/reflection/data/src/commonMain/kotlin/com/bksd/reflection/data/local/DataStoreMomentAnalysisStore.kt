@@ -16,7 +16,7 @@ import kotlinx.serialization.json.Json
 import kotlin.time.Clock
 
 @Serializable
-internal enum class AnalysisStatus { PENDING, READY, FAILED, QUOTA_EXCEEDED }
+internal enum class AnalysisStatus { PENDING, READY, FAILED, OFFLINE, QUOTA_EXCEEDED }
 
 @Serializable
 internal data class StoredAnalysis(
@@ -42,6 +42,8 @@ class DataStoreMomentAnalysisStore(
 
     override suspend fun setFailed(momentId: String, quotaExceeded: Boolean) =
         put(momentId, if (quotaExceeded) AnalysisStatus.QUOTA_EXCEEDED else AnalysisStatus.FAILED, null)
+
+    override suspend fun setOffline(momentId: String) = put(momentId, AnalysisStatus.OFFLINE, null)
 
     override suspend fun recentAnalyses(limit: Int): List<EntryAnalysis> =
         readMap(dataStore.data.first())
@@ -72,6 +74,7 @@ class DataStoreMomentAnalysisStore(
         this == null -> MomentAnalysisState.None
         status == AnalysisStatus.PENDING -> MomentAnalysisState.Pending
         status == AnalysisStatus.QUOTA_EXCEEDED -> MomentAnalysisState.QuotaExceeded
+        status == AnalysisStatus.OFFLINE -> MomentAnalysisState.Offline
         status == AnalysisStatus.FAILED -> MomentAnalysisState.Failed
         reflection != null -> MomentAnalysisState.Ready(reflection)
         else -> MomentAnalysisState.None

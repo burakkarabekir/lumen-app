@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CloudOff
 import androidx.compose.material.icons.filled.ErrorOutline
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -34,6 +35,8 @@ import com.bksd.core.design_system.theme.extended
 import com.bksd.journal.presentation.Res
 import com.bksd.journal.presentation.ai_analysis_failed_caption
 import com.bksd.journal.presentation.ai_analysis_failed_title
+import com.bksd.journal.presentation.ai_analysis_offline_caption
+import com.bksd.journal.presentation.ai_analysis_offline_title
 import com.bksd.journal.presentation.ai_analysis_retry
 import org.jetbrains.compose.resources.stringResource
 
@@ -41,6 +44,7 @@ import org.jetbrains.compose.resources.stringResource
 fun EntryAnalysisErrorCard(
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
+    isOffline: Boolean = false,
 ) {
     val c = MaterialTheme.colorScheme.extended.reflectionCard
 
@@ -62,7 +66,7 @@ fun EntryAnalysisErrorCard(
                     .background(MaterialTheme.colorScheme.error.copy(alpha = 0.12f))
             ) {
                 Icon(
-                    imageVector = Icons.Default.ErrorOutline,
+                    imageVector = if (isOffline) Icons.Default.CloudOff else Icons.Default.ErrorOutline,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.error,
                     modifier = Modifier.size(MaterialTheme.dimens.icon.lg)
@@ -71,14 +75,14 @@ fun EntryAnalysisErrorCard(
             Spacer(Modifier.width(MaterialTheme.dimens.spacing.md))
             Column(Modifier.weight(1f)) {
                 Text(
-                    text = stringResource(Res.string.ai_analysis_failed_title),
+                    text = stringResource(if (isOffline) Res.string.ai_analysis_offline_title else Res.string.ai_analysis_failed_title),
                     fontSize = 14.5.sp,
                     fontWeight = FontWeight.ExtraBold,
                     color = c.title
                 )
                 Spacer(Modifier.size(MaterialTheme.dimens.spacing.xxs))
                 Text(
-                    text = stringResource(Res.string.ai_analysis_failed_caption),
+                    text = stringResource(if (isOffline) Res.string.ai_analysis_offline_caption else Res.string.ai_analysis_failed_caption),
                     fontSize = 12.sp,
                     lineHeight = 17.sp,
                     color = c.meta

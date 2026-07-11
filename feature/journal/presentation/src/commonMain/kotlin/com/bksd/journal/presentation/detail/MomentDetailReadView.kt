@@ -222,6 +222,14 @@ fun MomentDetailReadView(
                         )
                     }
 
+                    MomentAnalysisState.Offline -> {
+                        Spacer(Modifier.height(MaterialTheme.dimens.spacing.xxl))
+                        EntryAnalysisErrorCard(
+                            onRetry = { onAction(MomentDetailAction.OnRetryAnalysis) },
+                            isOffline = true
+                        )
+                    }
+
                     MomentAnalysisState.None -> Unit
                 }
 

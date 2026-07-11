@@ -15,9 +15,15 @@ class RequestEntryAnalysisUseCase(
             is Result.Success -> store.setResult(momentId, result.data)
             is Result.Error -> {
                 val err = result.error
-                val quotaExceeded = err is AppError.Network &&
-                    err.type == NetworkErrorType.QUOTA_EXCEEDED
-                store.setFailed(momentId, quotaExceeded = quotaExceeded)
+                when {
+                    err is AppError.Network && err.type == NetworkErrorType.QUOTA_EXCEEDED ->
+                        store.setFailed(momentId, quotaExceeded = true)
+
+                    err is AppError.Network && err.type == NetworkErrorType.NO_INTERNET ->
+                        store.setOffline(momentId)
+
+                    else -> store.setFailed(momentId)
+                }
             }
         }
     }

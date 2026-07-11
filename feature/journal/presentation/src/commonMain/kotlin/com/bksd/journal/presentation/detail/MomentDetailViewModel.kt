@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlin.time.Clock
 
 class MomentDetailViewModel(
     private val getMomentUseCase: GetMomentUseCase,
@@ -139,10 +140,15 @@ class MomentDetailViewModel(
         }
     }
 
+    private var reconciledPending = false
+
     private fun observeAnalysis() {
         launch {
             observeEntryAnalysis(momentId).collect { analysisState ->
                 _state.update { it.copy(analysis = analysisState) }
+                if (analysisState == MomentAnalysisState.Pending) {
+                    reconcileStalePending()
+                }
             }
         }
     }
@@ -154,7 +160,10 @@ class MomentDetailViewModel(
                 .drop(1)
                 .filter { it }
                 .collect {
-                    if (_state.value.analysis == MomentAnalysisState.Failed) {
+                    val analysis = _state.value.analysis
+                    if (analysis == MomentAnalysisState.Failed ||
+                        analysis == MomentAnalysisState.Offline
+                    ) {
                         handleRetryAnalysis()
                     }
                 }
@@ -171,6 +180,10 @@ class MomentDetailViewModel(
     override fun onCleared() {
         super.onCleared()
         audioPlayer.release()
+    }
+
+    private companion object {
+        const val STALE_PENDING_MS = 120_000L
     }
 
     private fun toggleFavorite() {
@@ -275,6 +288,7 @@ class MomentDetailViewModel(
                     if (initialIsEditing) {
                         enterEditMode()
                     }
+                    reconcileStalePending()
                 }
             }
         }
@@ -299,8 +313,12 @@ class MomentDetailViewModel(
     }
 
     private fun handleRetryAnalysis() {
-        val moment = _state.value.moment ?: return
         if (_state.value.analysis == MomentAnalysisState.Pending) return
+        runAnalysis()
+    }
+
+    private fun runAnalysis() {
+        val moment = _state.value.moment ?: return
 
         val entryText = listOfNotNull(
             moment.title.trim().takeIf { it.isNotBlank() },
@@ -313,5 +331,22 @@ class MomentDetailViewModel(
             .takeIf { it.isNotBlank() }
 
         launch { requestEntryAnalysis(moment.id, entryText, mood) }
+    }
+
+    /**
+     * Re-drives an analysis that is stuck in PENDING with no live job — e.g. the
+     * process died mid-request. Uses the moment's age as a staleness proxy so a
+     * legitimately in-flight analysis is left alone.
+     */
+    private fun reconcileStalePending() {
+        if (reconciledPending) return
+        if (_state.value.analysis != MomentAnalysisState.Pending) return
+        val moment = _state.value.moment ?: return
+        val ageMs = Clock.System.now().toEpochMilliseconds() -
+            moment.createdAt.toEpochMilliseconds()
+        if (ageMs > STALE_PENDING_MS) {
+            reconciledPending = true
+            runAnalysis()
+        }
     }
 }

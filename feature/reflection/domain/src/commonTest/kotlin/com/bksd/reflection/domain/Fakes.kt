@@ -43,6 +43,7 @@ class FakeMomentAnalysisStore : MomentAnalysisStore {
     }
 
     override suspend fun setFailed(momentId: String, quotaExceeded: Boolean) = Unit
+    override suspend fun setOffline(momentId: String) = Unit
     override suspend fun recentAnalyses(limit: Int): List<EntryAnalysis> = emptyList()
     override suspend fun deleteAll() {
         deleteAllCount++
