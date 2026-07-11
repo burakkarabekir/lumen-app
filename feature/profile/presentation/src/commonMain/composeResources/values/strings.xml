@@ -23,7 +23,7 @@
     <string name="about_lumen">About Lumen</string>
     <string name="member_since_prefix">Member since %1$s</string>
     <string name="upgrade_button">Upgrade</string>
-    <string name="theme_selector_title">App Theme</string>
+    <string name="theme_selector_title">Select Ui Mode</string>
     <string name="theme_system">System</string>
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
@@ -82,6 +82,7 @@
 
     <!-- Appearance -->
     <string name="appearance_title">Appearance</string>
+    <string name="appearance_auto">Auto</string>
     <string name="appearance_light">Light</string>
     <string name="appearance_dark">Dark</string>
 

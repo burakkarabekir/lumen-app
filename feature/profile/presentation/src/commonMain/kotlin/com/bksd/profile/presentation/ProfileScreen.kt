@@ -2,7 +2,6 @@ package com.bksd.profile.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -60,7 +59,6 @@ import com.bksd.core.design_system.theme.profileAccentGreen
 import com.bksd.core.design_system.theme.profileAccentIndigo
 import com.bksd.core.design_system.theme.profileAccentViolet
 import com.bksd.core.design_system.theme.rememberThemeController
-import com.bksd.core.domain.theme.AppThemeMode
 import com.bksd.core.presentation.media.rememberImagePickerLauncher
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.profile.presentation.components.AppearanceRow
@@ -70,6 +68,7 @@ import com.bksd.profile.presentation.components.ProfileSettingsRow
 import com.bksd.profile.presentation.components.RemindersSheet
 import com.bksd.profile.presentation.components.SectionHeader
 import com.bksd.profile.presentation.components.SettingsGroup
+import com.bksd.profile.presentation.components.ThemeSelectorSheet
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
@@ -159,9 +158,8 @@ internal fun ProfileScreen(
 ) {
     val themeController = rememberThemeController()
     val themeMode by themeController.themeMode.collectAsState()
-    val isDark = themeMode == AppThemeMode.DARK ||
-            (themeMode == AppThemeMode.SYSTEM && isSystemInDarkTheme())
     var showRemindersSheet by remember { mutableStateOf(false) }
+    var showThemeSheet by remember { mutableStateOf(false) }
     var showEnlargedPhoto by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -219,9 +217,8 @@ internal fun ProfileScreen(
             Spacer(Modifier.height(MaterialTheme.dimens.spacing.sm))
             SettingsGroup {
                 AppearanceRow(
-                    isDark = isDark,
-                    onSelectLight = { themeController.setTheme(AppThemeMode.LIGHT) },
-                    onSelectDark = { themeController.setTheme(AppThemeMode.DARK) }
+                    selectedMode = themeMode,
+                    onClick = { showThemeSheet = true }
                 )
                 HorizontalDivider(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
@@ -355,6 +352,10 @@ internal fun ProfileScreen(
 
                 if (showRemindersSheet) {
                     RemindersSheet(onDismiss = { showRemindersSheet = false })
+                }
+
+                if (showThemeSheet) {
+                    ThemeSelectorSheet(onDismiss = { showThemeSheet = false })
                 }
 
                 if (state.showDeleteDialog) {

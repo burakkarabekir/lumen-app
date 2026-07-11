@@ -177,16 +177,18 @@ class InsightsCalculator(
 
     private fun places(filtered: List<Moment>): List<PlaceCount> =
         filtered
+            .asSequence()
             .mapNotNull { it.location?.displayName?.let(::stateOf) }
             .groupBy { it.lowercase() }
             .map { (_, names) -> PlaceCount(names.first(), names.size, kindOf(names.first())) }
             .sortedByDescending { it.count }
             .take(4)
+            .toList()
 
     private fun stateOf(displayName: String): String? {
         val trimmed = displayName.trim()
         if (trimmed.isBlank()) return null
-        return trimmed.substringAfterLast(",").trim().takeIf { it.isNotBlank() }
+        return trimmed.substringBeforeLast(",").trim().takeIf { it.isNotBlank() }
     }
 
     private fun kindOf(name: String): InsightsPlaceKind {
