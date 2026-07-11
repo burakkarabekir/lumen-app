@@ -94,6 +94,15 @@ class JournalViewModel(
                 reloadMoments()
             }
 
+            is JournalAction.OnSearchActiveChange -> {
+                if (action.active) {
+                    _state.update { it.copy(isSearchActive = true) }
+                } else {
+                    _state.update { it.copy(isSearchActive = false, searchQuery = "") }
+                    reloadMoments()
+                }
+            }
+
             JournalAction.OnLoadMore -> loadMore()
 
             is JournalAction.OnAudioPlayClick -> {

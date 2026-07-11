@@ -19,6 +19,7 @@ data class JournalState(
     val error: UiText? = null,
     val sections: ImmutableList<JournalSection> = persistentListOf(),
     val searchQuery: String = "",
+    val isSearchActive: Boolean = false,
     val profilePhotoUrl: String? = null,
     val pendingDeleteMomentId: String? = null,
     val visibleDate: LocalDate,

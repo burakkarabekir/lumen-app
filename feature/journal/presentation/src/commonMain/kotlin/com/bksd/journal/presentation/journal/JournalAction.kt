@@ -6,6 +6,7 @@ sealed interface JournalAction {
     data object OnAudioPauseClick : JournalAction
     data object OnLoadMore : JournalAction
     data class OnSearchQueryChange(val query: String) : JournalAction
+    data class OnSearchActiveChange(val active: Boolean) : JournalAction
     data object OnProfileClick : JournalAction
     data class OnDeleteMoment(val id: String) : JournalAction
     data object OnConfirmDeleteMoment : JournalAction

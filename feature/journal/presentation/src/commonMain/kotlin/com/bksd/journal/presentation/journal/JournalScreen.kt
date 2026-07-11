@@ -98,20 +98,16 @@ fun JournalScreen(
 ) {
     val uriHandler = LocalUriHandler.current
     var pendingLink by remember { mutableStateOf<String?>(null) }
-    var isSearchActive by remember { mutableStateOf(false) }
 
     val collapseThresholdPx = with(LocalDensity.current) { 56.dp.toPx() }
     val searchIconAlpha by remember {
         derivedStateOf {
-            when {
-                isSearchActive -> 0f
-                listState.firstVisibleItemIndex > 0 -> 1f
-                else -> (listState.firstVisibleItemScrollOffset / collapseThresholdPx).coerceIn(0f, 1f)
-            }
+            if (listState.firstVisibleItemIndex > 0) 1f
+            else (listState.firstVisibleItemScrollOffset / collapseThresholdPx).coerceIn(0f, 1f)
         }
     }
 
-    LaunchedEffect(isSearchActive) {
+    LaunchedEffect(state.isSearchActive) {
         listState.scrollToItem(0)
     }
 
@@ -135,13 +131,10 @@ fun JournalScreen(
             JournalTopBar(
                 searchQuery = state.searchQuery,
                 profilePhotoUrl = state.profilePhotoUrl,
-                isSearchActive = isSearchActive,
+                isSearchActive = state.isSearchActive,
                 searchIconAlpha = { searchIconAlpha },
-                onSearchActivate = { isSearchActive = true },
-                onSearchClose = {
-                    isSearchActive = false
-                    onAction(JournalAction.OnSearchQueryChange(""))
-                },
+                onSearchActivate = { onAction(JournalAction.OnSearchActiveChange(true)) },
+                onSearchClose = { onAction(JournalAction.OnSearchActiveChange(false)) },
                 onSearchQueryChange = { onAction(JournalAction.OnSearchQueryChange(it)) },
                 onProfileClick = { onAction(JournalAction.OnProfileClick) },
             )
@@ -152,10 +145,10 @@ fun JournalScreen(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.md)
         ) {
-            if (!isSearchActive) {
+            if (!state.isSearchActive) {
                 item(key = "search_pill") {
                     JournalSearchField(
-                        onClick = { isSearchActive = true },
+                        onClick = { onAction(JournalAction.OnSearchActiveChange(true)) },
                         modifier = Modifier
                             .padding(horizontal = MaterialTheme.dimens.spacing.lg)
                             .padding(top = MaterialTheme.dimens.spacing.sm)

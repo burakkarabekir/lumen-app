@@ -47,7 +47,7 @@ fun JournalActiveSearchBar(
     val focusRequester = remember { FocusRequester() }
 
     LaunchedEffect(Unit) {
-        focusRequester.requestFocus()
+        if (query.isEmpty()) focusRequester.requestFocus()
     }
 
     Row(
