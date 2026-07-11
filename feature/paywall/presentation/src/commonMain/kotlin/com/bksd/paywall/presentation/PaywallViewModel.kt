@@ -34,21 +34,28 @@ class PaywallViewModel(
             PaywallAction.OnSubscribeClick -> handleSubscribe()
             PaywallAction.OnCloseClick -> sendEvent(PaywallEvent.Dismiss)
             PaywallAction.OnRestoreClick -> handleRestore()
+            PaywallAction.OnRetryLoad -> loadProducts()
         }
     }
 
     private fun loadProducts() {
         launch {
-            val result = entitlementRepository.products()
-            if (result is Result.Success && result.data.isNotEmpty()) {
-                val tiers = result.data.map { it.toTierUi() }.toImmutableList()
-                _stateFlow.update {
-                    it.copy(
-                        tiers = tiers,
-                        selectedTier = tiers.firstOrNull { tier -> tier.badge == PaywallBadge.BEST_VALUE }
-                            ?: tiers.first(),
-                    )
+            _stateFlow.update { it.copy(isLoading = true, loadError = false) }
+            when (val result = entitlementRepository.products()) {
+                is Result.Success -> {
+                    val tiers = result.data.map { it.toTierUi() }.toImmutableList()
+                    _stateFlow.update {
+                        it.copy(
+                            isLoading = false,
+                            loadError = tiers.isEmpty(),
+                            tiers = tiers,
+                            selectedTier = tiers.firstOrNull { tier -> tier.badge == PaywallBadge.BEST_VALUE }
+                                ?: tiers.firstOrNull(),
+                        )
+                    }
                 }
+
+                is Result.Error -> _stateFlow.update { it.copy(isLoading = false, loadError = true) }
             }
         }
     }
@@ -66,7 +73,7 @@ class PaywallViewModel(
                 }
 
                 PurchaseOutcome.Cancelled -> Unit
-                is PurchaseOutcome.Failed -> Unit
+                is PurchaseOutcome.Failed -> sendEvent(PaywallEvent.ShowError(outcome.message))
             }
         }
     }
@@ -77,9 +84,17 @@ class PaywallViewModel(
             val outcome = entitlementRepository.restore()
             val isPlus = entitlementRepository.currentEntitlement().isPlus
             _stateFlow.update { it.copy(isProcessing = false) }
-            if (outcome is PurchaseOutcome.Success && isPlus) {
-                sendEvent(PaywallEvent.SubscriptionSuccess)
-                sendEvent(PaywallEvent.Dismiss)
+            when (outcome) {
+                is PurchaseOutcome.Success ->
+                    if (isPlus) {
+                        sendEvent(PaywallEvent.SubscriptionSuccess)
+                        sendEvent(PaywallEvent.Dismiss)
+                    } else {
+                        sendEvent(PaywallEvent.RestoreNone)
+                    }
+
+                PurchaseOutcome.Cancelled -> Unit
+                is PurchaseOutcome.Failed -> sendEvent(PaywallEvent.ShowError(outcome.message))
             }
         }
     }

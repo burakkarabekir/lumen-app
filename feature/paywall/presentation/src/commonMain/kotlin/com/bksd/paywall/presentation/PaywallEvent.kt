@@ -6,4 +6,6 @@ package com.bksd.paywall.presentation
 sealed interface PaywallEvent {
     data object Dismiss : PaywallEvent
     data object SubscriptionSuccess : PaywallEvent
+    data object RestoreNone : PaywallEvent
+    data class ShowError(val message: String) : PaywallEvent
 }

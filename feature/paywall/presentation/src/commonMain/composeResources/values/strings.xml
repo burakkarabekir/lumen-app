@@ -13,4 +13,7 @@
     <string name="seven_day_free_trial">5-DAY FREE TRIAL</string>
     <string name="standard_access">Standard access</string>
     <string name="per_month_format">%1$s per month</string>
+    <string name="paywall_pricing_unavailable">Pricing is unavailable right now. Check your connection and try again.</string>
+    <string name="paywall_try_again">Try Again</string>
+    <string name="paywall_restore_none">No purchases to restore.</string>
 </resources>

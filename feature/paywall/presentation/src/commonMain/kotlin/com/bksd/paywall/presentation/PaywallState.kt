@@ -8,7 +8,9 @@ data class PaywallState(
     val features: ImmutableList<PaywallFeatureUi> = persistentListOf(),
     val tiers: ImmutableList<BillingTierUi> = persistentListOf(),
     val selectedTier: BillingTierUi? = null,
-    val isProcessing: Boolean = false
+    val isProcessing: Boolean = false,
+    val isLoading: Boolean = true,
+    val loadError: Boolean = false,
 )
 
 data class PaywallFeatureUi(

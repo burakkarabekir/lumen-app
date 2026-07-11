@@ -3,6 +3,7 @@ package com.bksd.paywall.presentation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,10 +21,14 @@ import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
@@ -40,6 +45,7 @@ import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.paywall.presentation.components.FeatureRow
 import com.bksd.paywall.presentation.components.HeroCard
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -52,16 +58,25 @@ fun PaywallRoot(
 ) {
     val viewModel = koinViewModel<PaywallViewModel>()
     val state by viewModel.state.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    val restoreNoneMessage = stringResource(Res.string.paywall_restore_none)
 
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
             PaywallEvent.Dismiss -> onDismiss()
             PaywallEvent.SubscriptionSuccess -> onDismiss()
+            PaywallEvent.RestoreNone ->
+                scope.launch { snackbarHostState.showSnackbar(restoreNoneMessage) }
+
+            is PaywallEvent.ShowError ->
+                scope.launch { snackbarHostState.showSnackbar(event.message) }
         }
     }
 
     PaywallScreen(
         state = state,
+        snackbarHostState = snackbarHostState,
         onAction = viewModel::onAction
     )
 }
@@ -69,9 +84,11 @@ fun PaywallRoot(
 @Composable
 internal fun PaywallScreen(
     state: PaywallState,
-    onAction: (PaywallAction) -> Unit
+    onAction: (PaywallAction) -> Unit,
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     val uriHandler = LocalUriHandler.current
+    Box(modifier = Modifier.fillMaxSize()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -124,31 +141,50 @@ internal fun PaywallScreen(
 
             Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.sm))
 
-            state.tiers.forEach { tier ->
-                PricingTierCard(
-                    tier = tier,
-                    isSelected = state.selectedTier?.id == tier.id,
-                    onSelect = { onAction(PaywallAction.OnSelectTier(tier)) }
+            if (state.loadError) {
+                Text(
+                    text = stringResource(Res.string.paywall_pricing_unavailable),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
+                    textAlign = TextAlign.Center
                 )
+                Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.lg))
+                AppButton(
+                    text = stringResource(Res.string.paywall_try_again),
+                    onClick = { onAction(PaywallAction.OnRetryLoad) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(MaterialTheme.dimens.size.fab),
+                    isLoading = state.isLoading,
+                    style = AppButtonStyle.PRIMARY
+                )
+            } else {
+                state.tiers.forEach { tier ->
+                    PricingTierCard(
+                        tier = tier,
+                        isSelected = state.selectedTier?.id == tier.id,
+                        onSelect = { onAction(PaywallAction.OnSelectTier(tier)) }
+                    )
+                    Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.md))
+                }
+
                 Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.md))
+
+                AppButton(
+                    text = if (state.selectedTier?.hasFreeTrial == true) {
+                        stringResource(Res.string.btn_start_trial)
+                    } else {
+                        stringResource(Res.string.btn_subscribe_now)
+                    },
+                    onClick = { onAction(PaywallAction.OnSubscribeClick) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(MaterialTheme.dimens.size.fab),
+                    enabled = !state.isProcessing,
+                    isLoading = state.isProcessing,
+                    style = AppButtonStyle.PRIMARY
+                )
             }
-
-            Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.md))
-
-            AppButton(
-                text = if (state.selectedTier?.hasFreeTrial == true) {
-                    stringResource(Res.string.btn_start_trial)
-                } else {
-                    stringResource(Res.string.btn_subscribe_now)
-                },
-                onClick = { onAction(PaywallAction.OnSubscribeClick) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(MaterialTheme.dimens.size.fab),
-                enabled = !state.isProcessing,
-                isLoading = state.isProcessing,
-                style = AppButtonStyle.PRIMARY
-            )
 
             Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.md))
 
@@ -189,6 +225,14 @@ internal fun PaywallScreen(
 
             Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.xxxl))
         }
+    }
+
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(MaterialTheme.dimens.spacing.lg)
+        )
     }
 }
 
