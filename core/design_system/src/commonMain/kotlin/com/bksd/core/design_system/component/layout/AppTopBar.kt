@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
@@ -49,7 +50,9 @@ fun AppTopBar(
         modifier = modifier.fillMaxWidth(),
         color = MaterialTheme.colorScheme.surface,
     ) {
-            Column {
+            Column(
+                modifier = if (style == AppBarStyle.Child) Modifier.statusBarsPadding() else Modifier
+            ) {
                 Row(
                     modifier = Modifier
                         .height(MaterialTheme.dimens.size.topBar)
