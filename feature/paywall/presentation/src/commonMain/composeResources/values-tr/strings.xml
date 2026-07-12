@@ -16,4 +16,16 @@
     <string name="paywall_pricing_unavailable">Fiyatlandırma şu anda kullanılamıyor. Bağlantını kontrol edip tekrar dene.</string>
     <string name="paywall_try_again">Tekrar Dene</string>
     <string name="paywall_restore_none">Geri yüklenecek satın alma yok.</string>
+    <string name="tier_name_yearly">Yıllık</string>
+    <string name="tier_name_monthly">Aylık</string>
+    <string name="tier_name_weekly">Haftalık</string>
+    <string name="tier_name_lifetime">Ömür Boyu</string>
+    <string name="tier_period_yearly">yıllık</string>
+    <string name="tier_period_monthly">aylık</string>
+    <string name="tier_period_weekly">haftalık</string>
+    <string name="tier_free_trial">5 günlük ücretsiz deneme</string>
+    <string name="tier_billed_annually">Yıllık faturalandırılır</string>
+    <string name="tier_billed_weekly">Haftalık faturalandırılır</string>
+    <string name="tier_billed_monthly">Aylık faturalandırılır</string>
+    <string name="tier_one_time">Tek seferlik ödeme</string>
 </resources>

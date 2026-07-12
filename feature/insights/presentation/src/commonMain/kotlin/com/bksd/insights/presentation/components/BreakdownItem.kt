@@ -20,7 +20,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.dimens
+import com.bksd.insights.presentation.EntryMediaKind
 import com.bksd.insights.presentation.StatItem
+import com.bksd.insights.presentation.labelRes
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun RowScope.BreakdownItem(item: StatItem) {
@@ -36,7 +39,7 @@ internal fun RowScope.BreakdownItem(item: StatItem) {
         )
         Spacer(Modifier.height(MaterialTheme.dimens.spacing.xs))
         Text(
-            text = item.label,
+            text = stringResource(item.kind.labelRes()),
             fontSize = 11.sp,
             lineHeight = 13.sp,
             fontWeight = FontWeight.Medium,
@@ -52,7 +55,7 @@ internal fun RowScope.BreakdownItem(item: StatItem) {
 private fun BreakdownItemPreview() {
     AppTheme {
         Box(Modifier.background(Color(0xFF7682D6)).padding(MaterialTheme.dimens.spacing.lg)) {
-            Row { BreakdownItem(StatItem(51, "Photos")) }
+            Row { BreakdownItem(StatItem(51, EntryMediaKind.PHOTOS)) }
         }
     }
 }

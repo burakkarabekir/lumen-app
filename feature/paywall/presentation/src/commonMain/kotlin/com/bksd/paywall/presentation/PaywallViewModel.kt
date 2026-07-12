@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import org.jetbrains.compose.resources.getString
 
 class PaywallViewModel(
     private val getPaywallConfigUseCase: GetPaywallConfigUseCase,
@@ -102,28 +103,28 @@ class PaywallViewModel(
     private fun createInitialState(): PaywallState = getPaywallConfigUseCase().toUiState()
 }
 
-private fun BillingProduct.toTierUi(): BillingTierUi = BillingTierUi(
+private suspend fun BillingProduct.toTierUi(): BillingTierUi = BillingTierUi(
     id = id,
     displayName = when (period) {
-        BillingPeriod.YEARLY -> "Yearly"
-        BillingPeriod.MONTHLY -> "Monthly"
-        BillingPeriod.WEEKLY -> "Weekly"
-        BillingPeriod.LIFETIME -> "Lifetime"
+        BillingPeriod.YEARLY -> getString(Res.string.tier_name_yearly)
+        BillingPeriod.MONTHLY -> getString(Res.string.tier_name_monthly)
+        BillingPeriod.WEEKLY -> getString(Res.string.tier_name_weekly)
+        BillingPeriod.LIFETIME -> getString(Res.string.tier_name_lifetime)
         BillingPeriod.UNKNOWN -> title
     },
     price = priceLabel,
     period = when (period) {
-        BillingPeriod.YEARLY -> "per year"
-        BillingPeriod.MONTHLY -> "per month"
-        BillingPeriod.WEEKLY -> "per week"
+        BillingPeriod.YEARLY -> getString(Res.string.tier_period_yearly)
+        BillingPeriod.MONTHLY -> getString(Res.string.tier_period_monthly)
+        BillingPeriod.WEEKLY -> getString(Res.string.tier_period_weekly)
         else -> ""
     },
     subtitle = when {
-        hasFreeTrial -> "5-day free trial"
-        period == BillingPeriod.YEARLY -> "Billed annually"
-        period == BillingPeriod.WEEKLY -> "Billed weekly"
-        period == BillingPeriod.LIFETIME -> "One-time purchase"
-        else -> "Billed monthly"
+        hasFreeTrial -> getString(Res.string.tier_free_trial)
+        period == BillingPeriod.YEARLY -> getString(Res.string.tier_billed_annually)
+        period == BillingPeriod.WEEKLY -> getString(Res.string.tier_billed_weekly)
+        period == BillingPeriod.LIFETIME -> getString(Res.string.tier_one_time)
+        else -> getString(Res.string.tier_billed_monthly)
     },
     monthlyBreakdown = null,
     badge = when (period) {

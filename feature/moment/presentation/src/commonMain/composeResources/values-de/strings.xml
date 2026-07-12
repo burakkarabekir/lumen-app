@@ -60,4 +60,9 @@
     <string name="toggle_attachments">Anhänge ein-/ausblenden</string>
     <string name="attachment_count_single">%1$d Anhang</string>
     <string name="attachment_count_plural">%1$d Anhänge</string>
+    <string name="attachment_type_photo">Foto</string>
+    <string name="attachment_type_audio">Audio</string>
+    <string name="attachment_type_video">Video</string>
+    <string name="attachment_type_link">Link</string>
+    <string name="entry_untitled">Ohne Titel</string>
 </resources>

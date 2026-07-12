@@ -53,4 +53,80 @@
     <string name="stat_this_month">This Month</string>
     <string name="stat_this_year">This Year</string>
     <string name="visited_places">Visited Places</string>
+    <string name="streak_longest">Longest</string>
+    <string name="streak_recent">Recent</string>
+    <string name="streak_daily">Daily Streak</string>
+    <string name="streak_weekly">Weekly Streak</string>
+    <string name="range_all_time">All-time</string>
+    <string name="breakdown_photos">Photos</string>
+    <string name="breakdown_videos">Videos</string>
+    <string name="breakdown_voice_notes">Voice Notes</string>
+    <string name="breakdown_places">Places</string>
+    <plurals name="streak_unit_day">
+        <item quantity="one">Day</item>
+        <item quantity="other">Days</item>
+    </plurals>
+    <plurals name="streak_unit_week">
+        <item quantity="one">Week</item>
+        <item quantity="other">Weeks</item>
+    </plurals>
+    <string name="day_initial_monday">M</string>
+    <string name="day_initial_tuesday">T</string>
+    <string name="day_initial_wednesday">W</string>
+    <string name="day_initial_thursday">T</string>
+    <string name="day_initial_friday">F</string>
+    <string name="day_initial_saturday">S</string>
+    <string name="day_initial_sunday">S</string>
+    <string name="day_short_monday">Mon</string>
+    <string name="day_short_tuesday">Tue</string>
+    <string name="day_short_wednesday">Wed</string>
+    <string name="day_short_thursday">Thu</string>
+    <string name="day_short_friday">Fri</string>
+    <string name="day_short_saturday">Sat</string>
+    <string name="day_short_sunday">Sun</string>
+    <string name="entry_untitled">Untitled</string>
+    <string name="month_initial_jan">J</string>
+    <string name="month_initial_feb">F</string>
+    <string name="month_initial_mar">M</string>
+    <string name="month_initial_apr">A</string>
+    <string name="month_initial_may">M</string>
+    <string name="month_initial_jun">J</string>
+    <string name="month_initial_jul">J</string>
+    <string name="month_initial_aug">A</string>
+    <string name="month_initial_sep">S</string>
+    <string name="month_initial_oct">O</string>
+    <string name="month_initial_nov">N</string>
+    <string name="month_initial_dec">D</string>
+    <string-array name="place_beach_words">
+        <item>beach</item>
+        <item>shore</item>
+        <item>coast</item>
+        <item>bay</item>
+    </string-array>
+    <string-array name="place_park_words">
+        <item>park</item>
+        <item>garden</item>
+        <item>trail</item>
+        <item>forest</item>
+        <item>lake</item>
+        <item>mountain</item>
+    </string-array>
+    <string-array name="place_restaurant_words">
+        <item>restaurant</item>
+        <item>cafe</item>
+        <item>coffee</item>
+        <item>diner</item>
+        <item>bistro</item>
+        <item>pub</item>
+    </string-array>
+    <string-array name="place_landmark_words">
+        <item>museum</item>
+        <item>monument</item>
+        <item>landmark</item>
+        <item>tower</item>
+        <item>castle</item>
+        <item>cathedral</item>
+        <item>temple</item>
+        <item>palace</item>
+    </string-array>
 </resources>

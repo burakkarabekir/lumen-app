@@ -162,4 +162,21 @@
     <string name="language_system">Système</string>
     <string name="language_selector_title">Choisir la langue</string>
     <string name="cloud_sync_on">Activé</string>
+    <string name="pdf_document_title">Journal Lumen</string>
+    <string name="month_abbr_jan">Jan</string>
+    <string name="month_abbr_feb">Fév</string>
+    <string name="month_abbr_mar">Mar</string>
+    <string name="month_abbr_apr">Avr</string>
+    <string name="month_abbr_may">Mai</string>
+    <string name="month_abbr_jun">Juin</string>
+    <string name="month_abbr_jul">Juil</string>
+    <string name="month_abbr_aug">Août</string>
+    <string name="month_abbr_sep">Sep</string>
+    <string name="month_abbr_oct">Oct</string>
+    <string name="month_abbr_nov">Nov</string>
+    <string name="month_abbr_dec">Déc</string>
+    <plurals name="pdf_entry_count">
+        <item quantity="one">%d entrée</item>
+        <item quantity="other">%d entrées</item>
+    </plurals>
 </resources>

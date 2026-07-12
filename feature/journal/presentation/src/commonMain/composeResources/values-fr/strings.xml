@@ -119,4 +119,21 @@
     <!-- MomentCard -->
     <string name="content_desc_favorited">En favori</string>
     <string name="content_desc_more_actions">Plus d&apos;actions</string>
+    <string name="month_january">Janvier</string>
+    <string name="month_february">Février</string>
+    <string name="month_march">Mars</string>
+    <string name="month_april">Avril</string>
+    <string name="month_may">Mai</string>
+    <string name="month_june">Juin</string>
+    <string name="month_july">Juillet</string>
+    <string name="month_august">Août</string>
+    <string name="month_september">Septembre</string>
+    <string name="month_october">Octobre</string>
+    <string name="month_november">Novembre</string>
+    <string name="month_december">Décembre</string>
+    <string name="upsell_reflections_title">Tu as utilisé tes réflexions IA gratuites</string>
+    <string name="upsell_reflections_body">Le forfait gratuit inclut 3 réflexions IA par mois. Débloque des réflexions illimitées, des couvertures illustrées et des analyses hebdomadaires avec Lumen Plus.</string>
+    <string name="upsell_unlock_plus">Débloquer Plus</string>
+    <string name="detail_changes_saved">Modifications enregistrées</string>
+    <string name="detail_moment_deleted">Moment supprimé</string>
 </resources>

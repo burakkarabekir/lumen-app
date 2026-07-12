@@ -162,4 +162,21 @@
     <string name="language_system">Sistem varsayılanı</string>
     <string name="language_selector_title">Dil seçin</string>
     <string name="cloud_sync_on">Açık</string>
+    <string name="pdf_document_title">Lumen Günlüğü</string>
+    <string name="month_abbr_jan">Oca</string>
+    <string name="month_abbr_feb">Şub</string>
+    <string name="month_abbr_mar">Mar</string>
+    <string name="month_abbr_apr">Nis</string>
+    <string name="month_abbr_may">May</string>
+    <string name="month_abbr_jun">Haz</string>
+    <string name="month_abbr_jul">Tem</string>
+    <string name="month_abbr_aug">Ağu</string>
+    <string name="month_abbr_sep">Eyl</string>
+    <string name="month_abbr_oct">Eki</string>
+    <string name="month_abbr_nov">Kas</string>
+    <string name="month_abbr_dec">Ara</string>
+    <plurals name="pdf_entry_count">
+        <item quantity="one">%d girdi</item>
+        <item quantity="other">%d girdi</item>
+    </plurals>
 </resources>

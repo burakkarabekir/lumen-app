@@ -2,6 +2,7 @@ package com.bksd.profile.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.bksd.core.domain.model.Moment
+import com.bksd.core.presentation.labelRes
 import com.bksd.core.presentation.pdf.JournalPdfContent
 import com.bksd.core.presentation.pdf.JournalPdfEntry
 import com.bksd.core.presentation.pdf.generateJournalPdf
@@ -15,6 +16,8 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
+import org.jetbrains.compose.resources.getPluralString
+import org.jetbrains.compose.resources.getString
 
 class ExportJournalViewModel(
     private val observeAllMoments: ObserveAllMomentsUseCase,
@@ -73,11 +76,11 @@ class ExportJournalViewModel(
         }
     }
 
-    private fun buildContent(moments: List<Moment>): JournalPdfContent {
+    private suspend fun buildContent(moments: List<Moment>): JournalPdfContent {
         val entries = moments
             .sortedByDescending { it.createdAt }
             .map { moment ->
-                val moodStr = moment.moods.joinToString("   ") { "${it.emoji} ${it.label}" }
+                val moodStr = moment.moods.map { "${it.emoji} ${getString(it.labelRes())}" }.joinToString("   ")
                 val tagStr = moment.tags.joinToString(" ") { "#$it" }
                 val meta = listOf(moodStr, tagStr)
                     .filter { it.isNotBlank() }
@@ -90,25 +93,39 @@ class ExportJournalViewModel(
                 )
             }
         return JournalPdfContent(
-            documentTitle = "Lumen Journal",
-            subtitle = "${moments.size} entries",
+            documentTitle = getString(Res.string.pdf_document_title),
+            subtitle = getPluralString(Res.plurals.pdf_entry_count, moments.size, moments.size),
             entries = entries,
         )
     }
 }
 
-private val MONTHS = listOf(
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-)
-
-private fun formatDate(isoInstant: String): String {
+private suspend fun formatDate(isoInstant: String): String {
     val datePart = isoInstant.substringBefore('T')
     val parts = datePart.split('-')
     if (parts.size != 3) return datePart
     val year = parts[0]
     val month = parts[1].toIntOrNull() ?: return datePart
     val day = parts[2].toIntOrNull() ?: return datePart
-    val monthName = MONTHS.getOrNull(month - 1) ?: return datePart
+    val monthName = monthAbbr(month) ?: return datePart
     return "$day $monthName $year"
+}
+
+private suspend fun monthAbbr(month: Int): String? {
+    val res = when (month) {
+        1 -> Res.string.month_abbr_jan
+        2 -> Res.string.month_abbr_feb
+        3 -> Res.string.month_abbr_mar
+        4 -> Res.string.month_abbr_apr
+        5 -> Res.string.month_abbr_may
+        6 -> Res.string.month_abbr_jun
+        7 -> Res.string.month_abbr_jul
+        8 -> Res.string.month_abbr_aug
+        9 -> Res.string.month_abbr_sep
+        10 -> Res.string.month_abbr_oct
+        11 -> Res.string.month_abbr_nov
+        12 -> Res.string.month_abbr_dec
+        else -> return null
+    }
+    return getString(res)
 }

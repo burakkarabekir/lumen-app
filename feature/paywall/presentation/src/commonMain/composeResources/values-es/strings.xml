@@ -16,4 +16,16 @@
     <string name="paywall_pricing_unavailable">Los precios no están disponibles en este momento. Comprueba tu conexión e inténtalo de nuevo.</string>
     <string name="paywall_try_again">Reintentar</string>
     <string name="paywall_restore_none">No hay compras que restaurar.</string>
+    <string name="tier_name_yearly">Anual</string>
+    <string name="tier_name_monthly">Mensual</string>
+    <string name="tier_name_weekly">Semanal</string>
+    <string name="tier_name_lifetime">De por vida</string>
+    <string name="tier_period_yearly">por año</string>
+    <string name="tier_period_monthly">por mes</string>
+    <string name="tier_period_weekly">por semana</string>
+    <string name="tier_free_trial">5 días de prueba gratis</string>
+    <string name="tier_billed_annually">Facturación anual</string>
+    <string name="tier_billed_weekly">Facturación semanal</string>
+    <string name="tier_billed_monthly">Facturación mensual</string>
+    <string name="tier_one_time">Pago único</string>
 </resources>

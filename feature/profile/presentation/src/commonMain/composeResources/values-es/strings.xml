@@ -162,4 +162,21 @@
     <string name="language_system">Predeterminado del sistema</string>
     <string name="language_selector_title">Elegir idioma</string>
     <string name="cloud_sync_on">Activado</string>
+    <string name="pdf_document_title">Diario Lumen</string>
+    <string name="month_abbr_jan">Ene</string>
+    <string name="month_abbr_feb">Feb</string>
+    <string name="month_abbr_mar">Mar</string>
+    <string name="month_abbr_apr">Abr</string>
+    <string name="month_abbr_may">May</string>
+    <string name="month_abbr_jun">Jun</string>
+    <string name="month_abbr_jul">Jul</string>
+    <string name="month_abbr_aug">Ago</string>
+    <string name="month_abbr_sep">Sep</string>
+    <string name="month_abbr_oct">Oct</string>
+    <string name="month_abbr_nov">Nov</string>
+    <string name="month_abbr_dec">Dic</string>
+    <plurals name="pdf_entry_count">
+        <item quantity="one">%d entrada</item>
+        <item quantity="other">%d entradas</item>
+    </plurals>
 </resources>

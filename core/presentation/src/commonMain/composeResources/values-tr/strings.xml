@@ -29,4 +29,21 @@
     <string name="reminder_daily_body">Gününü kaydetmek için bir dakikanı ayır.</string>
     <string name="reminder_streak_title">Serini bozma</string>
     <string name="reminder_streak_body">Serini sürdürmek için bir giriş yaz.</string>
+    <string name="mood_happy">Mutlu</string>
+    <string name="mood_grateful">Minnettar</string>
+    <string name="mood_calm">Sakin</string>
+    <string name="mood_loved">Sevgi dolu</string>
+    <string name="mood_hopeful">Umutlu</string>
+    <string name="mood_proud">Gururlu</string>
+    <string name="mood_inspired">İlham dolu</string>
+    <string name="mood_reflective">Düşünceli</string>
+    <string name="mood_focused">Odaklı</string>
+    <string name="mood_nostalgic">Nostaljik</string>
+    <string name="mood_tired">Yorgun</string>
+    <string name="mood_anxious">Endişeli</string>
+    <string name="mood_stressed">Stresli</string>
+    <string name="mood_frustrated">Sinirli</string>
+    <string name="mood_sad">Üzgün</string>
+    <string name="mood_melancholic">Melankolik</string>
+    <string name="mood_bored">Sıkılmış</string>
 </resources>

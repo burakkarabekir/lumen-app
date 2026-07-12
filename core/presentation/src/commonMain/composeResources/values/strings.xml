@@ -29,4 +29,21 @@
     <string name="reminder_daily_body">Take a moment to capture your day.</string>
     <string name="reminder_streak_title">Don&apos;t break your streak</string>
     <string name="reminder_streak_body">Write an entry to keep your streak alive.</string>
+    <string name="mood_happy">Happy</string>
+    <string name="mood_grateful">Grateful</string>
+    <string name="mood_calm">Calm</string>
+    <string name="mood_loved">Loved</string>
+    <string name="mood_hopeful">Hopeful</string>
+    <string name="mood_proud">Proud</string>
+    <string name="mood_inspired">Inspired</string>
+    <string name="mood_reflective">Reflective</string>
+    <string name="mood_focused">Focused</string>
+    <string name="mood_nostalgic">Nostalgic</string>
+    <string name="mood_tired">Tired</string>
+    <string name="mood_anxious">Anxious</string>
+    <string name="mood_stressed">Stressed</string>
+    <string name="mood_frustrated">Frustrated</string>
+    <string name="mood_sad">Sad</string>
+    <string name="mood_melancholic">Melancholic</string>
+    <string name="mood_bored">Bored</string>
 </resources>

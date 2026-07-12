@@ -119,4 +119,21 @@
     <!-- MomentCard -->
     <string name="content_desc_favorited">Favorited</string>
     <string name="content_desc_more_actions">More actions</string>
+    <string name="month_january">January</string>
+    <string name="month_february">February</string>
+    <string name="month_march">March</string>
+    <string name="month_april">April</string>
+    <string name="month_may">May</string>
+    <string name="month_june">June</string>
+    <string name="month_july">July</string>
+    <string name="month_august">August</string>
+    <string name="month_september">September</string>
+    <string name="month_october">October</string>
+    <string name="month_november">November</string>
+    <string name="month_december">December</string>
+    <string name="upsell_reflections_title">You&apos;ve used your free AI reflections</string>
+    <string name="upsell_reflections_body">The free plan includes 3 AI reflections a month. Unlock unlimited reflections, cover art, and weekly insights with Lumen Plus.</string>
+    <string name="upsell_unlock_plus">Unlock Plus</string>
+    <string name="detail_changes_saved">Changes saved</string>
+    <string name="detail_moment_deleted">Moment deleted</string>
 </resources>

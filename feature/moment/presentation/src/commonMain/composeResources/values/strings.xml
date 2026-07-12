@@ -60,4 +60,9 @@
     <string name="toggle_attachments">Toggle Attachments</string>
     <string name="attachment_count_single">%1$d Attachment</string>
     <string name="attachment_count_plural">%1$d Attachments</string>
+    <string name="attachment_type_photo">Photo</string>
+    <string name="attachment_type_audio">Audio</string>
+    <string name="attachment_type_video">Video</string>
+    <string name="attachment_type_link">Link</string>
+    <string name="entry_untitled">Untitled</string>
 </resources>

@@ -119,4 +119,21 @@
     <!-- MomentCard -->
     <string name="content_desc_favorited">Favorisiert</string>
     <string name="content_desc_more_actions">Weitere Aktionen</string>
+    <string name="month_january">Januar</string>
+    <string name="month_february">Februar</string>
+    <string name="month_march">März</string>
+    <string name="month_april">April</string>
+    <string name="month_may">Mai</string>
+    <string name="month_june">Juni</string>
+    <string name="month_july">Juli</string>
+    <string name="month_august">August</string>
+    <string name="month_september">September</string>
+    <string name="month_october">Oktober</string>
+    <string name="month_november">November</string>
+    <string name="month_december">Dezember</string>
+    <string name="upsell_reflections_title">Du hast deine kostenlosen KI-Reflexionen aufgebraucht</string>
+    <string name="upsell_reflections_body">Der kostenlose Plan enthält 3 KI-Reflexionen pro Monat. Schalte mit Lumen Plus unbegrenzte Reflexionen, Cover-Bilder und wöchentliche Einblicke frei.</string>
+    <string name="upsell_unlock_plus">Plus freischalten</string>
+    <string name="detail_changes_saved">Änderungen gespeichert</string>
+    <string name="detail_moment_deleted">Moment gelöscht</string>
 </resources>

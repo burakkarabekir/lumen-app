@@ -1,4 +1,6 @@
 package com.bksd.journal.presentation.detail.share
+import com.bksd.core.presentation.labelRes
+import org.jetbrains.compose.resources.stringResource
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -154,7 +156,7 @@ fun ShareableMomentCard(
                 ) {
                     Box(Modifier.size(MaterialTheme.dimens.icon.xs).clip(CircleShape).background(MaterialTheme.colorScheme.extended.moodHue(firstMood)))
                     Text(
-                        text = firstMood.label,
+                        text = stringResource(firstMood.labelRes()),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = colors.text

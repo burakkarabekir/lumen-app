@@ -5,12 +5,17 @@ import com.bksd.core.domain.connectivity.NetworkMonitor
 import com.bksd.core.domain.error.Result
 import com.bksd.core.domain.model.PlaybackState
 import com.bksd.core.domain.storage.AudioPlayer
+import com.bksd.core.presentation.labelRes
 import com.bksd.core.presentation.util.BaseViewModel
 import com.bksd.core.presentation.util.UiText
 import com.bksd.core.presentation.util.toUiText
+import org.jetbrains.compose.resources.getString
 import com.bksd.journal.domain.usecase.DeleteMomentUseCase
 import com.bksd.journal.domain.usecase.GetMomentUseCase
 import com.bksd.journal.domain.usecase.UpdateMomentUseCase
+import com.bksd.journal.presentation.Res
+import com.bksd.journal.presentation.detail_changes_saved
+import com.bksd.journal.presentation.detail_moment_deleted
 import com.bksd.reflection.domain.model.MomentAnalysisState
 import com.bksd.reflection.domain.usecase.ObserveEntryAnalysisUseCase
 import com.bksd.reflection.domain.usecase.RequestEntryAnalysisUseCase
@@ -247,7 +252,7 @@ class MomentDetailViewModel(
                             isSaving = false
                         )
                     }
-                    sendEvent(MomentDetailEvent.ShowSuccess(UiText.Dynamic("Changes saved")))
+                    sendEvent(MomentDetailEvent.ShowSuccess(UiText.Resource(Res.string.detail_changes_saved)))
                 }
 
                 is Result.Error -> {
@@ -299,7 +304,7 @@ class MomentDetailViewModel(
         launch {
             when (val result = deleteMomentUseCase(momentId)) {
                 is Result.Success -> {
-                    sendEvent(MomentDetailEvent.ShowSuccess(UiText.Dynamic("Moment deleted")))
+                    sendEvent(MomentDetailEvent.ShowSuccess(UiText.Resource(Res.string.detail_moment_deleted)))
                     sendEvent(MomentDetailEvent.NavigateBack)
                 }
 
@@ -326,11 +331,13 @@ class MomentDetailViewModel(
         ).joinToString("\n\n")
         if (entryText.isBlank()) return
 
-        val mood = moment.moods
-            .joinToString(", ") { it.label }
-            .takeIf { it.isNotBlank() }
-
-        launch { requestEntryAnalysis(moment.id, entryText, mood) }
+        launch {
+            val mood = moment.moods
+                .map { getString(it.labelRes()) }
+                .joinToString(", ")
+                .takeIf { it.isNotBlank() }
+            requestEntryAnalysis(moment.id, entryText, mood)
+        }
     }
 
     /**

@@ -29,4 +29,21 @@
     <string name="reminder_daily_body">Tómate un momento para capturar tu día.</string>
     <string name="reminder_streak_title">No rompas tu racha</string>
     <string name="reminder_streak_body">Escribe una entrada para mantener viva tu racha.</string>
+    <string name="mood_happy">Feliz</string>
+    <string name="mood_grateful">Agradecido</string>
+    <string name="mood_calm">Tranquilo</string>
+    <string name="mood_loved">Querido</string>
+    <string name="mood_hopeful">Esperanzado</string>
+    <string name="mood_proud">Orgulloso</string>
+    <string name="mood_inspired">Inspirado</string>
+    <string name="mood_reflective">Reflexivo</string>
+    <string name="mood_focused">Concentrado</string>
+    <string name="mood_nostalgic">Nostálgico</string>
+    <string name="mood_tired">Cansado</string>
+    <string name="mood_anxious">Ansioso</string>
+    <string name="mood_stressed">Estresado</string>
+    <string name="mood_frustrated">Frustrado</string>
+    <string name="mood_sad">Triste</string>
+    <string name="mood_melancholic">Melancólico</string>
+    <string name="mood_bored">Aburrido</string>
 </resources>

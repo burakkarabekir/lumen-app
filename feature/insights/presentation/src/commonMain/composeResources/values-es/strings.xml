@@ -53,4 +53,105 @@
     <string name="stat_this_month">Este mes</string>
     <string name="stat_this_year">Este año</string>
     <string name="visited_places">Lugares visitados</string>
+    <string name="streak_longest">Más larga</string>
+    <string name="streak_recent">Reciente</string>
+    <string name="streak_daily">Racha diaria</string>
+    <string name="streak_weekly">Racha semanal</string>
+    <string name="range_all_time">Histórico</string>
+    <string name="breakdown_photos">Fotos</string>
+    <string name="breakdown_videos">Vídeos</string>
+    <string name="breakdown_voice_notes">Notas de voz</string>
+    <string name="breakdown_places">Lugares</string>
+    <plurals name="streak_unit_day">
+        <item quantity="one">Día</item>
+        <item quantity="other">Días</item>
+    </plurals>
+    <plurals name="streak_unit_week">
+        <item quantity="one">Semana</item>
+        <item quantity="other">Semanas</item>
+    </plurals>
+    <string name="day_initial_monday">L</string>
+    <string name="day_initial_tuesday">M</string>
+    <string name="day_initial_wednesday">X</string>
+    <string name="day_initial_thursday">J</string>
+    <string name="day_initial_friday">V</string>
+    <string name="day_initial_saturday">S</string>
+    <string name="day_initial_sunday">D</string>
+    <string name="day_short_monday">Lun</string>
+    <string name="day_short_tuesday">Mar</string>
+    <string name="day_short_wednesday">Mié</string>
+    <string name="day_short_thursday">Jue</string>
+    <string name="day_short_friday">Vie</string>
+    <string name="day_short_saturday">Sáb</string>
+    <string name="day_short_sunday">Dom</string>
+    <string name="entry_untitled">Sin título</string>
+    <string name="month_initial_jan">E</string>
+    <string name="month_initial_feb">F</string>
+    <string name="month_initial_mar">M</string>
+    <string name="month_initial_apr">A</string>
+    <string name="month_initial_may">M</string>
+    <string name="month_initial_jun">J</string>
+    <string name="month_initial_jul">J</string>
+    <string name="month_initial_aug">A</string>
+    <string name="month_initial_sep">S</string>
+    <string name="month_initial_oct">O</string>
+    <string name="month_initial_nov">N</string>
+    <string name="month_initial_dec">D</string>
+    <string-array name="place_beach_words">
+        <item>beach</item>
+        <item>shore</item>
+        <item>coast</item>
+        <item>bay</item>
+        <item>playa</item>
+        <item>costa</item>
+        <item>bahía</item>
+        <item>orilla</item>
+    </string-array>
+    <string-array name="place_park_words">
+        <item>park</item>
+        <item>garden</item>
+        <item>trail</item>
+        <item>forest</item>
+        <item>lake</item>
+        <item>mountain</item>
+        <item>parque</item>
+        <item>jardín</item>
+        <item>bosque</item>
+        <item>lago</item>
+        <item>montaña</item>
+        <item>sendero</item>
+    </string-array>
+    <string-array name="place_restaurant_words">
+        <item>restaurant</item>
+        <item>cafe</item>
+        <item>coffee</item>
+        <item>diner</item>
+        <item>bistro</item>
+        <item>pub</item>
+        <item>restaurante</item>
+        <item>café</item>
+        <item>cafetería</item>
+        <item>cervecería</item>
+        <item>taberna</item>
+        <item>mesón</item>
+        <item>asador</item>
+        <item>pizzería</item>
+    </string-array>
+    <string-array name="place_landmark_words">
+        <item>museum</item>
+        <item>monument</item>
+        <item>landmark</item>
+        <item>tower</item>
+        <item>castle</item>
+        <item>cathedral</item>
+        <item>temple</item>
+        <item>palace</item>
+        <item>museo</item>
+        <item>monumento</item>
+        <item>torre</item>
+        <item>castillo</item>
+        <item>catedral</item>
+        <item>templo</item>
+        <item>palacio</item>
+    </string-array>
 </resources>

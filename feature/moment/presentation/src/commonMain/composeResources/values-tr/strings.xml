@@ -60,4 +60,9 @@
     <string name="toggle_attachments">Ekleri Aç/Kapat</string>
     <string name="attachment_count_single">%1$d Ek</string>
     <string name="attachment_count_plural">%1$d Ek</string>
+    <string name="attachment_type_photo">Fotoğraf</string>
+    <string name="attachment_type_audio">Ses</string>
+    <string name="attachment_type_video">Video</string>
+    <string name="attachment_type_link">Bağlantı</string>
+    <string name="entry_untitled">Başlıksız</string>
 </resources>

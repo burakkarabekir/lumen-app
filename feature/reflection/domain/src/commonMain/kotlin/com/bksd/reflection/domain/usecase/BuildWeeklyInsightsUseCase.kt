@@ -7,7 +7,6 @@ import com.bksd.reflection.domain.model.ArcPoint
 import com.bksd.reflection.domain.model.StandoutEntry
 import com.bksd.reflection.domain.model.WeeklyMomentInsights
 import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.isoDayNumber
 import kotlinx.datetime.minus
@@ -28,11 +27,11 @@ class BuildWeeklyInsightsUseCase(
         val points = weekDates.map { date ->
             val moods = byDate[date].orEmpty().flatMap { it.moods }
             val point = if (moods.isEmpty()) {
-                ArcPoint(dayInitial(date.dayOfWeek), hasEntry = false, valence = 0f, colorHex = null)
+                ArcPoint(date.dayOfWeek, hasEntry = false, valence = 0f, colorHex = null)
             } else {
                 val valence = moods.map(::moodValence).average().toFloat()
                 val dominant = moods.groupingBy { it }.eachCount().maxByOrNull { it.value }!!.key
-                ArcPoint(dayInitial(date.dayOfWeek), hasEntry = true, valence, moodColorHex(dominant))
+                ArcPoint(date.dayOfWeek, hasEntry = true, valence, moodColorHex(dominant))
             }
             date to point
         }
@@ -45,15 +44,15 @@ class BuildWeeklyInsightsUseCase(
             ?.let { moment ->
                 StandoutEntry(
                     momentId = moment.id,
-                    title = moment.title.ifBlank { "Untitled" },
+                    title = moment.title,
                     quote = quoteFrom(moment),
-                    colorHex = moment.moods.firstOrNull()?.let(::moodColorHex) ?: DEFAULT_COLOR
+                    colorHex = moment.moods.firstOrNull()?.let(::moodColorHex)
                 )
             }
 
         return WeeklyMomentInsights(
             arc = points.map { it.second },
-            brightestDayLabel = brightest?.let { shortDayName(it.first.dayOfWeek) },
+            brightestDay = brightest?.first?.dayOfWeek,
             standout = standout
         )
     }
@@ -75,29 +74,5 @@ class BuildWeeklyInsightsUseCase(
         val first = text.split(Regex("(?<=[.!?])\\s+")).firstOrNull()?.trim().orEmpty()
         val quote = first.ifBlank { text }
         return if (quote.length > 140) quote.take(137).trimEnd() + "…" else quote
-    }
-
-    private fun dayInitial(day: DayOfWeek): String = when (day) {
-        DayOfWeek.MONDAY -> "M"
-        DayOfWeek.TUESDAY -> "T"
-        DayOfWeek.WEDNESDAY -> "W"
-        DayOfWeek.THURSDAY -> "T"
-        DayOfWeek.FRIDAY -> "F"
-        DayOfWeek.SATURDAY -> "S"
-        DayOfWeek.SUNDAY -> "S"
-    }
-
-    private fun shortDayName(day: DayOfWeek): String = when (day) {
-        DayOfWeek.MONDAY -> "Mon"
-        DayOfWeek.TUESDAY -> "Tue"
-        DayOfWeek.WEDNESDAY -> "Wed"
-        DayOfWeek.THURSDAY -> "Thu"
-        DayOfWeek.FRIDAY -> "Fri"
-        DayOfWeek.SATURDAY -> "Sat"
-        DayOfWeek.SUNDAY -> "Sun"
-    }
-
-    private companion object {
-        const val DEFAULT_COLOR = "#7682D6"
     }
 }

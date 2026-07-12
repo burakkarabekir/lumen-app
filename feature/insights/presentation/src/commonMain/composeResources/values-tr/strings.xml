@@ -53,4 +53,104 @@
     <string name="stat_this_month">Bu Ay</string>
     <string name="stat_this_year">Bu Yıl</string>
     <string name="visited_places">Ziyaret Edilen Yerler</string>
+    <string name="streak_longest">En Uzun</string>
+    <string name="streak_recent">Son</string>
+    <string name="streak_daily">Günlük Seri</string>
+    <string name="streak_weekly">Haftalık Seri</string>
+    <string name="range_all_time">Tümü</string>
+    <string name="breakdown_photos">Fotoğraf</string>
+    <string name="breakdown_videos">Video</string>
+    <string name="breakdown_voice_notes">Sesli Not</string>
+    <string name="breakdown_places">Yer</string>
+    <plurals name="streak_unit_day">
+        <item quantity="one">Gün</item>
+        <item quantity="other">Gün</item>
+    </plurals>
+    <plurals name="streak_unit_week">
+        <item quantity="one">Hafta</item>
+        <item quantity="other">Hafta</item>
+    </plurals>
+    <string name="day_initial_monday">P</string>
+    <string name="day_initial_tuesday">S</string>
+    <string name="day_initial_wednesday">Ç</string>
+    <string name="day_initial_thursday">P</string>
+    <string name="day_initial_friday">C</string>
+    <string name="day_initial_saturday">C</string>
+    <string name="day_initial_sunday">P</string>
+    <string name="day_short_monday">Pzt</string>
+    <string name="day_short_tuesday">Sal</string>
+    <string name="day_short_wednesday">Çar</string>
+    <string name="day_short_thursday">Per</string>
+    <string name="day_short_friday">Cum</string>
+    <string name="day_short_saturday">Cmt</string>
+    <string name="day_short_sunday">Paz</string>
+    <string name="entry_untitled">Başlıksız</string>
+    <string name="month_initial_jan">O</string>
+    <string name="month_initial_feb">Ş</string>
+    <string name="month_initial_mar">M</string>
+    <string name="month_initial_apr">N</string>
+    <string name="month_initial_may">M</string>
+    <string name="month_initial_jun">H</string>
+    <string name="month_initial_jul">T</string>
+    <string name="month_initial_aug">A</string>
+    <string name="month_initial_sep">E</string>
+    <string name="month_initial_oct">E</string>
+    <string name="month_initial_nov">K</string>
+    <string name="month_initial_dec">A</string>
+    <string-array name="place_beach_words">
+        <item>beach</item>
+        <item>shore</item>
+        <item>coast</item>
+        <item>bay</item>
+        <item>sahil</item>
+        <item>plaj</item>
+        <item>kıyı</item>
+        <item>koy</item>
+    </string-array>
+    <string-array name="place_park_words">
+        <item>park</item>
+        <item>garden</item>
+        <item>trail</item>
+        <item>forest</item>
+        <item>lake</item>
+        <item>mountain</item>
+        <item>bahçe</item>
+        <item>orman</item>
+        <item>göl</item>
+        <item>dağ</item>
+        <item>koru</item>
+    </string-array>
+    <string-array name="place_restaurant_words">
+        <item>restaurant</item>
+        <item>cafe</item>
+        <item>coffee</item>
+        <item>diner</item>
+        <item>bistro</item>
+        <item>pub</item>
+        <item>restoran</item>
+        <item>kafe</item>
+        <item>kahve</item>
+        <item>lokanta</item>
+        <item>pastane</item>
+    </string-array>
+    <string-array name="place_landmark_words">
+        <item>museum</item>
+        <item>monument</item>
+        <item>landmark</item>
+        <item>tower</item>
+        <item>castle</item>
+        <item>cathedral</item>
+        <item>temple</item>
+        <item>palace</item>
+        <item>müze</item>
+        <item>anıt</item>
+        <item>kule</item>
+        <item>kale</item>
+        <item>katedral</item>
+        <item>tapınak</item>
+        <item>saray</item>
+        <item>cami</item>
+        <item>kilise</item>
+        <item>türbe</item>
+    </string-array>
 </resources>

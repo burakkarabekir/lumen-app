@@ -162,4 +162,26 @@
     <string name="language_system">System default</string>
     <string name="language_selector_title">Choose language</string>
     <string name="cloud_sync_on">On</string>
+    <string name="language_name_english">English</string>
+    <string name="language_name_turkish">Türkçe</string>
+    <string name="language_name_german">Deutsch</string>
+    <string name="language_name_spanish">Español</string>
+    <string name="language_name_french">Français</string>
+    <string name="pdf_document_title">Lumen Journal</string>
+    <string name="month_abbr_jan">Jan</string>
+    <string name="month_abbr_feb">Feb</string>
+    <string name="month_abbr_mar">Mar</string>
+    <string name="month_abbr_apr">Apr</string>
+    <string name="month_abbr_may">May</string>
+    <string name="month_abbr_jun">Jun</string>
+    <string name="month_abbr_jul">Jul</string>
+    <string name="month_abbr_aug">Aug</string>
+    <string name="month_abbr_sep">Sep</string>
+    <string name="month_abbr_oct">Oct</string>
+    <string name="month_abbr_nov">Nov</string>
+    <string name="month_abbr_dec">Dec</string>
+    <plurals name="pdf_entry_count">
+        <item quantity="one">%d entry</item>
+        <item quantity="other">%d entries</item>
+    </plurals>
 </resources>

@@ -41,6 +41,8 @@ import com.bksd.insights.presentation.current_streak
 import com.bksd.insights.presentation.journal_today_to_start
 import com.bksd.insights.presentation.journaled_every_day_since_prefix
 import com.bksd.insights.presentation.journaled_once_a_week_since_prefix
+import com.bksd.insights.presentation.pluralRes
+import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -80,7 +82,7 @@ internal fun CurrentStreakCard(weekly: CurrentStreak, daily: CurrentStreak) {
                 )
                 Spacer(Modifier.height(MaterialTheme.dimens.spacing.sm))
                 Text(
-                    text = streak.unit,
+                    text = pluralStringResource(streak.unit.pluralRes(), streak.value),
                     fontSize = 22.sp,
                     fontWeight = FontWeight.ExtraBold,
                     color = Color.White

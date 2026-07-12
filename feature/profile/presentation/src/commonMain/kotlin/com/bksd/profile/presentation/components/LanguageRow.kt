@@ -8,6 +8,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.domain.language.AppLanguage
 import com.bksd.profile.presentation.Res
+import com.bksd.profile.presentation.language_name_english
+import com.bksd.profile.presentation.language_name_french
+import com.bksd.profile.presentation.language_name_german
+import com.bksd.profile.presentation.language_name_spanish
+import com.bksd.profile.presentation.language_name_turkish
 import com.bksd.profile.presentation.language_system
 import com.bksd.profile.presentation.language_title
 import org.jetbrains.compose.resources.stringResource
@@ -18,14 +23,16 @@ fun LanguageRow(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val value = when (selectedLanguage) {
-        AppLanguage.SYSTEM -> stringResource(Res.string.language_system)
-        AppLanguage.ENGLISH -> "English"
-        AppLanguage.TURKISH -> "Türkçe"
-        AppLanguage.GERMAN -> "Deutsch"
-        AppLanguage.SPANISH -> "Español"
-        AppLanguage.FRENCH -> "Français"
-    }
+    val value = stringResource(
+        when (selectedLanguage) {
+            AppLanguage.SYSTEM -> Res.string.language_system
+            AppLanguage.ENGLISH -> Res.string.language_name_english
+            AppLanguage.TURKISH -> Res.string.language_name_turkish
+            AppLanguage.GERMAN -> Res.string.language_name_german
+            AppLanguage.SPANISH -> Res.string.language_name_spanish
+            AppLanguage.FRENCH -> Res.string.language_name_french
+        }
+    )
     ProfileSettingsRow(
         icon = Icons.Default.Language,
         label = stringResource(Res.string.language_title),

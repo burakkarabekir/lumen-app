@@ -1,4 +1,6 @@
 package com.bksd.moment.presentation.create.components
+import com.bksd.core.presentation.labelRes
+import org.jetbrains.compose.resources.stringResource
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -54,7 +56,7 @@ fun MoodChip(
             modifier = Modifier.size(MaterialTheme.dimens.icon.sm)
         )
         Text(
-            text = mood.label,
+            text = stringResource(mood.labelRes()),
             fontSize = 13.sp,
             fontWeight = FontWeight.Bold,
             color = contentColor

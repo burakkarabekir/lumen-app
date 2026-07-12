@@ -29,4 +29,21 @@
     <string name="reminder_daily_body">Nimm dir einen Moment, um deinen Tag festzuhalten.</string>
     <string name="reminder_streak_title">Unterbrich deine Serie nicht</string>
     <string name="reminder_streak_body">Schreibe einen Eintrag, um deine Serie am Leben zu halten.</string>
+    <string name="mood_happy">Glücklich</string>
+    <string name="mood_grateful">Dankbar</string>
+    <string name="mood_calm">Ruhig</string>
+    <string name="mood_loved">Geliebt</string>
+    <string name="mood_hopeful">Hoffnungsvoll</string>
+    <string name="mood_proud">Stolz</string>
+    <string name="mood_inspired">Inspiriert</string>
+    <string name="mood_reflective">Nachdenklich</string>
+    <string name="mood_focused">Fokussiert</string>
+    <string name="mood_nostalgic">Nostalgisch</string>
+    <string name="mood_tired">Müde</string>
+    <string name="mood_anxious">Ängstlich</string>
+    <string name="mood_stressed">Gestresst</string>
+    <string name="mood_frustrated">Frustriert</string>
+    <string name="mood_sad">Traurig</string>
+    <string name="mood_melancholic">Melancholisch</string>
+    <string name="mood_bored">Gelangweilt</string>
 </resources>

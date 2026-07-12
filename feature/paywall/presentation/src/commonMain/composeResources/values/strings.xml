@@ -16,4 +16,16 @@
     <string name="paywall_pricing_unavailable">Pricing is unavailable right now. Check your connection and try again.</string>
     <string name="paywall_try_again">Try Again</string>
     <string name="paywall_restore_none">No purchases to restore.</string>
+    <string name="tier_name_yearly">Yearly</string>
+    <string name="tier_name_monthly">Monthly</string>
+    <string name="tier_name_weekly">Weekly</string>
+    <string name="tier_name_lifetime">Lifetime</string>
+    <string name="tier_period_yearly">per year</string>
+    <string name="tier_period_monthly">per month</string>
+    <string name="tier_period_weekly">per week</string>
+    <string name="tier_free_trial">5-day free trial</string>
+    <string name="tier_billed_annually">Billed annually</string>
+    <string name="tier_billed_weekly">Billed weekly</string>
+    <string name="tier_billed_monthly">Billed monthly</string>
+    <string name="tier_one_time">One-time purchase</string>
 </resources>

@@ -60,4 +60,9 @@
     <string name="toggle_attachments">Mostrar u ocultar adjuntos</string>
     <string name="attachment_count_single">%1$d adjunto</string>
     <string name="attachment_count_plural">%1$d adjuntos</string>
+    <string name="attachment_type_photo">Foto</string>
+    <string name="attachment_type_audio">Audio</string>
+    <string name="attachment_type_video">Vídeo</string>
+    <string name="attachment_type_link">Enlace</string>
+    <string name="entry_untitled">Sin título</string>
 </resources>

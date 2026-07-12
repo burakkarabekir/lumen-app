@@ -57,6 +57,7 @@ import com.bksd.reflection.domain.model.ReflectionTheme
 import com.bksd.reflection.domain.model.StandoutEntry
 import com.bksd.reflection.domain.model.WeeklyMomentInsights
 import com.bksd.reflection.domain.model.WeeklyReflection
+import kotlinx.datetime.DayOfWeek
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.compose.ui.unit.dp
@@ -163,7 +164,7 @@ private fun WeeklyReflectionScreen(
 
                 if (insights != null && insights.arc.any { it.hasEntry }) {
                     Spacer(Modifier.height(MaterialTheme.dimens.spacing.xxl))
-                    EmotionalArcCard(arc = insights.arc, brightestDayLabel = insights.brightestDayLabel)
+                    EmotionalArcCard(arc = insights.arc, brightestDay = insights.brightestDay)
                 }
 
                 if (reflection != null && reflection.themes.isNotEmpty()) {
@@ -244,15 +245,15 @@ private fun WeeklyReflectionScreenPreview() {
                 ),
                 insights = WeeklyMomentInsights(
                     arc = listOf(
-                        ArcPoint("M", true, 0.52f, "#2FA876"),
-                        ArcPoint("T", true, 0.68f, "#3F9C8D"),
-                        ArcPoint("W", true, 0.40f, "#6E7AD0"),
-                        ArcPoint("T", true, 0.78f, "#C77FA8"),
-                        ArcPoint("F", true, 0.58f, "#2FA876"),
-                        ArcPoint("S", true, 0.92f, "#E0A21A"),
-                        ArcPoint("S", false, 0f, null),
+                        ArcPoint(DayOfWeek.MONDAY, true, 0.52f, "#2FA876"),
+                        ArcPoint(DayOfWeek.TUESDAY, true, 0.68f, "#3F9C8D"),
+                        ArcPoint(DayOfWeek.WEDNESDAY, true, 0.40f, "#6E7AD0"),
+                        ArcPoint(DayOfWeek.THURSDAY, true, 0.78f, "#C77FA8"),
+                        ArcPoint(DayOfWeek.FRIDAY, true, 0.58f, "#2FA876"),
+                        ArcPoint(DayOfWeek.SATURDAY, true, 0.92f, "#E0A21A"),
+                        ArcPoint(DayOfWeek.SUNDAY, false, 0f, null),
                     ),
-                    brightestDayLabel = "Sat",
+                    brightestDay = DayOfWeek.SATURDAY,
                     standout = StandoutEntry("1", "Morning pages", "I want more mornings that start this slowly.", "#C77FA8")
                 ),
                 isLoading = false

@@ -16,4 +16,16 @@
     <string name="paywall_pricing_unavailable">Die Preise sind derzeit nicht verfügbar. Überprüfe deine Verbindung und versuche es erneut.</string>
     <string name="paywall_try_again">Erneut versuchen</string>
     <string name="paywall_restore_none">Keine Käufe zum Wiederherstellen.</string>
+    <string name="tier_name_yearly">Jährlich</string>
+    <string name="tier_name_monthly">Monatlich</string>
+    <string name="tier_name_weekly">Wöchentlich</string>
+    <string name="tier_name_lifetime">Lebenslang</string>
+    <string name="tier_period_yearly">pro Jahr</string>
+    <string name="tier_period_monthly">pro Monat</string>
+    <string name="tier_period_weekly">pro Woche</string>
+    <string name="tier_free_trial">5 Tage kostenlos testen</string>
+    <string name="tier_billed_annually">Jährliche Abrechnung</string>
+    <string name="tier_billed_weekly">Wöchentliche Abrechnung</string>
+    <string name="tier_billed_monthly">Monatliche Abrechnung</string>
+    <string name="tier_one_time">Einmaliger Kauf</string>
 </resources>

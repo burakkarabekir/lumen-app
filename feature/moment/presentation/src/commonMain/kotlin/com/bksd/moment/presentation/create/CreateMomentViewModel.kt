@@ -29,9 +29,11 @@ import com.bksd.core.presentation.util.toFormattedTime
 import com.bksd.moment.domain.usecase.SaveMomentUseCase
 import com.bksd.reflection.domain.usecase.RequestEntryAnalysisUseCase
 import kotlinx.coroutines.launch
+import com.bksd.core.presentation.labelRes
 import com.bksd.moment.presentation.Res
 import com.bksd.moment.presentation.create.mappers.toLocationData
 import com.bksd.moment.presentation.create.mappers.toLocationInfoUiModel
+import com.bksd.moment.presentation.entry_untitled
 import com.bksd.moment.presentation.error_attachment_save_failed
 import com.bksd.moment.presentation.error_audio_permission_required
 import com.bksd.moment.presentation.error_camera_permission_denied
@@ -510,7 +512,7 @@ class CreateMomentViewModel(
 
             val newMoment = Moment(
                 id = momentId,
-                title = currentState.title.trim().takeIf { it.isNotBlank() } ?: "Untitled",
+                title = currentState.title.trim().takeIf { it.isNotBlank() } ?: getString(Res.string.entry_untitled),
                 body = currentState.body.takeIf { it.isNotBlank() },
                 createdAt = clock.now(),
                 moods = currentState.selectedMoods.toList(),
@@ -536,10 +538,11 @@ class CreateMomentViewModel(
                             currentState.body.trim().takeIf { it.isNotBlank() }
                         ).joinToString("\n\n")
                         if (entryText.isNotBlank()) {
-                            val mood = currentState.selectedMoods
-                                .joinToString(", ") { it.label }
-                                .takeIf { it.isNotBlank() }
                             applicationScope.launch {
+                                val mood = currentState.selectedMoods
+                                    .map { getString(it.labelRes()) }
+                                    .joinToString(", ")
+                                    .takeIf { it.isNotBlank() }
                                 requestEntryAnalysis(momentId, entryText, mood)
                             }
                         }

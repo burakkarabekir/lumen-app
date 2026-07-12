@@ -31,6 +31,7 @@ import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 import com.bksd.insights.presentation.Res
+import com.bksd.insights.presentation.entry_untitled
 import com.bksd.insights.presentation.reflection.reflectionHexColor
 import com.bksd.insights.presentation.weekly_open
 import com.bksd.reflection.domain.model.StandoutEntry
@@ -84,10 +85,10 @@ fun StandoutMomentCard(
                         modifier = Modifier
                             .size(MaterialTheme.dimens.icon.xl)
                             .clip(RoundedCornerShape(MaterialTheme.dimens.radius.sm))
-                            .background(reflectionHexColor(standout.colorHex))
+                            .background(standout.colorHex?.let { reflectionHexColor(it) } ?: accent)
                     )
                     Text(
-                        text = standout.title,
+                        text = standout.title.ifBlank { stringResource(Res.string.entry_untitled) },
                         fontSize = 12.5.sp,
                         fontWeight = FontWeight.Bold,
                         color = palette.text

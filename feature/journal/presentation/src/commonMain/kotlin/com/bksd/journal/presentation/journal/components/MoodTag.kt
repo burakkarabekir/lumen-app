@@ -1,4 +1,6 @@
 package com.bksd.journal.presentation.journal.components
+import com.bksd.core.presentation.labelRes
+import org.jetbrains.compose.resources.stringResource
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -43,7 +45,7 @@ fun MoodTag(
     ) {
         Text(text = mood.emoji, style = MaterialTheme.typography.labelSmall)
         Text(
-            text = mood.label,
+            text = stringResource(mood.labelRes()),
             style = MaterialTheme.typography.labelSmall,
             color = textColor
         )

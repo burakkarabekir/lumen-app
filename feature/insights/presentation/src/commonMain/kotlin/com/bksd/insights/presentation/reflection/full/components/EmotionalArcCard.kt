@@ -31,17 +31,20 @@ import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 import com.bksd.insights.presentation.Res
+import com.bksd.insights.presentation.initialRes
 import com.bksd.insights.presentation.reflection.reflectionHexColor
+import com.bksd.insights.presentation.shortNameRes
 import com.bksd.insights.presentation.weekly_arc_empty
 import com.bksd.insights.presentation.weekly_brightest_on
 import com.bksd.insights.presentation.weekly_emotional_arc
 import com.bksd.reflection.domain.model.ArcPoint
+import kotlinx.datetime.DayOfWeek
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun EmotionalArcCard(
     arc: List<ArcPoint>,
-    brightestDayLabel: String?,
+    brightestDay: DayOfWeek?,
     modifier: Modifier = Modifier
 ) {
     val palette = rememberNewEntryPalette()
@@ -69,9 +72,9 @@ fun EmotionalArcCard(
                 letterSpacing = 0.7.sp,
                 color = palette.sub
             )
-            if (brightestDayLabel != null) {
+            if (brightestDay != null) {
                 Text(
-                    text = stringResource(Res.string.weekly_brightest_on, brightestDayLabel),
+                    text = stringResource(Res.string.weekly_brightest_on, stringResource(brightestDay.shortNameRes())),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
                     color = accent
@@ -105,7 +108,7 @@ fun EmotionalArcCard(
                 if (!point.hasEntry) null else {
                     val x = padX + index * step
                     val y = baseY - point.valence.coerceIn(0f, 1f) * (baseY - topY)
-                    Triple(Offset(x, y), point.colorHex ?: "#7682D6", index)
+                    Triple(Offset(x, y), point.colorHex?.let(::reflectionHexColor) ?: accent, index)
                 }
             }
             if (points.isEmpty()) return@Canvas
@@ -133,8 +136,8 @@ fun EmotionalArcCard(
                 drawPath(line, color = lineColor, style = Stroke(width = 2.5.dp.toPx()))
             }
 
-            points.forEach { (offset, hex, _) ->
-                drawCircle(reflectionHexColor(hex), radius = 4.6.dp.toPx(), center = offset)
+            points.forEach { (offset, color, _) ->
+                drawCircle(color, radius = 4.6.dp.toPx(), center = offset)
                 drawCircle(palette.surface, radius = 4.6.dp.toPx(), center = offset, style = Stroke(2.5.dp.toPx()))
             }
         }
@@ -146,7 +149,7 @@ fun EmotionalArcCard(
         ) {
             arc.forEach { point ->
                 Text(
-                    text = point.dayLabel,
+                    text = stringResource(point.day.initialRes()),
                     fontSize = 10.5.sp,
                     fontWeight = FontWeight.Bold,
                     color = palette.sub
@@ -157,19 +160,19 @@ fun EmotionalArcCard(
 }
 
 private fun sampleArc() = listOf(
-    ArcPoint("M", true, 0.52f, "#2FA876"),
-    ArcPoint("T", true, 0.68f, "#3F9C8D"),
-    ArcPoint("W", true, 0.40f, "#6E7AD0"),
-    ArcPoint("T", true, 0.78f, "#C77FA8"),
-    ArcPoint("F", true, 0.58f, "#2FA876"),
-    ArcPoint("S", true, 0.92f, "#E0A21A"),
-    ArcPoint("S", true, 0.72f, "#2FA876"),
+    ArcPoint(DayOfWeek.MONDAY, true, 0.52f, "#2FA876"),
+    ArcPoint(DayOfWeek.TUESDAY, true, 0.68f, "#3F9C8D"),
+    ArcPoint(DayOfWeek.WEDNESDAY, true, 0.40f, "#6E7AD0"),
+    ArcPoint(DayOfWeek.THURSDAY, true, 0.78f, "#C77FA8"),
+    ArcPoint(DayOfWeek.FRIDAY, true, 0.58f, "#2FA876"),
+    ArcPoint(DayOfWeek.SATURDAY, true, 0.92f, "#E0A21A"),
+    ArcPoint(DayOfWeek.SUNDAY, true, 0.72f, "#2FA876"),
 )
 
 @Preview
 @Composable
 private fun EmotionalArcCardPreview() {
     AppTheme(darkTheme = true) {
-        EmotionalArcCard(arc = sampleArc(), brightestDayLabel = "Sat", modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg))
+        EmotionalArcCard(arc = sampleArc(), brightestDay = DayOfWeek.SATURDAY, modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg))
     }
 }

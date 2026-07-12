@@ -32,6 +32,10 @@ import com.bksd.core.design_system.theme.labelAttachmentBar
 import com.bksd.moment.presentation.Res
 import com.bksd.moment.presentation.attachment_count_plural
 import com.bksd.moment.presentation.attachment_count_single
+import com.bksd.moment.presentation.attachment_type_audio
+import com.bksd.moment.presentation.attachment_type_link
+import com.bksd.moment.presentation.attachment_type_photo
+import com.bksd.moment.presentation.attachment_type_video
 import com.bksd.moment.presentation.toggle_attachments
 import com.bksd.moment.presentation.create.AttachmentUiModel
 import kotlinx.collections.immutable.ImmutableList
@@ -48,12 +52,16 @@ fun AttachmentSummaryBar(
     val totalItems = attachments.size
     if (totalItems == 0) return
 
+    val photoLabel = stringResource(Res.string.attachment_type_photo)
+    val audioLabel = stringResource(Res.string.attachment_type_audio)
+    val videoLabel = stringResource(Res.string.attachment_type_video)
+    val linkLabel = stringResource(Res.string.attachment_type_link)
     val typesText = attachments.joinToString(", ") {
-        when (it) {
-            is AttachmentUiModel.Photo -> "1 Photo"
-            is AttachmentUiModel.Audio -> "1 Audio"
-            is AttachmentUiModel.Video -> "1 Video"
-            is AttachmentUiModel.Link -> "1 Link"
+        "1 " + when (it) {
+            is AttachmentUiModel.Photo -> photoLabel
+            is AttachmentUiModel.Audio -> audioLabel
+            is AttachmentUiModel.Video -> videoLabel
+            is AttachmentUiModel.Link -> linkLabel
         }
     }
 

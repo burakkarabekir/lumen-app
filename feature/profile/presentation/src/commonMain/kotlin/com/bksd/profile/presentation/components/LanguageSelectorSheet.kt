@@ -21,6 +21,11 @@ import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberLanguageController
 import com.bksd.core.domain.language.AppLanguage
 import com.bksd.profile.presentation.Res
+import com.bksd.profile.presentation.language_name_english
+import com.bksd.profile.presentation.language_name_french
+import com.bksd.profile.presentation.language_name_german
+import com.bksd.profile.presentation.language_name_spanish
+import com.bksd.profile.presentation.language_name_turkish
 import com.bksd.profile.presentation.language_selector_title
 import com.bksd.profile.presentation.language_system
 import org.jetbrains.compose.resources.stringResource
@@ -82,27 +87,27 @@ internal fun LanguageSelectorSheetContent(
                 onClick = { onSelected(AppLanguage.SYSTEM) },
             )
             LanguageOptionRow(
-                label = "English",
+                label = stringResource(Res.string.language_name_english),
                 isSelected = current == AppLanguage.ENGLISH,
                 onClick = { onSelected(AppLanguage.ENGLISH) },
             )
             LanguageOptionRow(
-                label = "Türkçe",
+                label = stringResource(Res.string.language_name_turkish),
                 isSelected = current == AppLanguage.TURKISH,
                 onClick = { onSelected(AppLanguage.TURKISH) },
             )
             LanguageOptionRow(
-                label = "Deutsch",
+                label = stringResource(Res.string.language_name_german),
                 isSelected = current == AppLanguage.GERMAN,
                 onClick = { onSelected(AppLanguage.GERMAN) },
             )
             LanguageOptionRow(
-                label = "Español",
+                label = stringResource(Res.string.language_name_spanish),
                 isSelected = current == AppLanguage.SPANISH,
                 onClick = { onSelected(AppLanguage.SPANISH) },
             )
             LanguageOptionRow(
-                label = "Français",
+                label = stringResource(Res.string.language_name_french),
                 isSelected = current == AppLanguage.FRENCH,
                 onClick = { onSelected(AppLanguage.FRENCH) },
             )

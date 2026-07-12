@@ -1,4 +1,6 @@
 package com.bksd.journal.presentation.detail.components
+import com.bksd.core.presentation.labelRes
+import org.jetbrains.compose.resources.stringResource
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -48,7 +50,7 @@ fun MomentDetailMoodChip(
             modifier = Modifier.size(MaterialTheme.dimens.icon.sm)
         )
         Text(
-            text = mood.label,
+            text = stringResource(mood.labelRes()),
             fontSize = 12.5.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface

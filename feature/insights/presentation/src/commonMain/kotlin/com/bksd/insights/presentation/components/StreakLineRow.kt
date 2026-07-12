@@ -25,6 +25,9 @@ import com.bksd.core.design_system.theme.extended
 import com.bksd.core.design_system.theme.rememberInsightsPalette
 import com.bksd.insights.presentation.StreakAccent
 import com.bksd.insights.presentation.StreakLine
+import com.bksd.insights.presentation.StreakUnit
+import com.bksd.insights.presentation.pluralRes
+import org.jetbrains.compose.resources.pluralStringResource
 
 @Composable
 internal fun StreakLineRow(label: String, line: StreakLine, palette: InsightsPalette) {
@@ -50,7 +53,7 @@ internal fun StreakLineRow(label: String, line: StreakLine, palette: InsightsPal
                 )
                 Spacer(Modifier.width(MaterialTheme.dimens.spacing.xs))
                 Text(
-                    text = line.unit,
+                    text = pluralStringResource(line.unit.pluralRes(), line.count),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
                     color = colors.count,
@@ -79,7 +82,7 @@ private fun StreakLineRowPreview() {
         Box(Modifier.background(palette.surface).padding(MaterialTheme.dimens.spacing.xl)) {
             StreakLineRow(
                 label = "Daily Streak",
-                line = StreakLine(7, "Days", "May 24, 2024", "May 31, 2024", StreakAccent.CORAL),
+                line = StreakLine(7, StreakUnit.DAY, "May 24, 2024", "May 31, 2024", StreakAccent.CORAL),
                 palette = palette
             )
         }

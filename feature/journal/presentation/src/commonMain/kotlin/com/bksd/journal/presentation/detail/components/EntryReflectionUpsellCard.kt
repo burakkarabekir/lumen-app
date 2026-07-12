@@ -27,6 +27,11 @@ import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.aiIconGradient
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
+import com.bksd.journal.presentation.Res
+import com.bksd.journal.presentation.upsell_reflections_body
+import com.bksd.journal.presentation.upsell_reflections_title
+import com.bksd.journal.presentation.upsell_unlock_plus
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun EntryReflectionUpsellCard(
@@ -56,17 +61,17 @@ fun EntryReflectionUpsellCard(
             )
         }
         Text(
-            text = "You've used your free AI reflections",
+            text = stringResource(Res.string.upsell_reflections_title),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface,
         )
         Text(
-            text = "The free plan includes 3 AI reflections a month. Unlock unlimited reflections, cover art, and weekly insights with Lumen Plus.",
+            text = stringResource(Res.string.upsell_reflections_body),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         AppButton(
-            text = "Unlock Plus",
+            text = stringResource(Res.string.upsell_unlock_plus),
             onClick = onUnlock,
             style = AppButtonStyle.PRIMARY,
             cornerRadius = MaterialTheme.dimens.radius.lg,
