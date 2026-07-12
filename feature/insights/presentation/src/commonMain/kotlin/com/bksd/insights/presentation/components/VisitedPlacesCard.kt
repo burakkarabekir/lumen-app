@@ -23,16 +23,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
 import com.bksd.core.design_system.theme.insightsPlacesGradient
+import com.bksd.core.design_system.theme.insightsPlacesLightGradient
 import com.bksd.insights.presentation.Res
 import com.bksd.insights.presentation.VisitedPlace
 import com.bksd.insights.presentation.places_show_more
@@ -46,12 +50,21 @@ internal fun VisitedPlacesCard(
     places: ImmutableList<VisitedPlace>,
     onShowMore: () -> Unit = {},
 ) {
-    val gradient = MaterialTheme.colorScheme.extended.insightsPlacesGradient
+    val dark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    val gradient = if (dark) {
+        MaterialTheme.colorScheme.extended.insightsPlacesGradient
+    } else {
+        MaterialTheme.colorScheme.extended.insightsPlacesLightGradient
+    }
+    val shape = RoundedCornerShape(MaterialTheme.dimens.radius.card)
+    val titleColor = if (dark) Color.White else MaterialTheme.colorScheme.onSurface
+    val moreColor = if (dark) Color.White.copy(alpha = 0.9f) else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.card))
-            .background(Brush.verticalGradient(gradient))
+            .then(if (dark) Modifier else Modifier.shadow(2.dp, shape))
+            .clip(shape)
+            .background(brush = Brush.verticalGradient(gradient))
             .padding(MaterialTheme.dimens.spacing.lg)
     ) {
         Text(
@@ -59,7 +72,7 @@ internal fun VisitedPlacesCard(
             modifier = Modifier.fillMaxWidth(),
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.White,
+            color = titleColor,
             textAlign = TextAlign.Center
         )
         Spacer(Modifier.height(MaterialTheme.dimens.spacing.md))
@@ -86,12 +99,12 @@ internal fun VisitedPlacesCard(
                     text = stringResource(Res.string.places_show_more),
                     fontSize = 13.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = Color.White.copy(alpha = 0.9f),
+                    color = moreColor,
                 )
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                     contentDescription = null,
-                    tint = Color.White.copy(alpha = 0.9f),
+                    tint = moreColor,
                     modifier = Modifier.size(MaterialTheme.dimens.icon.md),
                 )
             }
