@@ -13,7 +13,6 @@ import com.bksd.core.data.storage.SupabaseSessionStorage
 import com.bksd.core.data.theme.ThemeRepositoryImpl
 import com.bksd.core.domain.applock.AppLockRepository
 import com.bksd.core.domain.billing.PremiumStatusSource
-import com.bksd.core.domain.cleanup.LocalDataCleaner
 import com.bksd.core.domain.consent.ConsentRepository
 import com.bksd.core.domain.logging.AppLogger
 import com.bksd.core.domain.reminder.ReminderRepository
@@ -26,7 +25,6 @@ import kotlinx.datetime.TimeZone
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
-import org.koin.dsl.binds
 import org.koin.dsl.module
 import kotlin.time.Clock
 
@@ -49,8 +47,5 @@ val coreDataModule = module {
     factoryOf(::SetAppThemeUseCase)
 
     singleOf(::ReminderRepositoryImpl) bind ReminderRepository::class
-    singleOf(::AppLockRepositoryImpl) binds arrayOf(
-        AppLockRepository::class,
-        LocalDataCleaner::class,
-    )
+    singleOf(::AppLockRepositoryImpl) bind AppLockRepository::class
 }
