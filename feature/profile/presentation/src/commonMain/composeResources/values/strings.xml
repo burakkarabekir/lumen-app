@@ -181,7 +181,7 @@
     <string name="month_abbr_nov">Nov</string>
     <string name="month_abbr_dec">Dec</string>
     <plurals name="pdf_entry_count">
-        <item quantity="one">%d entry</item>
-        <item quantity="other">%d entries</item>
+        <item quantity="one">%1$d entry</item>
+        <item quantity="other">%1$d entries</item>
     </plurals>
 </resources>

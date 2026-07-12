@@ -176,7 +176,7 @@
     <string name="month_abbr_nov">Kas</string>
     <string name="month_abbr_dec">Ara</string>
     <plurals name="pdf_entry_count">
-        <item quantity="one">%d girdi</item>
-        <item quantity="other">%d girdi</item>
+        <item quantity="one">%1$d girdi</item>
+        <item quantity="other">%1$d girdi</item>
     </plurals>
 </resources>
