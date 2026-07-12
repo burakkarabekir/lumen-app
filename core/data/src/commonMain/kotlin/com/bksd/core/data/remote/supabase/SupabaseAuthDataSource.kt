@@ -95,6 +95,9 @@ class SupabaseAuthDataSource(
 
     fun getPhotoUrl(): String? = userMetaString("avatar_url")
 
+    fun getJoinYear(): String? =
+        auth.currentUserOrNull()?.createdAt?.toString()?.take(4)?.takeIf { it.all(Char::isDigit) }
+
     fun observePhotoUrl(): Flow<String?> =
         auth.sessionStatus.map { getPhotoUrl() }.distinctUntilChanged()
 
