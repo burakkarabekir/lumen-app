@@ -56,6 +56,7 @@ import com.bksd.core.domain.model.PlaybackState
 import com.bksd.core.domain.model.Url
 import com.bksd.core.domain.model.VideoAttachment
 import com.bksd.journal.presentation.util.MomentFormatter
+import kotlin.time.Instant
 
 private val WaveformHeights = listOf(7, 12, 17, 10, 14, 8, 11, 16, 9, 7)
 
@@ -242,7 +243,7 @@ private fun AttachmentChipsPreview() {
                 ),
                 accentColor = AttachmentChipLinkAccent,
                 formatter = object : MomentFormatter {
-                    override fun formatTime(instant: kotlin.time.Instant) = "9:41 AM"
+                    override fun formatTime(instant: Instant) = "9:41 AM"
                     override fun formatDuration(ms: Long) = "0:03"
                 },
                 playbackState = PlaybackState.STOPPED,

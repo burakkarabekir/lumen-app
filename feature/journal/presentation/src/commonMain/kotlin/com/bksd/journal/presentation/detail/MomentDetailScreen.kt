@@ -26,7 +26,9 @@ import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.journal.presentation.components.DeleteMomentConfirmDialog
 import com.bksd.journal.presentation.detail.components.DetailBottomActionBar
 import com.bksd.journal.presentation.detail.share.ShareMomentSheet
-import com.bksd.journal.presentation.detail.share.shareCardDateLabel
+import com.bksd.core.presentation.weekdayDateLabel
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import com.bksd.journal.presentation.model.toMomentUi
 import com.bksd.journal.presentation.util.MomentFormatter
 import kotlinx.collections.immutable.persistentListOf
@@ -35,6 +37,7 @@ import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import kotlin.time.Clock
+import kotlin.time.Instant
 
 @Composable
 fun MomentDetailRoot(
@@ -82,7 +85,7 @@ fun MomentDetailScreen(
             if (showShareSheet) {
                 ShareMomentSheet(
                     moment = momentUi,
-                    dateLabel = shareCardDateLabel(moment.createdAt),
+                    dateLabel = weekdayDateLabel(moment.createdAt.toLocalDateTime(TimeZone.currentSystemDefault()).date),
                     onDismiss = onDismissShareSheet,
                 )
             }
@@ -205,6 +208,6 @@ private fun MomentDetailScreenEditPreview() {
 }
 
 private object PreviewFormatter : MomentFormatter {
-    override fun formatTime(instant: kotlin.time.Instant): String = "Oct 15, 2023 · 10:42 PM"
+    override fun formatTime(instant: Instant): String = "Oct 15, 2023 · 10:42 PM"
     override fun formatDuration(ms: Long): String = "0:42"
 }

@@ -59,6 +59,7 @@ import com.bksd.core.design_system.theme.coverGradient
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
+import com.bksd.core.presentation.shortDateLabel
 import com.bksd.core.domain.location.LocationData
 import com.bksd.core.domain.model.AudioAttachment
 import com.bksd.journal.presentation.model.MomentUi
@@ -168,15 +169,7 @@ fun MomentDetailEditView(
             ) {
                 EditSectionLabel(stringResource(Res.string.edit_section_date_time), palette.sub)
                 val localCreated = createdAt.toLocalDateTime(TimeZone.currentSystemDefault())
-                val monthShort = localCreated.month.name.lowercase()
-                    .replaceFirstChar { it.uppercase() }
-                    .take(3)
-                val dateTimeLabel =
-                    "$monthShort ${localCreated.day}, ${localCreated.year} · ${
-                        formatter.formatTime(
-                            createdAt
-                        )
-                    }"
+                val dateTimeLabel = "${shortDateLabel(localCreated.date)} · ${formatter.formatTime(createdAt)}"
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.md),

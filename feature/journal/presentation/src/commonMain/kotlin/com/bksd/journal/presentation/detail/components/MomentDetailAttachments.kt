@@ -35,6 +35,7 @@ import com.bksd.journal.presentation.util.MomentFormatter
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
+import kotlin.time.Instant
 
 @Composable
 fun MomentDetailAttachments(
@@ -131,7 +132,7 @@ private fun MomentDetailAttachmentsPreview() {
                 onAudioPlayClick = {},
                 onAudioPauseClick = {},
                 formatter = object : MomentFormatter {
-                    override fun formatTime(instant: kotlin.time.Instant) = "9:41 AM"
+                    override fun formatTime(instant: Instant) = "9:41 AM"
                     override fun formatDuration(ms: Long) = "0:18"
                 },
                 onRemove = {}

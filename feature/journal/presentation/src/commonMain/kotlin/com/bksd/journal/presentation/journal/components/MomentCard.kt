@@ -2,6 +2,7 @@
 
 package com.bksd.journal.presentation.journal.components
 import com.bksd.core.presentation.labelRes
+import com.bksd.core.presentation.weekdayDateLabel
 
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateFloat
@@ -70,6 +71,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
 import kotlin.math.roundToInt
 import kotlin.time.Clock
@@ -92,7 +94,7 @@ fun MomentCard(
 ) {
     val palette = rememberNewEntryPalette()
     val extendedColors = MaterialTheme.colorScheme.extended
-    val formattedDate = remember(moment.createdAt) { formatCardDate(moment.createdAt, timeZone) }
+    val formattedDate = weekdayDateLabel(moment.createdAt.toLocalDateTime(timeZone).date)
 
     val hasMoods = moment.moods.isNotEmpty()
     var moodPanelExpanded by remember { mutableStateOf(false) }

@@ -1,5 +1,6 @@
 package com.bksd.insights.presentation
 
+import com.bksd.core.presentation.formatShortDate
 import com.bksd.insights.domain.model.InsightsMetrics
 import com.bksd.insights.domain.model.InsightsRange
 import com.bksd.insights.domain.model.StreakRun
@@ -20,12 +21,12 @@ internal suspend fun InsightsMetrics.toUiState(selectedRange: InsightsRange): In
         currentStreak = CurrentStreak(
             value = currentWeekly?.length ?: 0,
             unit = StreakUnit.WEEK,
-            since = currentWeekly?.start?.let(::formatDate).orEmpty(),
+            since = currentWeekly?.start?.let { formatDate(it) }.orEmpty(),
         ),
         currentDailyStreak = CurrentStreak(
             value = currentDaily?.length ?: 0,
             unit = StreakUnit.DAY,
-            since = currentDaily?.start?.let(::formatDate).orEmpty(),
+            since = currentDaily?.start?.let { formatDate(it) }.orEmpty(),
         ),
         longest = StreakDetail(
             kind = StreakKind.LONGEST,
@@ -65,7 +66,7 @@ internal suspend fun InsightsMetrics.toUiState(selectedRange: InsightsRange): In
 internal fun StatsRange.toDomain(): InsightsRange =
     year?.let { InsightsRange.Year(it) } ?: InsightsRange.AllTime
 
-private fun StreakRun?.toLine(unit: StreakUnit, accent: StreakAccent): StreakLine =
+private suspend fun StreakRun?.toLine(unit: StreakUnit, accent: StreakAccent): StreakLine =
     if (this == null) {
         StreakLine(0, unit, "", "", accent)
     } else {
@@ -98,7 +99,4 @@ private fun InsightsRange.toUiClamped(years: List<Int>): StatsRange = when (this
     is InsightsRange.Year -> if (year in years) StatsRange(year) else StatsRange.AllTime
 }
 
-private fun formatDate(date: LocalDate): String {
-    val month = date.month.name.take(3).lowercase().replaceFirstChar { it.uppercase() }
-    return "$month ${date.day}, ${date.year}"
-}
+private suspend fun formatDate(date: LocalDate): String = formatShortDate(date)

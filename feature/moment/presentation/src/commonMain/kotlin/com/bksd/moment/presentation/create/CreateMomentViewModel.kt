@@ -29,6 +29,7 @@ import com.bksd.core.presentation.util.toFormattedTime
 import com.bksd.moment.domain.usecase.SaveMomentUseCase
 import com.bksd.reflection.domain.usecase.RequestEntryAnalysisUseCase
 import kotlinx.coroutines.launch
+import com.bksd.core.presentation.formatMonthDay
 import com.bksd.core.presentation.labelRes
 import com.bksd.moment.presentation.Res
 import com.bksd.moment.presentation.create.mappers.toLocationData
@@ -100,11 +101,11 @@ class CreateMomentViewModel(
         launch {
             val formatted = getString(Res.string.timestamp_today_format, now.toFormattedTime())
             val date = now.toLocalDateTime(TimeZone.currentSystemDefault()).date
-            val month = date.month.name.lowercase().replaceFirstChar { it.uppercase() }
+            val headline = formatMonthDay(date)
             updateState {
                 it.copy(
                     timestampFormatted = formatted,
-                    dateHeadline = "$month ${date.day}"
+                    dateHeadline = headline
                 )
             }
         }
