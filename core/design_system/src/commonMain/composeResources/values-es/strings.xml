@@ -1,0 +1,55 @@
+<resources>
+    <string name="show_more">Ver más</string>
+    <string name="show_less">Ver menos</string>
+
+    <string name="title_list_empty">Sin entradas</string>
+    <string name="add_new_entry">Añadir nueva entrada</string>
+
+
+    <string name="recording_paused">Grabación en pausa</string>
+    <string name="pause_or_resume_recording">Pausar o reanudar la grabación</string>
+    <string name="cancel_recording">Cancelar grabación</string>
+    <string name="navigate_back">Volver atrás</string>
+    <string name="new_entry">Nueva entrada</string>
+    <string name="add_mood">Añadir estado de ánimo</string>
+    <string name="add_title">Añadir título…</string>
+    <string name="topic_hashtag">Etiqueta de tema</string>
+    <string name="topic">Tema</string>
+    <string name="add_description">Añadir descripción…</string>
+    <string name="save">Guardar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="are_you_sure">¿Estás seguro?</string>
+    <string name="your_data_won_t_be_saved">Tus datos no se guardarán.</string>
+    <string name="discard">Descartar</string>
+    <string name="how_are_you_doing">¿Cómo estás?</string>
+    <string name="confirm">Confirmar</string>
+    <string name="selected_mood">Estado de ánimo seleccionado</string>
+    <string name="my_mood">Mi estado de ánimo</string>
+    <string name="select_default_mood_to_apply_to_all_new_entries">Elige el estado de ánimo predeterminado para todas las entradas nuevas</string>
+    <string name="my_topics">Mis temas</string>
+    <string name="select_default_topics_to_apply_to_all_new_entries">Elige los temas predeterminados para todas las entradas nuevas</string>
+    <string name="create_new_entry_widget">Widget de nueva entrada</string>
+    <string name="record_a_new_entry">Graba una nueva entrada con un solo toque</string>
+    <string name="you_don_t_have_any_topics_yet">¡Aún no tienes ningún tema!</string>
+    <string name="audio_recording_was_too_short">La grabación de audio fue demasiado corta</string>
+    <string name="clear_selections">Borrar selecciones</string>
+    <string name="create_entry">Crear &apos;%s&apos;</string>
+    <string name="playing">Reproduciendo</string>
+    <string name="paused">En pausa</string>
+    <string name="stopped">Detenido</string>
+    <string name="pause_recording">Pausar grabación</string>
+    <string name="finish_recording">Finalizar grabación</string>
+    <string name="resume_recording">Reanudar grabación</string>
+    <string name="remove_topic">Quitar tema %s</string>
+    <string name="discard_recording">¿Descartar la grabación?</string>
+    <string name="this_cannot_be_undone">Esto no se puede deshacer.</string>
+    <string name="today">Hoy</string>
+    <string name="yesterday">Ayer</string>
+    <string name="record_new_entry">Grabar nueva entrada</string>
+    <string name="confused_and_happy_mood_faces">Caras de estado de ánimo confundido y feliz</string>
+    <string name="tag_prefix">#</string>
+
+    <string name="widget_description">Crea una nueva entrada de diario</string>
+    <string name="title_entries">Tu Fluenty</string>
+    <string name="desc_entry_empty">Empieza a grabar tu primera entrada</string>
+</resources>

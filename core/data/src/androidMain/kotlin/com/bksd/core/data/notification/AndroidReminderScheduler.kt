@@ -10,6 +10,7 @@ import android.os.Build
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.bksd.core.domain.notification.ReminderScheduler
+import com.bksd.core.domain.notification.ReminderTextProvider
 import com.bksd.core.domain.reminder.ReminderSettings
 import java.time.DayOfWeek
 import java.time.ZonedDateTime
@@ -21,20 +22,22 @@ private const val REMINDER_WINDOW_MILLIS = 5 * 60 * 1000L
 private val ALL_REQUEST_CODES = (1..7) + STREAK_REQUEST_CODE
 
 class AndroidReminderScheduler(
-    private val context: Context
+    private val context: Context,
+    private val textProvider: ReminderTextProvider
 ) : ReminderScheduler {
 
     private val alarmManager = context.getSystemService(AlarmManager::class.java)
 
     override suspend fun reschedule(settings: ReminderSettings) {
         cancelAll()
+        val texts = textProvider.reminderTexts()
         if (settings.dailyEnabled) {
             settings.days.forEach { day ->
                 schedule(
                     requestCode = day,
                     triggerAtMillis = nextWeekly(day, settings.hour, settings.minute),
-                    title = "Time to journal",
-                    body = "Take a moment to capture your day."
+                    title = texts.dailyTitle,
+                    body = texts.dailyBody
                 )
             }
         }
@@ -42,8 +45,8 @@ class AndroidReminderScheduler(
             schedule(
                 requestCode = STREAK_REQUEST_CODE,
                 triggerAtMillis = nextDaily(STREAK_HOUR, 0),
-                title = "Don't break your streak",
-                body = "Write an entry to keep your streak alive."
+                title = texts.streakTitle,
+                body = texts.streakBody
             )
         }
     }

@@ -1,0 +1,63 @@
+<resources>
+    <!-- Screen UI -->
+    <string name="title_placeholder">Título</string>
+    <string name="content_desc_close">Cerrar</string>
+    <string name="content_desc_location">Ubicación</string>
+    <string name="add_location">Añadir ubicación</string>
+    <string name="content_desc_remove_location">Quitar ubicación</string>
+    <string name="body_placeholder">Reflexiona sobre tu día... ¿Qué tienes en mente?</string>
+    <string name="label_mic">Micro</string>
+    <string name="label_camera">Cámara</string>
+    <string name="label_photo">Foto</string>
+    <string name="label_video">Vídeo</string>
+    <string name="label_link">Enlace</string>
+    <string name="new_entry_title">Nueva entrada</string>
+    <string name="action_save">Guardar</string>
+    <string name="label_place">Lugar</string>
+    <string name="label_voice">Voz</string>
+    <string name="mood_section_title">¿Cómo te sientes?</string>
+    <string name="mood_section_subtitle">Elige los estados de ánimo que encajan con tu momento.</string>
+    <string name="mood_more">%1$s más</string>
+    <string name="mood_less">Menos</string>
+
+    <!-- Snackbar / Permission -->
+    <string name="permission_mic_denied">Permiso de micrófono denegado.</string>
+    <string name="permission_location_denied">Permiso de ubicación denegado. Actívalo en los ajustes.</string>
+    <string name="permission_location_services_required">Se necesitan los servicios de ubicación para añadir tu ubicación.</string>
+    <string name="permission_camera_denied">Permiso de cámara denegado.</string>
+    <string name="action_open_settings">Abrir ajustes</string>
+    <string name="action_enable_location">Activar ubicación</string>
+
+    <!-- ViewModel errors -->
+    <string name="error_location_fetch_failed">No se pudo obtener la ubicación</string>
+    <string name="error_location_permission_denied">Permiso de ubicación denegado.</string>
+    <string name="error_location_services_disabled">Los servicios de ubicación están desactivados. Actívalos en los ajustes.</string>
+    <string name="error_recording_start_failed">No se pudo iniciar la grabación</string>
+    <string name="error_audio_permission_required">Se necesita permiso de micrófono para grabar audio</string>
+    <string name="error_recording_save_failed">No se pudo guardar la grabación</string>
+    <string name="error_playback_failed">No se pudo reproducir la grabación</string>
+    <string name="error_file_too_large">El archivo supera el límite de 25 MB</string>
+    <string name="error_moment_empty">El momento está vacío</string>
+    <string name="error_mood_required">Selecciona un estado de ánimo</string>
+    <string name="error_attachment_save_failed">No se pudo guardar el adjunto.</string>
+    <string name="error_moment_save_failed">No se pudo guardar el momento</string>
+    <string name="success_moment_saved">¡Momento guardado!</string>
+    <string name="success_moment_saved_without_attachment">Momento guardado. No se pudo subir un adjunto — comprueba tu conexión.</string>
+    <string name="timestamp_today_format">Hoy, %1$s</string>
+    <string name="error_camera_permission_denied">Se necesita permiso de cámara para tomar fotos</string>
+
+    <!-- AI Analysis Opt-In -->
+    <string name="ai_optin_title">Sí, analiza esta entrada con IA</string>
+    <string name="ai_optin_caption">Recibe una reflexión sobre tu estado de ánimo y tus temas justo después de guardar.</string>
+
+    <!-- Attachments -->
+    <string name="add_link">Añadir enlace</string>
+    <string name="remove_link">Quitar enlace</string>
+    <string name="link_url_hint">https://...</string>
+    <string name="done">Listo</string>
+    <string name="recording_in_progress">Grabando tus recuerdos...</string>
+    <string name="cancel_recording">Cancelar grabación</string>
+    <string name="toggle_attachments">Mostrar u ocultar adjuntos</string>
+    <string name="attachment_count_single">%1$d adjunto</string>
+    <string name="attachment_count_plural">%1$d adjuntos</string>
+</resources>

@@ -1,0 +1,122 @@
+<resources>
+    <string name="journal">Journal</string>
+    <string name="navigate_back">Revenir en arrière</string>
+    <string name="discard">Ignorer</string>
+    <string name="how_are_you_doing">Comment vas-tu ?</string>
+    <string name="confirm">Confirmer</string>
+    <string name="selected_mood">Humeur sélectionnée</string>
+    <string name="my_mood">Mon humeur</string>
+    <string name="save">Enregistrer</string>
+    <string name="cancel">Annuler</string>
+    <string name="are_you_sure">Es-tu sûr ?</string>
+    <string name="your_data_won_t_be_saved">Tes données ne seront pas enregistrées.</string>
+    <string name="add_mood">Ajouter une humeur</string>
+    <string name="add_title">Ajouter un titre…</string>
+    <string name="add_description">Ajouter une description…</string>
+    <string name="discard_recording">Ignorer l&apos;enregistrement ?</string>
+    <string name="this_cannot_be_undone">Cette action est irréversible.</string>
+    <string name="topic">Sujet</string>
+    <string name="remove_topic">Supprimer le sujet %s</string>
+
+    <string name="stressed">Stressé</string>
+    <string name="sad">Triste</string>
+    <string name="neutral">Neutre</string>
+    <string name="peaceful">Serein</string>
+    <string name="excited">Enthousiaste</string>
+    <string name="all_moods">Toutes les humeurs</string>
+    <string name="all_topics">Tous les sujets</string>
+
+    <!-- JournalScreen -->
+    <string name="journal_title">Journal</string>
+    <string name="content_desc_create_moment">Créer un moment</string>
+    <string name="no_moments_day">Aucun moment pour ce jour.</string>
+    <string name="no_filter_entries">Aucune entrée pour ce filtre.</string>
+    <string name="no_filter_day">Aucun %s pour ce jour.</string>
+    <string name="all_entries">Toutes les entrées</string>
+    <string name="photos">Photos</string>
+    <string name="videos">Vidéos</string>
+    <string name="voice_notes">Notes vocales</string>
+    <string name="links">Liens</string>
+
+    <!-- MomentDetailScreen -->
+    <string name="moment_detail_title">Moment</string>
+    <string name="content_desc_back">Retour</string>
+    <string name="content_desc_edit">Modifier</string>
+    <string name="my_moment_fallback">Mon moment</string>
+    <string name="add_reflection">Ajouter une réflexion</string>
+    <string name="content_desc_bookmark">Ajouter aux signets</string>
+    <string name="export_to_pdf">Exporter en PDF</string>
+    <string name="attachments_section">PIÈCES JOINTES</string>
+    <string name="voice_reflection">Réflexion vocale</string>
+    <string name="mood_of_the_moment">Humeur du moment</string>
+    <string name="journal_entry_label">ENTRÉE DE JOURNAL</string>
+    <string name="expand">Développer</string>
+    <string name="collapse">Réduire</string>
+    <string name="save_changes">Enregistrer les modifications</string>
+    <string name="saving">Enregistrement…</string>
+    <string name="edit">Modifier</string>
+    <string name="write_thoughts_hint">Écris tes pensées…</string>
+
+    <!-- Day Section Headers -->
+    <string name="section_today">Aujourd&apos;hui</string>
+    <string name="section_yesterday">Hier</string>
+    <string name="section_days_ago">Il y a %1$s jours</string>
+    <string name="section_weeks_ago">Il y a %1$s semaines</string>
+
+    <string name="edit_entry">Modifier l&apos;entrée</string>
+    <string name="add_favorite">Ajouter aux favoris</string>
+    <string name="remove_favorite">Retirer des favoris</string>
+    <string name="favorite">Favori</string>
+    <string name="delete">Supprimer</string>
+    <string name="delete_moment_title">Supprimer ce moment ?</string>
+    <string name="delete_moment_message">Cette entrée sera définitivement supprimée. Cette action est irréversible.</string>
+    <string name="content_desc_share">Partager</string>
+
+    <!-- AI Entry Analysis -->
+    <string name="ai_analysis_title">Analyse IA</string>
+    <string name="ai_generated_on_save">Généré à l&apos;enregistrement</string>
+    <string name="ai_question_to_sit_with">UNE QUESTION À MÉDITER</string>
+    <string name="ai_reflection_disclaimer">L&apos;IA de Lumen peut faire des erreurs. Tes réflexions restent privées.</string>
+    <string name="ai_analyzing_title">Analyse de ton entrée…</string>
+    <string name="ai_analyzing_caption">Ta réflexion apparaîtra ici dans un instant.</string>
+    <string name="ai_analysis_failed_title">Réflexion indisponible</string>
+    <string name="ai_analysis_failed_caption">Nous n&apos;avons pas pu générer de réflexion pour ce moment.</string>
+    <string name="ai_analysis_offline_title">Tu es hors ligne</string>
+    <string name="ai_analysis_offline_caption">Une réflexion sera ajoutée dès que tu seras de nouveau connecté.</string>
+    <string name="ai_analysis_retry">Réessayer</string>
+    <string name="ai_support_title">Un moment de soutien</string>
+    <string name="ai_crisis_title">Tu n&apos;es pas seul</string>
+    <string name="ai_call_resource">Appeler %1$s</string>
+
+    <!-- JournalTopBar -->
+    <string name="search_moments_hint">Rechercher des moments…</string>
+    <string name="content_desc_search">Rechercher</string>
+    <string name="content_desc_profile">Profil</string>
+    <string name="content_desc_clear_search">Effacer la recherche</string>
+
+    <!-- JournalEmptyState -->
+    <string name="empty_state_sparkle">Étincelle</string>
+    <string name="empty_state_title">Ton premier moment\ncommence ici</string>
+    <string name="empty_state_subtitle">Appuie sur + pour capturer une pensée, une émotion,\nou tout ce qui te passe par la tête.</string>
+
+    <!-- MomentDetailReadView -->
+    <string name="word_count">%1$d mots</string>
+
+    <!-- MomentDetailEditView -->
+    <string name="edit_section_date_time">DATE &amp; HEURE</string>
+    <string name="edit_section_title">TITRE</string>
+    <string name="edit_section_moods">HUMEURS</string>
+    <string name="edit_section_entry">ENTRÉE</string>
+    <string name="edit_title_hint">Titre</string>
+    <string name="edit_mood_done">Terminé</string>
+    <string name="editing_badge">Modification</string>
+    <string name="next">Suivant</string>
+
+    <!-- DetailTimePickerDialog -->
+    <string name="select_time">Sélectionner l&apos;heure</string>
+    <string name="ok">OK</string>
+
+    <!-- MomentCard -->
+    <string name="content_desc_favorited">En favori</string>
+    <string name="content_desc_more_actions">Plus d&apos;actions</string>
+</resources>

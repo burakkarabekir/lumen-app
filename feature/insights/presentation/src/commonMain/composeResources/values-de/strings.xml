@@ -1,0 +1,56 @@
+<resources>
+    <string name="insights_title">Einblicke</string>
+    <string name="power_user_analytics">Power-User-Analysen</string>
+    <string name="peak_activity">Aktivitätshoch</string>
+    <string name="consistency_trend">Beständigkeitstrend</string>
+    <string name="medium_breakdown">Medien-Aufschlüsselung</string>
+    <string name="mindset_synthesis">Mindset-Synthese</string>
+    <string name="recurring_theme">Wiederkehrendes Thema</string>
+    <string name="adjustment">Anpassung</string>
+
+    <!-- Weekly Reflection -->
+    <string name="weekly_reflection_title">Wöchentliche Reflexion</string>
+    <string name="weekly_based_on_entries">Basierend auf %1$d %2$s · %3$s</string>
+    <string name="weekly_entry_singular">Eintrag</string>
+    <string name="weekly_entry_plural">Einträge</string>
+    <string name="weekly_entry_count">%1$d %2$s</string>
+    <string name="weekly_question_to_sit_with">EINE FRAGE ZUM NACHDENKEN</string>
+    <string name="weekly_view_full">Vollständige Reflexion ansehen</string>
+    <string name="weekly_private_to_you">Privat, nur für dich</string>
+    <string name="weekly_reflecting">Deine Woche wird reflektiert…</string>
+    <string name="weekly_reflection_failed_title">Wöchentliche Reflexion nicht verfügbar</string>
+    <string name="weekly_reflection_failed_caption">Wir konnten deine wöchentliche Reflexion nicht erstellen.</string>
+    <string name="weekly_reflection_retry">Erneut versuchen</string>
+    <string name="weekly_back">Zurück</string>
+    <string name="weekly_no_reflection">Noch keine wöchentliche Reflexion. Schreib diese Woche ein paar Einträge, dann erscheint sie hier.</string>
+    <string name="weekly_emotional_arc">DEIN GEFÜHLSVERLAUF</string>
+    <string name="weekly_brightest_on">Am strahlendsten am %1$s</string>
+    <string name="weekly_arc_empty">Füge diese Woche ein paar Einträge hinzu, um deinen Verlauf zu sehen.</string>
+    <string name="weekly_open">Öffnen</string>
+    <string name="weekly_section_themes">WIEDERKEHRENDE THEMEN</string>
+    <string name="weekly_section_standout">EIN BESONDERER MOMENT</string>
+    <string name="weekly_section_questions">FRAGEN ZUM NACHDENKEN</string>
+
+    <!-- Section labels -->
+    <string name="section_streaks">Serien</string>
+    <string name="section_stats">Statistiken</string>
+
+    <!-- Streak cards -->
+    <string name="current_streak">Aktuelle Serie</string>
+    <string name="journaled_every_day_since_prefix">Du schreibst jeden Tag seit dem</string>
+    <string name="journaled_once_a_week_since_prefix">Du schreibst mindestens einmal pro Woche seit dem</string>
+    <string name="journal_today_to_start">Schreibe heute, um eine tägliche Serie zu starten.</string>
+    <string name="no_current_streak">Keine aktuelle Serie</string>
+    <string name="journal_every_day_to_build">Schreibe jeden Tag, um eine Serie aufzubauen.</string>
+    <string name="set_reminder">Erinnerung festlegen</string>
+
+    <!-- Stat cards -->
+    <string name="stat_entries">Einträge</string>
+    <string name="stat_written">Geschrieben</string>
+    <string name="stat_words">Wörter</string>
+    <string name="stat_journaled">Tagebuch geführt</string>
+    <string name="stat_days">Tage</string>
+    <string name="stat_this_month">Diesen Monat</string>
+    <string name="stat_this_year">Dieses Jahr</string>
+    <string name="visited_places">Besuchte Orte</string>
+</resources>

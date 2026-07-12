@@ -1,0 +1,55 @@
+<resources>
+    <string name="show_more">Mehr anzeigen</string>
+    <string name="show_less">Weniger anzeigen</string>
+
+    <string name="title_list_empty">Keine Einträge</string>
+    <string name="add_new_entry">Neuen Eintrag hinzufügen</string>
+
+
+    <string name="recording_paused">Aufnahme pausiert</string>
+    <string name="pause_or_resume_recording">Aufnahme pausieren oder fortsetzen</string>
+    <string name="cancel_recording">Aufnahme abbrechen</string>
+    <string name="navigate_back">Zurück</string>
+    <string name="new_entry">Neuer Eintrag</string>
+    <string name="add_mood">Stimmung hinzufügen</string>
+    <string name="add_title">Titel hinzufügen…</string>
+    <string name="topic_hashtag">Themen-Hashtag</string>
+    <string name="topic">Thema</string>
+    <string name="add_description">Beschreibung hinzufügen…</string>
+    <string name="save">Speichern</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="are_you_sure">Bist du sicher?</string>
+    <string name="your_data_won_t_be_saved">Deine Daten werden nicht gespeichert.</string>
+    <string name="discard">Verwerfen</string>
+    <string name="how_are_you_doing">Wie geht es dir?</string>
+    <string name="confirm">Bestätigen</string>
+    <string name="selected_mood">Ausgewählte Stimmung</string>
+    <string name="my_mood">Meine Stimmung</string>
+    <string name="select_default_mood_to_apply_to_all_new_entries">Wähle eine Standardstimmung für alle neuen Einträge</string>
+    <string name="my_topics">Meine Themen</string>
+    <string name="select_default_topics_to_apply_to_all_new_entries">Wähle Standardthemen für alle neuen Einträge</string>
+    <string name="create_new_entry_widget">Widget für neue Einträge</string>
+    <string name="record_a_new_entry">Nimm mit einem Tippen einen neuen Eintrag auf</string>
+    <string name="you_don_t_have_any_topics_yet">Du hast noch keine Themen!</string>
+    <string name="audio_recording_was_too_short">Die Audioaufnahme war zu kurz</string>
+    <string name="clear_selections">Auswahl löschen</string>
+    <string name="create_entry">&apos;%s&apos; erstellen</string>
+    <string name="playing">Wird abgespielt</string>
+    <string name="paused">Pausiert</string>
+    <string name="stopped">Gestoppt</string>
+    <string name="pause_recording">Aufnahme pausieren</string>
+    <string name="finish_recording">Aufnahme beenden</string>
+    <string name="resume_recording">Aufnahme fortsetzen</string>
+    <string name="remove_topic">Thema %s entfernen</string>
+    <string name="discard_recording">Aufnahme verwerfen?</string>
+    <string name="this_cannot_be_undone">Das kann nicht rückgängig gemacht werden.</string>
+    <string name="today">Heute</string>
+    <string name="yesterday">Gestern</string>
+    <string name="record_new_entry">Neuen Eintrag aufnehmen</string>
+    <string name="confused_and_happy_mood_faces">Verwirrte und fröhliche Stimmungsgesichter</string>
+    <string name="tag_prefix">#</string>
+
+    <string name="widget_description">Einen neuen Tagebucheintrag erstellen</string>
+    <string name="title_entries">Dein Fluenty</string>
+    <string name="desc_entry_empty">Nimm deinen ersten Eintrag auf</string>
+</resources>

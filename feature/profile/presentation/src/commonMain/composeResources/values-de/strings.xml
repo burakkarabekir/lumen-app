@@ -1,0 +1,165 @@
+<resources>
+    <string name="profile_title">Profil</string>
+    <string name="content_desc_avatar">Avatar</string>
+    <string name="content_desc_edit_avatar">Avatar bearbeiten</string>
+    <string name="section_account">KONTO</string>
+    <string name="privacy_security">Datenschutz &amp; Sicherheit</string>
+    <string name="data_export">Datenexport</string>
+    <string name="section_preferences">Einstellungen</string>
+    <string name="app_theme">App-Design</string>
+    <string name="notifications">Benachrichtigungen</string>
+    <string name="sign_out">Abmelden</string>
+    <string name="delete_account">Konto löschen</string>
+    <string name="delete_account_title">Konto löschen?</string>
+    <string name="delete_account_message">Dadurch werden dein Konto und alle deine Einträge, Fotos und Reflexionen dauerhaft gelöscht. Das kann nicht rückgängig gemacht werden.</string>
+    <string name="delete_account_confirm">Löschen</string>
+    <string name="section_data_privacy">Daten &amp; Datenschutz</string>
+    <string name="section_support">Support</string>
+    <string name="reminders">Erinnerungen</string>
+    <string name="cloud_sync">Cloud-Sync</string>
+    <string name="lock_privacy">Sperre &amp; Datenschutz</string>
+    <string name="export_journal">Journal exportieren</string>
+    <string name="help_center">Hilfecenter</string>
+    <string name="about_lumen">Über Lumen</string>
+    <string name="member_since_prefix">Mitglied seit %1$s</string>
+    <string name="upgrade_button">Upgrade</string>
+    <string name="theme_selector_title">Design auswählen</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Hell</string>
+    <string name="theme_dark">Dunkel</string>
+    <string name="error_permission_denied">Zugriff verweigert. Bitte in den Systemeinstellungen aktivieren.</string>
+    <string name="action_open_settings">Einstellungen</string>
+    <string name="error_avatar_update_failed">Aktualisierung fehlgeschlagen: %1$s</string>
+    <string name="permission_gallery_denied">Für den Zugriff auf Fotos und Videos ist eine Berechtigung erforderlich"</string>
+
+    <string name="about_title">Über</string>
+    <string name="about_app_name">Lumen</string>
+    <string name="about_tagline">Dein Raum zum Reflektieren, jeden Tag.</string>
+    <string name="about_version">Version %1$s</string>
+    <string name="about_section_legal">Rechtliches</string>
+    <string name="about_privacy_policy">Datenschutzerklärung</string>
+    <string name="about_terms">Nutzungsbedingungen</string>
+    <string name="about_website">Website</string>
+    <string name="about_section_more">Mehr</string>
+    <string name="about_rate">Lumen bewerten</string>
+    <string name="about_acknowledgements">Danksagungen</string>
+    <string name="about_made_with_love">Mit ♥ erstellt vom Lumen-Team</string>
+    <string name="about_copyright">© 2026 Lumen</string>
+
+    <string name="help_title">Hilfecenter</string>
+    <string name="help_intro_title">Wie können wir helfen?</string>
+    <string name="help_intro_body">Fragen, Feedback oder funktioniert etwas nicht? Melde dich und wir kommen auf dich zurück.</string>
+    <string name="help_section_contact">Kontakt</string>
+    <string name="help_email_support">E-Mail-Support</string>
+    <string name="help_report_bug">Fehler melden</string>
+    <string name="help_response_note">Wir antworten normalerweise innerhalb von 2 Werktagen.</string>
+
+    <!-- Common -->
+    <string name="action_close">Schließen</string>
+    <string name="action_back">Zurück</string>
+    <string name="action_ok">OK</string>
+    <string name="action_cancel">Abbrechen</string>
+    <string name="action_retry">Erneut versuchen</string>
+    <string name="action_save">Speichern</string>
+    <string name="action_edit">Bearbeiten</string>
+
+    <!-- Edit Profile -->
+    <string name="edit_profile_title">Profil bearbeiten</string>
+    <string name="edit_profile_change_photo">Foto ändern</string>
+    <string name="edit_profile_photo_content_desc">Profilfoto</string>
+    <string name="edit_profile_name_label">NAME</string>
+    <string name="edit_profile_name_placeholder">Dein Name</string>
+    <string name="edit_profile_name_hint">Das ist der Name, der in deinem Journal und Profil angezeigt wird.</string>
+
+    <!-- Reminders -->
+    <string name="reminders_subtitle">Wähle, wann Lumen dich ans Schreiben erinnert.</string>
+    <string name="reminders_daily">Tägliche Erinnerung</string>
+    <string name="reminders_time">Uhrzeit</string>
+    <string name="reminders_repeat">Wiederholen</string>
+    <string name="reminders_streak">Streak-Erinnerung</string>
+    <string name="reminders_streak_description">Erhalte einen Hinweis, bevor deine Streak abläuft.</string>
+    <string name="reminders_select_time">Uhrzeit auswählen</string>
+
+    <!-- Appearance -->
+    <string name="appearance_title">Erscheinungsbild</string>
+    <string name="appearance_auto">Automatisch</string>
+    <string name="appearance_light">Hell</string>
+    <string name="appearance_dark">Dunkel</string>
+
+    <!-- Profile Hero -->
+    <string name="profile_hero_avatar_content_desc">Profil</string>
+    <string name="profile_hero_stat_entries">Einträge</string>
+    <string name="profile_hero_stat_weekly_streak">Wo.-Streak</string>
+    <string name="profile_hero_stat_joined">Beigetreten</string>
+
+    <!-- Profile Photo Viewer -->
+    <string name="profile_photo_content_desc">Profilfoto</string>
+
+    <!-- Profile new rows -->
+    <string name="section_subscription">Abo</string>
+    <string name="manage_premium">Lumen Plus</string>
+    <string name="terms_privacy">Bedingungen &amp; Datenschutz</string>
+    <string name="plan_free">Kostenlos</string>
+    <string name="plan_plus">Plus</string>
+
+    <!-- Cloud Sync -->
+    <string name="cloud_sync_title">Cloud-Sync</string>
+    <string name="cloud_sync_status_title">Dein Journal ist gesichert</string>
+    <string name="cloud_sync_status_subtitle">Deine Einträge werden sicher in die Cloud synchronisiert und sind auf all deinen Geräten verfügbar.</string>
+    <string name="cloud_sync_account">Konto</string>
+    <string name="cloud_sync_entries">Einträge synchronisiert</string>
+    <string name="cloud_sync_storage">Speicher</string>
+    <string name="cloud_sync_storage_value">Verschlüsselte Cloud · EU</string>
+    <string name="cloud_sync_now">Jetzt synchronisieren</string>
+    <string name="cloud_sync_success">Journal synchronisiert</string>
+    <string name="cloud_sync_error">Synchronisierung fehlgeschlagen: %1$s</string>
+
+    <!-- Lock &amp; Privacy -->
+    <string name="lock_privacy_title">Sperre &amp; Datenschutz</string>
+    <string name="lock_section_security">Sicherheit</string>
+    <string name="lock_app_lock_title">App-Sperre</string>
+    <string name="lock_app_lock_subtitle">Face ID oder Fingerabdruck zum Öffnen von Lumen erforderlich.</string>
+    <string name="lock_unavailable">Die biometrische Sperre ist auf diesem Gerät nicht verfügbar.</string>
+    <string name="lock_error">App-Sperre konnte nicht geändert werden. Bitte versuche es erneut.</string>
+    <string name="lock_section_privacy">Datenschutz</string>
+    <string name="lock_policy_version">Richtlinienversion</string>
+    <string name="lock_prompt_enable_title">App-Sperre aktivieren</string>
+    <string name="lock_prompt_enable_subtitle">Bestätige deine Biometrie, um die App-Sperre zu aktivieren.</string>
+
+    <!-- Export Journal -->
+    <string name="export_title">Journal exportieren</string>
+    <string name="export_intro_title">Exportiere dein Journal</string>
+    <string name="export_intro_subtitle">Erstelle ein PDF all deiner Einträge, um eine persönliche Kopie zu behalten oder es zu teilen.</string>
+    <string name="export_entries_count">%1$d Einträge werden einbezogen</string>
+    <string name="export_button">Als PDF exportieren</string>
+    <string name="export_empty">Du hast noch keine Einträge zum Exportieren.</string>
+    <string name="export_success">Journal exportiert</string>
+    <string name="export_error">Export fehlgeschlagen: %1$s</string>
+
+    <!-- Premium / Manage subscription -->
+    <string name="premium_title">Lumen Plus</string>
+    <string name="premium_status_plus_title">Du nutzt Lumen Plus</string>
+    <string name="premium_status_plus_subtitle">Danke, dass du Lumen unterstützt. Genieße unbegrenzte KI-Reflexionen und alle Premium-Funktionen.</string>
+    <string name="premium_status_free_title">Du nutzt den kostenlosen Tarif</string>
+    <string name="premium_status_free_subtitle">Wechsle zu Lumen Plus für unbegrenzte KI-Reflexionen, Sprach- &amp; Videoeinträge und mehr.</string>
+    <string name="premium_plan">Tarif</string>
+    <string name="premium_upgrade">Upgrade auf Plus</string>
+    <string name="premium_manage_subscription">Abo verwalten</string>
+    <string name="premium_restore">Käufe wiederherstellen</string>
+    <string name="premium_restore_success">Käufe wiederhergestellt</string>
+    <string name="premium_restore_none">Keine Käufe zum Wiederherstellen gefunden.</string>
+    <string name="premium_restore_error">Wiederherstellung fehlgeschlagen: %1$s</string>
+    <string name="premium_manage_note">Verwalte oder kündige dein Abo jederzeit im App Store oder bei Google Play.</string>
+
+    <!-- Legal (Terms &amp; Privacy viewer) -->
+    <string name="legal_title">Bedingungen &amp; Datenschutz</string>
+    <string name="legal_subtitle">Lies die Dokumente, denen du bei deinem Beitritt zu Lumen zugestimmt hast.</string>
+    <string name="legal_terms">Nutzungsbedingungen</string>
+    <string name="legal_privacy">Datenschutzerklärung</string>
+    <string name="legal_open_external">Im Browser öffnen</string>
+    <string name="legal_load_error">Die Seite konnte nicht geladen werden. Überprüfe deine Verbindung oder öffne sie in deinem Browser.</string>
+    <string name="language_title">Sprache</string>
+    <string name="language_system">Systemstandard</string>
+    <string name="language_selector_title">Sprache wählen</string>
+    <string name="cloud_sync_on">Ein</string>
+</resources>

@@ -58,10 +58,13 @@ import com.bksd.core.design_system.theme.profileAccentAmber
 import com.bksd.core.design_system.theme.profileAccentGreen
 import com.bksd.core.design_system.theme.profileAccentIndigo
 import com.bksd.core.design_system.theme.profileAccentViolet
+import com.bksd.core.design_system.theme.rememberLanguageController
 import com.bksd.core.design_system.theme.rememberThemeController
 import com.bksd.core.presentation.media.rememberImagePickerLauncher
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.profile.presentation.components.AppearanceRow
+import com.bksd.profile.presentation.components.LanguageRow
+import com.bksd.profile.presentation.components.LanguageSelectorSheet
 import com.bksd.profile.presentation.components.ProfileHeroCard
 import com.bksd.profile.presentation.components.ProfilePhotoViewer
 import com.bksd.profile.presentation.components.ProfileSettingsRow
@@ -158,8 +161,11 @@ internal fun ProfileScreen(
 ) {
     val themeController = rememberThemeController()
     val themeMode by themeController.themeMode.collectAsState()
+    val languageController = rememberLanguageController()
+    val language by languageController.language.collectAsState()
     var showRemindersSheet by remember { mutableStateOf(false) }
     var showThemeSheet by remember { mutableStateOf(false) }
+    var showLanguageSheet by remember { mutableStateOf(false) }
     var showEnlargedPhoto by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -224,6 +230,14 @@ internal fun ProfileScreen(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
                     modifier = Modifier.padding(start = MaterialTheme.dimens.spacing.massive)
                 )
+                LanguageRow(
+                    selectedLanguage = language,
+                    onClick = { showLanguageSheet = true }
+                )
+                HorizontalDivider(
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
+                    modifier = Modifier.padding(start = MaterialTheme.dimens.spacing.massive)
+                )
                 ProfileSettingsRow(
                     icon = Icons.Default.Notifications,
                     label = stringResource(Res.string.reminders),
@@ -241,7 +255,7 @@ internal fun ProfileScreen(
                     icon = Icons.Default.Cloud,
                     label = stringResource(Res.string.cloud_sync),
                     accent = MaterialTheme.colorScheme.extended.profileAccentGreen,
-                    trailingValue = "On",
+                    trailingValue = stringResource(Res.string.cloud_sync_on),
                     trailingColor = MaterialTheme.colorScheme.extended.profileAccentGreen,
                     onClick = { onAction(ProfileAction.OnCloudSyncClick) }
                 )
@@ -356,6 +370,10 @@ internal fun ProfileScreen(
 
                 if (showThemeSheet) {
                     ThemeSelectorSheet(onDismiss = { showThemeSheet = false })
+                }
+
+                if (showLanguageSheet) {
+                    LanguageSelectorSheet(onDismiss = { showLanguageSheet = false })
                 }
 
                 if (state.showDeleteDialog) {

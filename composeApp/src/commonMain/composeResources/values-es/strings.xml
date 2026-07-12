@@ -1,0 +1,35 @@
+<resources>
+    <string name="home">Inicio</string>
+    <string name="home_greeting">Hola, </string>
+
+    <!-- Post-login welcome animation -->
+    <string name="welcome_greeting_returning">Te damos la bienvenida de nuevo,</string>
+    <string name="welcome_greeting_new">Te damos la bienvenida a Lumen,</string>
+    <string name="welcome_greeting_first">Te damos la bienvenida,</string>
+
+    <!-- OAuth consent gate -->
+    <string name="consent_gate_title">Acepta para continuar</string>
+    <string name="consent_gate_body_prefix">Para seguir usando Lumen, revisa y acepta nuestros </string>
+    <string name="consent_terms">Términos de Servicio</string>
+    <string name="consent_and"> y </string>
+    <string name="consent_privacy">Política de Privacidad</string>
+    <string name="consent_gate_button">Acepto y continúo</string>
+
+    <!-- App lock gate -->
+    <string name="lock_gate_title">Lumen está bloqueado</string>
+    <string name="lock_gate_subtitle">Desbloquéalo para continuar con tu diario.</string>
+    <string name="lock_gate_unlock">Desbloquear</string>
+    <string name="lock_gate_prompt_title">Desbloquear Lumen</string>
+    <string name="lock_gate_prompt_subtitle">Confirma que eres tú para abrir tu diario.</string>
+
+    <!-- Recording Status Messages -->
+    <string name="microphone_permission_denied">¿Todo listo para empezar?</string>
+    <string name="permission_open_settings">Abrir ajustes</string>
+    <string name="error_couldnt_save_file">Vaya, no se pudo guardar el archivo.</string>
+    <string name="error_recording_start">No se pudo iniciar la grabación</string>
+    <string name="error_recording_stop">No se pudo detener la grabación</string>
+    <string name="no_connection">Sin conexión a internet</string>
+    <string name="connection_restored">De nuevo en línea</string>
+    <string name="nav_journal">Diario</string>
+    <string name="nav_insights">Estadísticas</string>
+</resources>

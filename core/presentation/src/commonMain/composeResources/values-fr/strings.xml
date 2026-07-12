@@ -1,0 +1,32 @@
+<resources>
+    <string name="error_unknown">Une erreur est survenue. Réessaie.</string>
+
+    <string name="error_network_no_internet">Pas de connexion Internet. Vérifie ton réseau et réessaie.</string>
+    <string name="error_network_timeout">Le délai de la requête a expiré. Réessaie.</string>
+    <string name="error_network_unauthorized">Ta session a expiré. Reconnecte-toi.</string>
+    <string name="error_network_conflict">Un conflit est survenu. Réessaie.</string>
+    <string name="error_network_too_many_requests">Trop de requêtes. Patiente un instant et réessaie.</string>
+    <string name="error_network_server">Une erreur serveur est survenue. Réessaie plus tard.</string>
+    <string name="error_network_serialization">Données inattendues reçues. Réessaie.</string>
+
+    <string name="error_auth_invalid_credentials">E-mail ou mot de passe incorrect.</string>
+    <string name="error_auth_user_not_found">Aucun compte ne correspond à ces informations.</string>
+    <string name="error_auth_account_exists">Un compte existe déjà avec cet e-mail.</string>
+    <string name="error_auth_weak_password">Ce mot de passe est trop faible. Choisis-en un plus robuste.</string>
+    <string name="error_auth_social_cancelled">Connexion annulée.</string>
+    <string name="error_auth_social_failed">La connexion sociale a échoué. Réessaie.</string>
+
+    <string name="error_media_permission_denied">Autorisation refusée.</string>
+    <string name="error_media_file_too_large">Ce fichier est trop volumineux.</string>
+    <string name="error_media_upload_failed">L&apos;envoi a échoué. Réessaie.</string>
+    <string name="error_media_recording_failed">L&apos;enregistrement a échoué. Réessaie.</string>
+    <string name="error_media_unsupported_format">Ce format n&apos;est pas pris en charge.</string>
+
+    <string name="error_location_services_disabled">Les services de localisation sont désactivés.</string>
+    <string name="error_location_permission_denied">L&apos;autorisation de localisation a été refusée.</string>
+    <string name="error_location_unavailable">La localisation est actuellement indisponible.</string>
+    <string name="reminder_daily_title">Moment d&apos;écriture</string>
+    <string name="reminder_daily_body">Prends un moment pour capturer ta journée.</string>
+    <string name="reminder_streak_title">Ne romps pas ta série</string>
+    <string name="reminder_streak_body">Écris une entrée pour garder ta série active.</string>
+</resources>

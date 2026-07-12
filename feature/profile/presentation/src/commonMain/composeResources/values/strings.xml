@@ -158,4 +158,8 @@
     <string name="legal_privacy">Privacy Policy</string>
     <string name="legal_open_external">Open in browser</string>
     <string name="legal_load_error">Couldn&apos;t load the page. Check your connection or open it in your browser.</string>
+    <string name="language_title">Language</string>
+    <string name="language_system">System default</string>
+    <string name="language_selector_title">Choose language</string>
+    <string name="cloud_sync_on">On</string>
 </resources>

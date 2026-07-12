@@ -1,0 +1,122 @@
+<resources>
+    <string name="journal">Günlük</string>
+    <string name="navigate_back">Geri dön</string>
+    <string name="discard">Vazgeç</string>
+    <string name="how_are_you_doing">Nasıl hissediyorsun?</string>
+    <string name="confirm">Onayla</string>
+    <string name="selected_mood">Seçilen Ruh Hali</string>
+    <string name="my_mood">Ruh Halim</string>
+    <string name="save">Kaydet</string>
+    <string name="cancel">İptal</string>
+    <string name="are_you_sure">Emin misin?</string>
+    <string name="your_data_won_t_be_saved">Verilerin kaydedilmeyecek.</string>
+    <string name="add_mood">Ruh hali ekle</string>
+    <string name="add_title">Başlık ekle…</string>
+    <string name="add_description">Açıklama ekle…</string>
+    <string name="discard_recording">Kayıttan vazgeçilsin mi?</string>
+    <string name="this_cannot_be_undone">Bu geri alınamaz.</string>
+    <string name="topic">Konu</string>
+    <string name="remove_topic">%s konusunu kaldır</string>
+
+    <string name="stressed">Stresli</string>
+    <string name="sad">Üzgün</string>
+    <string name="neutral">Nötr</string>
+    <string name="peaceful">Huzurlu</string>
+    <string name="excited">Heyecanlı</string>
+    <string name="all_moods">Tüm Ruh Halleri</string>
+    <string name="all_topics">Tüm Konular</string>
+
+    <!-- JournalScreen -->
+    <string name="journal_title">Günlük</string>
+    <string name="content_desc_create_moment">An Oluştur</string>
+    <string name="no_moments_day">Bu güne ait an yok.</string>
+    <string name="no_filter_entries">Bu filtreye uygun kayıt yok.</string>
+    <string name="no_filter_day">Bu güne ait %s yok.</string>
+    <string name="all_entries">Tüm Kayıtlar</string>
+    <string name="photos">Fotoğraflar</string>
+    <string name="videos">Videolar</string>
+    <string name="voice_notes">Sesli Notlar</string>
+    <string name="links">Bağlantılar</string>
+
+    <!-- MomentDetailScreen -->
+    <string name="moment_detail_title">An</string>
+    <string name="content_desc_back">Geri</string>
+    <string name="content_desc_edit">Düzenle</string>
+    <string name="my_moment_fallback">Anım</string>
+    <string name="add_reflection">Yansıma Ekle</string>
+    <string name="content_desc_bookmark">Anı İşaretle</string>
+    <string name="export_to_pdf">PDF&apos;e Aktar</string>
+    <string name="attachments_section">EKLER</string>
+    <string name="voice_reflection">Sesli Yansıma</string>
+    <string name="mood_of_the_moment">Anın ruh hali</string>
+    <string name="journal_entry_label">GÜNLÜK KAYDI</string>
+    <string name="expand">Genişlet</string>
+    <string name="collapse">Daralt</string>
+    <string name="save_changes">Değişiklikleri Kaydet</string>
+    <string name="saving">Kaydediliyor…</string>
+    <string name="edit">Düzenle</string>
+    <string name="write_thoughts_hint">Düşüncelerini yaz…</string>
+
+    <!-- Day Section Headers -->
+    <string name="section_today">Bugün</string>
+    <string name="section_yesterday">Dün</string>
+    <string name="section_days_ago">%1$s gün önce</string>
+    <string name="section_weeks_ago">%1$s hafta önce</string>
+
+    <string name="edit_entry">Kaydı Düzenle</string>
+    <string name="add_favorite">Favorilere Ekle</string>
+    <string name="remove_favorite">Favorilerden Çıkar</string>
+    <string name="favorite">Favori</string>
+    <string name="delete">Sil</string>
+    <string name="delete_moment_title">Bu an silinsin mi?</string>
+    <string name="delete_moment_message">Bu kayıt kalıcı olarak silinir. Bu geri alınamaz.</string>
+    <string name="content_desc_share">Paylaş</string>
+
+    <!-- AI Entry Analysis -->
+    <string name="ai_analysis_title">Yapay Zeka Analizi</string>
+    <string name="ai_generated_on_save">Kaydederken oluşturuldu</string>
+    <string name="ai_question_to_sit_with">ÜZERİNDE DÜŞÜNÜLECEK BİR SORU</string>
+    <string name="ai_reflection_disclaimer">Lumen AI hata yapabilir. Yansımalar yalnızca sana özeldir.</string>
+    <string name="ai_analyzing_title">Kaydın analiz ediliyor…</string>
+    <string name="ai_analyzing_caption">Yansıman birazdan burada görünecek.</string>
+    <string name="ai_analysis_failed_title">Yansıma kullanılamıyor</string>
+    <string name="ai_analysis_failed_caption">Bu an için bir yansıma oluşturamadık.</string>
+    <string name="ai_analysis_offline_title">Çevrimdışısın</string>
+    <string name="ai_analysis_offline_caption">Yeniden bağlandığında bir yansıma eklenecek.</string>
+    <string name="ai_analysis_retry">Tekrar dene</string>
+    <string name="ai_support_title">Bir destek anı</string>
+    <string name="ai_crisis_title">Yalnız değilsin</string>
+    <string name="ai_call_resource">%1$s ara</string>
+
+    <!-- JournalTopBar -->
+    <string name="search_moments_hint">Anlarda ara…</string>
+    <string name="content_desc_search">Ara</string>
+    <string name="content_desc_profile">Profil</string>
+    <string name="content_desc_clear_search">Aramayı temizle</string>
+
+    <!-- JournalEmptyState -->
+    <string name="empty_state_sparkle">Parıltı</string>
+    <string name="empty_state_title">İlk anın\nburada başlıyor</string>
+    <string name="empty_state_subtitle">Bir düşünceyi, bir hissi\nya da aklından geçen her şeyi yakalamak için + simgesine dokun.</string>
+
+    <!-- MomentDetailReadView -->
+    <string name="word_count">%1$d kelime</string>
+
+    <!-- MomentDetailEditView -->
+    <string name="edit_section_date_time">TARİH &amp; SAAT</string>
+    <string name="edit_section_title">BAŞLIK</string>
+    <string name="edit_section_moods">RUH HALLERİ</string>
+    <string name="edit_section_entry">KAYIT</string>
+    <string name="edit_title_hint">Başlık</string>
+    <string name="edit_mood_done">Tamam</string>
+    <string name="editing_badge">Düzenleniyor</string>
+    <string name="next">İleri</string>
+
+    <!-- DetailTimePickerDialog -->
+    <string name="select_time">Saati seç</string>
+    <string name="ok">Tamam</string>
+
+    <!-- MomentCard -->
+    <string name="content_desc_favorited">Favorilendi</string>
+    <string name="content_desc_more_actions">Daha fazla işlem</string>
+</resources>

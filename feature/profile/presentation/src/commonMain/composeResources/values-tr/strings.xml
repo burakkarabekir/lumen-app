@@ -1,0 +1,165 @@
+<resources>
+    <string name="profile_title">Profil</string>
+    <string name="content_desc_avatar">Avatar</string>
+    <string name="content_desc_edit_avatar">Avatarı düzenle</string>
+    <string name="section_account">HESAP</string>
+    <string name="privacy_security">Gizlilik &amp; Güvenlik</string>
+    <string name="data_export">Veri Dışa Aktarma</string>
+    <string name="section_preferences">Tercihler</string>
+    <string name="app_theme">Uygulama Teması</string>
+    <string name="notifications">Bildirimler</string>
+    <string name="sign_out">Çıkış Yap</string>
+    <string name="delete_account">Hesabı sil</string>
+    <string name="delete_account_title">Hesap silinsin mi?</string>
+    <string name="delete_account_message">Bu işlem hesabını ve tüm girdilerini, fotoğraflarını ve yansımalarını kalıcı olarak siler. Bu geri alınamaz.</string>
+    <string name="delete_account_confirm">Sil</string>
+    <string name="section_data_privacy">Veri &amp; Gizlilik</string>
+    <string name="section_support">Destek</string>
+    <string name="reminders">Hatırlatıcılar</string>
+    <string name="cloud_sync">Bulut Senkronizasyonu</string>
+    <string name="lock_privacy">Kilit &amp; Gizlilik</string>
+    <string name="export_journal">Günlüğü Dışa Aktar</string>
+    <string name="help_center">Yardım Merkezi</string>
+    <string name="about_lumen">Lumen Hakkında</string>
+    <string name="member_since_prefix">%1$s tarihinden beri üye</string>
+    <string name="upgrade_button">Yükselt</string>
+    <string name="theme_selector_title">Görünüm Modunu Seç</string>
+    <string name="theme_system">Sistem</string>
+    <string name="theme_light">Açık</string>
+    <string name="theme_dark">Koyu</string>
+    <string name="error_permission_denied">İzin reddedildi. Lütfen sistem ayarlarından etkinleştir.</string>
+    <string name="action_open_settings">Ayarlar</string>
+    <string name="error_avatar_update_failed">Güncelleme başarısız: %1$s</string>
+    <string name="permission_gallery_denied">Fotoğraflara ve videolara erişim izni gerekli"</string>
+
+    <string name="about_title">Hakkında</string>
+    <string name="about_app_name">Lumen</string>
+    <string name="about_tagline">Her gün üzerine düşünmen için senin alanın.</string>
+    <string name="about_version">Sürüm %1$s</string>
+    <string name="about_section_legal">Yasal</string>
+    <string name="about_privacy_policy">Gizlilik Politikası</string>
+    <string name="about_terms">Hizmet Şartları</string>
+    <string name="about_website">Web Sitesi</string>
+    <string name="about_section_more">Daha Fazla</string>
+    <string name="about_rate">Lumen&apos;i Değerlendir</string>
+    <string name="about_acknowledgements">Teşekkürler</string>
+    <string name="about_made_with_love">Lumen ekibi tarafından ♥ ile yapıldı</string>
+    <string name="about_copyright">© 2026 Lumen</string>
+
+    <string name="help_title">Yardım Merkezi</string>
+    <string name="help_intro_title">Nasıl yardımcı olabiliriz?</string>
+    <string name="help_intro_body">Soruların, geri bildirimlerin ya da çalışmayan bir şey mi var? Bize ulaş, en kısa sürede dönüş yapalım.</string>
+    <string name="help_section_contact">İletişim</string>
+    <string name="help_email_support">E-posta Desteği</string>
+    <string name="help_report_bug">Hata Bildir</string>
+    <string name="help_response_note">Genellikle 2 iş günü içinde yanıt veriyoruz.</string>
+
+    <!-- Common -->
+    <string name="action_close">Kapat</string>
+    <string name="action_back">Geri</string>
+    <string name="action_ok">Tamam</string>
+    <string name="action_cancel">İptal</string>
+    <string name="action_retry">Tekrar Dene</string>
+    <string name="action_save">Kaydet</string>
+    <string name="action_edit">Düzenle</string>
+
+    <!-- Edit Profile -->
+    <string name="edit_profile_title">Profili Düzenle</string>
+    <string name="edit_profile_change_photo">Fotoğrafı Değiştir</string>
+    <string name="edit_profile_photo_content_desc">Profil fotoğrafı</string>
+    <string name="edit_profile_name_label">AD</string>
+    <string name="edit_profile_name_placeholder">Adın</string>
+    <string name="edit_profile_name_hint">Bu, günlüğünde ve profilinde görünen addır.</string>
+
+    <!-- Reminders -->
+    <string name="reminders_subtitle">Lumen&apos;in seni yazmaya ne zaman teşvik edeceğini seç.</string>
+    <string name="reminders_daily">Günlük hatırlatıcı</string>
+    <string name="reminders_time">Saat</string>
+    <string name="reminders_repeat">Tekrar</string>
+    <string name="reminders_streak">Seri hatırlatıcısı</string>
+    <string name="reminders_streak_description">Serin sona ermeden önce sana bir hatırlatma gönderelim.</string>
+    <string name="reminders_select_time">Saat seç</string>
+
+    <!-- Appearance -->
+    <string name="appearance_title">Görünüm</string>
+    <string name="appearance_auto">Otomatik</string>
+    <string name="appearance_light">Açık</string>
+    <string name="appearance_dark">Koyu</string>
+
+    <!-- Profile Hero -->
+    <string name="profile_hero_avatar_content_desc">Profil</string>
+    <string name="profile_hero_stat_entries">Girdi</string>
+    <string name="profile_hero_stat_weekly_streak">Haftalık Seri</string>
+    <string name="profile_hero_stat_joined">Katılım</string>
+
+    <!-- Profile Photo Viewer -->
+    <string name="profile_photo_content_desc">Profil fotoğrafı</string>
+
+    <!-- Profile new rows -->
+    <string name="section_subscription">Abonelik</string>
+    <string name="manage_premium">Lumen Plus</string>
+    <string name="terms_privacy">Şartlar &amp; Gizlilik</string>
+    <string name="plan_free">Ücretsiz</string>
+    <string name="plan_plus">Plus</string>
+
+    <!-- Cloud Sync -->
+    <string name="cloud_sync_title">Bulut Senkronizasyonu</string>
+    <string name="cloud_sync_status_title">Günlüğün yedeklendi</string>
+    <string name="cloud_sync_status_subtitle">Girdilerin güvenli bir şekilde buluta senkronlanıyor ve tüm cihazlarında kullanılabilir.</string>
+    <string name="cloud_sync_account">Hesap</string>
+    <string name="cloud_sync_entries">Senkronlanan girdi</string>
+    <string name="cloud_sync_storage">Depolama</string>
+    <string name="cloud_sync_storage_value">Şifreli bulut · AB</string>
+    <string name="cloud_sync_now">Şimdi senkronize et</string>
+    <string name="cloud_sync_success">Günlük senkronlandı</string>
+    <string name="cloud_sync_error">Senkronlanamadı: %1$s</string>
+
+    <!-- Lock &amp; Privacy -->
+    <string name="lock_privacy_title">Kilit &amp; Gizlilik</string>
+    <string name="lock_section_security">Güvenlik</string>
+    <string name="lock_app_lock_title">Uygulama Kilidi</string>
+    <string name="lock_app_lock_subtitle">Lumen&apos;i açmak için Face ID ya da parmak izi iste.</string>
+    <string name="lock_unavailable">Bu cihazda biyometrik kilit kullanılamıyor.</string>
+    <string name="lock_error">Uygulama Kilidi değiştirilemedi. Lütfen tekrar dene.</string>
+    <string name="lock_section_privacy">Gizlilik</string>
+    <string name="lock_policy_version">Politika sürümü</string>
+    <string name="lock_prompt_enable_title">Uygulama Kilidini Etkinleştir</string>
+    <string name="lock_prompt_enable_subtitle">Uygulama Kilidini açmak için biyometrik bilgilerini doğrula.</string>
+
+    <!-- Export Journal -->
+    <string name="export_title">Günlüğü Dışa Aktar</string>
+    <string name="export_intro_title">Günlüğünü dışa aktar</string>
+    <string name="export_intro_subtitle">Kişisel bir kopya saklamak ya da paylaşmak için tüm girdilerinden bir PDF oluştur.</string>
+    <string name="export_entries_count">%1$d girdi dahil edilecek</string>
+    <string name="export_button">PDF olarak dışa aktar</string>
+    <string name="export_empty">Henüz dışa aktarılacak bir girdin yok.</string>
+    <string name="export_success">Günlük dışa aktarıldı</string>
+    <string name="export_error">Dışa aktarılamadı: %1$s</string>
+
+    <!-- Premium / Manage subscription -->
+    <string name="premium_title">Lumen Plus</string>
+    <string name="premium_status_plus_title">Lumen Plus kullanıyorsun</string>
+    <string name="premium_status_plus_subtitle">Lumen&apos;i desteklediğin için teşekkürler. Sınırsız yapay zeka yansımalarının ve tüm premium özelliklerin keyfini çıkar.</string>
+    <string name="premium_status_free_title">Ücretsiz planı kullanıyorsun</string>
+    <string name="premium_status_free_subtitle">Sınırsız yapay zeka yansımaları, sesli &amp; video girdileri ve daha fazlası için Lumen Plus&apos;a yükselt.</string>
+    <string name="premium_plan">Plan</string>
+    <string name="premium_upgrade">Plus&apos;a yükselt</string>
+    <string name="premium_manage_subscription">Aboneliği yönet</string>
+    <string name="premium_restore">Satın alımları geri yükle</string>
+    <string name="premium_restore_success">Satın alımlar geri yüklendi</string>
+    <string name="premium_restore_none">Geri yüklenecek satın alım bulunamadı.</string>
+    <string name="premium_restore_error">Geri yüklenemedi: %1$s</string>
+    <string name="premium_manage_note">Aboneliğini istediğin zaman App Store ya da Google Play&apos;den yönetebilir veya iptal edebilirsin.</string>
+
+    <!-- Legal (Terms &amp; Privacy viewer) -->
+    <string name="legal_title">Şartlar &amp; Gizlilik</string>
+    <string name="legal_subtitle">Lumen&apos;e katılırken kabul ettiğin belgeleri oku.</string>
+    <string name="legal_terms">Hizmet Şartları</string>
+    <string name="legal_privacy">Gizlilik Politikası</string>
+    <string name="legal_open_external">Tarayıcıda aç</string>
+    <string name="legal_load_error">Sayfa yüklenemedi. Bağlantını kontrol et veya tarayıcında aç.</string>
+    <string name="language_title">Dil</string>
+    <string name="language_system">Sistem varsayılanı</string>
+    <string name="language_selector_title">Dil seçin</string>
+    <string name="cloud_sync_on">Açık</string>
+</resources>

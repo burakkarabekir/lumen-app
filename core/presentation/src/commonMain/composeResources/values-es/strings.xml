@@ -1,0 +1,32 @@
+<resources>
+    <string name="error_unknown">Algo salió mal. Inténtalo de nuevo.</string>
+
+    <string name="error_network_no_internet">Sin conexión a internet. Revisa tu red e inténtalo de nuevo.</string>
+    <string name="error_network_timeout">La solicitud tardó demasiado. Inténtalo de nuevo.</string>
+    <string name="error_network_unauthorized">Tu sesión expiró. Inicia sesión de nuevo.</string>
+    <string name="error_network_conflict">Se produjo un conflicto. Inténtalo de nuevo.</string>
+    <string name="error_network_too_many_requests">Demasiadas solicitudes. Espera un momento e inténtalo de nuevo.</string>
+    <string name="error_network_server">Se produjo un error del servidor. Inténtalo de nuevo más tarde.</string>
+    <string name="error_network_serialization">Se recibieron datos inesperados. Inténtalo de nuevo.</string>
+
+    <string name="error_auth_invalid_credentials">Correo o contraseña no válidos.</string>
+    <string name="error_auth_user_not_found">No se encontró ninguna cuenta con estos datos.</string>
+    <string name="error_auth_account_exists">Ya existe una cuenta con este correo.</string>
+    <string name="error_auth_weak_password">Esta contraseña es demasiado débil. Elige una más segura.</string>
+    <string name="error_auth_social_cancelled">Se canceló el inicio de sesión.</string>
+    <string name="error_auth_social_failed">Falló el inicio de sesión con redes sociales. Inténtalo de nuevo.</string>
+
+    <string name="error_media_permission_denied">Permiso denegado.</string>
+    <string name="error_media_file_too_large">Este archivo es demasiado grande.</string>
+    <string name="error_media_upload_failed">Falló la subida. Inténtalo de nuevo.</string>
+    <string name="error_media_recording_failed">Falló la grabación. Inténtalo de nuevo.</string>
+    <string name="error_media_unsupported_format">Este formato no es compatible.</string>
+
+    <string name="error_location_services_disabled">Los servicios de ubicación están desactivados.</string>
+    <string name="error_location_permission_denied">Se denegó el permiso de ubicación.</string>
+    <string name="error_location_unavailable">La ubicación no está disponible en este momento.</string>
+    <string name="reminder_daily_title">Hora de escribir</string>
+    <string name="reminder_daily_body">Tómate un momento para capturar tu día.</string>
+    <string name="reminder_streak_title">No rompas tu racha</string>
+    <string name="reminder_streak_body">Escribe una entrada para mantener viva tu racha.</string>
+</resources>

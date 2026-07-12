@@ -1,0 +1,35 @@
+<resources>
+    <string name="home">Accueil</string>
+    <string name="home_greeting">Salut, </string>
+
+    <!-- Post-login welcome animation -->
+    <string name="welcome_greeting_returning">Bon retour,</string>
+    <string name="welcome_greeting_new">Bienvenue sur Lumen,</string>
+    <string name="welcome_greeting_first">Bienvenue,</string>
+
+    <!-- OAuth consent gate -->
+    <string name="consent_gate_title">Accepte pour continuer</string>
+    <string name="consent_gate_body_prefix">Pour continuer à utiliser Lumen, consulte et accepte nos </string>
+    <string name="consent_terms">Conditions d&apos;utilisation</string>
+    <string name="consent_and"> et </string>
+    <string name="consent_privacy">Politique de confidentialité</string>
+    <string name="consent_gate_button">J&apos;accepte &amp; je continue</string>
+
+    <!-- App lock gate -->
+    <string name="lock_gate_title">Lumen est verrouillé</string>
+    <string name="lock_gate_subtitle">Déverrouille pour accéder à ton journal.</string>
+    <string name="lock_gate_unlock">Déverrouiller</string>
+    <string name="lock_gate_prompt_title">Déverrouiller Lumen</string>
+    <string name="lock_gate_prompt_subtitle">Confirme que c&apos;est bien toi pour ouvrir ton journal.</string>
+
+    <!-- Recording Status Messages -->
+    <string name="microphone_permission_denied">Prêt à commencer ?</string>
+    <string name="permission_open_settings">Ouvrir les paramètres</string>
+    <string name="error_couldnt_save_file">Oups, l&apos;enregistrement du fichier a échoué.</string>
+    <string name="error_recording_start">Impossible de démarrer l&apos;enregistrement</string>
+    <string name="error_recording_stop">Impossible d&apos;arrêter l&apos;enregistrement</string>
+    <string name="no_connection">Pas de connexion Internet</string>
+    <string name="connection_restored">De nouveau en ligne</string>
+    <string name="nav_journal">Journal</string>
+    <string name="nav_insights">Analyses</string>
+</resources>

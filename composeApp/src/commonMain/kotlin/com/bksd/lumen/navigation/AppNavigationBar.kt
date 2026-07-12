@@ -28,6 +28,7 @@ import androidx.navigation3.runtime.NavKey
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.extended
 import com.bksd.lumen.navigation.route.Route
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun AppNavigationBar(
@@ -57,7 +58,7 @@ fun AppNavigationBar(
             TOP_LEVEL_DESTINATIONS.forEach { (key, data) ->
                 NavTab(
                     icon = data.icon,
-                    label = data.title,
+                    label = stringResource(data.title),
                     selected = key == selectedKey,
                     onClick = { onSelectKey(key) }
                 )

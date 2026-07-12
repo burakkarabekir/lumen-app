@@ -1,0 +1,56 @@
+<resources>
+    <string name="insights_title">Perspectivas</string>
+    <string name="power_user_analytics">Análisis avanzado</string>
+    <string name="peak_activity">Actividad máxima</string>
+    <string name="consistency_trend">Tendencia de constancia</string>
+    <string name="medium_breakdown">Desglose por medio</string>
+    <string name="mindset_synthesis">Síntesis de mentalidad</string>
+    <string name="recurring_theme">Tema recurrente</string>
+    <string name="adjustment">Ajuste</string>
+
+    <!-- Weekly Reflection -->
+    <string name="weekly_reflection_title">Reflexión semanal</string>
+    <string name="weekly_based_on_entries">Basado en %1$d %2$s · %3$s</string>
+    <string name="weekly_entry_singular">entrada</string>
+    <string name="weekly_entry_plural">entradas</string>
+    <string name="weekly_entry_count">%1$d %2$s</string>
+    <string name="weekly_question_to_sit_with">UNA PREGUNTA PARA REFLEXIONAR</string>
+    <string name="weekly_view_full">Ver reflexión completa</string>
+    <string name="weekly_private_to_you">Solo para ti</string>
+    <string name="weekly_reflecting">Reflexionando sobre tu semana…</string>
+    <string name="weekly_reflection_failed_title">Reflexión semanal no disponible</string>
+    <string name="weekly_reflection_failed_caption">No pudimos generar tu reflexión semanal.</string>
+    <string name="weekly_reflection_retry">Reintentar</string>
+    <string name="weekly_back">Atrás</string>
+    <string name="weekly_no_reflection">Aún no hay reflexión semanal. Escribe algunas entradas esta semana y aparecerá aquí.</string>
+    <string name="weekly_emotional_arc">TU RECORRIDO EMOCIONAL</string>
+    <string name="weekly_brightest_on">Más luminoso el %1$s</string>
+    <string name="weekly_arc_empty">Añade algunas entradas esta semana para ver tu recorrido.</string>
+    <string name="weekly_open">Abrir</string>
+    <string name="weekly_section_themes">TEMAS RECURRENTES</string>
+    <string name="weekly_section_standout">UN MOMENTO QUE DESTACÓ</string>
+    <string name="weekly_section_questions">PREGUNTAS PARA REFLEXIONAR</string>
+
+    <!-- Section labels -->
+    <string name="section_streaks">Rachas</string>
+    <string name="section_stats">Estadísticas</string>
+
+    <!-- Streak cards -->
+    <string name="current_streak">Racha actual</string>
+    <string name="journaled_every_day_since_prefix">Has escrito todos los días desde</string>
+    <string name="journaled_once_a_week_since_prefix">Has escrito al menos una vez a la semana desde</string>
+    <string name="journal_today_to_start">Escribe hoy para empezar una racha diaria.</string>
+    <string name="no_current_streak">Sin racha actual</string>
+    <string name="journal_every_day_to_build">Escribe todos los días para crear una racha.</string>
+    <string name="set_reminder">Configurar recordatorio</string>
+
+    <!-- Stat cards -->
+    <string name="stat_entries">Entradas</string>
+    <string name="stat_written">Escritas</string>
+    <string name="stat_words">Palabras</string>
+    <string name="stat_journaled">Escritos</string>
+    <string name="stat_days">Días</string>
+    <string name="stat_this_month">Este mes</string>
+    <string name="stat_this_year">Este año</string>
+    <string name="visited_places">Lugares visitados</string>
+</resources>

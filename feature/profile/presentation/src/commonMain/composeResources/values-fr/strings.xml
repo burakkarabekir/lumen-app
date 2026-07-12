@@ -1,0 +1,165 @@
+<resources>
+    <string name="profile_title">Profil</string>
+    <string name="content_desc_avatar">Avatar</string>
+    <string name="content_desc_edit_avatar">Modifier l&apos;avatar</string>
+    <string name="section_account">COMPTE</string>
+    <string name="privacy_security">Confidentialité et sécurité</string>
+    <string name="data_export">Export des données</string>
+    <string name="section_preferences">Préférences</string>
+    <string name="app_theme">Thème de l&apos;application</string>
+    <string name="notifications">Notifications</string>
+    <string name="sign_out">Se déconnecter</string>
+    <string name="delete_account">Supprimer le compte</string>
+    <string name="delete_account_title">Supprimer le compte ?</string>
+    <string name="delete_account_message">Cette action supprime définitivement ton compte ainsi que toutes tes entrées, photos et réflexions. C&apos;est irréversible.</string>
+    <string name="delete_account_confirm">Supprimer</string>
+    <string name="section_data_privacy">Données et confidentialité</string>
+    <string name="section_support">Assistance</string>
+    <string name="reminders">Rappels</string>
+    <string name="cloud_sync">Synchronisation cloud</string>
+    <string name="lock_privacy">Verrouillage et confidentialité</string>
+    <string name="export_journal">Exporter le journal</string>
+    <string name="help_center">Centre d&apos;aide</string>
+    <string name="about_lumen">À propos de Lumen</string>
+    <string name="member_since_prefix">Membre depuis %1$s</string>
+    <string name="upgrade_button">Passer à Plus</string>
+    <string name="theme_selector_title">Choisir le mode d&apos;affichage</string>
+    <string name="theme_system">Système</string>
+    <string name="theme_light">Clair</string>
+    <string name="theme_dark">Sombre</string>
+    <string name="error_permission_denied">Autorisation refusée. Active-la dans les réglages système.</string>
+    <string name="action_open_settings">Réglages</string>
+    <string name="error_avatar_update_failed">Échec de la mise à jour : %1$s</string>
+    <string name="permission_gallery_denied">L&apos;autorisation d&apos;accéder aux photos et aux vidéos est requise"</string>
+
+    <string name="about_title">À propos</string>
+    <string name="about_app_name">Lumen</string>
+    <string name="about_tagline">Ton espace pour réfléchir, chaque jour.</string>
+    <string name="about_version">Version %1$s</string>
+    <string name="about_section_legal">Mentions légales</string>
+    <string name="about_privacy_policy">Politique de confidentialité</string>
+    <string name="about_terms">Conditions d&apos;utilisation</string>
+    <string name="about_website">Site web</string>
+    <string name="about_section_more">Plus</string>
+    <string name="about_rate">Noter Lumen</string>
+    <string name="about_acknowledgements">Remerciements</string>
+    <string name="about_made_with_love">Conçu avec ♥ par l&apos;équipe Lumen</string>
+    <string name="about_copyright">© 2026 Lumen</string>
+
+    <string name="help_title">Centre d&apos;aide</string>
+    <string name="help_intro_title">Comment pouvons-nous t&apos;aider ?</string>
+    <string name="help_intro_body">Une question, un retour ou un souci ? Contacte-nous et nous te répondrons.</string>
+    <string name="help_section_contact">Contact</string>
+    <string name="help_email_support">Assistance par e-mail</string>
+    <string name="help_report_bug">Signaler un bug</string>
+    <string name="help_response_note">Nous répondons généralement sous 2 jours ouvrés.</string>
+
+    <!-- Common -->
+    <string name="action_close">Fermer</string>
+    <string name="action_back">Retour</string>
+    <string name="action_ok">OK</string>
+    <string name="action_cancel">Annuler</string>
+    <string name="action_retry">Réessayer</string>
+    <string name="action_save">Enregistrer</string>
+    <string name="action_edit">Modifier</string>
+
+    <!-- Edit Profile -->
+    <string name="edit_profile_title">Modifier le profil</string>
+    <string name="edit_profile_change_photo">Changer la photo</string>
+    <string name="edit_profile_photo_content_desc">Photo de profil</string>
+    <string name="edit_profile_name_label">NOM</string>
+    <string name="edit_profile_name_placeholder">Ton nom</string>
+    <string name="edit_profile_name_hint">C&apos;est le nom affiché sur ton journal et ton profil.</string>
+
+    <!-- Reminders -->
+    <string name="reminders_subtitle">Choisis quand Lumen t&apos;invite à écrire.</string>
+    <string name="reminders_daily">Rappel quotidien</string>
+    <string name="reminders_time">Heure</string>
+    <string name="reminders_repeat">Répéter</string>
+    <string name="reminders_streak">Rappel de série</string>
+    <string name="reminders_streak_description">Reçois un rappel avant que ta série ne prenne fin.</string>
+    <string name="reminders_select_time">Choisir l&apos;heure</string>
+
+    <!-- Appearance -->
+    <string name="appearance_title">Apparence</string>
+    <string name="appearance_auto">Auto</string>
+    <string name="appearance_light">Clair</string>
+    <string name="appearance_dark">Sombre</string>
+
+    <!-- Profile Hero -->
+    <string name="profile_hero_avatar_content_desc">Profil</string>
+    <string name="profile_hero_stat_entries">Entrées</string>
+    <string name="profile_hero_stat_weekly_streak">Série hebdo</string>
+    <string name="profile_hero_stat_joined">Inscription</string>
+
+    <!-- Profile Photo Viewer -->
+    <string name="profile_photo_content_desc">Photo de profil</string>
+
+    <!-- Profile new rows -->
+    <string name="section_subscription">Abonnement</string>
+    <string name="manage_premium">Lumen Plus</string>
+    <string name="terms_privacy">Conditions et confidentialité</string>
+    <string name="plan_free">Gratuit</string>
+    <string name="plan_plus">Plus</string>
+
+    <!-- Cloud Sync -->
+    <string name="cloud_sync_title">Synchronisation cloud</string>
+    <string name="cloud_sync_status_title">Ton journal est sauvegardé</string>
+    <string name="cloud_sync_status_subtitle">Tes entrées sont synchronisées en toute sécurité sur le cloud et disponibles sur tous tes appareils.</string>
+    <string name="cloud_sync_account">Compte</string>
+    <string name="cloud_sync_entries">Entrées synchronisées</string>
+    <string name="cloud_sync_storage">Stockage</string>
+    <string name="cloud_sync_storage_value">Cloud chiffré · UE</string>
+    <string name="cloud_sync_now">Synchroniser maintenant</string>
+    <string name="cloud_sync_success">Journal synchronisé</string>
+    <string name="cloud_sync_error">Échec de la synchronisation : %1$s</string>
+
+    <!-- Lock &amp; Privacy -->
+    <string name="lock_privacy_title">Verrouillage et confidentialité</string>
+    <string name="lock_section_security">Sécurité</string>
+    <string name="lock_app_lock_title">Verrouillage de l&apos;application</string>
+    <string name="lock_app_lock_subtitle">Exige Face ID ou ton empreinte digitale pour ouvrir Lumen.</string>
+    <string name="lock_unavailable">Le verrouillage biométrique n&apos;est pas disponible sur cet appareil.</string>
+    <string name="lock_error">Impossible de modifier le verrouillage de l&apos;application. Réessaie.</string>
+    <string name="lock_section_privacy">Confidentialité</string>
+    <string name="lock_policy_version">Version de la politique</string>
+    <string name="lock_prompt_enable_title">Activer le verrouillage de l&apos;application</string>
+    <string name="lock_prompt_enable_subtitle">Confirme ton identité biométrique pour activer le verrouillage de l&apos;application.</string>
+
+    <!-- Export Journal -->
+    <string name="export_title">Exporter le journal</string>
+    <string name="export_intro_title">Exporte ton journal</string>
+    <string name="export_intro_subtitle">Crée un PDF de toutes tes entrées pour en garder une copie personnelle ou la partager.</string>
+    <string name="export_entries_count">%1$d entrées seront incluses</string>
+    <string name="export_button">Exporter en PDF</string>
+    <string name="export_empty">Tu n&apos;as pas encore d&apos;entrées à exporter.</string>
+    <string name="export_success">Journal exporté</string>
+    <string name="export_error">Échec de l&apos;export : %1$s</string>
+
+    <!-- Premium / Manage subscription -->
+    <string name="premium_title">Lumen Plus</string>
+    <string name="premium_status_plus_title">Tu profites de Lumen Plus</string>
+    <string name="premium_status_plus_subtitle">Merci de soutenir Lumen. Profite des réflexions IA illimitées et de toutes les fonctionnalités premium.</string>
+    <string name="premium_status_free_title">Tu es sur le forfait Gratuit</string>
+    <string name="premium_status_free_subtitle">Passe à Lumen Plus pour des réflexions IA illimitées, des entrées audio et vidéo, et bien plus.</string>
+    <string name="premium_plan">Forfait</string>
+    <string name="premium_upgrade">Passer à Plus</string>
+    <string name="premium_manage_subscription">Gérer l&apos;abonnement</string>
+    <string name="premium_restore">Restaurer les achats</string>
+    <string name="premium_restore_success">Achats restaurés</string>
+    <string name="premium_restore_none">Aucun achat à restaurer.</string>
+    <string name="premium_restore_error">Échec de la restauration : %1$s</string>
+    <string name="premium_manage_note">Gère ou résilie ton abonnement à tout moment sur l&apos;App Store ou Google Play.</string>
+
+    <!-- Legal (Terms &amp; Privacy viewer) -->
+    <string name="legal_title">Conditions et confidentialité</string>
+    <string name="legal_subtitle">Consulte les documents que tu as acceptés en rejoignant Lumen.</string>
+    <string name="legal_terms">Conditions d&apos;utilisation</string>
+    <string name="legal_privacy">Politique de confidentialité</string>
+    <string name="legal_open_external">Ouvrir dans le navigateur</string>
+    <string name="legal_load_error">Impossible de charger la page. Vérifie ta connexion ou ouvre-la dans ton navigateur.</string>
+    <string name="language_title">Langue</string>
+    <string name="language_system">Système</string>
+    <string name="language_selector_title">Choisir la langue</string>
+    <string name="cloud_sync_on">Activé</string>
+</resources>

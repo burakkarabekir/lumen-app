@@ -25,4 +25,8 @@
     <string name="error_location_services_disabled">Location services are disabled.</string>
     <string name="error_location_permission_denied">Location permission was denied.</string>
     <string name="error_location_unavailable">Location is currently unavailable.</string>
+    <string name="reminder_daily_title">Time to journal</string>
+    <string name="reminder_daily_body">Take a moment to capture your day.</string>
+    <string name="reminder_streak_title">Don&apos;t break your streak</string>
+    <string name="reminder_streak_body">Write an entry to keep your streak alive.</string>
 </resources>

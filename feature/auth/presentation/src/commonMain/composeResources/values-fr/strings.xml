@@ -1,0 +1,40 @@
+<resources>
+    <!-- SignInScreen -->
+    <string name="welcome_back">Bon retour</string>
+    <string name="sign_in_subtitle">Continue ton chemin vers la clarté.</string>
+    <string name="label_email">E-mail</string>
+    <string name="label_password">Mot de passe</string>
+    <string name="error_invalid_email">Saisis une adresse e-mail valide</string>
+    <string name="forgot_password">Mot de passe oublié ?</string>
+    <string name="btn_sign_in">Se connecter</string>
+    <string name="remember_me">Se souvenir de moi</string>
+    <string name="no_account_prompt">Tu n&apos;as pas de compte ?</string>
+    <string name="sign_up_link"> S&apos;inscrire</string>
+    <string name="or_continue_with">Ou continue avec</string>
+    <string name="btn_apple">Apple</string>
+    <string name="btn_google">Google</string>
+    <string name="continue_with_google">Continuer avec Google</string>
+    <string name="continue_with_apple">Continuer avec Apple</string>
+
+    <!-- SignUpScreen -->
+    <string name="create_your_space">Crée ton espace</string>
+    <string name="sign_up_subtitle">Commence ton aventure avec Lumen.</string>
+    <string name="label_full_name">Nom complet</string>
+    <string name="password_hint">Au moins 8 caractères</string>
+    <string name="btn_sign_up">S&apos;inscrire</string>
+    <string name="terms_checkbox_prefix">J&apos;accepte les </string>
+    <string name="terms_of_service">Conditions d&apos;utilisation</string>
+    <string name="terms_and"> et la </string>
+    <string name="privacy_policy">Politique de confidentialité</string>
+    <string name="already_have_account">Tu as déjà un compte ?</string>
+    <string name="sign_in_link"> Se connecter</string>
+    <string name="check_your_email">Vérifie tes e-mails</string>
+    <string name="confirmation_link_sent">Nous avons envoyé un lien de confirmation à %1$s. Appuie dessus pour activer ton compte, puis connecte-toi.</string>
+
+    <!-- ResetPasswordScreen -->
+    <string name="reset_password_title">Réinitialiser le mot de passe</string>
+    <string name="reset_password_description">Saisis l&apos;adresse e-mail associée à ton compte Lumen et nous t&apos;enverrons un lien sécurisé pour réinitialiser ton mot de passe.</string>
+    <string name="btn_send_link">Envoyer le lien</string>
+    <string name="reset_success_message">E-mail de réinitialisation envoyé !</string>
+    <string name="back_to_sign_in">Retour à la connexion</string>
+</resources>

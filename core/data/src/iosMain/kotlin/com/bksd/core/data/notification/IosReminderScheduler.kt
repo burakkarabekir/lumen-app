@@ -1,6 +1,7 @@
 package com.bksd.core.data.notification
 
 import com.bksd.core.domain.notification.ReminderScheduler
+import com.bksd.core.domain.notification.ReminderTextProvider
 import com.bksd.core.domain.reminder.ReminderSettings
 import platform.Foundation.NSDateComponents
 import platform.UserNotifications.UNCalendarNotificationTrigger
@@ -9,12 +10,15 @@ import platform.UserNotifications.UNNotificationRequest
 import platform.UserNotifications.UNNotificationSound
 import platform.UserNotifications.UNUserNotificationCenter
 
-class IosReminderScheduler : ReminderScheduler {
+class IosReminderScheduler(
+    private val textProvider: ReminderTextProvider
+) : ReminderScheduler {
 
     private val center = UNUserNotificationCenter.currentNotificationCenter()
 
     override suspend fun reschedule(settings: ReminderSettings) {
         center.removeAllPendingNotificationRequests()
+        val texts = textProvider.reminderTexts()
         if (settings.dailyEnabled) {
             settings.days.forEach { isoDay ->
                 schedule(
@@ -22,8 +26,8 @@ class IosReminderScheduler : ReminderScheduler {
                     weekday = isoToAppleWeekday(isoDay),
                     hour = settings.hour,
                     minute = settings.minute,
-                    title = "Time to journal",
-                    body = "Take a moment to capture your day."
+                    title = texts.dailyTitle,
+                    body = texts.dailyBody
                 )
             }
         }
@@ -33,8 +37,8 @@ class IosReminderScheduler : ReminderScheduler {
                 weekday = null,
                 hour = 21,
                 minute = 0,
-                title = "Don't break your streak",
-                body = "Write an entry to keep your streak alive."
+                title = texts.streakTitle,
+                body = texts.streakBody
             )
         }
     }

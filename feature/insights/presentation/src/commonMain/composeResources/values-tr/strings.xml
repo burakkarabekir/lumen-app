@@ -1,0 +1,56 @@
+<resources>
+    <string name="insights_title">İçgörüler</string>
+    <string name="power_user_analytics">Uzman Kullanıcı Analitiği</string>
+    <string name="peak_activity">En Yoğun Etkinlik</string>
+    <string name="consistency_trend">Süreklilik Eğilimi</string>
+    <string name="medium_breakdown">Ortam Dağılımı</string>
+    <string name="mindset_synthesis">Zihniyet Sentezi</string>
+    <string name="recurring_theme">Tekrarlayan Tema</string>
+    <string name="adjustment">Ayarlama</string>
+
+    <!-- Weekly Reflection -->
+    <string name="weekly_reflection_title">Haftalık Değerlendirme</string>
+    <string name="weekly_based_on_entries">%1$d %2$s temel alınarak · %3$s</string>
+    <string name="weekly_entry_singular">kayıt</string>
+    <string name="weekly_entry_plural">kayıt</string>
+    <string name="weekly_entry_count">%1$d %2$s</string>
+    <string name="weekly_question_to_sit_with">ÜZERİNDE DÜŞÜNÜLECEK BİR SORU</string>
+    <string name="weekly_view_full">Tam değerlendirmeyi gör</string>
+    <string name="weekly_private_to_you">Yalnızca sana özel</string>
+    <string name="weekly_reflecting">Haftan değerlendiriliyor…</string>
+    <string name="weekly_reflection_failed_title">Haftalık değerlendirme kullanılamıyor</string>
+    <string name="weekly_reflection_failed_caption">Haftalık değerlendirmeni oluşturamadık.</string>
+    <string name="weekly_reflection_retry">Tekrar dene</string>
+    <string name="weekly_back">Geri</string>
+    <string name="weekly_no_reflection">Henüz haftalık değerlendirme yok. Bu hafta birkaç kayıt yaz, burada görünsün.</string>
+    <string name="weekly_emotional_arc">DUYGUSAL SEYRİN</string>
+    <string name="weekly_brightest_on">En parlak gün: %1$s</string>
+    <string name="weekly_arc_empty">Seyrini görmek için bu hafta birkaç kayıt ekle.</string>
+    <string name="weekly_open">Aç</string>
+    <string name="weekly_section_themes">TEKRARLAYAN TEMALAR</string>
+    <string name="weekly_section_standout">ÖNE ÇIKAN BİR AN</string>
+    <string name="weekly_section_questions">ÜZERİNDE DÜŞÜNÜLECEK SORULAR</string>
+
+    <!-- Section labels -->
+    <string name="section_streaks">Seriler</string>
+    <string name="section_stats">İstatistikler</string>
+
+    <!-- Streak cards -->
+    <string name="current_streak">Güncel Seri</string>
+    <string name="journaled_every_day_since_prefix">Şu tarihten beri her gün günlük yazıyorsun:</string>
+    <string name="journaled_once_a_week_since_prefix">Şu tarihten beri her hafta en az bir kez günlük yazıyorsun:</string>
+    <string name="journal_today_to_start">Günlük seri başlatmak için bugün günlük yaz.</string>
+    <string name="no_current_streak">Güncel Seri Yok</string>
+    <string name="journal_every_day_to_build">Seri oluşturmak için her gün günlük yaz.</string>
+    <string name="set_reminder">Hatırlatıcı Kur</string>
+
+    <!-- Stat cards -->
+    <string name="stat_entries">Kayıt</string>
+    <string name="stat_written">Yazılan</string>
+    <string name="stat_words">Kelime</string>
+    <string name="stat_journaled">Günlük Tutulan</string>
+    <string name="stat_days">Gün</string>
+    <string name="stat_this_month">Bu Ay</string>
+    <string name="stat_this_year">Bu Yıl</string>
+    <string name="visited_places">Ziyaret Edilen Yerler</string>
+</resources>

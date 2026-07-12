@@ -24,7 +24,7 @@ actual val platformDataModule: Module = module {
     single<LocationProvider> { AndroidLocationProvider(androidContext()) }
     single { createDataStore(androidContext()) }
     single { PlatformFileStorage(androidContext()) }
-    single<ReminderScheduler> { AndroidReminderScheduler(androidContext()) }
+    single<ReminderScheduler> { AndroidReminderScheduler(androidContext(), get()) }
     single<AppInfoProvider> { AndroidAppInfoProvider(androidContext()) }
     single<NetworkMonitor> { AndroidNetworkMonitor(androidContext()) }
 }

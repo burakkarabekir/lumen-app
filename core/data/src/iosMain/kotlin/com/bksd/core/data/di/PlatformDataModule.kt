@@ -23,7 +23,7 @@ actual val platformDataModule: Module = module {
     single<LocationProvider> { IosLocationProvider() }
     single { createPlatformDataStore() }
     single { PlatformFileStorage() }
-    single<ReminderScheduler> { IosReminderScheduler() }
+    single<ReminderScheduler> { IosReminderScheduler(get()) }
     single<AppInfoProvider> { IosAppInfoProvider() }
     single<NetworkMonitor> { IosNetworkMonitor() }
 }

@@ -1,0 +1,19 @@
+<resources>
+    <string name="content_desc_close">Kapat</string>
+    <string name="restore">GERİ YÜKLE</string>
+    <string name="paywall_title">Lumen\nPlus&apos;ı\naç</string>
+    <string name="paywall_subtitle">Gelişmiş yapay zeka araçları ve içgörülerle\ngünlük yansımanı zenginleştir.</string>
+    <string name="btn_start_trial">5 Günlük Ücretsiz Denemeyi Başlat</string>
+    <string name="btn_subscribe_now">Şimdi Abone Ol</string>
+    <string name="legal_text">Ödeme, onayladığında mağaza hesabından tahsil edilir. Dönem bitmeden en az 24 saat önce iptal etmezsen aboneliğin otomatik olarak yenilenir. Hesap ayarlarından istediğin zaman yönetebilir veya iptal edebilirsin.</string>
+    <string name="terms_of_use">Kullanım Koşulları</string>
+    <string name="privacy_policy">Gizlilik Politikası</string>
+    <string name="popular_choice">POPÜLER</string>
+    <string name="best_value">EN İYİ DEĞER</string>
+    <string name="seven_day_free_trial">5 GÜNLÜK ÜCRETSİZ DENEME</string>
+    <string name="standard_access">Standart erişim</string>
+    <string name="per_month_format">aylık %1$s</string>
+    <string name="paywall_pricing_unavailable">Fiyatlandırma şu anda kullanılamıyor. Bağlantını kontrol edip tekrar dene.</string>
+    <string name="paywall_try_again">Tekrar Dene</string>
+    <string name="paywall_restore_none">Geri yüklenecek satın alma yok.</string>
+</resources>
