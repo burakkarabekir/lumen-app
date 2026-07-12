@@ -1,6 +1,7 @@
 package com.bksd.profile.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -68,6 +69,7 @@ internal fun RemindersSheetContent(
     val accent = palette.saveBg
     val card = palette.surface
     val pill = lerp(palette.surface, palette.text, 0.06f)
+    val dayBorder = lerp(palette.surface, palette.text, 0.22f)
 
     Column(modifier = Modifier.fillMaxWidth().padding(start = MaterialTheme.dimens.spacing.xl, end = MaterialTheme.dimens.spacing.xl, bottom = MaterialTheme.dimens.spacing.xxxl)) {
         Row(
@@ -211,7 +213,10 @@ internal fun RemindersSheetContent(
                             modifier = Modifier
                                 .size(MaterialTheme.dimens.icon.avatar)
                                 .clip(CircleShape)
-                                .background(if (selected) accent else pill)
+                                .then(
+                                    if (selected) Modifier.background(accent)
+                                    else Modifier.border(1.5.dp, dayBorder, CircleShape)
+                                )
                                 .clickable { onDayToggle(day) }
                         ) {
                             Text(

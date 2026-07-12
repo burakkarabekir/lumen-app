@@ -17,6 +17,7 @@ import java.time.temporal.TemporalAdjusters
 
 private const val STREAK_REQUEST_CODE = 100
 private const val STREAK_HOUR = 21
+private const val REMINDER_WINDOW_MILLIS = 5 * 60 * 1000L
 private val ALL_REQUEST_CODES = (1..7) + STREAK_REQUEST_CODE
 
 class AndroidReminderScheduler(
@@ -32,7 +33,6 @@ class AndroidReminderScheduler(
                 schedule(
                     requestCode = day,
                     triggerAtMillis = nextWeekly(day, settings.hour, settings.minute),
-                    intervalMillis = AlarmManager.INTERVAL_DAY * 7,
                     title = "Time to journal",
                     body = "Take a moment to capture your day."
                 )
@@ -42,7 +42,6 @@ class AndroidReminderScheduler(
             schedule(
                 requestCode = STREAK_REQUEST_CODE,
                 triggerAtMillis = nextDaily(STREAK_HOUR, 0),
-                intervalMillis = AlarmManager.INTERVAL_DAY,
                 title = "Don't break your streak",
                 body = "Write an entry to keep your streak alive."
             )
@@ -63,7 +62,6 @@ class AndroidReminderScheduler(
     private fun schedule(
         requestCode: Int,
         triggerAtMillis: Long,
-        intervalMillis: Long,
         title: String,
         body: String
     ) {
@@ -78,10 +76,10 @@ class AndroidReminderScheduler(
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-        alarmManager.setInexactRepeating(
+        alarmManager.setWindow(
             AlarmManager.RTC_WAKEUP,
             triggerAtMillis,
-            intervalMillis,
+            REMINDER_WINDOW_MILLIS,
             pendingIntent
         )
     }

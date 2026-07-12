@@ -41,6 +41,7 @@ import com.bksd.lumen.main.MainEvent
 import com.bksd.lumen.main.MainViewModel
 import com.bksd.lumen.navigation.route.Route
 import com.bksd.lumen.navigation.route.Route.Companion.shouldShowBottomBar
+import com.bksd.lumen.reminder.ReminderLaunchSignal
 import com.bksd.lumen.welcome.LoginWelcomeSignal
 import com.bksd.lumen.welcome.WelcomeGate
 import com.bksd.lumen.welcome.WelcomeGreeting
@@ -78,6 +79,7 @@ fun NavigationRoot(
 
     val navigator = koinInject<Navigator> { parametersOf(navigationState) }
     val welcomeSignal = koinInject<LoginWelcomeSignal>()
+    val reminderLaunchSignal = koinInject<ReminderLaunchSignal>()
     val snackbarHostState = remember { SnackbarHostState() }
 
     val networkMonitor = koinInject<NetworkMonitor>()
@@ -96,6 +98,18 @@ fun NavigationRoot(
         when (event) {
             is MainEvent.OnSessionExpired -> {
                 navigator.clearBackstackAndNavigate(Route.Auth.SignIn)
+            }
+        }
+    }
+
+    LaunchedEffect(navigationReady) {
+        if (!navigationReady) return@LaunchedEffect
+        reminderLaunchSignal.pending.collect { open ->
+            if (open) {
+                if (mainViewModel.state.value.isLoggedIn) {
+                    navigator.navigateToCreateMoment()
+                }
+                reminderLaunchSignal.clear()
             }
         }
     }
