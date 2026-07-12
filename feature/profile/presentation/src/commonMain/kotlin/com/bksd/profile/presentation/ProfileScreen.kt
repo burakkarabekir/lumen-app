@@ -2,7 +2,6 @@ package com.bksd.profile.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -59,17 +58,20 @@ import com.bksd.core.design_system.theme.profileAccentAmber
 import com.bksd.core.design_system.theme.profileAccentGreen
 import com.bksd.core.design_system.theme.profileAccentIndigo
 import com.bksd.core.design_system.theme.profileAccentViolet
+import com.bksd.core.design_system.theme.rememberLanguageController
 import com.bksd.core.design_system.theme.rememberThemeController
-import com.bksd.core.domain.theme.AppThemeMode
 import com.bksd.core.presentation.media.rememberImagePickerLauncher
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.profile.presentation.components.AppearanceRow
+import com.bksd.profile.presentation.components.LanguageRow
+import com.bksd.profile.presentation.components.LanguageSelectorSheet
 import com.bksd.profile.presentation.components.ProfileHeroCard
 import com.bksd.profile.presentation.components.ProfilePhotoViewer
 import com.bksd.profile.presentation.components.ProfileSettingsRow
 import com.bksd.profile.presentation.components.RemindersSheet
 import com.bksd.profile.presentation.components.SectionHeader
 import com.bksd.profile.presentation.components.SettingsGroup
+import com.bksd.profile.presentation.components.ThemeSelectorSheet
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
@@ -159,9 +161,11 @@ internal fun ProfileScreen(
 ) {
     val themeController = rememberThemeController()
     val themeMode by themeController.themeMode.collectAsState()
-    val isDark = themeMode == AppThemeMode.DARK ||
-            (themeMode == AppThemeMode.SYSTEM && isSystemInDarkTheme())
+    val languageController = rememberLanguageController()
+    val language by languageController.language.collectAsState()
     var showRemindersSheet by remember { mutableStateOf(false) }
+    var showThemeSheet by remember { mutableStateOf(false) }
+    var showLanguageSheet by remember { mutableStateOf(false) }
     var showEnlargedPhoto by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -219,9 +223,16 @@ internal fun ProfileScreen(
             Spacer(Modifier.height(MaterialTheme.dimens.spacing.sm))
             SettingsGroup {
                 AppearanceRow(
-                    isDark = isDark,
-                    onSelectLight = { themeController.setTheme(AppThemeMode.LIGHT) },
-                    onSelectDark = { themeController.setTheme(AppThemeMode.DARK) }
+                    selectedMode = themeMode,
+                    onClick = { showThemeSheet = true }
+                )
+                HorizontalDivider(
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
+                    modifier = Modifier.padding(start = MaterialTheme.dimens.spacing.massive)
+                )
+                LanguageRow(
+                    selectedLanguage = language,
+                    onClick = { showLanguageSheet = true }
                 )
                 HorizontalDivider(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
@@ -244,7 +255,7 @@ internal fun ProfileScreen(
                     icon = Icons.Default.Cloud,
                     label = stringResource(Res.string.cloud_sync),
                     accent = MaterialTheme.colorScheme.extended.profileAccentGreen,
-                    trailingValue = "On",
+                    trailingValue = stringResource(Res.string.cloud_sync_on),
                     trailingColor = MaterialTheme.colorScheme.extended.profileAccentGreen,
                     onClick = { onAction(ProfileAction.OnCloudSyncClick) }
                 )
@@ -355,6 +366,14 @@ internal fun ProfileScreen(
 
                 if (showRemindersSheet) {
                     RemindersSheet(onDismiss = { showRemindersSheet = false })
+                }
+
+                if (showThemeSheet) {
+                    ThemeSelectorSheet(onDismiss = { showThemeSheet = false })
+                }
+
+                if (showLanguageSheet) {
+                    LanguageSelectorSheet(onDismiss = { showLanguageSheet = false })
                 }
 
                 if (state.showDeleteDialog) {

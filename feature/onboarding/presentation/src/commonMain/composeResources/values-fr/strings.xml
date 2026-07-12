@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name_momentum">Lumen</string>
+    <string name="skip">Passer</string>
+    <string name="btn_next">Suivant</string>
+    <string name="btn_get_started">Commencer</string>
+</resources>

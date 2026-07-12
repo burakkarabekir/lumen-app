@@ -5,4 +5,5 @@ sealed interface PaywallAction {
     data object OnSubscribeClick : PaywallAction
     data object OnCloseClick : PaywallAction
     data object OnRestoreClick : PaywallAction
+    data object OnRetryLoad : PaywallAction
 }

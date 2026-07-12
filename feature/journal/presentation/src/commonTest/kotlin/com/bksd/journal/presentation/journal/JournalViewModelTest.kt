@@ -67,6 +67,8 @@ class JournalViewModelTest {
         override fun isRememberMeEnabled() = flowOf(false)
         override suspend fun getLocalDataOwner(): String? = null
         override suspend fun setLocalDataOwner(uid: String?) {}
+        override suspend fun setFirstLoginPending() {}
+        override suspend fun consumeFirstLoginPending(): Boolean = false
     }
 
     @BeforeTest

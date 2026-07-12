@@ -1,0 +1,49 @@
+<resources>
+    <string name="error_unknown">Etwas ist schiefgelaufen. Bitte versuche es erneut.</string>
+
+    <string name="error_network_no_internet">Keine Internetverbindung. Überprüfe dein Netzwerk und versuche es erneut.</string>
+    <string name="error_network_timeout">Die Zeit für die Anfrage ist abgelaufen. Bitte versuche es erneut.</string>
+    <string name="error_network_unauthorized">Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.</string>
+    <string name="error_network_conflict">Es ist ein Konflikt aufgetreten. Bitte versuche es erneut.</string>
+    <string name="error_network_too_many_requests">Zu viele Anfragen. Bitte warte einen Moment und versuche es erneut.</string>
+    <string name="error_network_server">Ein Serverfehler ist aufgetreten. Bitte versuche es später erneut.</string>
+    <string name="error_network_serialization">Unerwartete Daten empfangen. Bitte versuche es erneut.</string>
+
+    <string name="error_auth_invalid_credentials">Ungültige E-Mail-Adresse oder ungültiges Passwort.</string>
+    <string name="error_auth_user_not_found">Es wurde kein Konto mit diesen Angaben gefunden.</string>
+    <string name="error_auth_account_exists">Es existiert bereits ein Konto mit dieser E-Mail-Adresse.</string>
+    <string name="error_auth_weak_password">Dieses Passwort ist zu schwach. Bitte wähle ein stärkeres.</string>
+    <string name="error_auth_social_cancelled">Die Anmeldung wurde abgebrochen.</string>
+    <string name="error_auth_social_failed">Die Anmeldung über einen sozialen Dienst ist fehlgeschlagen. Bitte versuche es erneut.</string>
+
+    <string name="error_media_permission_denied">Zugriff verweigert.</string>
+    <string name="error_media_file_too_large">Diese Datei ist zu groß.</string>
+    <string name="error_media_upload_failed">Der Upload ist fehlgeschlagen. Bitte versuche es erneut.</string>
+    <string name="error_media_recording_failed">Die Aufnahme ist fehlgeschlagen. Bitte versuche es erneut.</string>
+    <string name="error_media_unsupported_format">Dieses Format wird nicht unterstützt.</string>
+
+    <string name="error_location_services_disabled">Die Standortdienste sind deaktiviert.</string>
+    <string name="error_location_permission_denied">Die Standortberechtigung wurde verweigert.</string>
+    <string name="error_location_unavailable">Der Standort ist derzeit nicht verfügbar.</string>
+    <string name="reminder_daily_title">Zeit zum Journaling</string>
+    <string name="reminder_daily_body">Nimm dir einen Moment, um deinen Tag festzuhalten.</string>
+    <string name="reminder_streak_title">Unterbrich deine Serie nicht</string>
+    <string name="reminder_streak_body">Schreibe einen Eintrag, um deine Serie am Leben zu halten.</string>
+    <string name="mood_happy">Glücklich</string>
+    <string name="mood_grateful">Dankbar</string>
+    <string name="mood_calm">Ruhig</string>
+    <string name="mood_loved">Geliebt</string>
+    <string name="mood_hopeful">Hoffnungsvoll</string>
+    <string name="mood_proud">Stolz</string>
+    <string name="mood_inspired">Inspiriert</string>
+    <string name="mood_reflective">Nachdenklich</string>
+    <string name="mood_focused">Fokussiert</string>
+    <string name="mood_nostalgic">Nostalgisch</string>
+    <string name="mood_tired">Müde</string>
+    <string name="mood_anxious">Ängstlich</string>
+    <string name="mood_stressed">Gestresst</string>
+    <string name="mood_frustrated">Frustriert</string>
+    <string name="mood_sad">Traurig</string>
+    <string name="mood_melancholic">Melancholisch</string>
+    <string name="mood_bored">Gelangweilt</string>
+</resources>

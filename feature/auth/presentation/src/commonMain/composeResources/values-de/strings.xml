@@ -1,0 +1,40 @@
+<resources>
+    <!-- SignInScreen -->
+    <string name="welcome_back">Willkommen zurück</string>
+    <string name="sign_in_subtitle">Setze deine Reise zu mehr Klarheit fort.</string>
+    <string name="label_email">E-Mail</string>
+    <string name="label_password">Passwort</string>
+    <string name="error_invalid_email">Gib eine gültige E-Mail-Adresse ein</string>
+    <string name="forgot_password">Passwort vergessen?</string>
+    <string name="btn_sign_in">Anmelden</string>
+    <string name="remember_me">Angemeldet bleiben</string>
+    <string name="no_account_prompt">Noch kein Konto?</string>
+    <string name="sign_up_link"> Registrieren</string>
+    <string name="or_continue_with">Oder weiter mit</string>
+    <string name="btn_apple">Apple</string>
+    <string name="btn_google">Google</string>
+    <string name="continue_with_google">Weiter mit Google</string>
+    <string name="continue_with_apple">Weiter mit Apple</string>
+
+    <!-- SignUpScreen -->
+    <string name="create_your_space">Erstelle deinen Raum</string>
+    <string name="sign_up_subtitle">Beginne deine Reise mit Lumen.</string>
+    <string name="label_full_name">Vollständiger Name</string>
+    <string name="password_hint">Muss mindestens 8 Zeichen lang sein</string>
+    <string name="btn_sign_up">Registrieren</string>
+    <string name="terms_checkbox_prefix">Ich stimme den </string>
+    <string name="terms_of_service">Nutzungsbedingungen</string>
+    <string name="terms_and"> und der </string>
+    <string name="privacy_policy">Datenschutzerklärung</string>
+    <string name="already_have_account">Hast du bereits ein Konto?</string>
+    <string name="sign_in_link"> Anmelden</string>
+    <string name="check_your_email">Prüfe deine E-Mails</string>
+    <string name="confirmation_link_sent">Wir haben einen Bestätigungslink an %1$s gesendet. Tippe darauf, um dein Konto zu aktivieren, und melde dich anschließend an.</string>
+
+    <!-- ResetPasswordScreen -->
+    <string name="reset_password_title">Passwort zurücksetzen</string>
+    <string name="reset_password_description">Gib die E-Mail-Adresse ein, die mit deinem Lumen-Konto verknüpft ist, und wir senden dir einen sicheren Link zum Zurücksetzen deines Passworts.</string>
+    <string name="btn_send_link">Link senden</string>
+    <string name="reset_success_message">E-Mail zum Zurücksetzen des Passworts gesendet!</string>
+    <string name="back_to_sign_in">Zurück zur Anmeldung</string>
+</resources>

@@ -51,8 +51,21 @@ class SupabaseSessionStorage(
         }
     }
 
+    override suspend fun setFirstLoginPending() {
+        dataStore.edit { preferences -> preferences[FIRST_LOGIN_PENDING] = true }
+    }
+
+    override suspend fun consumeFirstLoginPending(): Boolean {
+        val pending = dataStore.data.map { it[FIRST_LOGIN_PENDING] ?: false }.first()
+        if (pending) {
+            dataStore.edit { preferences -> preferences.remove(FIRST_LOGIN_PENDING) }
+        }
+        return pending
+    }
+
     companion object {
         private val REMEMBER_ME = booleanPreferencesKey("remember_me")
         private val LOCAL_DATA_OWNER = stringPreferencesKey("local_data_owner")
+        private val FIRST_LOGIN_PENDING = booleanPreferencesKey("first_login_pending")
     }
 }

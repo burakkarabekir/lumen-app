@@ -1,0 +1,155 @@
+<resources>
+    <string name="insights_title">Analyses</string>
+    <string name="power_user_analytics">Analyses avancées</string>
+    <string name="peak_activity">Pic d&apos;activité</string>
+    <string name="consistency_trend">Tendance de régularité</string>
+    <string name="medium_breakdown">Répartition par format</string>
+    <string name="mindset_synthesis">Synthèse de l&apos;état d&apos;esprit</string>
+    <string name="recurring_theme">Thème récurrent</string>
+    <string name="adjustment">Ajustement</string>
+
+    <!-- Réflexion hebdomadaire -->
+    <string name="weekly_reflection_title">Réflexion hebdomadaire</string>
+    <string name="weekly_based_on_entries">D&apos;après %1$d %2$s · %3$s</string>
+    <string name="weekly_entry_singular">entrée</string>
+    <string name="weekly_entry_plural">entrées</string>
+    <string name="weekly_entry_count">%1$d %2$s</string>
+    <string name="weekly_question_to_sit_with">UNE QUESTION À MÉDITER</string>
+    <string name="weekly_view_full">Voir la réflexion complète</string>
+    <string name="weekly_private_to_you">Rien que pour toi</string>
+    <string name="weekly_reflecting">Réflexion sur ta semaine…</string>
+    <string name="weekly_reflection_failed_title">Réflexion hebdomadaire indisponible</string>
+    <string name="weekly_reflection_failed_caption">Impossible de créer ta réflexion hebdomadaire.</string>
+    <string name="weekly_reflection_retry">Réessayer</string>
+    <string name="weekly_back">Retour</string>
+    <string name="weekly_no_reflection">Pas encore de réflexion hebdomadaire. Écris quelques entrées cette semaine et elle apparaîtra ici.</string>
+    <string name="weekly_emotional_arc">TON PARCOURS ÉMOTIONNEL</string>
+    <string name="weekly_brightest_on">Au plus haut le %1$s</string>
+    <string name="weekly_arc_empty">Ajoute quelques entrées cette semaine pour voir ton parcours.</string>
+    <string name="weekly_open">Ouvrir</string>
+    <string name="weekly_section_themes">THÈMES RÉCURRENTS</string>
+    <string name="weekly_section_standout">UN MOMENT MARQUANT</string>
+    <string name="weekly_section_questions">QUESTIONS À MÉDITER</string>
+
+    <!-- Libellés de section -->
+    <string name="section_streaks">Séries</string>
+    <string name="section_stats">Statistiques</string>
+
+    <!-- Cartes de séries -->
+    <string name="current_streak">Série en cours</string>
+    <string name="journaled_every_day_since_prefix">Tu tiens ton journal chaque jour depuis le</string>
+    <string name="journaled_once_a_week_since_prefix">Tu tiens ton journal au moins une fois par semaine depuis le</string>
+    <string name="journal_today_to_start">Écris aujourd&apos;hui pour lancer une série quotidienne.</string>
+    <string name="no_current_streak">Aucune série en cours</string>
+    <string name="journal_every_day_to_build">Écris chaque jour pour bâtir une série.</string>
+    <string name="set_reminder">Définir un rappel</string>
+
+    <!-- Cartes de statistiques -->
+    <string name="stat_entries">Entrées</string>
+    <string name="stat_written">Rédigées</string>
+    <string name="stat_words">Mots</string>
+    <string name="stat_journaled">Consignés</string>
+    <string name="stat_days">Jours</string>
+    <string name="stat_this_month">Ce mois-ci</string>
+    <string name="stat_this_year">Cette année</string>
+    <string name="visited_places">Lieux visités</string>
+    <string name="streak_longest">La plus longue</string>
+    <string name="streak_recent">La plus récente</string>
+    <string name="streak_daily">Série quotidienne</string>
+    <string name="streak_weekly">Série hebdomadaire</string>
+    <string name="range_all_time">Tout</string>
+    <string name="breakdown_photos">Photos</string>
+    <string name="breakdown_videos">Vidéos</string>
+    <string name="breakdown_voice_notes">Notes vocales</string>
+    <string name="breakdown_places">Lieux</string>
+    <plurals name="streak_unit_day">
+        <item quantity="one">Jour</item>
+        <item quantity="other">Jours</item>
+    </plurals>
+    <plurals name="streak_unit_week">
+        <item quantity="one">Semaine</item>
+        <item quantity="other">Semaines</item>
+    </plurals>
+    <string name="day_initial_monday">L</string>
+    <string name="day_initial_tuesday">M</string>
+    <string name="day_initial_wednesday">M</string>
+    <string name="day_initial_thursday">J</string>
+    <string name="day_initial_friday">V</string>
+    <string name="day_initial_saturday">S</string>
+    <string name="day_initial_sunday">D</string>
+    <string name="day_short_monday">Lun</string>
+    <string name="day_short_tuesday">Mar</string>
+    <string name="day_short_wednesday">Mer</string>
+    <string name="day_short_thursday">Jeu</string>
+    <string name="day_short_friday">Ven</string>
+    <string name="day_short_saturday">Sam</string>
+    <string name="day_short_sunday">Dim</string>
+    <string name="entry_untitled">Sans titre</string>
+    <string name="month_initial_jan">J</string>
+    <string name="month_initial_feb">F</string>
+    <string name="month_initial_mar">M</string>
+    <string name="month_initial_apr">A</string>
+    <string name="month_initial_may">M</string>
+    <string name="month_initial_jun">J</string>
+    <string name="month_initial_jul">J</string>
+    <string name="month_initial_aug">A</string>
+    <string name="month_initial_sep">S</string>
+    <string name="month_initial_oct">O</string>
+    <string name="month_initial_nov">N</string>
+    <string name="month_initial_dec">D</string>
+    <string-array name="place_beach_words">
+        <item>beach</item>
+        <item>shore</item>
+        <item>coast</item>
+        <item>bay</item>
+        <item>plage</item>
+        <item>côte</item>
+        <item>baie</item>
+        <item>rivage</item>
+    </string-array>
+    <string-array name="place_park_words">
+        <item>park</item>
+        <item>garden</item>
+        <item>trail</item>
+        <item>forest</item>
+        <item>lake</item>
+        <item>mountain</item>
+        <item>parc</item>
+        <item>jardin</item>
+        <item>forêt</item>
+        <item>lac</item>
+        <item>montagne</item>
+        <item>sentier</item>
+        <item>bois</item>
+    </string-array>
+    <string-array name="place_restaurant_words">
+        <item>restaurant</item>
+        <item>cafe</item>
+        <item>coffee</item>
+        <item>diner</item>
+        <item>bistro</item>
+        <item>brasserie</item>
+        <item>bistrot</item>
+        <item>cafétéria</item>
+        <item>café</item>
+    </string-array>
+    <string-array name="place_landmark_words">
+        <item>museum</item>
+        <item>monument</item>
+        <item>landmark</item>
+        <item>tower</item>
+        <item>castle</item>
+        <item>cathedral</item>
+        <item>temple</item>
+        <item>palace</item>
+        <item>musée</item>
+        <item>tour</item>
+        <item>château</item>
+        <item>cathédrale</item>
+        <item>palais</item>
+        <item>basilique</item>
+        <item>abbaye</item>
+        <item>église</item>
+        <item>opéra</item>
+    </string-array>
+</resources>

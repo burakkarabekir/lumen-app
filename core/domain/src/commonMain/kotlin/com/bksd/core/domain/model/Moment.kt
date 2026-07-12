@@ -16,22 +16,22 @@ data class Moment(
     val pendingSync: Boolean = false
 )
 
-enum class Mood(val label: String, val emoji: String) {
-    HAPPY("Happy", "😊"),
-    GRATEFUL("Grateful", "🙏"),
-    CALM("Calm", "🧘"),
-    LOVED("Loved", "🥰"),
-    HOPEFUL("Hopeful", "🌱"),
-    PROUD("Proud", "🏆"),
-    INSPIRED("Inspired", "✨"),
-    REFLECTIVE("Reflective", "🤔"),
-    FOCUSED("Focused", "🎯"),
-    NOSTALGIC("Nostalgic", "📷"),
-    TIRED("Tired", "😫"),
-    ANXIOUS("Anxious", "😰"),
-    STRESSED("Stressed", "😖"),
-    FRUSTRATED("Frustrated", "😤"),
-    SAD("Sad", "😢"),
-    MELANCHOLIC("Melancholic", "🌧️"),
-    BORED("Bored", "🥱")
+enum class Mood(val emoji: String) {
+    HAPPY("😊"),
+    GRATEFUL("🙏"),
+    CALM("🧘"),
+    LOVED("🥰"),
+    HOPEFUL("🌱"),
+    PROUD("🏆"),
+    INSPIRED("✨"),
+    REFLECTIVE("🤔"),
+    FOCUSED("🎯"),
+    NOSTALGIC("📷"),
+    TIRED("😫"),
+    ANXIOUS("😰"),
+    STRESSED("😖"),
+    FRUSTRATED("😤"),
+    SAD("😢"),
+    MELANCHOLIC("🌧️"),
+    BORED("🥱")
 }

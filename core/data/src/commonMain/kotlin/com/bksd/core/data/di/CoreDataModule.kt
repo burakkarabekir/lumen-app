@@ -1,6 +1,7 @@
 package com.bksd.core.data.di
 
 import com.bksd.core.data.applock.AppLockRepositoryImpl
+import com.bksd.core.data.language.LanguageRepositoryImpl
 import com.bksd.core.data.logging.KermitLogger
 import com.bksd.core.data.reminder.ReminderRepositoryImpl
 import com.bksd.core.data.remote.supabase.SupabaseAuthDataSource
@@ -12,6 +13,7 @@ import com.bksd.core.data.repository.MediaRepositoryImpl
 import com.bksd.core.data.storage.SupabaseSessionStorage
 import com.bksd.core.data.theme.ThemeRepositoryImpl
 import com.bksd.core.domain.applock.AppLockRepository
+import com.bksd.core.domain.language.LanguageRepository
 import com.bksd.core.domain.billing.PremiumStatusSource
 import com.bksd.core.domain.consent.ConsentRepository
 import com.bksd.core.domain.logging.AppLogger
@@ -43,6 +45,7 @@ val coreDataModule = module {
     singleOf(::SupabaseSessionStorage) bind SessionStorage::class
 
     singleOf(::ThemeRepositoryImpl) bind ThemeRepository::class
+    singleOf(::LanguageRepositoryImpl) bind LanguageRepository::class
     factoryOf(::GetAppThemeUseCase)
     factoryOf(::SetAppThemeUseCase)
 

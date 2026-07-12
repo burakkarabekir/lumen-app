@@ -27,7 +27,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
+import coil3.compose.SubcomposeAsyncImage
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.dimens
 
@@ -104,11 +104,19 @@ fun AppAvatar(
                         strokeWidth = 2.dp
                     )
                 } else if (!url.isNullOrBlank()) {
-                    AsyncImage(
+                    SubcomposeAsyncImage(
                         model = url,
                         contentDescription = contentDescription,
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier.size(size).clip(CircleShape)
+                        modifier = Modifier.size(size).clip(CircleShape),
+                        error = {
+                            Icon(
+                                imageVector = Icons.Default.Person,
+                                contentDescription = contentDescription,
+                                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                                modifier = Modifier.size(size * 0.55f)
+                            )
+                        }
                     )
                 } else {
                     Icon(

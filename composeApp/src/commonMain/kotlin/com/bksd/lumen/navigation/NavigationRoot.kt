@@ -8,6 +8,9 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
@@ -23,17 +27,21 @@ import com.bksd.auth.presentation.resetpassword.ResetPasswordRoot
 import com.bksd.auth.presentation.signin.SignInRoot
 import com.bksd.auth.presentation.signup.SignUpRoot
 import com.bksd.core.design_system.component.layout.AppScaffold
+import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.domain.connectivity.NetworkMonitor
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.insights.presentation.InsightsRoot
 import com.bksd.insights.presentation.reflection.full.WeeklyReflectionDetailRoot
 import com.bksd.journal.presentation.detail.MomentDetailRoot
 import com.bksd.journal.presentation.journal.JournalRoot
+import com.bksd.lumen.connectivity.ConnectivityBanner
 import com.bksd.lumen.consent.ConsentGate
 import com.bksd.lumen.lock.LockGate
 import com.bksd.lumen.main.MainEvent
 import com.bksd.lumen.main.MainViewModel
 import com.bksd.lumen.navigation.route.Route
 import com.bksd.lumen.navigation.route.Route.Companion.shouldShowBottomBar
+import com.bksd.lumen.reminder.ReminderLaunchSignal
 import com.bksd.lumen.welcome.LoginWelcomeSignal
 import com.bksd.lumen.welcome.WelcomeGate
 import com.bksd.lumen.welcome.WelcomeGreeting
@@ -71,7 +79,11 @@ fun NavigationRoot(
 
     val navigator = koinInject<Navigator> { parametersOf(navigationState) }
     val welcomeSignal = koinInject<LoginWelcomeSignal>()
+    val reminderLaunchSignal = koinInject<ReminderLaunchSignal>()
     val snackbarHostState = remember { SnackbarHostState() }
+
+    val networkMonitor = koinInject<NetworkMonitor>()
+    val isOnline by networkMonitor.isOnline.collectAsState(initial = true)
 
     var navigationReady by remember { mutableStateOf(false) }
 
@@ -86,6 +98,18 @@ fun NavigationRoot(
         when (event) {
             is MainEvent.OnSessionExpired -> {
                 navigator.clearBackstackAndNavigate(Route.Auth.SignIn)
+            }
+        }
+    }
+
+    LaunchedEffect(navigationReady) {
+        if (!navigationReady) return@LaunchedEffect
+        reminderLaunchSignal.pending.collect { open ->
+            if (open) {
+                if (mainViewModel.state.value.isLoggedIn) {
+                    navigator.navigateToCreateMoment()
+                }
+                reminderLaunchSignal.clear()
             }
         }
     }
@@ -276,6 +300,14 @@ fun NavigationRoot(
             )
         )
         }
+
+        ConnectivityBanner(
+            isOnline = isOnline,
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .statusBarsPadding()
+                .padding(top = MaterialTheme.dimens.size.topBar)
+        )
 
         WelcomeGate()
 

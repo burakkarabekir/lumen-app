@@ -1,0 +1,68 @@
+<resources>
+    <!-- Screen UI -->
+    <string name="title_placeholder">Başlık</string>
+    <string name="content_desc_close">Kapat</string>
+    <string name="content_desc_location">Konum</string>
+    <string name="add_location">Konum Ekle</string>
+    <string name="content_desc_remove_location">Konumu Kaldır</string>
+    <string name="body_placeholder">Gününü düşün... Aklından neler geçiyor?</string>
+    <string name="label_mic">Mikrofon</string>
+    <string name="label_camera">Kamera</string>
+    <string name="label_photo">Fotoğraf</string>
+    <string name="label_video">Video</string>
+    <string name="label_link">Bağlantı</string>
+    <string name="new_entry_title">Yeni Kayıt</string>
+    <string name="action_save">Kaydet</string>
+    <string name="label_place">Yer</string>
+    <string name="label_voice">Ses</string>
+    <string name="mood_section_title">Nasıl hissediyorsun?</string>
+    <string name="mood_section_subtitle">Anına uyan ruh hallerini seç.</string>
+    <string name="mood_more">%1$s daha</string>
+    <string name="mood_less">Daha az</string>
+
+    <!-- Snackbar / Permission -->
+    <string name="permission_mic_denied">Mikrofon izni reddedildi.</string>
+    <string name="permission_location_denied">Konum izni reddedildi. Lütfen ayarlardan etkinleştir.</string>
+    <string name="permission_location_services_required">Konumunu eklemek için konum servisleri gerekli.</string>
+    <string name="permission_camera_denied">Kamera izni reddedildi.</string>
+    <string name="action_open_settings">Ayarları Aç</string>
+    <string name="action_enable_location">Konumu Etkinleştir</string>
+
+    <!-- ViewModel errors -->
+    <string name="error_location_fetch_failed">Konum alınamadı</string>
+    <string name="error_location_permission_denied">Konum izni reddedildi.</string>
+    <string name="error_location_services_disabled">Konum servisleri kapalı. Lütfen Ayarlar&apos;dan etkinleştir.</string>
+    <string name="error_recording_start_failed">Kayıt başlatılamadı</string>
+    <string name="error_audio_permission_required">Ses kaydetmek için mikrofon izni gerekli</string>
+    <string name="error_recording_save_failed">Kayıt kaydedilemedi</string>
+    <string name="error_playback_failed">Kayıt oynatılamadı</string>
+    <string name="error_file_too_large">Dosya 25 MB sınırını aşıyor</string>
+    <string name="error_moment_empty">An boş</string>
+    <string name="error_mood_required">Lütfen bir ruh hali seç</string>
+    <string name="error_attachment_save_failed">Ek kaydedilemedi.</string>
+    <string name="error_moment_save_failed">An kaydedilemedi</string>
+    <string name="success_moment_saved">An kaydedildi!</string>
+    <string name="success_moment_saved_without_attachment">An kaydedildi. Bir ek yüklenemedi — bağlantını kontrol et.</string>
+    <string name="timestamp_today_format">Bugün, %1$s</string>
+    <string name="error_camera_permission_denied">Fotoğraf çekmek için kamera izni gerekli</string>
+
+    <!-- AI Analysis Opt-In -->
+    <string name="ai_optin_title">Evet, bu kaydı yapay zekâ ile analiz et</string>
+    <string name="ai_optin_caption">Kaydettikten hemen sonra ruh halin ve temaların hakkında bir değerlendirme al.</string>
+
+    <!-- Attachments -->
+    <string name="add_link">Bağlantı Ekle</string>
+    <string name="remove_link">Bağlantıyı Kaldır</string>
+    <string name="link_url_hint">https://...</string>
+    <string name="done">Bitti</string>
+    <string name="recording_in_progress">Anıların kaydediliyor...</string>
+    <string name="cancel_recording">Kaydı İptal Et</string>
+    <string name="toggle_attachments">Ekleri Aç/Kapat</string>
+    <string name="attachment_count_single">%1$d Ek</string>
+    <string name="attachment_count_plural">%1$d Ek</string>
+    <string name="attachment_type_photo">Fotoğraf</string>
+    <string name="attachment_type_audio">Ses</string>
+    <string name="attachment_type_video">Video</string>
+    <string name="attachment_type_link">Bağlantı</string>
+    <string name="entry_untitled">Başlıksız</string>
+</resources>

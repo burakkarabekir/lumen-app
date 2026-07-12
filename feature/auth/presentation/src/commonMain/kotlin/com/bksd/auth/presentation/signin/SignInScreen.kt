@@ -242,7 +242,7 @@ private fun SignInScreenPreview() {
 private fun SignInScreenPreviewDark() {
     AppTheme(darkTheme = true) {
         SignInScreen(
-            state = SignInState(),
+            state = SignInState(email = "test@test.com", password = "test123s"),
             onAction = {}
         )
     }

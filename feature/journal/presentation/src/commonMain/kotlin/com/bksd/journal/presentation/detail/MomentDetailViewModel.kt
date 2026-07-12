@@ -1,15 +1,21 @@
 package com.bksd.journal.presentation.detail
 
 import androidx.lifecycle.viewModelScope
+import com.bksd.core.domain.connectivity.NetworkMonitor
 import com.bksd.core.domain.error.Result
 import com.bksd.core.domain.model.PlaybackState
 import com.bksd.core.domain.storage.AudioPlayer
+import com.bksd.core.presentation.labelRes
 import com.bksd.core.presentation.util.BaseViewModel
 import com.bksd.core.presentation.util.UiText
 import com.bksd.core.presentation.util.toUiText
+import org.jetbrains.compose.resources.getString
 import com.bksd.journal.domain.usecase.DeleteMomentUseCase
 import com.bksd.journal.domain.usecase.GetMomentUseCase
 import com.bksd.journal.domain.usecase.UpdateMomentUseCase
+import com.bksd.journal.presentation.Res
+import com.bksd.journal.presentation.detail_changes_saved
+import com.bksd.journal.presentation.detail_moment_deleted
 import com.bksd.reflection.domain.model.MomentAnalysisState
 import com.bksd.reflection.domain.usecase.ObserveEntryAnalysisUseCase
 import com.bksd.reflection.domain.usecase.RequestEntryAnalysisUseCase
@@ -18,10 +24,14 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlin.time.Clock
 
 class MomentDetailViewModel(
     private val getMomentUseCase: GetMomentUseCase,
@@ -30,6 +40,7 @@ class MomentDetailViewModel(
     private val observeEntryAnalysis: ObserveEntryAnalysisUseCase,
     private val requestEntryAnalysis: RequestEntryAnalysisUseCase,
     private val audioPlayer: AudioPlayer,
+    private val networkMonitor: NetworkMonitor,
     private val momentId: String,
     private val initialIsEditing: Boolean = false
 ) : BaseViewModel<MomentDetailAction, MomentDetailEvent>() {
@@ -44,6 +55,7 @@ class MomentDetailViewModel(
                 loadMoment()
                 observeAudio()
                 observeAnalysis()
+                observeConnectivity()
                 hasLoadedInitialData = true
             }
         }
@@ -133,11 +145,33 @@ class MomentDetailViewModel(
         }
     }
 
+    private var reconciledPending = false
+
     private fun observeAnalysis() {
         launch {
             observeEntryAnalysis(momentId).collect { analysisState ->
                 _state.update { it.copy(analysis = analysisState) }
+                if (analysisState == MomentAnalysisState.Pending) {
+                    reconcileStalePending()
+                }
             }
+        }
+    }
+
+    private fun observeConnectivity() {
+        launch {
+            networkMonitor.isOnline
+                .distinctUntilChanged()
+                .drop(1)
+                .filter { it }
+                .collect {
+                    val analysis = _state.value.analysis
+                    if (analysis == MomentAnalysisState.Failed ||
+                        analysis == MomentAnalysisState.Offline
+                    ) {
+                        handleRetryAnalysis()
+                    }
+                }
         }
     }
 
@@ -151,6 +185,10 @@ class MomentDetailViewModel(
     override fun onCleared() {
         super.onCleared()
         audioPlayer.release()
+    }
+
+    private companion object {
+        const val STALE_PENDING_MS = 120_000L
     }
 
     private fun toggleFavorite() {
@@ -214,7 +252,7 @@ class MomentDetailViewModel(
                             isSaving = false
                         )
                     }
-                    sendEvent(MomentDetailEvent.ShowSuccess(UiText.Dynamic("Changes saved")))
+                    sendEvent(MomentDetailEvent.ShowSuccess(UiText.Resource(Res.string.detail_changes_saved)))
                 }
 
                 is Result.Error -> {
@@ -255,6 +293,7 @@ class MomentDetailViewModel(
                     if (initialIsEditing) {
                         enterEditMode()
                     }
+                    reconcileStalePending()
                 }
             }
         }
@@ -265,7 +304,7 @@ class MomentDetailViewModel(
         launch {
             when (val result = deleteMomentUseCase(momentId)) {
                 is Result.Success -> {
-                    sendEvent(MomentDetailEvent.ShowSuccess(UiText.Dynamic("Moment deleted")))
+                    sendEvent(MomentDetailEvent.ShowSuccess(UiText.Resource(Res.string.detail_moment_deleted)))
                     sendEvent(MomentDetailEvent.NavigateBack)
                 }
 
@@ -279,8 +318,12 @@ class MomentDetailViewModel(
     }
 
     private fun handleRetryAnalysis() {
-        val moment = _state.value.moment ?: return
         if (_state.value.analysis == MomentAnalysisState.Pending) return
+        runAnalysis()
+    }
+
+    private fun runAnalysis() {
+        val moment = _state.value.moment ?: return
 
         val entryText = listOfNotNull(
             moment.title.trim().takeIf { it.isNotBlank() },
@@ -288,10 +331,29 @@ class MomentDetailViewModel(
         ).joinToString("\n\n")
         if (entryText.isBlank()) return
 
-        val mood = moment.moods
-            .joinToString(", ") { it.label }
-            .takeIf { it.isNotBlank() }
+        launch {
+            val mood = moment.moods
+                .map { getString(it.labelRes()) }
+                .joinToString(", ")
+                .takeIf { it.isNotBlank() }
+            requestEntryAnalysis(moment.id, entryText, mood)
+        }
+    }
 
-        launch { requestEntryAnalysis(moment.id, entryText, mood) }
+    /**
+     * Re-drives an analysis that is stuck in PENDING with no live job — e.g. the
+     * process died mid-request. Uses the moment's age as a staleness proxy so a
+     * legitimately in-flight analysis is left alone.
+     */
+    private fun reconcileStalePending() {
+        if (reconciledPending) return
+        if (_state.value.analysis != MomentAnalysisState.Pending) return
+        val moment = _state.value.moment ?: return
+        val ageMs = Clock.System.now().toEpochMilliseconds() -
+            moment.createdAt.toEpochMilliseconds()
+        if (ageMs > STALE_PENDING_MS) {
+            reconciledPending = true
+            runAnalysis()
+        }
     }
 }

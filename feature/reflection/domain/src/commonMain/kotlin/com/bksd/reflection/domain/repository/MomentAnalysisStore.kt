@@ -10,6 +10,7 @@ interface MomentAnalysisStore {
     suspend fun setPending(momentId: String)
     suspend fun setResult(momentId: String, reflection: MomentReflection)
     suspend fun setFailed(momentId: String, quotaExceeded: Boolean = false)
+    suspend fun setOffline(momentId: String)
     suspend fun recentAnalyses(limit: Int): List<EntryAnalysis>
     suspend fun deleteAll()
 }

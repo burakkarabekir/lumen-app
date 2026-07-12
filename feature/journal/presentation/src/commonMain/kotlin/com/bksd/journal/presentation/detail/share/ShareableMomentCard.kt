@@ -1,4 +1,6 @@
 package com.bksd.journal.presentation.detail.share
+import com.bksd.core.presentation.labelRes
+import org.jetbrains.compose.resources.stringResource
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -32,7 +34,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
+import coil3.compose.SubcomposeAsyncImage
 import com.bksd.core.design_system.theme.PreviewAppTheme
 import com.bksd.core.design_system.theme.ShareStyle
 import com.bksd.core.design_system.theme.dimens
@@ -74,11 +76,18 @@ fun ShareableMomentCard(
             )
     ) {
         if (style == ShareStyle.PHOTO && photoUrl != null) {
-            AsyncImage(
+            SubcomposeAsyncImage(
                 model = photoUrl,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                error = {
+                    Box(
+                        Modifier.fillMaxSize().background(
+                            Brush.linearGradient(listOf(colors.backgroundTop, colors.backgroundBottom))
+                        )
+                    )
+                }
             )
             Box(
                 modifier = Modifier
@@ -147,7 +156,7 @@ fun ShareableMomentCard(
                 ) {
                     Box(Modifier.size(MaterialTheme.dimens.icon.xs).clip(CircleShape).background(MaterialTheme.colorScheme.extended.moodHue(firstMood)))
                     Text(
-                        text = firstMood.label,
+                        text = stringResource(firstMood.labelRes()),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = colors.text

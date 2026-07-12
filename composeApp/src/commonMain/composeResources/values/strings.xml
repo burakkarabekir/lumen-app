@@ -5,6 +5,7 @@
     <!-- Post-login welcome animation -->
     <string name="welcome_greeting_returning">Welcome back,</string>
     <string name="welcome_greeting_new">Welcome to Lumen,</string>
+    <string name="welcome_greeting_first">Welcome,</string>
 
     <!-- OAuth consent gate -->
     <string name="consent_gate_title">Agree to continue</string>
@@ -27,4 +28,8 @@
     <string name="error_couldnt_save_file">Oops, saving the file failed.</string>
     <string name="error_recording_start">Failed to start recording</string>
     <string name="error_recording_stop">Failed to stop recording</string>
+    <string name="no_connection">No internet connection</string>
+    <string name="connection_restored">Back online</string>
+    <string name="nav_journal">Journal</string>
+    <string name="nav_insights">Insights</string>
 </resources>

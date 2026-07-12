@@ -1,0 +1,35 @@
+<resources>
+    <string name="home">Start</string>
+    <string name="home_greeting">Hi, </string>
+
+    <!-- Post-login welcome animation -->
+    <string name="welcome_greeting_returning">Willkommen zurück,</string>
+    <string name="welcome_greeting_new">Willkommen bei Lumen,</string>
+    <string name="welcome_greeting_first">Willkommen,</string>
+
+    <!-- OAuth consent gate -->
+    <string name="consent_gate_title">Zum Fortfahren zustimmen</string>
+    <string name="consent_gate_body_prefix">Um Lumen weiter zu nutzen, lies und akzeptiere bitte unsere </string>
+    <string name="consent_terms">Nutzungsbedingungen</string>
+    <string name="consent_and"> und </string>
+    <string name="consent_privacy">Datenschutzrichtlinie</string>
+    <string name="consent_gate_button">Ich stimme zu &amp; fahre fort</string>
+
+    <!-- App lock gate -->
+    <string name="lock_gate_title">Lumen ist gesperrt</string>
+    <string name="lock_gate_subtitle">Entsperre, um zu deinem Journal zu gelangen.</string>
+    <string name="lock_gate_unlock">Entsperren</string>
+    <string name="lock_gate_prompt_title">Lumen entsperren</string>
+    <string name="lock_gate_prompt_subtitle">Bestätige, dass du es bist, um dein Journal zu öffnen.</string>
+
+    <!-- Recording Status Messages -->
+    <string name="microphone_permission_denied">Bereit zum Üben?</string>
+    <string name="permission_open_settings">Einstellungen öffnen</string>
+    <string name="error_couldnt_save_file">Ups, das Speichern der Datei ist fehlgeschlagen.</string>
+    <string name="error_recording_start">Aufnahme konnte nicht gestartet werden</string>
+    <string name="error_recording_stop">Aufnahme konnte nicht gestoppt werden</string>
+    <string name="no_connection">Keine Internetverbindung</string>
+    <string name="connection_restored">Wieder online</string>
+    <string name="nav_journal">Journal</string>
+    <string name="nav_insights">Einblicke</string>
+</resources>

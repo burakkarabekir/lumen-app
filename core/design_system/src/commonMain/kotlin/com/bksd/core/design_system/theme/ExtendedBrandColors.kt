@@ -53,8 +53,6 @@ val ExtendedColors.profileHeroGradient: List<Color>
 
 val ExtendedColors.coverGradient: List<Color>
     get() = listOf(CoverGradientStart, CoverGradientMid, CoverGradientEnd)
-val ExtendedColors.paywallHeroGradient: List<Color>
-    get() = listOf(PaywallHeroGradientStart, PaywallHeroGradientEnd)
 val ExtendedColors.aiIconGradient: List<Color>
     get() = listOf(AiIconGradientStart, AiIconGradientEnd)
 

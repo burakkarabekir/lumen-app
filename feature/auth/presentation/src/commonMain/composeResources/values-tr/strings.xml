@@ -1,0 +1,40 @@
+<resources>
+    <!-- SignInScreen -->
+    <string name="welcome_back">Tekrar Hoş Geldin</string>
+    <string name="sign_in_subtitle">Berraklığa giden yolculuğuna devam et.</string>
+    <string name="label_email">E-posta</string>
+    <string name="label_password">Şifre</string>
+    <string name="error_invalid_email">Geçerli bir e-posta adresi gir</string>
+    <string name="forgot_password">Şifreni mi unuttun?</string>
+    <string name="btn_sign_in">Giriş Yap</string>
+    <string name="remember_me">Beni hatırla</string>
+    <string name="no_account_prompt">Hesabın yok mu?</string>
+    <string name="sign_up_link"> Kayıt ol</string>
+    <string name="or_continue_with">Ya da şununla devam et</string>
+    <string name="btn_apple">Apple</string>
+    <string name="btn_google">Google</string>
+    <string name="continue_with_google">Google ile devam et</string>
+    <string name="continue_with_apple">Apple ile devam et</string>
+
+    <!-- SignUpScreen -->
+    <string name="create_your_space">Kendi Alanını Oluştur</string>
+    <string name="sign_up_subtitle">Lumen ile yolculuğuna başla.</string>
+    <string name="label_full_name">Ad Soyad</string>
+    <string name="password_hint">En az 8 karakter olmalı</string>
+    <string name="btn_sign_up">Kayıt Ol</string>
+    <string name="terms_checkbox_prefix">Kabul ediyorum: </string>
+    <string name="terms_of_service">Hizmet Şartları</string>
+    <string name="terms_and"> ve </string>
+    <string name="privacy_policy">Gizlilik Politikası</string>
+    <string name="already_have_account">Zaten hesabın var mı?</string>
+    <string name="sign_in_link"> Giriş Yap</string>
+    <string name="check_your_email">E-postanı kontrol et</string>
+    <string name="confirmation_link_sent">%1$s adresine bir doğrulama bağlantısı gönderdik. Hesabını etkinleştirmek için bağlantıya dokun, ardından giriş yap.</string>
+
+    <!-- ResetPasswordScreen -->
+    <string name="reset_password_title">Şifreyi Sıfırla</string>
+    <string name="reset_password_description">Lumen hesabınla ilişkili e-posta adresini gir, şifreni sıfırlaman için sana güvenli bir bağlantı gönderelim.</string>
+    <string name="btn_send_link">Bağlantı Gönder</string>
+    <string name="reset_success_message">Şifre sıfırlama e-postası gönderildi!</string>
+    <string name="back_to_sign_in">Girişe Dön</string>
+</resources>

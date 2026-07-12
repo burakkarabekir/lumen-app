@@ -1,0 +1,35 @@
+<resources>
+    <string name="home">Ana Sayfa</string>
+    <string name="home_greeting">Merhaba, </string>
+
+    <!-- Post-login welcome animation -->
+    <string name="welcome_greeting_returning">Tekrar hoş geldin,</string>
+    <string name="welcome_greeting_new">Lumen&apos;e hoş geldin,</string>
+    <string name="welcome_greeting_first">Hoş geldin,</string>
+
+    <!-- OAuth consent gate -->
+    <string name="consent_gate_title">Devam etmek için kabul et</string>
+    <string name="consent_gate_body_prefix">Lumen&apos;i kullanmaya devam etmek için lütfen şunları inceleyip kabul et: </string>
+    <string name="consent_terms">Hizmet Şartları</string>
+    <string name="consent_and"> ve </string>
+    <string name="consent_privacy">Gizlilik Politikası</string>
+    <string name="consent_gate_button">Kabul Ediyorum &amp; Devam Et</string>
+
+    <!-- App lock gate -->
+    <string name="lock_gate_title">Lumen kilitli</string>
+    <string name="lock_gate_subtitle">Günlüğüne devam etmek için kilidi aç.</string>
+    <string name="lock_gate_unlock">Kilidi Aç</string>
+    <string name="lock_gate_prompt_title">Lumen&apos;in kilidini aç</string>
+    <string name="lock_gate_prompt_subtitle">Günlüğünü açmak için senin olduğunu doğrula.</string>
+
+    <!-- Recording Status Messages -->
+    <string name="microphone_permission_denied">Pratik yapmaya hazır mısın?</string>
+    <string name="permission_open_settings">Ayarları Aç</string>
+    <string name="error_couldnt_save_file">Hay aksi, dosya kaydedilemedi.</string>
+    <string name="error_recording_start">Kayıt başlatılamadı</string>
+    <string name="error_recording_stop">Kayıt durdurulamadı</string>
+    <string name="no_connection">İnternet bağlantısı yok</string>
+    <string name="connection_restored">Yeniden çevrimiçi</string>
+    <string name="nav_journal">Günlük</string>
+    <string name="nav_insights">İçgörüler</string>
+</resources>

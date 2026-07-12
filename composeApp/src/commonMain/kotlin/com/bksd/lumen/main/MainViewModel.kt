@@ -2,6 +2,7 @@ package com.bksd.lumen.main
 
 import com.bksd.auth.domain.AuthRepository
 import com.bksd.core.domain.billing.EntitlementRepository
+import com.bksd.core.domain.connectivity.NetworkMonitor
 import com.bksd.core.domain.storage.SessionStorage
 import com.bksd.core.presentation.util.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -9,11 +10,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.withTimeoutOrNull
 
 class MainViewModel(
     private val sessionStorage: SessionStorage,
     private val authRepository: AuthRepository,
     private val entitlementRepository: EntitlementRepository,
+    private val networkMonitor: NetworkMonitor,
 ) : BaseViewModel<Nothing, MainEvent>() {
 
     private val _state = MutableStateFlow(MainState())
@@ -21,8 +24,13 @@ class MainViewModel(
 
     init {
         launch {
-            sessionStorage.awaitReady()
-            var isLoggedIn = sessionStorage.isLoggedIn()
+            // Bound the wait so an offline launch can never hang on a network refresh.
+            withTimeoutOrNull(STARTUP_TIMEOUT_MS) { sessionStorage.awaitReady() }
+
+            // Fall back to the locally-known session so a cached user reaches the app
+            // offline even when the access token can't be refreshed right now.
+            var isLoggedIn = sessionStorage.isLoggedIn() ||
+                sessionStorage.getLocalDataOwner() != null
 
             if (isLoggedIn) {
                 val rememberMe = sessionStorage.isRememberMeEnabled().first()
@@ -38,10 +46,18 @@ class MainViewModel(
             syncRevenueCatUser(isLoggedIn)
 
             sessionStorage.observeAuthState().collect { isAuthenticated ->
-                val wasLoggedIn = _state.value.isLoggedIn
-                _state.update { it.copy(isLoggedIn = isAuthenticated) }
-                syncRevenueCatUser(isAuthenticated)
-                if (wasLoggedIn && !isAuthenticated) {
+                if (isAuthenticated) {
+                    _state.update { it.copy(isLoggedIn = true) }
+                    syncRevenueCatUser(true)
+                    return@collect
+                }
+                // Not authenticated. Only treat this as a real sign-out/expiry when we're
+                // online — offline it's a transient refresh failure, so keep the cached
+                // session and let the user stay in the app (offline-first).
+                val online = networkMonitor.isOnline.first()
+                if (online && _state.value.isLoggedIn) {
+                    _state.update { it.copy(isLoggedIn = false) }
+                    syncRevenueCatUser(false)
                     sendEvent(MainEvent.OnSessionExpired)
                 }
             }
@@ -55,5 +71,9 @@ class MainViewModel(
         } else {
             entitlementRepository.clearUser()
         }
+    }
+
+    private companion object {
+        const val STARTUP_TIMEOUT_MS = 3_000L
     }
 }

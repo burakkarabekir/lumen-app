@@ -31,7 +31,8 @@ class ProfileRepositoryImpl(
                         displayName = row?.displayName ?: authDataSource.getDisplayName().orEmpty(),
                         photoUrl = row?.avatarUrl ?: authDataSource.getPhotoUrl(),
                         jobTitle = row?.jobTitle.orEmpty(),
-                        joinYear = row?.joinYear.orEmpty(),
+                        joinYear = row?.joinYear?.takeIf { it.isNotBlank() }
+                            ?: authDataSource.getJoinYear().orEmpty(),
                         isPremium = row?.isPremium ?: false,
                     )
                 )

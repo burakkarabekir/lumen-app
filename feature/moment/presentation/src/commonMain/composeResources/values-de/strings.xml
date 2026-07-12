@@ -1,0 +1,68 @@
+<resources>
+    <!-- Screen UI -->
+    <string name="title_placeholder">Titel</string>
+    <string name="content_desc_close">Schließen</string>
+    <string name="content_desc_location">Standort</string>
+    <string name="add_location">Standort hinzufügen</string>
+    <string name="content_desc_remove_location">Standort entfernen</string>
+    <string name="body_placeholder">Denk über deinen Tag nach... Was beschäftigt dich?</string>
+    <string name="label_mic">Mikro</string>
+    <string name="label_camera">Kamera</string>
+    <string name="label_photo">Foto</string>
+    <string name="label_video">Video</string>
+    <string name="label_link">Link</string>
+    <string name="new_entry_title">Neuer Eintrag</string>
+    <string name="action_save">Speichern</string>
+    <string name="label_place">Ort</string>
+    <string name="label_voice">Sprachnotiz</string>
+    <string name="mood_section_title">Wie fühlst du dich?</string>
+    <string name="mood_section_subtitle">Wähle die Stimmungen, die zu deinem Moment passen.</string>
+    <string name="mood_more">%1$s weitere</string>
+    <string name="mood_less">Weniger</string>
+
+    <!-- Snackbar / Permission -->
+    <string name="permission_mic_denied">Mikrofonberechtigung verweigert.</string>
+    <string name="permission_location_denied">Standortberechtigung verweigert. Bitte aktiviere sie in den Einstellungen.</string>
+    <string name="permission_location_services_required">Standortdienste werden benötigt, um deinen Standort hinzuzufügen.</string>
+    <string name="permission_camera_denied">Kameraberechtigung verweigert.</string>
+    <string name="action_open_settings">Einstellungen öffnen</string>
+    <string name="action_enable_location">Standort aktivieren</string>
+
+    <!-- ViewModel errors -->
+    <string name="error_location_fetch_failed">Standort konnte nicht abgerufen werden</string>
+    <string name="error_location_permission_denied">Standortberechtigung verweigert.</string>
+    <string name="error_location_services_disabled">Standortdienste sind deaktiviert. Bitte aktiviere sie in den Einstellungen.</string>
+    <string name="error_recording_start_failed">Aufnahme konnte nicht gestartet werden</string>
+    <string name="error_audio_permission_required">Zum Aufnehmen von Audio wird die Mikrofonberechtigung benötigt</string>
+    <string name="error_recording_save_failed">Aufnahme konnte nicht gespeichert werden</string>
+    <string name="error_playback_failed">Aufnahme konnte nicht abgespielt werden</string>
+    <string name="error_file_too_large">Datei überschreitet das Limit von 25 MB</string>
+    <string name="error_moment_empty">Moment ist leer</string>
+    <string name="error_mood_required">Bitte wähle eine Stimmung</string>
+    <string name="error_attachment_save_failed">Anhang konnte nicht gespeichert werden.</string>
+    <string name="error_moment_save_failed">Moment konnte nicht gespeichert werden</string>
+    <string name="success_moment_saved">Moment gespeichert!</string>
+    <string name="success_moment_saved_without_attachment">Moment gespeichert. Ein Anhang konnte nicht hochgeladen werden – überprüfe deine Verbindung.</string>
+    <string name="timestamp_today_format">Heute, %1$s</string>
+    <string name="error_camera_permission_denied">Zum Aufnehmen von Fotos wird die Kameraberechtigung benötigt</string>
+
+    <!-- AI Analysis Opt-In -->
+    <string name="ai_optin_title">Ja, diesen Eintrag mit KI analysieren</string>
+    <string name="ai_optin_caption">Erhalte direkt nach dem Speichern eine Reflexion über deine Stimmung und Themen.</string>
+
+    <!-- Attachments -->
+    <string name="add_link">Link hinzufügen</string>
+    <string name="remove_link">Link entfernen</string>
+    <string name="link_url_hint">https://...</string>
+    <string name="done">Fertig</string>
+    <string name="recording_in_progress">Deine Erinnerungen werden aufgenommen...</string>
+    <string name="cancel_recording">Aufnahme abbrechen</string>
+    <string name="toggle_attachments">Anhänge ein-/ausblenden</string>
+    <string name="attachment_count_single">%1$d Anhang</string>
+    <string name="attachment_count_plural">%1$d Anhänge</string>
+    <string name="attachment_type_photo">Foto</string>
+    <string name="attachment_type_audio">Audio</string>
+    <string name="attachment_type_video">Video</string>
+    <string name="attachment_type_link">Link</string>
+    <string name="entry_untitled">Ohne Titel</string>
+</resources>

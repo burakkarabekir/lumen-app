@@ -1,0 +1,55 @@
+<resources>
+    <string name="show_more">Daha fazla göster</string>
+    <string name="show_less">Daha az göster</string>
+
+    <string name="title_list_empty">Kayıt Yok</string>
+    <string name="add_new_entry">Yeni kayıt ekle</string>
+
+
+    <string name="recording_paused">Kayıt duraklatıldı</string>
+    <string name="pause_or_resume_recording">Kaydı duraklat ya da devam ettir</string>
+    <string name="cancel_recording">Kaydı iptal et</string>
+    <string name="navigate_back">Geri git</string>
+    <string name="new_entry">Yeni Kayıt</string>
+    <string name="add_mood">Ruh hali ekle</string>
+    <string name="add_title">Başlık ekle…</string>
+    <string name="topic_hashtag">Konu etiketi</string>
+    <string name="topic">Konu</string>
+    <string name="add_description">Açıklama ekle…</string>
+    <string name="save">Kaydet</string>
+    <string name="cancel">İptal</string>
+    <string name="are_you_sure">Emin misin?</string>
+    <string name="your_data_won_t_be_saved">Verilerin kaydedilmeyecek.</string>
+    <string name="discard">Vazgeç</string>
+    <string name="how_are_you_doing">Nasılsın?</string>
+    <string name="confirm">Onayla</string>
+    <string name="selected_mood">Seçilen Ruh Hali</string>
+    <string name="my_mood">Ruh Halim</string>
+    <string name="select_default_mood_to_apply_to_all_new_entries">Tüm yeni kayıtlara uygulanacak varsayılan ruh halini seç</string>
+    <string name="my_topics">Konularım</string>
+    <string name="select_default_topics_to_apply_to_all_new_entries">Tüm yeni kayıtlara uygulanacak varsayılan konuları seç</string>
+    <string name="create_new_entry_widget">Yeni Kayıt Widget&apos;ı Oluştur</string>
+    <string name="record_a_new_entry">Tek dokunuşla yeni bir kayıt oluştur</string>
+    <string name="you_don_t_have_any_topics_yet">Henüz hiç konun yok!</string>
+    <string name="audio_recording_was_too_short">Ses kaydı çok kısaydı</string>
+    <string name="clear_selections">Seçimleri temizle</string>
+    <string name="create_entry">&apos;%s&apos; oluştur</string>
+    <string name="playing">Çalıyor</string>
+    <string name="paused">Duraklatıldı</string>
+    <string name="stopped">Durduruldu</string>
+    <string name="pause_recording">Kaydı duraklat</string>
+    <string name="finish_recording">Kaydı bitir</string>
+    <string name="resume_recording">Kayda devam et</string>
+    <string name="remove_topic">%s konusunu kaldır</string>
+    <string name="discard_recording">Kayıttan vazgeçilsin mi?</string>
+    <string name="this_cannot_be_undone">Bu geri alınamaz.</string>
+    <string name="today">Bugün</string>
+    <string name="yesterday">Dün</string>
+    <string name="record_new_entry">Yeni kayıt oluştur</string>
+    <string name="confused_and_happy_mood_faces">Şaşkın ve mutlu ruh hali yüzleri</string>
+    <string name="tag_prefix">#</string>
+
+    <string name="widget_description">Yeni bir günlük kaydı oluştur</string>
+    <string name="title_entries">Fluenty&apos;n</string>
+    <string name="desc_entry_empty">İlk kaydını oluşturmaya başla</string>
+</resources>

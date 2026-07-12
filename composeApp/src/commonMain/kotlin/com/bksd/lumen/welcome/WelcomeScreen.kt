@@ -27,6 +27,7 @@ import com.bksd.core.design_system.theme.coverGradient
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
 import com.bksd.lumen.Res
+import com.bksd.lumen.welcome_greeting_first
 import com.bksd.lumen.welcome_greeting_new
 import com.bksd.lumen.welcome_greeting_returning
 import kotlinx.coroutines.launch
@@ -69,6 +70,7 @@ fun WelcomeScreen(
                 text = when (greeting) {
                     WelcomeGreeting.RETURNING -> stringResource(Res.string.welcome_greeting_returning)
                     WelcomeGreeting.NEW -> stringResource(Res.string.welcome_greeting_new)
+                    WelcomeGreeting.FIRST_LOGIN -> stringResource(Res.string.welcome_greeting_first)
                 },
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -101,5 +103,13 @@ private fun WelcomeScreenReturningPreview() {
 private fun WelcomeScreenNewPreview() {
     AppTheme {
         WelcomeScreen(greeting = WelcomeGreeting.NEW, firstName = "Burak")
+    }
+}
+
+@Preview
+@Composable
+private fun WelcomeScreenFirstLoginPreview() {
+    AppTheme {
+        WelcomeScreen(greeting = WelcomeGreeting.FIRST_LOGIN, firstName = "Burak")
     }
 }

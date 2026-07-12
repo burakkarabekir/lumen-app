@@ -14,6 +14,9 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -22,7 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
-import coil3.compose.AsyncImage
+import coil3.compose.SubcomposeAsyncImage
 import com.bksd.core.design_system.theme.PreviewAppTheme
 import com.bksd.profile.presentation.Res
 import com.bksd.profile.presentation.profile_photo_content_desc
@@ -57,7 +60,7 @@ fun ProfilePhotoViewer(
                 enter = scaleIn(tween(300), initialScale = 0.35f) + fadeIn(tween(220)),
                 exit = scaleOut(tween(220), targetScale = 0.35f) + fadeOut(tween(160))
             ) {
-                AsyncImage(
+                SubcomposeAsyncImage(
                     model = photoUrl,
                     contentDescription = stringResource(Res.string.profile_photo_content_desc),
                     contentScale = ContentScale.Crop,
@@ -65,6 +68,15 @@ fun ProfilePhotoViewer(
                         .fillMaxWidth(0.8f)
                         .aspectRatio(1f)
                         .clip(CircleShape)
+                        .background(Color.White.copy(alpha = 0.08f)),
+                    error = {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = null,
+                            tint = Color.White.copy(alpha = 0.6f),
+                            modifier = Modifier.fillMaxSize(0.4f)
+                        )
+                    }
                 )
             }
         }

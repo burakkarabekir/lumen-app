@@ -3,14 +3,11 @@ package com.bksd.journal.presentation.journal
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -20,6 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,6 +41,7 @@ import com.bksd.core.presentation.link.toOpenableWebUrl
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.journal.presentation.Res
 import com.bksd.journal.presentation.components.DeleteMomentConfirmDialog
+import com.bksd.journal.presentation.journal.components.JournalSearchField
 import com.bksd.journal.presentation.journal.components.JournalSectionHeader
 import com.bksd.journal.presentation.journal.components.JournalTopBar
 import com.bksd.journal.presentation.journal.components.MomentCard
@@ -98,6 +98,19 @@ fun JournalScreen(
 ) {
     val uriHandler = LocalUriHandler.current
     var pendingLink by remember { mutableStateOf<String?>(null) }
+    val hasEntries = state.sections.isNotEmpty() || state.searchQuery.isNotBlank()
+
+    val collapseThresholdPx = with(LocalDensity.current) { 56.dp.toPx() }
+    val searchIconAlpha by remember {
+        derivedStateOf {
+            if (listState.firstVisibleItemIndex > 0) 1f
+            else (listState.firstVisibleItemScrollOffset / collapseThresholdPx).coerceIn(0f, 1f)
+        }
+    }
+
+    LaunchedEffect(state.isSearchActive) {
+        listState.scrollToItem(0)
+    }
 
     // Detect when user scrolls near the bottom → load more
     LaunchedEffect(listState) {
@@ -114,21 +127,35 @@ fun JournalScreen(
             }
     }
 
-    AppSurface {
+    AppSurface(
+        header = {
+            JournalTopBar(
+                searchQuery = state.searchQuery,
+                profilePhotoUrl = state.profilePhotoUrl,
+                isSearchActive = state.isSearchActive,
+                searchIconAlpha = { searchIconAlpha },
+                onSearchActivate = { onAction(JournalAction.OnSearchActiveChange(true)) },
+                onSearchClose = { onAction(JournalAction.OnSearchActiveChange(false)) },
+                onSearchQueryChange = { onAction(JournalAction.OnSearchQueryChange(it)) },
+                onProfileClick = { onAction(JournalAction.OnProfileClick) },
+                searchAvailable = hasEntries,
+            )
+        }
+    ) {
         LazyColumn(
             state = listState,
             modifier = Modifier.fillMaxSize(),
-            contentPadding = WindowInsets.statusBars.asPaddingValues(),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.md)
         ) {
-            item {
-                JournalTopBar(
-                    searchQuery = state.searchQuery,
-                    profilePhotoUrl = state.profilePhotoUrl,
-                    onSearchQueryChange = { onAction(JournalAction.OnSearchQueryChange(it)) },
-                    onProfileClick = { onAction(JournalAction.OnProfileClick) },
-                    onSearchModeChanged = {}
-                )
+            if (!state.isSearchActive && hasEntries) {
+                item(key = "search_pill") {
+                    JournalSearchField(
+                        onClick = { onAction(JournalAction.OnSearchActiveChange(true)) },
+                        modifier = Modifier
+                            .padding(horizontal = MaterialTheme.dimens.spacing.lg)
+                            .padding(top = MaterialTheme.dimens.spacing.sm)
+                    )
+                }
             }
 
             when {

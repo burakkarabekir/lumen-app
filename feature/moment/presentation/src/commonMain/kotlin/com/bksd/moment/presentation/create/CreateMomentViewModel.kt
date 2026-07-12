@@ -29,9 +29,11 @@ import com.bksd.core.presentation.util.toFormattedTime
 import com.bksd.moment.domain.usecase.SaveMomentUseCase
 import com.bksd.reflection.domain.usecase.RequestEntryAnalysisUseCase
 import kotlinx.coroutines.launch
+import com.bksd.core.presentation.labelRes
 import com.bksd.moment.presentation.Res
 import com.bksd.moment.presentation.create.mappers.toLocationData
 import com.bksd.moment.presentation.create.mappers.toLocationInfoUiModel
+import com.bksd.moment.presentation.entry_untitled
 import com.bksd.moment.presentation.error_attachment_save_failed
 import com.bksd.moment.presentation.error_audio_permission_required
 import com.bksd.moment.presentation.error_camera_permission_denied
@@ -46,6 +48,7 @@ import com.bksd.moment.presentation.error_playback_failed
 import com.bksd.moment.presentation.error_recording_save_failed
 import com.bksd.moment.presentation.error_recording_start_failed
 import com.bksd.moment.presentation.success_moment_saved
+import com.bksd.moment.presentation.success_moment_saved_without_attachment
 import com.bksd.moment.presentation.timestamp_today_format
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -463,6 +466,7 @@ class CreateMomentViewModel(
             val momentId = Uuid.random().toString()
 
             val uploadedAttachments = mutableListOf<Attachment>()
+            var attachmentFailed = false
 
             for (uiModel in attachmentsToSave) {
                 val draft = when (uiModel) {
@@ -493,18 +497,22 @@ class CreateMomentViewModel(
 
                 when (val result = mediaRepository.uploadAttachment(draft, userId, momentId)) {
                     is Result.Success -> uploadedAttachments.add(result.data)
-                    is Result.Error -> {
-                        updateState { it.copy(isSaving = false) }
-                        sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_attachment_save_failed)))
-                        cleanupUploaded(uploadedAttachments)
-                        return@launch
-                    }
+                    is Result.Error -> attachmentFailed = true
                 }
+            }
+
+            // Don't discard the written entry when an attachment upload fails (e.g. offline).
+            // Only bail when there is nothing worth keeping — a media-only entry whose media
+            // all failed — so the user can retry it once back online.
+            if (uploadedAttachments.isEmpty() && currentState.body.isBlank()) {
+                updateState { it.copy(isSaving = false) }
+                sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_attachment_save_failed)))
+                return@launch
             }
 
             val newMoment = Moment(
                 id = momentId,
-                title = currentState.title.trim().takeIf { it.isNotBlank() } ?: "Untitled",
+                title = currentState.title.trim().takeIf { it.isNotBlank() } ?: getString(Res.string.entry_untitled),
                 body = currentState.body.takeIf { it.isNotBlank() },
                 createdAt = clock.now(),
                 moods = currentState.selectedMoods.toList(),
@@ -530,15 +538,21 @@ class CreateMomentViewModel(
                             currentState.body.trim().takeIf { it.isNotBlank() }
                         ).joinToString("\n\n")
                         if (entryText.isNotBlank()) {
-                            val mood = currentState.selectedMoods
-                                .joinToString(", ") { it.label }
-                                .takeIf { it.isNotBlank() }
                             applicationScope.launch {
+                                val mood = currentState.selectedMoods
+                                    .map { getString(it.labelRes()) }
+                                    .joinToString(", ")
+                                    .takeIf { it.isNotBlank() }
                                 requestEntryAnalysis(momentId, entryText, mood)
                             }
                         }
                     }
-                    sendEvent(CreateMomentEvent.ShowSaveSuccess(UiText.Resource(Res.string.success_moment_saved)))
+                    val savedMessage = if (attachmentFailed) {
+                        Res.string.success_moment_saved_without_attachment
+                    } else {
+                        Res.string.success_moment_saved
+                    }
+                    sendEvent(CreateMomentEvent.ShowSaveSuccess(UiText.Resource(savedMessage)))
                     sendEvent(CreateMomentEvent.NavigateBack)
                 }
             }

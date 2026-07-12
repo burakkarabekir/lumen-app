@@ -1,6 +1,7 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
 package com.bksd.journal.presentation.journal.components
+import com.bksd.core.presentation.labelRes
 
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateFloat
@@ -425,7 +426,7 @@ private fun MoodRevealPanel(
             ) {
                 Text(text = mood.emoji, fontSize = 12.sp)
                 Text(
-                    text = mood.label,
+                    text = stringResource(mood.labelRes()),
                     style = MaterialTheme.typography.labelSmall,
                     color = textColor,
                     maxLines = 1,

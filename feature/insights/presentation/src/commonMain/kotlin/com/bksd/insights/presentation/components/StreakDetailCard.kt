@@ -21,6 +21,11 @@ import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.InsightsPalette
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.rememberInsightsPalette
+import com.bksd.insights.presentation.Res
+import com.bksd.insights.presentation.streak_daily
+import com.bksd.insights.presentation.streak_weekly
+import com.bksd.insights.presentation.titleRes
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun StreakDetailCard(detail: com.bksd.insights.presentation.StreakDetail, palette: InsightsPalette) {
@@ -33,17 +38,17 @@ internal fun StreakDetailCard(detail: com.bksd.insights.presentation.StreakDetai
             .padding(MaterialTheme.dimens.spacing.xl)
     ) {
         Text(
-            text = detail.title,
+            text = stringResource(detail.kind.titleRes()),
             fontSize = 17.sp,
             fontWeight = FontWeight.ExtraBold,
             color = palette.text
         )
         Spacer(Modifier.height(MaterialTheme.dimens.spacing.lg))
-        StreakLineRow("Daily Streak", detail.daily, palette)
+        StreakLineRow(stringResource(Res.string.streak_daily), detail.daily, palette)
         Spacer(Modifier.height(MaterialTheme.dimens.spacing.lg))
         HorizontalDivider(color = palette.hair)
         Spacer(Modifier.height(MaterialTheme.dimens.spacing.lg))
-        StreakLineRow("Weekly Streak", detail.weekly, palette)
+        StreakLineRow(stringResource(Res.string.streak_weekly), detail.weekly, palette)
     }
 }
 

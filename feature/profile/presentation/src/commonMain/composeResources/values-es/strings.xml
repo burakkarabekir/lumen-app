@@ -1,0 +1,182 @@
+<resources>
+    <string name="profile_title">Perfil</string>
+    <string name="content_desc_avatar">Avatar</string>
+    <string name="content_desc_edit_avatar">Editar avatar</string>
+    <string name="section_account">CUENTA</string>
+    <string name="privacy_security">Privacidad y seguridad</string>
+    <string name="data_export">Exportar datos</string>
+    <string name="section_preferences">Preferencias</string>
+    <string name="app_theme">Tema de la app</string>
+    <string name="notifications">Notificaciones</string>
+    <string name="sign_out">Cerrar sesión</string>
+    <string name="delete_account">Eliminar cuenta</string>
+    <string name="delete_account_title">¿Eliminar cuenta?</string>
+    <string name="delete_account_message">Esto elimina de forma permanente tu cuenta y todas tus entradas, fotos y reflexiones. No se puede deshacer.</string>
+    <string name="delete_account_confirm">Eliminar</string>
+    <string name="section_data_privacy">Datos y privacidad</string>
+    <string name="section_support">Soporte</string>
+    <string name="reminders">Recordatorios</string>
+    <string name="cloud_sync">Sincronización en la nube</string>
+    <string name="lock_privacy">Bloqueo y privacidad</string>
+    <string name="export_journal">Exportar diario</string>
+    <string name="help_center">Centro de ayuda</string>
+    <string name="about_lumen">Acerca de Lumen</string>
+    <string name="member_since_prefix">Miembro desde %1$s</string>
+    <string name="upgrade_button">Mejorar</string>
+    <string name="theme_selector_title">Selecciona el modo de interfaz</string>
+    <string name="theme_system">Sistema</string>
+    <string name="theme_light">Claro</string>
+    <string name="theme_dark">Oscuro</string>
+    <string name="error_permission_denied">Permiso denegado. Actívalo en los ajustes del sistema.</string>
+    <string name="action_open_settings">Ajustes</string>
+    <string name="error_avatar_update_failed">Error al actualizar: %1$s</string>
+    <string name="permission_gallery_denied">Se necesita permiso para acceder a las fotos y los videos"</string>
+
+    <string name="about_title">Acerca de</string>
+    <string name="about_app_name">Lumen</string>
+    <string name="about_tagline">Tu espacio para reflexionar, cada día.</string>
+    <string name="about_version">Versión %1$s</string>
+    <string name="about_section_legal">Legal</string>
+    <string name="about_privacy_policy">Política de privacidad</string>
+    <string name="about_terms">Términos del servicio</string>
+    <string name="about_website">Sitio web</string>
+    <string name="about_section_more">Más</string>
+    <string name="about_rate">Valorar Lumen</string>
+    <string name="about_acknowledgements">Agradecimientos</string>
+    <string name="about_made_with_love">Hecho con ♥ por el equipo de Lumen</string>
+    <string name="about_copyright">© 2026 Lumen</string>
+
+    <string name="help_title">Centro de ayuda</string>
+    <string name="help_intro_title">¿Cómo podemos ayudarte?</string>
+    <string name="help_intro_body">¿Tienes preguntas, comentarios o algo no funciona? Escríbenos y te responderemos.</string>
+    <string name="help_section_contact">Contacto</string>
+    <string name="help_email_support">Soporte por correo</string>
+    <string name="help_report_bug">Reportar un error</string>
+    <string name="help_response_note">Solemos responder en un plazo de 2 días hábiles.</string>
+
+    <!-- Common -->
+    <string name="action_close">Cerrar</string>
+    <string name="action_back">Atrás</string>
+    <string name="action_ok">Aceptar</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_retry">Reintentar</string>
+    <string name="action_save">Guardar</string>
+    <string name="action_edit">Editar</string>
+
+    <!-- Edit Profile -->
+    <string name="edit_profile_title">Editar perfil</string>
+    <string name="edit_profile_change_photo">Cambiar foto</string>
+    <string name="edit_profile_photo_content_desc">Foto de perfil</string>
+    <string name="edit_profile_name_label">NOMBRE</string>
+    <string name="edit_profile_name_placeholder">Tu nombre</string>
+    <string name="edit_profile_name_hint">Este es el nombre que se muestra en tu diario y tu perfil.</string>
+
+    <!-- Reminders -->
+    <string name="reminders_subtitle">Elige cuándo Lumen te anima a escribir.</string>
+    <string name="reminders_daily">Recordatorio diario</string>
+    <string name="reminders_time">Hora</string>
+    <string name="reminders_repeat">Repetir</string>
+    <string name="reminders_streak">Recordatorio de racha</string>
+    <string name="reminders_streak_description">Recibe un aviso antes de que tu racha esté a punto de terminar.</string>
+    <string name="reminders_select_time">Selecciona la hora</string>
+
+    <!-- Appearance -->
+    <string name="appearance_title">Apariencia</string>
+    <string name="appearance_auto">Automático</string>
+    <string name="appearance_light">Claro</string>
+    <string name="appearance_dark">Oscuro</string>
+
+    <!-- Profile Hero -->
+    <string name="profile_hero_avatar_content_desc">Perfil</string>
+    <string name="profile_hero_stat_entries">Entradas</string>
+    <string name="profile_hero_stat_weekly_streak">Racha sem.</string>
+    <string name="profile_hero_stat_joined">Te uniste</string>
+
+    <!-- Profile Photo Viewer -->
+    <string name="profile_photo_content_desc">Foto de perfil</string>
+
+    <!-- Profile new rows -->
+    <string name="section_subscription">Suscripción</string>
+    <string name="manage_premium">Lumen Plus</string>
+    <string name="terms_privacy">Términos y privacidad</string>
+    <string name="plan_free">Gratis</string>
+    <string name="plan_plus">Plus</string>
+
+    <!-- Cloud Sync -->
+    <string name="cloud_sync_title">Sincronización en la nube</string>
+    <string name="cloud_sync_status_title">Tu diario está respaldado</string>
+    <string name="cloud_sync_status_subtitle">Tus entradas se sincronizan de forma segura en la nube y están disponibles en todos tus dispositivos.</string>
+    <string name="cloud_sync_account">Cuenta</string>
+    <string name="cloud_sync_entries">Entradas sincronizadas</string>
+    <string name="cloud_sync_storage">Almacenamiento</string>
+    <string name="cloud_sync_storage_value">Nube cifrada · UE</string>
+    <string name="cloud_sync_now">Sincronizar ahora</string>
+    <string name="cloud_sync_success">Diario sincronizado</string>
+    <string name="cloud_sync_error">No se pudo sincronizar: %1$s</string>
+
+    <!-- Lock &amp; Privacy -->
+    <string name="lock_privacy_title">Bloqueo y privacidad</string>
+    <string name="lock_section_security">Seguridad</string>
+    <string name="lock_app_lock_title">Bloqueo de la app</string>
+    <string name="lock_app_lock_subtitle">Requiere Face ID o huella digital para abrir Lumen.</string>
+    <string name="lock_unavailable">El bloqueo biométrico no está disponible en este dispositivo.</string>
+    <string name="lock_error">No se pudo cambiar el bloqueo de la app. Inténtalo de nuevo.</string>
+    <string name="lock_section_privacy">Privacidad</string>
+    <string name="lock_policy_version">Versión de la política</string>
+    <string name="lock_prompt_enable_title">Activar bloqueo de la app</string>
+    <string name="lock_prompt_enable_subtitle">Confirma tu biometría para activar el bloqueo de la app.</string>
+
+    <!-- Export Journal -->
+    <string name="export_title">Exportar diario</string>
+    <string name="export_intro_title">Exporta tu diario</string>
+    <string name="export_intro_subtitle">Crea un PDF de todas tus entradas para guardar una copia personal o compartirla.</string>
+    <string name="export_entries_count">Se incluirán %1$d entradas</string>
+    <string name="export_button">Exportar como PDF</string>
+    <string name="export_empty">Aún no tienes ninguna entrada para exportar.</string>
+    <string name="export_success">Diario exportado</string>
+    <string name="export_error">No se pudo exportar: %1$s</string>
+
+    <!-- Premium / Manage subscription -->
+    <string name="premium_title">Lumen Plus</string>
+    <string name="premium_status_plus_title">Tienes Lumen Plus</string>
+    <string name="premium_status_plus_subtitle">Gracias por apoyar a Lumen. Disfruta de reflexiones con IA ilimitadas y de todas las funciones premium.</string>
+    <string name="premium_status_free_title">Tienes el plan Gratis</string>
+    <string name="premium_status_free_subtitle">Mejora a Lumen Plus para tener reflexiones con IA ilimitadas, entradas de voz y video, y mucho más.</string>
+    <string name="premium_plan">Plan</string>
+    <string name="premium_upgrade">Mejorar a Plus</string>
+    <string name="premium_manage_subscription">Gestionar suscripción</string>
+    <string name="premium_restore">Restaurar compras</string>
+    <string name="premium_restore_success">Compras restauradas</string>
+    <string name="premium_restore_none">No se encontraron compras para restaurar.</string>
+    <string name="premium_restore_error">No se pudo restaurar: %1$s</string>
+    <string name="premium_manage_note">Gestiona o cancela tu suscripción cuando quieras en la App Store o Google Play.</string>
+
+    <!-- Legal (Terms &amp; Privacy viewer) -->
+    <string name="legal_title">Términos y privacidad</string>
+    <string name="legal_subtitle">Lee los documentos que aceptaste al unirte a Lumen.</string>
+    <string name="legal_terms">Términos del servicio</string>
+    <string name="legal_privacy">Política de privacidad</string>
+    <string name="legal_open_external">Abrir en el navegador</string>
+    <string name="legal_load_error">No se pudo cargar la página. Revisa tu conexión o ábrela en tu navegador.</string>
+    <string name="language_title">Idioma</string>
+    <string name="language_system">Predeterminado del sistema</string>
+    <string name="language_selector_title">Elegir idioma</string>
+    <string name="cloud_sync_on">Activado</string>
+    <string name="pdf_document_title">Diario Lumen</string>
+    <string name="month_abbr_jan">Ene</string>
+    <string name="month_abbr_feb">Feb</string>
+    <string name="month_abbr_mar">Mar</string>
+    <string name="month_abbr_apr">Abr</string>
+    <string name="month_abbr_may">May</string>
+    <string name="month_abbr_jun">Jun</string>
+    <string name="month_abbr_jul">Jul</string>
+    <string name="month_abbr_aug">Ago</string>
+    <string name="month_abbr_sep">Sep</string>
+    <string name="month_abbr_oct">Oct</string>
+    <string name="month_abbr_nov">Nov</string>
+    <string name="month_abbr_dec">Dic</string>
+    <plurals name="pdf_entry_count">
+        <item quantity="one">%d entrada</item>
+        <item quantity="other">%d entradas</item>
+    </plurals>
+</resources>

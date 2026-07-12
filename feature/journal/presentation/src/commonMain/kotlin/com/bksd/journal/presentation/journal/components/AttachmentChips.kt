@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,6 +18,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
@@ -36,7 +38,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
+import coil3.compose.SubcomposeAsyncImage
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.AttachmentChipLinkAccent
 import com.bksd.core.design_system.theme.attachmentChipLinkTile
@@ -93,14 +95,24 @@ fun AttachmentChips(
     ) {
         attachments.forEach { attachment ->
             when (attachment) {
-                is PhotoAttachment -> AsyncImage(
+                is PhotoAttachment -> SubcomposeAsyncImage(
                     model = attachment.remoteUrl.value,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .size(MaterialTheme.dimens.size.fab)
                         .clip(RoundedCornerShape(MaterialTheme.dimens.radius.cardTight))
-                        .background(palette.hairline)
+                        .background(palette.hairline),
+                    error = {
+                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Icon(
+                                imageVector = Icons.Default.Image,
+                                contentDescription = null,
+                                tint = palette.sub,
+                                modifier = Modifier.size(MaterialTheme.dimens.icon.md)
+                            )
+                        }
+                    }
                 )
 
                 is VideoAttachment -> Box(

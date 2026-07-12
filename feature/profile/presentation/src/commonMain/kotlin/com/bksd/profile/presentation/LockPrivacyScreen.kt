@@ -187,7 +187,7 @@ internal fun LockPrivacyScreen(
 private fun LockPrivacyScreenPreview() {
     PreviewAppTheme(darkTheme = true) {
         LockPrivacyScreen(
-            state = LockPrivacyState(appLockEnabled = true, policyVersion = "2026-07-01"),
+            state = LockPrivacyState(appLockEnabled = true, policyVersion = "01.07.2026"),
             biometricAvailable = true,
             snackbarHostState = SnackbarHostState(),
             onBack = {},

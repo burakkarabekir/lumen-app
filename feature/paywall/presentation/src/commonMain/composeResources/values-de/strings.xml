@@ -1,0 +1,31 @@
+<resources>
+    <string name="content_desc_close">Schließen</string>
+    <string name="restore">WIEDERHERSTELLEN</string>
+    <string name="paywall_title">Lumen\nPlus\nfreischalten</string>
+    <string name="paywall_subtitle">Bereichere deine tägliche Reflexion mit\nfortschrittlichen KI-Tools und Insights.</string>
+    <string name="btn_start_trial">5-tägige kostenlose Testphase starten</string>
+    <string name="btn_subscribe_now">Jetzt abonnieren</string>
+    <string name="legal_text">Die Zahlung wird bei Bestätigung deinem Store-Konto belastet. Dein Abo verlängert sich automatisch, sofern du nicht mindestens 24 Stunden vor Ablauf des Zeitraums kündigst. Du kannst es jederzeit in deinen Kontoeinstellungen verwalten oder kündigen.</string>
+    <string name="terms_of_use">Nutzungsbedingungen</string>
+    <string name="privacy_policy">Datenschutzrichtlinie</string>
+    <string name="popular_choice">BELIEBT</string>
+    <string name="best_value">BESTES ANGEBOT</string>
+    <string name="seven_day_free_trial">5 TAGE KOSTENLOS TESTEN</string>
+    <string name="standard_access">Standardzugang</string>
+    <string name="per_month_format">%1$s pro Monat</string>
+    <string name="paywall_pricing_unavailable">Die Preise sind derzeit nicht verfügbar. Überprüfe deine Verbindung und versuche es erneut.</string>
+    <string name="paywall_try_again">Erneut versuchen</string>
+    <string name="paywall_restore_none">Keine Käufe zum Wiederherstellen.</string>
+    <string name="tier_name_yearly">Jährlich</string>
+    <string name="tier_name_monthly">Monatlich</string>
+    <string name="tier_name_weekly">Wöchentlich</string>
+    <string name="tier_name_lifetime">Lebenslang</string>
+    <string name="tier_period_yearly">pro Jahr</string>
+    <string name="tier_period_monthly">pro Monat</string>
+    <string name="tier_period_weekly">pro Woche</string>
+    <string name="tier_free_trial">5 Tage kostenlos testen</string>
+    <string name="tier_billed_annually">Jährliche Abrechnung</string>
+    <string name="tier_billed_weekly">Wöchentliche Abrechnung</string>
+    <string name="tier_billed_monthly">Monatliche Abrechnung</string>
+    <string name="tier_one_time">Einmaliger Kauf</string>
+</resources>

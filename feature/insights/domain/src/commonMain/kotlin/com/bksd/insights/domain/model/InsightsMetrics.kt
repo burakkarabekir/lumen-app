@@ -13,6 +13,7 @@ data class InsightsMetrics(
     val entriesTotal: Int,
     val bars: List<Int>,
     val barAxisLabels: List<String>,
+    val barAxisMonthly: Boolean,
     val mediaMix: MediaMix,
     val writtenWords: Int,
     val journaledDays: Int,
@@ -38,10 +39,7 @@ data class MediaMix(
 data class PlaceCount(
     val name: String,
     val count: Int,
-    val kind: InsightsPlaceKind,
 )
-
-enum class InsightsPlaceKind { BEACH, LANDMARK, PARK, RESTAURANT, GENERIC }
 
 sealed interface InsightsRange {
     data object AllTime : InsightsRange

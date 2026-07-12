@@ -3,10 +3,13 @@ package com.bksd.journal.presentation.journal
 import androidx.lifecycle.viewModelScope
 import com.bksd.core.domain.error.Result
 import com.bksd.core.domain.model.Moment
+import com.bksd.core.domain.model.Mood
 import com.bksd.core.domain.storage.AudioPlayer
 import com.bksd.core.domain.storage.SessionStorage
+import com.bksd.core.presentation.labelRes
 import com.bksd.core.presentation.util.BaseViewModel
 import com.bksd.core.presentation.util.toUiText
+import org.jetbrains.compose.resources.getString
 import com.bksd.journal.domain.usecase.DeleteMomentUseCase
 import com.bksd.journal.domain.usecase.GetPagedMomentsUseCase
 import com.bksd.journal.domain.usecase.SyncMomentsUseCase
@@ -92,6 +95,15 @@ class JournalViewModel(
             is JournalAction.OnSearchQueryChange -> {
                 _state.update { it.copy(searchQuery = action.query) }
                 reloadMoments()
+            }
+
+            is JournalAction.OnSearchActiveChange -> {
+                if (action.active) {
+                    _state.update { it.copy(isSearchActive = true) }
+                } else {
+                    _state.update { it.copy(isSearchActive = false, searchQuery = "") }
+                    reloadMoments()
+                }
             }
 
             JournalAction.OnLoadMore -> loadMore()
@@ -218,13 +230,14 @@ class JournalViewModel(
         }
     }
 
-    private fun applySearch(moments: List<Moment>, query: String): List<Moment> {
+    private suspend fun applySearch(moments: List<Moment>, query: String): List<Moment> {
         if (query.isBlank()) return moments
+        val moodLabels = Mood.entries.associateWith { getString(it.labelRes()) }
         return moments.filter { moment ->
             moment.title.contains(query, ignoreCase = true) ||
                     (moment.body?.contains(query, ignoreCase = true) == true) ||
                     moment.tags.any { it.contains(query, ignoreCase = true) } ||
-                    moment.moods.any { it.label.contains(query, ignoreCase = true) }
+                    moment.moods.any { moodLabels[it]?.contains(query, ignoreCase = true) == true }
         }
     }
 

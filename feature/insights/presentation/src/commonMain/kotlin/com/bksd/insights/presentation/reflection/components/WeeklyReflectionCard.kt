@@ -203,16 +203,17 @@ fun WeeklyReflectionCard(
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.xxs),
                 modifier = Modifier
                     .clip(RoundedCornerShape(MaterialTheme.dimens.radius.sm))
                     .clickable(onClick = onViewFull)
             ) {
                 Text(
                     text = stringResource(Res.string.weekly_view_full),
-                    fontSize = 13.sp,
+                    fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
-                    color = colors.title
+                    color = colors.title,
+                    modifier = Modifier.padding(MaterialTheme.dimens.spacing.xxs)
                 )
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowForward,

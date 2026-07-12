@@ -1,0 +1,49 @@
+<resources>
+    <string name="error_unknown">Bir şeyler ters gitti. Lütfen tekrar dene.</string>
+
+    <string name="error_network_no_internet">İnternet bağlantısı yok. Ağını kontrol edip tekrar dene.</string>
+    <string name="error_network_timeout">İstek zaman aşımına uğradı. Lütfen tekrar dene.</string>
+    <string name="error_network_unauthorized">Oturumun sona erdi. Lütfen tekrar giriş yap.</string>
+    <string name="error_network_conflict">Bir çakışma oluştu. Lütfen tekrar dene.</string>
+    <string name="error_network_too_many_requests">Çok fazla istek gönderildi. Lütfen biraz bekleyip tekrar dene.</string>
+    <string name="error_network_server">Bir sunucu hatası oluştu. Lütfen daha sonra tekrar dene.</string>
+    <string name="error_network_serialization">Beklenmeyen bir veri alındı. Lütfen tekrar dene.</string>
+
+    <string name="error_auth_invalid_credentials">Geçersiz e-posta veya parola.</string>
+    <string name="error_auth_user_not_found">Bu bilgilerle bir hesap bulunamadı.</string>
+    <string name="error_auth_account_exists">Bu e-posta ile zaten bir hesap var.</string>
+    <string name="error_auth_weak_password">Bu parola çok zayıf. Lütfen daha güçlü bir parola seç.</string>
+    <string name="error_auth_social_cancelled">Giriş iptal edildi.</string>
+    <string name="error_auth_social_failed">Sosyal giriş başarısız oldu. Lütfen tekrar dene.</string>
+
+    <string name="error_media_permission_denied">İzin verilmedi.</string>
+    <string name="error_media_file_too_large">Bu dosya çok büyük.</string>
+    <string name="error_media_upload_failed">Yükleme başarısız oldu. Lütfen tekrar dene.</string>
+    <string name="error_media_recording_failed">Kayıt başarısız oldu. Lütfen tekrar dene.</string>
+    <string name="error_media_unsupported_format">Bu biçim desteklenmiyor.</string>
+
+    <string name="error_location_services_disabled">Konum servisleri kapalı.</string>
+    <string name="error_location_permission_denied">Konum izni verilmedi.</string>
+    <string name="error_location_unavailable">Konum şu anda kullanılamıyor.</string>
+    <string name="reminder_daily_title">Günlük yazma zamanı</string>
+    <string name="reminder_daily_body">Gününü kaydetmek için bir dakikanı ayır.</string>
+    <string name="reminder_streak_title">Serini bozma</string>
+    <string name="reminder_streak_body">Serini sürdürmek için bir giriş yaz.</string>
+    <string name="mood_happy">Mutlu</string>
+    <string name="mood_grateful">Minnettar</string>
+    <string name="mood_calm">Sakin</string>
+    <string name="mood_loved">Sevgi dolu</string>
+    <string name="mood_hopeful">Umutlu</string>
+    <string name="mood_proud">Gururlu</string>
+    <string name="mood_inspired">İlham dolu</string>
+    <string name="mood_reflective">Düşünceli</string>
+    <string name="mood_focused">Odaklı</string>
+    <string name="mood_nostalgic">Nostaljik</string>
+    <string name="mood_tired">Yorgun</string>
+    <string name="mood_anxious">Endişeli</string>
+    <string name="mood_stressed">Stresli</string>
+    <string name="mood_frustrated">Sinirli</string>
+    <string name="mood_sad">Üzgün</string>
+    <string name="mood_melancholic">Melankolik</string>
+    <string name="mood_bored">Sıkılmış</string>
+</resources>

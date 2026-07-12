@@ -43,7 +43,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
+import coil3.compose.SubcomposeAsyncImage
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.coverGradient
 import com.bksd.core.design_system.theme.dimens
@@ -103,11 +103,12 @@ fun MomentDetailReadView(
                     .background(Brush.linearGradient(MaterialTheme.colorScheme.extended.coverGradient))
             ) {
                 if (coverImageUrl != null) {
-                    AsyncImage(
+                    SubcomposeAsyncImage(
                         model = coverImageUrl,
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier.matchParentSize()
+                        modifier = Modifier.matchParentSize(),
+                        error = {}
                     )
                 }
                 Box(
@@ -218,6 +219,14 @@ fun MomentDetailReadView(
                         Spacer(Modifier.height(MaterialTheme.dimens.spacing.xxl))
                         EntryAnalysisErrorCard(
                             onRetry = { onAction(MomentDetailAction.OnRetryAnalysis) }
+                        )
+                    }
+
+                    MomentAnalysisState.Offline -> {
+                        Spacer(Modifier.height(MaterialTheme.dimens.spacing.xxl))
+                        EntryAnalysisErrorCard(
+                            onRetry = { onAction(MomentDetailAction.OnRetryAnalysis) },
+                            isOffline = true
                         )
                     }
 

@@ -1,4 +1,5 @@
 package com.bksd.journal.presentation.detail.components
+import com.bksd.core.presentation.labelRes
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -51,7 +52,7 @@ fun MomentDetailMoodBadge(
         }
 
         Text(
-            text = mood.label,
+            text = stringResource(mood.labelRes()),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurface

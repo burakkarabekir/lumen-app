@@ -30,6 +30,7 @@ import com.bksd.core.design_system.theme.insightsEntriesGradient
 import com.bksd.insights.presentation.EntriesStat
 import com.bksd.insights.presentation.Res
 import com.bksd.insights.presentation.StatsRange
+import com.bksd.insights.presentation.range_all_time
 import com.bksd.insights.presentation.stat_entries
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -89,7 +90,7 @@ internal fun EntriesCard(
             Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm)) {
                 rangeOptions.forEach { range ->
                     RangeChip(
-                        label = range.label,
+                        label = range.year?.toString() ?: stringResource(Res.string.range_all_time),
                         selected = range == selectedRange,
                         onClick = { onRangeSelect(range) }
                     )
@@ -109,8 +110,8 @@ private fun EntriesCardPreview() {
                 selectedRange = StatsRange.AllTime,
                 rangeOptions = persistentListOf(
                     StatsRange.AllTime,
-                    StatsRange("2025", 2025),
-                    StatsRange("2024", 2024)
+                    StatsRange(2025),
+                    StatsRange(2024)
                 ),
                 onRangeSelect = {}
             )

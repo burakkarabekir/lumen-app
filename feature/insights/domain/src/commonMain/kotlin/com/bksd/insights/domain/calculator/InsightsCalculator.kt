@@ -5,7 +5,6 @@ import com.bksd.core.domain.model.Moment
 import com.bksd.core.domain.model.PhotoAttachment
 import com.bksd.core.domain.model.VideoAttachment
 import com.bksd.insights.domain.model.InsightsMetrics
-import com.bksd.insights.domain.model.InsightsPlaceKind
 import com.bksd.insights.domain.model.InsightsRange
 import com.bksd.insights.domain.model.MediaMix
 import com.bksd.insights.domain.model.PlaceCount
@@ -67,6 +66,7 @@ class InsightsCalculator(
             entriesTotal = filtered.size,
             bars = barData.counts,
             barAxisLabels = barData.labels,
+            barAxisMonthly = effectiveRange is InsightsRange.Year,
             mediaMix = mediaMix(filtered),
             writtenWords = filtered.sumOf { it.wordCount() },
             journaledDays = filtered.map { it.localDate() }.distinct().size,
@@ -160,7 +160,7 @@ class InsightsCalculator(
             if (index in startIndex..endIndex) counts[index - startIndex]++
         }
         val labels = when (range) {
-            is InsightsRange.Year -> MONTH_INITIALS
+            is InsightsRange.Year -> emptyList()
             InsightsRange.AllTime -> ((startIndex / 12)..(endIndex / 12)).map { it.toString() }
         }
         return BarData(counts.toList(), labels)
@@ -177,38 +177,23 @@ class InsightsCalculator(
 
     private fun places(filtered: List<Moment>): List<PlaceCount> =
         filtered
+            .asSequence()
             .mapNotNull { it.location?.displayName?.let(::stateOf) }
             .groupBy { it.lowercase() }
-            .map { (_, names) -> PlaceCount(names.first(), names.size, kindOf(names.first())) }
+            .map { (_, names) -> PlaceCount(names.first(), names.size) }
             .sortedByDescending { it.count }
             .take(4)
+            .toList()
 
     private fun stateOf(displayName: String): String? {
         val trimmed = displayName.trim()
         if (trimmed.isBlank()) return null
-        return trimmed.substringAfterLast(",").trim().takeIf { it.isNotBlank() }
-    }
-
-    private fun kindOf(name: String): InsightsPlaceKind {
-        val words = name.lowercase().split(NON_LETTER).toSet()
-        return when {
-            words.any { it in BEACH_WORDS } -> InsightsPlaceKind.BEACH
-            words.any { it in PARK_WORDS } -> InsightsPlaceKind.PARK
-            words.any { it in RESTAURANT_WORDS } -> InsightsPlaceKind.RESTAURANT
-            words.any { it in LANDMARK_WORDS } -> InsightsPlaceKind.LANDMARK
-            else -> InsightsPlaceKind.GENERIC
-        }
+        return trimmed.substringBeforeLast(",").trim().takeIf { it.isNotBlank() }
     }
 
     private companion object {
         private const val MAX_BARS = 16
-        private val MONTH_INITIALS = listOf("J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D")
         private val WHITESPACE = Regex("\\s+")
-        private val NON_LETTER = Regex("[^a-z]+")
-        private val BEACH_WORDS = setOf("beach", "shore", "coast", "bay")
-        private val PARK_WORDS = setOf("park", "garden", "trail", "forest", "lake", "mountain")
-        private val RESTAURANT_WORDS = setOf("restaurant", "cafe", "coffee", "bar", "diner", "bistro", "pub")
-        private val LANDMARK_WORDS = setOf("museum", "monument", "landmark", "tower", "castle", "cathedral", "temple", "palace")
         private val EMPTY = InsightsMetrics(
             hasActiveStreak = false,
             currentWeekly = null,
@@ -220,6 +205,7 @@ class InsightsCalculator(
             entriesTotal = 0,
             bars = emptyList(),
             barAxisLabels = emptyList(),
+            barAxisMonthly = false,
             mediaMix = MediaMix(0, 0, 0, 0),
             writtenWords = 0,
             journaledDays = 0,
