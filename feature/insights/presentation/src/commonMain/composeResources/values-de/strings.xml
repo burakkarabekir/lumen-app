@@ -153,4 +153,31 @@
         <item>palast</item>
         <item>burg</item>
     </string-array>
+    <string name="places_title">Orte</string>
+    <string name="places_search_hint">Orte suchen</string>
+    <string name="places_show_more">Mehr anzeigen</string>
+    <string name="places_empty">Noch keine Orte</string>
+    <string name="places_no_results">Keine passenden Orte</string>
+    <string name="place_last">Zuletzt %1$s</string>
+    <string name="month_abbr_jan">Jan</string>
+    <string name="month_abbr_feb">Feb</string>
+    <string name="month_abbr_mar">Mär</string>
+    <string name="month_abbr_apr">Apr</string>
+    <string name="month_abbr_may">Mai</string>
+    <string name="month_abbr_jun">Jun</string>
+    <string name="month_abbr_jul">Jul</string>
+    <string name="month_abbr_aug">Aug</string>
+    <string name="month_abbr_sep">Sep</string>
+    <string name="month_abbr_oct">Okt</string>
+    <string name="month_abbr_nov">Nov</string>
+    <string name="month_abbr_dec">Dez</string>
+    <plurals name="places_header">
+        <item quantity="one">%1$d ORT · NACH EINTRÄGEN SORTIERT</item>
+        <item quantity="other">%1$d ORTE · NACH EINTRÄGEN SORTIERT</item>
+    </plurals>
+    <plurals name="place_entry_count">
+        <item quantity="one">%1$d Eintrag</item>
+        <item quantity="other">%1$d Einträge</item>
+    </plurals>
+    <string name="place_date">%2$d. %1$s</string>
 </resources>

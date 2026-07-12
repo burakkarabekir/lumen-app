@@ -2,6 +2,7 @@ package com.bksd.insights.domain.di
 
 import com.bksd.insights.domain.calculator.InsightsCalculator
 import com.bksd.insights.domain.usecase.ComputeInsightsUseCase
+import com.bksd.insights.domain.usecase.GetPlacesUseCase
 import com.bksd.insights.domain.usecase.ObserveAllMomentsUseCase
 import com.bksd.insights.domain.usecase.SyncAllMomentsUseCase
 import org.koin.core.module.dsl.factoryOf
@@ -12,4 +13,5 @@ val insightsDomainModule = module {
     factoryOf(::ObserveAllMomentsUseCase)
     factoryOf(::SyncAllMomentsUseCase)
     factoryOf(::ComputeInsightsUseCase)
+    factoryOf(::GetPlacesUseCase)
 }

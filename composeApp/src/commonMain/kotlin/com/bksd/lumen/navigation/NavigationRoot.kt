@@ -31,6 +31,7 @@ import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.domain.connectivity.NetworkMonitor
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.insights.presentation.InsightsRoot
+import com.bksd.insights.presentation.places.PlacesRoot
 import com.bksd.insights.presentation.reflection.full.WeeklyReflectionDetailRoot
 import com.bksd.journal.presentation.detail.MomentDetailRoot
 import com.bksd.journal.presentation.journal.JournalRoot
@@ -195,7 +196,8 @@ fun NavigationRoot(
                     entry<Route.Main.Insights> {
                         InsightsRoot(
                             onViewFullReflection = { navigator.navigateToWeeklyReflection() },
-                            onNavigateToPaywall = { navigator.navigateToPaywall() }
+                            onNavigateToPaywall = { navigator.navigateToPaywall() },
+                            onNavigateToPlaces = { navigator.navigateToPlaces() }
                         )
                     }
                     entry<Route.Profile> {
@@ -245,6 +247,9 @@ fun NavigationRoot(
                             onBack = navigator::goBack,
                             onOpenMoment = { navigator.navigateToMomentDetail(it) }
                         )
+                    }
+                    entry<Route.Places> {
+                        PlacesRoot(onBack = navigator::goBack)
                     }
                     entry<Route.CreateMoment> {
                         CreateMomentRoot(

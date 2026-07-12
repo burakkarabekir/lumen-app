@@ -1,16 +1,22 @@
 package com.bksd.insights.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,13 +35,17 @@ import com.bksd.core.design_system.theme.extended
 import com.bksd.core.design_system.theme.insightsPlacesGradient
 import com.bksd.insights.presentation.Res
 import com.bksd.insights.presentation.VisitedPlace
+import com.bksd.insights.presentation.places_show_more
 import com.bksd.insights.presentation.visited_places
 import kotlinx.collections.immutable.ImmutableList
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-internal fun VisitedPlacesCard(places: ImmutableList<VisitedPlace>) {
+internal fun VisitedPlacesCard(
+    places: ImmutableList<VisitedPlace>,
+    onShowMore: () -> Unit = {},
+) {
     val gradient = MaterialTheme.colorScheme.extended.insightsPlacesGradient
     Column(
         modifier = Modifier
@@ -59,7 +69,32 @@ internal fun VisitedPlacesCard(places: ImmutableList<VisitedPlace>) {
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.md),
             maxItemsInEachRow = 2
         ) {
-            places.forEach { place -> PlaceChip(place) }
+            places.take(4).forEach { place -> PlaceChip(place) }
+        }
+        if (places.size > 4) {
+            Spacer(Modifier.height(MaterialTheme.dimens.spacing.md))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(MaterialTheme.dimens.radius.cardTight))
+                    .clickable(onClick = onShowMore)
+                    .padding(vertical = MaterialTheme.dimens.spacing.sm),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = stringResource(Res.string.places_show_more),
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.White.copy(alpha = 0.9f),
+                )
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    contentDescription = null,
+                    tint = Color.White.copy(alpha = 0.9f),
+                    modifier = Modifier.size(MaterialTheme.dimens.icon.md),
+                )
+            }
         }
     }
 }

@@ -37,6 +37,7 @@ import org.jetbrains.compose.resources.stringResource
 internal fun InsightsScreen(
     state: InsightsState,
     onAction: (InsightsAction) -> Unit,
+    onNavigateToPlaces: () -> Unit = {},
     reflectionSlot: @Composable () -> Unit = {}
 ) {
     val palette = rememberInsightsPalette()
@@ -79,7 +80,7 @@ internal fun InsightsScreen(
 
         if (state.places.isNotEmpty()) {
             Spacer(Modifier.height(MaterialTheme.dimens.spacing.md))
-            VisitedPlacesCard(places = state.places)
+            VisitedPlacesCard(places = state.places, onShowMore = onNavigateToPlaces)
         }
 
         Spacer(Modifier.height(MaterialTheme.dimens.spacing.md))

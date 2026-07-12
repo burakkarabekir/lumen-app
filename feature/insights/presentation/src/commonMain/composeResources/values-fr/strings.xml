@@ -152,4 +152,31 @@
         <item>église</item>
         <item>opéra</item>
     </string-array>
+    <string name="places_title">Lieux</string>
+    <string name="places_search_hint">Rechercher des lieux</string>
+    <string name="places_show_more">Voir plus</string>
+    <string name="places_empty">Aucun lieu pour l&apos;instant</string>
+    <string name="places_no_results">Aucun lieu correspondant</string>
+    <string name="place_last">Le %1$s</string>
+    <string name="month_abbr_jan">Janv</string>
+    <string name="month_abbr_feb">Fév</string>
+    <string name="month_abbr_mar">Mars</string>
+    <string name="month_abbr_apr">Avr</string>
+    <string name="month_abbr_may">Mai</string>
+    <string name="month_abbr_jun">Juin</string>
+    <string name="month_abbr_jul">Juil</string>
+    <string name="month_abbr_aug">Août</string>
+    <string name="month_abbr_sep">Sept</string>
+    <string name="month_abbr_oct">Oct</string>
+    <string name="month_abbr_nov">Nov</string>
+    <string name="month_abbr_dec">Déc</string>
+    <plurals name="places_header">
+        <item quantity="one">%1$d LIEU · TRIÉ PAR ENTRÉES</item>
+        <item quantity="other">%1$d LIEUX · TRIÉS PAR ENTRÉES</item>
+    </plurals>
+    <plurals name="place_entry_count">
+        <item quantity="one">%1$d entrée</item>
+        <item quantity="other">%1$d entrées</item>
+    </plurals>
+    <string name="place_date">%2$d %1$s</string>
 </resources>
