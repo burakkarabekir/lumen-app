@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.bksd.core.data.R
 
 const val REMINDER_CHANNEL_ID = "lumen_reminders_v2"
 const val EXTRA_OPEN_CREATE_MOMENT = "open_create_moment"
@@ -34,7 +35,8 @@ internal fun postReminderNotification(context: Context, id: Int, title: String, 
     val manager = NotificationManagerCompat.from(context)
     if (!manager.areNotificationsEnabled()) return
     val builder = NotificationCompat.Builder(context, REMINDER_CHANNEL_ID)
-        .setSmallIcon(android.R.drawable.ic_popup_reminder)
+        .setSmallIcon(R.drawable.ic_notification)
+        .setColor(0xFF1E52FF.toInt())
         .setContentTitle(title)
         .setContentText(body)
         .setAutoCancel(true)

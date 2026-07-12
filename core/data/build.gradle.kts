@@ -8,6 +8,7 @@ kotlin {
         namespace = "com.bksd.core.data"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
+        androidResources.enable = true
     }
     sourceSets {
         commonMain {
