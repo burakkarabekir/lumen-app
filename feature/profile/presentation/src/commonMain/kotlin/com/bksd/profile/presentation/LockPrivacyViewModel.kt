@@ -16,7 +16,7 @@ class LockPrivacyViewModel(
 
     private var hasLoaded = false
 
-    private val initialState = LockPrivacyState(policyVersion = LegalConfig.POLICY_VERSION)
+    private val initialState = LockPrivacyState(policyVersion = LegalConfig.POLICY_VERSION_DISPLAY)
 
     private val _state = MutableStateFlow(initialState)
     val state = _state
