@@ -2,7 +2,6 @@ package com.bksd.journal.presentation.detail.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,7 +34,6 @@ import com.bksd.journal.presentation.ai_support_title
 import com.bksd.reflection.domain.model.EntryAnalysis
 import com.bksd.reflection.domain.model.MomentReflection
 import com.bksd.reflection.domain.model.MoodValence
-import com.bksd.reflection.domain.support.SupportResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -87,21 +85,11 @@ fun EntrySupportCard(
             modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.lg)
         )
 
-        if (reflection.mentalHealthLines.isNotEmpty()) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
-                modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.lg)
-            ) {
-                reflection.mentalHealthLines.forEach { resource ->
-                    SupportResourceRow(
-                        resource = resource,
-                        accent = c.accent,
-                        rowBackground = c.rowBg,
-                        labelColor = c.title
-                    )
-                }
-            }
-        }
+        SupportComingSoonNote(
+            textColor = c.title,
+            background = c.rowBg,
+            modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.lg)
+        )
     }
 }
 
@@ -122,7 +110,7 @@ private fun EntrySupportCardPreview() {
                 ),
                 message = "It sounds like things feel heavy right now, and that's hard. You don't have " +
                     "to carry it alone — reaching out to someone you trust can make a difference.",
-                mentalHealthLines = listOf(SupportResource("Support line", "0212 000 0000"))
+                mentalHealthLines = emptyList()
             ),
             modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg)
         )

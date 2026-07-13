@@ -2,7 +2,6 @@ package com.bksd.journal.presentation.detail.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -44,10 +43,6 @@ fun EntryCrisisCard(
     modifier: Modifier = Modifier,
 ) {
     val c = MaterialTheme.colorScheme.extended.crisisCard
-    val resources = buildList {
-        add(reflection.emergency)
-        addAll(reflection.crisisLines)
-    }
 
     Column(
         modifier = modifier
@@ -91,19 +86,11 @@ fun EntryCrisisCard(
             modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.lg)
         )
 
-        Column(
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
+        SupportComingSoonNote(
+            textColor = c.title,
+            background = c.rowBg,
             modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.lg)
-        ) {
-            resources.forEach { resource ->
-                SupportResourceRow(
-                    resource = resource,
-                    accent = c.accent,
-                    rowBackground = c.rowBg,
-                    labelColor = c.title
-                )
-            }
-        }
+        )
     }
 }
 

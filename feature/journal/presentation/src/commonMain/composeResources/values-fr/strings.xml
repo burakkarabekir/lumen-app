@@ -87,6 +87,7 @@
     <string name="ai_support_title">Un moment de soutien</string>
     <string name="ai_crisis_title">Tu n&apos;es pas seul</string>
     <string name="ai_call_resource">Appeler %1$s</string>
+    <string name="ai_support_coming_soon">Les ressources d&apos;aide seront bientôt disponibles.</string>
 
     <!-- JournalTopBar -->
     <string name="search_moments_hint">Rechercher des moments…</string>

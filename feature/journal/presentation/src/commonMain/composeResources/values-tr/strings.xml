@@ -87,6 +87,7 @@
     <string name="ai_support_title">Bir destek anı</string>
     <string name="ai_crisis_title">Yalnız değilsin</string>
     <string name="ai_call_resource">%1$s ara</string>
+    <string name="ai_support_coming_soon">Destek kaynakları çok yakında eklenecek.</string>
 
     <!-- JournalTopBar -->
     <string name="search_moments_hint">Anlarda ara…</string>
