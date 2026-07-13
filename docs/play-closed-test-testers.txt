@@ -1,0 +1,24 @@
+Lumen — Google Play Closed Test tester roster
+(Google requires >=12 opted-in testers for 14 continuous days before production.)
+
+gokhan.sut@gmail.com
+farukomerkonca@gmail.com
+mustafamert.altinsoy68@gmail.com
+sizinmobile102@gmail.com
+mustafaumutidam@gmail.com
+karadumanbahar0@gmail.com
+zuleyhakbas04@gmail.com
+runokul53@gmail.com
+cmahmutdursun@gmail.com
+ykp.krm.zcn.59@gmail.com
+tuncayclkknt@gmail.com
+cenan6238@gmail.com
+extremetunahan@gmail.com
+hdemirforce@gmail.com
+ysnfb04@gmail.com
+btranko@gmail.com
+medinebayrak457@gmail.com
+suleymandag21@gmail.com
+
+Count: 18 (>= 12 minimum). Add these as testers on the closed testing track in Play Console,
+then share the opt-in link so each accepts before the 14-day clock starts.
