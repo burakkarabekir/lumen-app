@@ -37,6 +37,7 @@ fun AppButton(
     isLoading: Boolean = false,
     cornerRadius: Dp = 12.dp,
     leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
 ) {
     val colors = when (style) {
         AppButtonStyle.PRIMARY -> {
@@ -151,6 +152,7 @@ fun AppButton(
                     text = text,
                     style = MaterialTheme.typography.titleSmall,
                 )
+                trailingIcon?.invoke()
             }
         }
     }

@@ -1,23 +1,24 @@
 plugins {
-    alias(libs.plugins.convention.cmp.feature)
+    alias(libs.plugins.convention.kmp.data)
 }
 
 kotlin {
     android {
-        namespace = "com.bksd.onboarding.presentation"
+        namespace = "com.bksd.onboarding.data"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
-        androidResources.enable = true
     }
     sourceSets {
         commonMain {
             dependencies {
                 implementation(projects.feature.onboarding.domain)
+                implementation(libs.bundles.datastore)
+            }
+        }
+        androidMain {
+            dependencies {
+                implementation(libs.koin.android)
             }
         }
     }
-}
-
-compose.resources {
-    packageOfResClass = "com.bksd.onboarding.presentation"
 }

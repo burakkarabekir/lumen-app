@@ -14,6 +14,7 @@ import com.bksd.journal.domain.di.journalDomainModule
 import com.bksd.journal.presentation.di.journalPresentationModule
 import com.bksd.moment.domain.di.momentDomainModule
 import com.bksd.moment.presentation.di.momentPresentationModule
+import com.bksd.onboarding.data.di.onboardingDataModule
 import com.bksd.onboarding.presentation.di.onboardingPresentationModule
 import com.bksd.paywall.domain.di.paywallDomainModule
 import com.bksd.paywall.presentation.di.paywallPresentationModule
@@ -35,6 +36,7 @@ fun initKoin(isDebug: Boolean = false, config: KoinAppDeclaration? = null) {
             coreDataModule,
             navigationModule,
             // Feature modules
+            onboardingDataModule,
             onboardingPresentationModule,
             authDataModule,
             authDomainModule,

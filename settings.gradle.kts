@@ -44,6 +44,8 @@ include(":feature:journal:presentation")
 include(":feature:moment:domain")
 include(":feature:moment:presentation")
 
+include(":feature:onboarding:data")
+include(":feature:onboarding:domain")
 include(":feature:onboarding:presentation")
 
 include(":feature:auth:data")

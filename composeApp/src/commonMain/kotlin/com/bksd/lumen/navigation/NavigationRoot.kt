@@ -45,6 +45,7 @@ import com.bksd.lumen.main.MainViewModel
 import com.bksd.lumen.navigation.route.Route
 import com.bksd.lumen.navigation.route.Route.Companion.shouldShowBottomBar
 import com.bksd.lumen.reminder.ReminderLaunchSignal
+import com.bksd.onboarding.domain.repository.OnboardingRepository
 import com.bksd.lumen.welcome.LoginWelcomeSignal
 import com.bksd.lumen.welcome.WelcomeGate
 import com.bksd.lumen.welcome.WelcomeGreeting
@@ -83,6 +84,8 @@ fun NavigationRoot(
 
     val navigator = koinInject<Navigator> { parametersOf(navigationState) }
     val welcomeSignal = koinInject<LoginWelcomeSignal>()
+    val onboardingRepository = koinInject<OnboardingRepository>()
+    val onboardingCompleted by onboardingRepository.observeCompleted().collectAsState(initial = false)
     val reminderLaunchSignal = koinInject<ReminderLaunchSignal>()
     val snackbarHostState = remember { SnackbarHostState() }
     val snackbarController = koinInject<SnackbarController>()
@@ -165,17 +168,24 @@ fun NavigationRoot(
             },
             entries = navigationState.toEntries(
                 entryProvider {
-                    entry<Route.Onboarding> {
+                    entry<Route.Onboarding> { backStackEntry ->
                         OnboardingRoot(
-                            onComplete = { navigator.navigateToSignIn() }
+                            onComplete = {
+                                welcomeSignal.request(WelcomeGreeting.valueOf(backStackEntry.greeting))
+                                navigator.goBack()
+                            }
                         )
                     }
 
                     entry<Route.Auth.SignIn> {
                         SignInRoot(
                             onNavigateToHome = {
-                                welcomeSignal.request(WelcomeGreeting.RETURNING)
                                 navigator.clearBackstackAndNavigate(Route.Main.Journal)
+                                if (onboardingCompleted) {
+                                    welcomeSignal.request(WelcomeGreeting.RETURNING)
+                                } else {
+                                    navigator.navigateToOnboarding(WelcomeGreeting.RETURNING.name)
+                                }
                             },
                             onNavigateToSignUp = { navigator.navigateToSignUp() },
                             onNavigateToForgotPassword = { navigator.navigateToResetPassword() }
@@ -184,8 +194,12 @@ fun NavigationRoot(
                     entry<Route.Auth.SignUp> {
                         SignUpRoot(
                             onNavigateToHome = {
-                                welcomeSignal.request(WelcomeGreeting.NEW)
                                 navigator.clearBackstackAndNavigate(Route.Main.Journal)
+                                if (onboardingCompleted) {
+                                    welcomeSignal.request(WelcomeGreeting.NEW)
+                                } else {
+                                    navigator.navigateToOnboarding(WelcomeGreeting.NEW.name)
+                                }
                             },
                             onNavigateToSignIn = { navigator.navigateToSignIn() }
                         )

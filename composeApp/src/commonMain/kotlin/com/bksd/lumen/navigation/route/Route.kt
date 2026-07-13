@@ -12,7 +12,7 @@ sealed interface Route : NavKey {
 
     // ==================== Onboarding ====================
     @Serializable
-    data object Onboarding : Route
+    data class Onboarding(val greeting: String) : Route
 
     // ==================== Authentication ====================
     @Serializable

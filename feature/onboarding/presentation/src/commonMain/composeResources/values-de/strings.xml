@@ -3,4 +3,12 @@
     <string name="skip">Überspringen</string>
     <string name="btn_next">Weiter</string>
     <string name="btn_get_started">Los geht&apos;s</string>
+    <string name="btn_start_journaling">Journal starten</string>
+
+    <string name="onboarding_title_1">Willkommen bei Lumen</string>
+    <string name="onboarding_body_1">Ein ruhiger Ort zum Nachdenken — ein ehrlicher Eintrag nach dem anderen.</string>
+    <string name="onboarding_title_2">Halte die Momente fest</string>
+    <string name="onboarding_body_2">Fotos, Sprache und Worte — halte deine Tage mit den kleinen Details fest, die zählen.</string>
+    <string name="onboarding_title_3">Erkenne die Muster darunter</string>
+    <string name="onboarding_body_3">Sanfte wöchentliche Reflexionen zeigen die Themen und Stimmungen in deinem Schreiben.</string>
 </resources>
