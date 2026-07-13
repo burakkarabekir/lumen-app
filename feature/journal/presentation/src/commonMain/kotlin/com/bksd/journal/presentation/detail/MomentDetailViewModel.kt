@@ -19,7 +19,6 @@ import com.bksd.journal.presentation.detail_moment_deleted
 import com.bksd.reflection.domain.model.MomentAnalysisState
 import com.bksd.reflection.domain.usecase.ObserveEntryAnalysisUseCase
 import com.bksd.reflection.domain.usecase.RequestEntryAnalysisUseCase
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentSet
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -129,18 +128,8 @@ class MomentDetailViewModel(
             }
         }
         launch {
-            audioPlayer.currentPositionMs.collect { ms ->
-                _state.update { it.copy(audioPositionFormatted = formatMs(ms)) }
-            }
-        }
-        launch {
             audioPlayer.durationMs.collect { ms ->
                 _state.update { it.copy(audioDurationFormatted = formatMs(ms)) }
-            }
-        }
-        launch {
-            audioPlayer.playbackAmplitudes.collect { amps ->
-                _state.update { it.copy(audioAmplitudes = amps.toImmutableList()) }
             }
         }
     }

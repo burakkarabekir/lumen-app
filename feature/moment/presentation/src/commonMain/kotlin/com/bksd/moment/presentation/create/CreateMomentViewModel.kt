@@ -120,16 +120,6 @@ class CreateMomentViewModel(
             }
         }
         launch {
-            audioPlayer.playbackAmplitudes.collect { amplitudes ->
-                updateState { it.copy(playbackAmplitudes = amplitudes.toImmutableList()) }
-            }
-        }
-        launch {
-            audioPlayer.currentPositionMs.collect { positionMs ->
-                updateState { it.copy(playbackPositionFormatted = formatMs(positionMs)) }
-            }
-        }
-        launch {
             audioPlayer.durationMs.collect { durationMs ->
                 updateState { it.copy(playbackDurationFormatted = formatMs(durationMs)) }
             }

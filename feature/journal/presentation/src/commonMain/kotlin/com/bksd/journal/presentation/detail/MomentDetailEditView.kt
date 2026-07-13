@@ -338,9 +338,7 @@ fun MomentDetailEditView(
                     MomentDetailAttachments(
                         attachments = state.editAttachments,
                         audioPlaybackState = state.audioPlaybackState,
-                        audioCurrentPosition = state.audioPositionFormatted,
                         audioDuration = state.audioDurationFormatted,
-                        audioAmplitudes = state.audioAmplitudes,
                         onAudioPlayClick = {
                             audioUrl?.let { onAction(MomentDetailAction.OnAudioPlayClick(it)) }
                         },

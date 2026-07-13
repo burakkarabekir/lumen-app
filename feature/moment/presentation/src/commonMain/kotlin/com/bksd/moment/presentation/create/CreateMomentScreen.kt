@@ -406,8 +406,6 @@ private fun CreateMomentScreen(
 
                                         is AttachmentUiModel.Audio -> VoiceAttachmentCard(
                                             playbackState = state.playbackState,
-                                            amplitudes = state.playbackAmplitudes,
-                                            positionFormatted = state.playbackPositionFormatted,
                                             durationFormatted = state.playbackDurationFormatted,
                                             onPlay = {
                                                 onAction(CreateMomentAction.OnPlayAudio(attachment.id))

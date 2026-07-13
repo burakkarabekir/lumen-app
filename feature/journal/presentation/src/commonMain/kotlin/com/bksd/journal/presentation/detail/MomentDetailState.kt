@@ -31,9 +31,7 @@ data class MomentDetailState(
     val isSaving: Boolean = false,
     val playingAudioUrl: String? = null,
     val audioPlaybackState: PlaybackState = PlaybackState.STOPPED,
-    val audioPositionFormatted: String = "0:00",
     val audioDurationFormatted: String = "0:00",
-    val audioAmplitudes: ImmutableList<Float> = persistentListOf(),
     val analysis: MomentAnalysisState = MomentAnalysisState.None,
     val showDeleteDialog: Boolean = false,
     val isDeleting: Boolean = false
