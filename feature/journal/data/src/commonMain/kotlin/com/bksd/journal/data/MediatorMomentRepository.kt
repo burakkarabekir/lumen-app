@@ -9,11 +9,16 @@ import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.Result
 import com.bksd.core.domain.model.Attachment
 import com.bksd.core.domain.model.AudioAttachment
+import com.bksd.core.domain.model.DraftAudio
+import com.bksd.core.domain.model.DraftPhoto
+import com.bksd.core.domain.model.DraftVideo
 import com.bksd.core.domain.model.LinkAttachment
 import com.bksd.core.domain.model.Moment
 import com.bksd.core.domain.model.PhotoAttachment
 import com.bksd.core.domain.model.Url
 import com.bksd.core.domain.model.VideoAttachment
+import com.bksd.core.domain.model.isPendingUpload
+import com.bksd.core.domain.repository.MediaRepository
 import com.bksd.core.domain.repository.MomentRepository
 import com.bksd.core.domain.storage.SessionStorage
 import com.bksd.journal.data.local.DomainToEntityMapper
@@ -35,6 +40,7 @@ class MediatorMomentRepository(
     private val remoteDataSource: SupabaseMomentRemoteDataSource,
     private val storageDataSource: SupabaseStorageDataSource,
     private val authDataSource: SupabaseAuthDataSource,
+    private val mediaRepository: MediaRepository,
     private val sessionStorage: SessionStorage,
     private val dtoToDomain: MomentDtoMapper,
     private val domainToDto: MomentToDtoMapper,
@@ -67,6 +73,7 @@ class MediatorMomentRepository(
         return when (val result = remoteDataSource.fetchMomentsPaged(limit, offset)) {
             is Result.Success -> {
                 val pendingIds = (momentDao.getPendingSync().map { it.id } +
+                        momentDao.getPendingUpload().map { it.id } +
                         momentDao.getPendingDelete().map { it.id }).toSet()
                 val entities = result.data
                     .filterNot { it.id in pendingIds }
@@ -87,6 +94,7 @@ class MediatorMomentRepository(
             when (val result = remoteDataSource.fetchMomentsPaged(FULL_SYNC_PAGE, offset)) {
                 is Result.Success -> {
                     val pendingIds = (momentDao.getPendingSync().map { it.id } +
+                            momentDao.getPendingUpload().map { it.id } +
                             momentDao.getPendingDelete().map { it.id }).toSet()
                     val entities = result.data
                         .filterNot { it.id in pendingIds }
@@ -161,6 +169,7 @@ class MediatorMomentRepository(
     }
 
     private suspend fun flushPendingSync() {
+        flushPendingUploads()
         momentDao.getPendingSync().forEach { entity ->
             val moment = entityToDomain.map(entity)
             if (remoteDataSource.saveMoment(domainToDto.map(moment)) is Result.Success) {
@@ -174,6 +183,43 @@ class MediatorMomentRepository(
         }
     }
 
+    private suspend fun flushPendingUploads() {
+        val userId = authDataSource.getSignedInUserId() ?: return
+        momentDao.getPendingUpload().forEach { entity ->
+            val moment = entityToDomain.map(entity)
+            val resolved = moment.attachments.map { attachment ->
+                if (attachment.isPendingUpload) uploadPending(attachment, userId, moment.id) else attachment
+            }
+            if (resolved != moment.attachments) {
+                momentDao.upsert(domainToEntity.map(moment.copy(attachments = resolved, pendingSync = true)))
+            }
+        }
+    }
+
+    private suspend fun uploadPending(attachment: Attachment, userId: String, momentId: String): Attachment {
+        val draft = when (attachment) {
+            is PhotoAttachment -> DraftPhoto(attachment.id, attachment.localUri ?: return attachment, 0L)
+            is VideoAttachment -> DraftVideo(
+                attachment.id,
+                attachment.localUri ?: return attachment,
+                attachment.durationMs,
+                0L
+            )
+
+            is AudioAttachment -> DraftAudio(
+                attachment.id,
+                attachment.localUri ?: return attachment,
+                attachment.durationMs
+            )
+
+            is LinkAttachment -> return attachment
+        }
+        return when (val result = mediaRepository.uploadAttachment(draft, userId, momentId)) {
+            is Result.Success -> result.data
+            is Result.Error -> attachment
+        }
+    }
+
     private suspend fun Moment.withSignedMedia(): Moment {
         if (attachments.isEmpty()) return this
         ensureSignedUrls(attachments.mapNotNull { it.storagePath() })
@@ -181,6 +227,7 @@ class MediatorMomentRepository(
     }
 
     private fun Attachment.storagePath(): String? {
+        if (isPendingUpload) return null
         val raw = when (this) {
             is PhotoAttachment -> remoteUrl.value
             is VideoAttachment -> remoteUrl.value
@@ -213,9 +260,9 @@ class MediatorMomentRepository(
     }
 
     private suspend fun Attachment.withSignedUrl(): Attachment = when (this) {
-        is PhotoAttachment -> copy(remoteUrl = signedUrlFor(remoteUrl))
-        is VideoAttachment -> copy(remoteUrl = signedUrlFor(remoteUrl))
-        is AudioAttachment -> copy(remoteUrl = signedUrlFor(remoteUrl))
+        is PhotoAttachment -> if (pendingUpload) copy(remoteUrl = Url(localUri.orEmpty())) else copy(remoteUrl = signedUrlFor(remoteUrl))
+        is VideoAttachment -> if (pendingUpload) copy(remoteUrl = Url(localUri.orEmpty())) else copy(remoteUrl = signedUrlFor(remoteUrl))
+        is AudioAttachment -> if (pendingUpload) copy(remoteUrl = Url(localUri.orEmpty())) else copy(remoteUrl = signedUrlFor(remoteUrl))
         is LinkAttachment -> this
     }
 

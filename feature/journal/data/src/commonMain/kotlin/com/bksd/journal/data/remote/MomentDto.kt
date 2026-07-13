@@ -32,7 +32,9 @@ sealed interface AttachmentDto {
     @SerialName("PHOTO")
     data class Photo(
         override val id: String,
-        val remoteUrl: String
+        val remoteUrl: String,
+        val localUri: String? = null,
+        val pendingUpload: Boolean = false
     ) : AttachmentDto
 
     @Serializable
@@ -40,7 +42,9 @@ sealed interface AttachmentDto {
     data class Video(
         override val id: String,
         val remoteUrl: String,
-        val durationMs: Long
+        val durationMs: Long,
+        val localUri: String? = null,
+        val pendingUpload: Boolean = false
     ) : AttachmentDto
 
     @Serializable
@@ -48,7 +52,9 @@ sealed interface AttachmentDto {
     data class Audio(
         override val id: String,
         val remoteUrl: String,
-        val durationMs: Long
+        val durationMs: Long,
+        val localUri: String? = null,
+        val pendingUpload: Boolean = false
     ) : AttachmentDto
 
     @Serializable

@@ -49,6 +49,33 @@ class MediaRepositoryImpl(
         }
     }
 
+    override fun pendingAttachment(draft: DraftAttachment): Attachment = when (draft) {
+        is DraftLink -> LinkAttachment(id = draft.id, url = draft.url)
+
+        is DraftPhoto -> PhotoAttachment(
+            id = draft.id,
+            remoteUrl = Url(""),
+            localUri = draft.localUri,
+            pendingUpload = true
+        )
+
+        is DraftVideo -> VideoAttachment(
+            id = draft.id,
+            remoteUrl = Url(""),
+            durationMs = draft.durationMs,
+            localUri = draft.localUri,
+            pendingUpload = true
+        )
+
+        is DraftAudio -> AudioAttachment(
+            id = draft.id,
+            remoteUrl = Url(""),
+            durationMs = draft.durationMs,
+            localUri = draft.localUri,
+            pendingUpload = true
+        )
+    }
+
     private suspend inline fun uploadAndMap(
         attachmentId: AttachmentId,
         localPath: String,

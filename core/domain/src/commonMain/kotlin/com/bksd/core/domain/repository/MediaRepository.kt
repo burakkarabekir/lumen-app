@@ -12,6 +12,8 @@ interface MediaRepository {
         momentId: String
     ): Result<Attachment, AppError>
 
+    fun pendingAttachment(draft: DraftAttachment): Attachment
+
     suspend fun deleteAttachment(
         attachment: Attachment
     ): Result<Unit, AppError>

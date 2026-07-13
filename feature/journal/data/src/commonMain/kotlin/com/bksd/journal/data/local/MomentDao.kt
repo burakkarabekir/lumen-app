@@ -38,8 +38,11 @@ interface MomentDao {
     @Query("DELETE FROM moments")
     suspend fun deleteAll()
 
-    @Query("SELECT * FROM moments WHERE pendingSync = 1 AND pendingDelete = 0")
+    @Query("SELECT * FROM moments WHERE pendingSync = 1 AND pendingDelete = 0 AND pendingUpload = 0")
     suspend fun getPendingSync(): List<MomentEntity>
+
+    @Query("SELECT * FROM moments WHERE pendingUpload = 1 AND pendingDelete = 0")
+    suspend fun getPendingUpload(): List<MomentEntity>
 
     @Query("SELECT * FROM moments WHERE pendingDelete = 1")
     suspend fun getPendingDelete(): List<MomentEntity>
