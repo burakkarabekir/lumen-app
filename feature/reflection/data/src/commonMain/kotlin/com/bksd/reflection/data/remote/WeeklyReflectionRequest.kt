@@ -4,5 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class WeeklyReflectionRequest(
-    val entries: List<String>
+    val entries: List<String>,
+    val language: String? = null
 )

@@ -25,6 +25,7 @@ const corsHeaders: Record<string, string> = {
 // Keep this shape in sync with the Kotlin WeeklyReflectionRequest / WeeklyReflectionDto.
 interface WeeklyRequest {
   entries: string[]
+  language?: string | null
 }
 
 interface WeeklyTheme {
@@ -39,11 +40,18 @@ interface WeeklyResponse {
   questions: string[]
 }
 
-const WEEKLY_SYSTEM = `
+function languageDirective(language?: string | null): string {
+  return language && language.trim()
+    ? `Write every text field (narrative, summary, theme labels, questions) entirely in ${language.trim()}, regardless of the language of the entries.`
+    : `Match the language of the entries (default to the writer's own language).`
+}
+
+function weeklySystem(language?: string | null): string {
+  return `
 You are Lumen's reflective journaling companion. You receive several short daily
 journal entries from one person's past week. Write a warm WEEKLY reflection.
 Voice: warm, plain, grounded — like a perceptive friend, not a therapist, coach, or
-chatbot persona. Match the language of the entries (Turkish or English).
+chatbot persona. ${languageDirective(language)}
 - narrative: 3–5 sentences. Reflect the week's patterns and texture — what kept
   recurring, the overall tenor, where the writing felt most alive, and any shift
   across the week. Acknowledge difficulty without dwelling. No advice lists, no
@@ -62,6 +70,7 @@ Output ONLY a JSON object:
  "themes": [{"label": string, "count": number}], "questions": string[]}
 No prose, no code fences.
 `.trim()
+}
 
 function stripFences(s: string): string {
   return s.replace(/```json/gi, "").replace(/```/g, "").trim()
@@ -156,7 +165,7 @@ Deno.serve(withSentry("weekly-reflection", async (req: Request) => {
   const user = entries.map((e, i) => `Entry ${i + 1}:\n${e}`).join("\n\n")
 
   try {
-    const raw = await callGemini(WEEKLY_SYSTEM, user, 700, 0.8)
+    const raw = await callGemini(weeklySystem(payload.language), user, 700, 0.8)
     const parsed = JSON.parse(raw) as Partial<WeeklyResponse>
     const themes: WeeklyTheme[] = Array.isArray(parsed.themes)
       ? parsed.themes

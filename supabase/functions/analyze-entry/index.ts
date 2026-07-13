@@ -55,6 +55,7 @@ interface AnalyzeRequest {
   text: string
   mood?: string | null
   trend?: string | null
+  language?: string | null
 }
 
 interface AnalyzeResponse {
@@ -86,14 +87,20 @@ The JSON shape is:
  "distress": "NONE"|"MILD"|"ELEVATED"|"CRISIS", "distressRationale": string}
 `.trim()
 
-const FEEDBACK_SYSTEM = `
+function languageDirective(language?: string | null): string {
+  return language && language.trim()
+    ? `Write the reflection and question entirely in ${language.trim()}, regardless of the language of the analysis below.`
+    : `Match the language of the summary (default to the writer's own language).`
+}
+
+function feedbackSystem(language?: string | null): string {
+  return `
 You are a reflective journaling companion inside the app. You receive a
 STRUCTURED ANALYSIS of one entry (and optionally a short trend summary of
 recent entries) — not the raw entry. Write one brief, warm reflection and one
 gentle question for the writer to sit with.
 Voice: warm, plain, grounded — like a perceptive friend, not a therapist,
-coach, or chatbot persona. Match the language of the summary (Turkish or
-English).
+coach, or chatbot persona. ${languageDirective(language)}
 reflection: 2–4 sentences. Reflect back the patterns you were given; offer at
 most ONE gentle reframe; acknowledge difficulty without dwelling. If the
 analysis is thin or neutral, a short light acknowledgement beats forcing insight.
@@ -106,6 +113,7 @@ invent anything not in the analysis; give medical/clinical/crisis advice.
 Output ONLY a JSON object: {"reflection": string, "question": string}.
 No prose, no code fences.
 `.trim()
+}
 
 function stripFences(s: string): string {
   return s.replace(/```json/gi, "").replace(/```/g, "").trim()
@@ -165,8 +173,12 @@ interface Feedback {
   question: string
 }
 
-async function feedback(analysis: EntryAnalysis, trend?: string | null): Promise<Feedback> {
-  const raw = await callGemini(FEEDBACK_SYSTEM, digest(analysis, trend), 500, 0.8)
+async function feedback(
+  analysis: EntryAnalysis,
+  trend?: string | null,
+  language?: string | null,
+): Promise<Feedback> {
+  const raw = await callGemini(feedbackSystem(language), digest(analysis, trend), 500, 0.8)
   const parsed = JSON.parse(raw) as Feedback
   return {
     reflection: String(parsed.reflection ?? "").trim(),
@@ -295,7 +307,7 @@ Deno.serve(withSentry("analyze-entry", async (req: Request) => {
     const analysis = await analyze(payload.text, payload.mood)
     const needsSupport = analysis.distress === "ELEVATED" || analysis.distress === "CRISIS"
     const [fb, coverImageUrl] = await Promise.all([
-      needsSupport ? Promise.resolve(null) : feedback(analysis, payload.trend),
+      needsSupport ? Promise.resolve(null) : feedback(analysis, payload.trend, payload.language),
       generateCover(analysis, userId),
     ])
     const response: AnalyzeResponse = {
