@@ -88,6 +88,8 @@
     <string name="ai_crisis_title">Du bist nicht allein</string>
     <string name="ai_call_resource">%1$s anrufen</string>
     <string name="ai_support_coming_soon">Hilfsangebote sind bald verfügbar.</string>
+    <string name="ai_support_message">Es klingt, als würde sich gerade alles schwer anfühlen, und das ist hart. Du musst das nicht allein tragen — dich jemandem anzuvertrauen, der dir nahesteht, oder einer Fachperson für psychische Gesundheit kann einen Unterschied machen. Sei heute sanft zu dir.</string>
+    <string name="ai_crisis_message">Wenn du daran denkst, dir etwas anzutun, oder dich nicht sicher fühlst, hol dir bitte jetzt Hilfe. Du verdienst Unterstützung, und es gibt Menschen, die mit dir sprechen können.</string>
 
     <!-- JournalTopBar -->
     <string name="search_moments_hint">Momente durchsuchen…</string>

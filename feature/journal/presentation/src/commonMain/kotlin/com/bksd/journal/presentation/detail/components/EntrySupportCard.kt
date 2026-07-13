@@ -30,6 +30,7 @@ import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
 import com.bksd.journal.presentation.Res
+import com.bksd.journal.presentation.ai_support_message
 import com.bksd.journal.presentation.ai_support_title
 import com.bksd.reflection.domain.model.EntryAnalysis
 import com.bksd.reflection.domain.model.MomentReflection
@@ -77,7 +78,7 @@ fun EntrySupportCard(
         }
 
         Text(
-            text = reflection.message,
+            text = stringResource(Res.string.ai_support_message),
             fontSize = 14.5.sp,
             lineHeight = 23.5.sp,
             fontWeight = FontWeight.Medium,

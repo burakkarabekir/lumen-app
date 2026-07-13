@@ -88,6 +88,8 @@
     <string name="ai_crisis_title">You&apos;re not alone</string>
     <string name="ai_call_resource">Call %1$s</string>
     <string name="ai_support_coming_soon">Support resources are coming soon.</string>
+    <string name="ai_support_message">It sounds like things feel heavy right now, and that&apos;s hard. You don&apos;t have to carry it alone — reaching out to someone you trust, or a mental-health professional, can make a difference. Be gentle with yourself today.</string>
+    <string name="ai_crisis_message">If you&apos;re thinking about harming yourself or feel unsafe, please reach out for help right now. You deserve support, and people are available to talk with you.</string>
 
     <!-- JournalTopBar -->
     <string name="search_moments_hint">Search moments…</string>

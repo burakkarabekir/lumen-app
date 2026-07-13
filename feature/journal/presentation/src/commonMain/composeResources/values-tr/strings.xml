@@ -88,6 +88,8 @@
     <string name="ai_crisis_title">Yalnız değilsin</string>
     <string name="ai_call_resource">%1$s ara</string>
     <string name="ai_support_coming_soon">Destek kaynakları çok yakında eklenecek.</string>
+    <string name="ai_support_message">Şu anda her şey çok ağır geliyor gibi ve bu gerçekten zor. Bunu tek başına taşımak zorunda değilsin — güvendiğin birine ya da bir ruh sağlığı uzmanına başvurmak fark yaratabilir. Bugün kendine karşı nazik ol.</string>
+    <string name="ai_crisis_message">Kendine zarar vermeyi düşünüyorsan ya da güvende hissetmiyorsan, lütfen hemen destek iste. Desteği hak ediyorsun ve seninle konuşabilecek insanlar var.</string>
 
     <!-- JournalTopBar -->
     <string name="search_moments_hint">Anlarda ara…</string>
