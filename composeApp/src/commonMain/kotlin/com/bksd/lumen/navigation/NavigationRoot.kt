@@ -18,6 +18,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,6 +30,7 @@ import com.bksd.auth.presentation.signup.SignUpRoot
 import com.bksd.core.design_system.component.layout.AppScaffold
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.domain.connectivity.NetworkMonitor
+import com.bksd.core.presentation.snackbar.SnackbarController
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.insights.presentation.InsightsRoot
 import com.bksd.insights.presentation.places.PlacesRoot
@@ -60,6 +62,7 @@ import com.bksd.profile.presentation.LockPrivacyRoot
 import com.bksd.profile.presentation.ManagePremiumRoot
 import com.bksd.profile.presentation.ProfileRoot
 import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -82,9 +85,17 @@ fun NavigationRoot(
     val welcomeSignal = koinInject<LoginWelcomeSignal>()
     val reminderLaunchSignal = koinInject<ReminderLaunchSignal>()
     val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarController = koinInject<SnackbarController>()
+    val snackbarScope = rememberCoroutineScope()
 
     val networkMonitor = koinInject<NetworkMonitor>()
     val isOnline by networkMonitor.isOnline.collectAsState(initial = true)
+
+    ObserveAsEvents(snackbarController.messages) { message ->
+        snackbarScope.launch {
+            snackbarHostState.showSnackbar(message.asStringAsync())
+        }
+    }
 
     var navigationReady by remember { mutableStateOf(false) }
 
