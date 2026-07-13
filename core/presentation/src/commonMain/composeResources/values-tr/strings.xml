@@ -80,4 +80,11 @@
     <string name="fmt_month_day">%2$d %1$s</string>
     <string name="fmt_short_date">%2$d %1$s %3$d</string>
     <string name="fmt_weekday_date">%3$d %2$s %1$s</string>
+    <string name="attachment_label_photo">Fotoğraf</string>
+    <string name="attachment_label_voice">Sesli not</string>
+    <string name="attachment_label_video">Video</string>
+    <string name="attachment_label_link">Bağlantı</string>
+    <string name="cd_remove_attachment">Eki kaldır</string>
+    <string name="cd_play">Oynat</string>
+    <string name="cd_pause">Duraklat</string>
 </resources>

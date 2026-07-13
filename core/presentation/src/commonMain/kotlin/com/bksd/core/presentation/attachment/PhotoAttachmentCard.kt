@@ -16,6 +16,9 @@ import com.bksd.core.design_system.theme.attachmentPhoto
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
+import com.bksd.core.presentation.Res
+import com.bksd.core.presentation.attachment_label_photo
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun PhotoAttachmentCard(
@@ -36,7 +39,7 @@ fun PhotoAttachmentCard(
     AttachmentCardChrome(
         badgeColor = MaterialTheme.colorScheme.extended.attachmentPhoto,
         badgeIcon = Icons.Default.Image,
-        title = "Photo",
+        title = stringResource(Res.string.attachment_label_photo),
         onRemove = onRemove,
         modifier = modifier
     ) {

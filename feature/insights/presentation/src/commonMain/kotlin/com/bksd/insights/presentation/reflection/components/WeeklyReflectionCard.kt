@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -30,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -88,47 +90,59 @@ fun WeeklyReflectionCard(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.ExtraBold,
                     letterSpacing = (-0.2).sp,
-                    color = colors.title
+                    color = colors.title,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
                 )
                 val entryNoun = stringResource(
                     if (reflection.entryCount == 1) Res.string.weekly_entry_singular
                     else Res.string.weekly_entry_plural
                 )
-                Text(
-                    text = stringResource(
-                        Res.string.weekly_based_on_entries,
-                        reflection.entryCount,
-                        entryNoun,
-                        reflection.rangeLabel
-                    ),
-                    fontSize = 11.5.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = colors.meta,
-                    modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.xxs)
-                )
-            }
-            if (reflection.summary.isNotBlank()) {
-                Spacer(Modifier.width(MaterialTheme.dimens.spacing.sm))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.xs),
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(MaterialTheme.dimens.radius.md))
-                        .background(colors.pillBg)
-                        .padding(horizontal = MaterialTheme.dimens.spacing.md, vertical = MaterialTheme.dimens.spacing.xs)
+                    modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.xs)
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .size(6.dp)
-                            .clip(CircleShape)
-                            .background(colors.pillContent)
-                    )
                     Text(
-                        text = reflection.summary,
-                        fontSize = 10.5.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = colors.pillContent
+                        text = stringResource(
+                            Res.string.weekly_based_on_entries,
+                            reflection.entryCount,
+                            entryNoun,
+                            reflection.rangeLabel
+                        ),
+                        fontSize = 11.5.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = colors.meta,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f)
                     )
+                    if (reflection.summary.isNotBlank()) {
+                        Spacer(Modifier.width(MaterialTheme.dimens.spacing.sm))
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.xs),
+                            modifier = Modifier
+                                .widthIn(max = 140.dp)
+                                .clip(RoundedCornerShape(MaterialTheme.dimens.radius.md))
+                                .background(colors.pillBg)
+                                .padding(horizontal = MaterialTheme.dimens.spacing.md, vertical = MaterialTheme.dimens.spacing.xs)
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(6.dp)
+                                    .clip(CircleShape)
+                                    .background(colors.pillContent)
+                            )
+                            Text(
+                                text = reflection.summary,
+                                fontSize = 10.5.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = colors.pillContent,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                    }
                 }
             }
         }

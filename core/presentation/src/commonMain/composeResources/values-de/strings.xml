@@ -80,4 +80,11 @@
     <string name="fmt_month_day">%2$d. %1$s</string>
     <string name="fmt_short_date">%2$d. %1$s %3$d</string>
     <string name="fmt_weekday_date">%1$s, %3$d. %2$s</string>
+    <string name="attachment_label_photo">Foto</string>
+    <string name="attachment_label_voice">Sprachnotiz</string>
+    <string name="attachment_label_video">Video</string>
+    <string name="attachment_label_link">Link</string>
+    <string name="cd_remove_attachment">Anhang entfernen</string>
+    <string name="cd_play">Abspielen</string>
+    <string name="cd_pause">Pausieren</string>
 </resources>
