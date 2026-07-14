@@ -1,0 +1,76 @@
+name: Android Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  release-aab:
+    name: Build signed release AAB
+    runs-on: ubuntu-latest
+    env:
+      PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Write config.properties from secrets
+        run: |
+          cat > config.properties <<EOF
+          SUPABASE_URL=${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
+          SENTRY_DSN_ANDROID=${{ secrets.SENTRY_DSN_ANDROID }}
+          EOF
+
+      - name: Decode signing keystore
+        run: |
+          mkdir -p keystore
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > keystore/lumen-release.jks
+
+      - name: Write keystore.properties from secrets
+        run: |
+          cat > keystore.properties <<EOF
+          storeFile=keystore/lumen-release.jks
+          storePassword=${{ secrets.KEYSTORE_STORE_PASSWORD }}
+          keyAlias=${{ secrets.KEYSTORE_KEY_ALIAS }}
+          keyPassword=${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          EOF
+
+      - name: Build release bundle
+        run: ./gradlew :androidApp:bundleRelease --no-daemon
+
+      - name: Upload AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lumen-release-aab
+          path: androidApp/build/outputs/bundle/release/androidApp-release.aab
+          if-no-files-found: error
+
+      - name: Publish to Google Play internal track
+        if: ${{ env.PLAY_SERVICE_ACCOUNT_JSON != '' }}
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.bksd.lumen
+          releaseFiles: androidApp/build/outputs/bundle/release/androidApp-release.aab
+          track: internal
+          status: completed
