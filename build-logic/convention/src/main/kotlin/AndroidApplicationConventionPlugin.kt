@@ -27,8 +27,15 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
                 defaultConfig {
                     applicationId = libs.findVersion("applicationId").get().toString()
                     targetSdk = libs.findVersion("android-targetSdk").get().toString().toInt()
-                    versionCode = libs.findVersion("versionCode").get().toString().toInt()
-                    versionName = libs.findVersion("versionName").get().toString()
+
+                    val semanticVersion = libs.findVersion("versionName").get().toString()
+                    val versionParts = semanticVersion.split(".")
+                    val major = versionParts.getOrNull(0)?.toIntOrNull() ?: 0
+                    val minor = versionParts.getOrNull(1)?.toIntOrNull() ?: 0
+                    val patch = versionParts.getOrNull(2)?.toIntOrNull() ?: 0
+
+                    versionCode = major * 10000 + minor * 100 + patch
+                    versionName = semanticVersion
                 }
 
                 if (hasKeystore) {

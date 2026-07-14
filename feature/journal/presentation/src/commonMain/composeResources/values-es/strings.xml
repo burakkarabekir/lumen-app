@@ -137,6 +137,8 @@
     <string name="upsell_reflections_title">Has usado tus reflexiones de IA gratuitas</string>
     <string name="upsell_reflections_body">El plan gratuito incluye 3 reflexiones de IA al mes. Desbloquea reflexiones ilimitadas, arte de portada e informes semanales con Lumen Plus.</string>
     <string name="upsell_unlock_plus">Desbloquear Plus</string>
+    <string name="daily_limit_reflections_title">Límite diario de reflexiones alcanzado</string>
+    <string name="daily_limit_reflections_body">Has alcanzado el límite de reflexiones con IA de hoy. Tus reflexiones se renuevan mañana.</string>
     <string name="detail_changes_saved">Cambios guardados</string>
     <string name="detail_moment_deleted">Momento eliminado</string>
 </resources>
