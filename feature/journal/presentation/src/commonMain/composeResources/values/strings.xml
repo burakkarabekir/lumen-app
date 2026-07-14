@@ -137,6 +137,8 @@
     <string name="upsell_reflections_title">You&apos;ve used your free AI reflections</string>
     <string name="upsell_reflections_body">The free plan includes 3 AI reflections a month. Unlock unlimited reflections, cover art, and weekly insights with Lumen Plus.</string>
     <string name="upsell_unlock_plus">Unlock Plus</string>
+    <string name="daily_limit_reflections_title">Daily reflection limit reached</string>
+    <string name="daily_limit_reflections_body">You&apos;ve reached today&apos;s AI reflection limit. Your reflections refresh tomorrow.</string>
     <string name="detail_changes_saved">Changes saved</string>
     <string name="detail_moment_deleted">Moment deleted</string>
 </resources>

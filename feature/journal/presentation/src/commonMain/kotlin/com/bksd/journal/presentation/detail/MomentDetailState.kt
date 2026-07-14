@@ -33,6 +33,7 @@ data class MomentDetailState(
     val audioPlaybackState: PlaybackState = PlaybackState.STOPPED,
     val audioDurationFormatted: String = "0:00",
     val analysis: MomentAnalysisState = MomentAnalysisState.None,
+    val isPremium: Boolean = false,
     val showDeleteDialog: Boolean = false,
     val isDeleting: Boolean = false
 )

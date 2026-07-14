@@ -63,6 +63,7 @@ import com.bksd.journal.presentation.detail.components.EntryAnalysisCard
 import com.bksd.journal.presentation.detail.components.EntryAnalysisErrorCard
 import com.bksd.journal.presentation.detail.components.EntryAnalysisLoadingCard
 import com.bksd.journal.presentation.detail.components.EntryCrisisCard
+import com.bksd.journal.presentation.detail.components.EntryDailyLimitCard
 import com.bksd.journal.presentation.detail.components.EntryReflectionUpsellCard
 import com.bksd.journal.presentation.detail.components.EntrySupportCard
 import com.bksd.journal.presentation.detail.components.MomentDetailAttachments
@@ -210,9 +211,13 @@ fun MomentDetailReadView(
 
                     MomentAnalysisState.QuotaExceeded -> {
                         Spacer(Modifier.height(MaterialTheme.dimens.spacing.xxl))
-                        EntryReflectionUpsellCard(
-                            onUnlock = { onAction(MomentDetailAction.OnUpgradeClick) }
-                        )
+                        if (state.isPremium) {
+                            EntryDailyLimitCard()
+                        } else {
+                            EntryReflectionUpsellCard(
+                                onUnlock = { onAction(MomentDetailAction.OnUpgradeClick) }
+                            )
+                        }
                     }
 
                     MomentAnalysisState.Failed -> {
