@@ -154,4 +154,31 @@
         <item>templo</item>
         <item>palacio</item>
     </string-array>
+    <string name="places_title">Lugares</string>
+    <string name="places_search_hint">Buscar lugares</string>
+    <string name="places_show_more">Ver más</string>
+    <string name="places_empty">Aún no hay lugares</string>
+    <string name="places_no_results">Ningún lugar coincide</string>
+    <string name="place_last">Última vez %1$s</string>
+    <string name="month_abbr_jan">Ene</string>
+    <string name="month_abbr_feb">Feb</string>
+    <string name="month_abbr_mar">Mar</string>
+    <string name="month_abbr_apr">Abr</string>
+    <string name="month_abbr_may">May</string>
+    <string name="month_abbr_jun">Jun</string>
+    <string name="month_abbr_jul">Jul</string>
+    <string name="month_abbr_aug">Ago</string>
+    <string name="month_abbr_sep">Sep</string>
+    <string name="month_abbr_oct">Oct</string>
+    <string name="month_abbr_nov">Nov</string>
+    <string name="month_abbr_dec">Dic</string>
+    <plurals name="places_header">
+        <item quantity="one">%1$d LUGAR · ORDENADO POR ENTRADAS</item>
+        <item quantity="other">%1$d LUGARES · ORDENADO POR ENTRADAS</item>
+    </plurals>
+    <plurals name="place_entry_count">
+        <item quantity="one">%1$d entrada</item>
+        <item quantity="other">%1$d entradas</item>
+    </plurals>
+    <string name="place_date">%2$d %1$s</string>
 </resources>

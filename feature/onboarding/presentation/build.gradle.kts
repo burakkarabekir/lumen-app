@@ -9,6 +9,13 @@ kotlin {
         minSdk = libs.versions.android.minSdk.get().toInt()
         androidResources.enable = true
     }
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(projects.feature.onboarding.domain)
+            }
+        }
+    }
 }
 
 compose.resources {

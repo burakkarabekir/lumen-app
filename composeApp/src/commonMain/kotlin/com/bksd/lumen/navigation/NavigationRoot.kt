@@ -18,6 +18,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,8 +30,10 @@ import com.bksd.auth.presentation.signup.SignUpRoot
 import com.bksd.core.design_system.component.layout.AppScaffold
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.domain.connectivity.NetworkMonitor
+import com.bksd.core.presentation.snackbar.SnackbarController
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.insights.presentation.InsightsRoot
+import com.bksd.insights.presentation.places.PlacesRoot
 import com.bksd.insights.presentation.reflection.full.WeeklyReflectionDetailRoot
 import com.bksd.journal.presentation.detail.MomentDetailRoot
 import com.bksd.journal.presentation.journal.JournalRoot
@@ -42,6 +45,7 @@ import com.bksd.lumen.main.MainViewModel
 import com.bksd.lumen.navigation.route.Route
 import com.bksd.lumen.navigation.route.Route.Companion.shouldShowBottomBar
 import com.bksd.lumen.reminder.ReminderLaunchSignal
+import com.bksd.onboarding.domain.repository.OnboardingRepository
 import com.bksd.lumen.welcome.LoginWelcomeSignal
 import com.bksd.lumen.welcome.WelcomeGate
 import com.bksd.lumen.welcome.WelcomeGreeting
@@ -59,6 +63,7 @@ import com.bksd.profile.presentation.LockPrivacyRoot
 import com.bksd.profile.presentation.ManagePremiumRoot
 import com.bksd.profile.presentation.ProfileRoot
 import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -79,11 +84,21 @@ fun NavigationRoot(
 
     val navigator = koinInject<Navigator> { parametersOf(navigationState) }
     val welcomeSignal = koinInject<LoginWelcomeSignal>()
+    val onboardingRepository = koinInject<OnboardingRepository>()
+    val onboardingCompleted by onboardingRepository.observeCompleted().collectAsState(initial = false)
     val reminderLaunchSignal = koinInject<ReminderLaunchSignal>()
     val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarController = koinInject<SnackbarController>()
+    val snackbarScope = rememberCoroutineScope()
 
     val networkMonitor = koinInject<NetworkMonitor>()
     val isOnline by networkMonitor.isOnline.collectAsState(initial = true)
+
+    ObserveAsEvents(snackbarController.messages) { message ->
+        snackbarScope.launch {
+            snackbarHostState.showSnackbar(message.asStringAsync())
+        }
+    }
 
     var navigationReady by remember { mutableStateOf(false) }
 
@@ -153,17 +168,24 @@ fun NavigationRoot(
             },
             entries = navigationState.toEntries(
                 entryProvider {
-                    entry<Route.Onboarding> {
+                    entry<Route.Onboarding> { backStackEntry ->
                         OnboardingRoot(
-                            onComplete = { navigator.navigateToSignIn() }
+                            onComplete = {
+                                welcomeSignal.request(WelcomeGreeting.valueOf(backStackEntry.greeting))
+                                navigator.goBack()
+                            }
                         )
                     }
 
                     entry<Route.Auth.SignIn> {
                         SignInRoot(
                             onNavigateToHome = {
-                                welcomeSignal.request(WelcomeGreeting.RETURNING)
                                 navigator.clearBackstackAndNavigate(Route.Main.Journal)
+                                if (onboardingCompleted) {
+                                    welcomeSignal.request(WelcomeGreeting.RETURNING)
+                                } else {
+                                    navigator.navigateToOnboarding(WelcomeGreeting.RETURNING.name)
+                                }
                             },
                             onNavigateToSignUp = { navigator.navigateToSignUp() },
                             onNavigateToForgotPassword = { navigator.navigateToResetPassword() }
@@ -172,8 +194,12 @@ fun NavigationRoot(
                     entry<Route.Auth.SignUp> {
                         SignUpRoot(
                             onNavigateToHome = {
-                                welcomeSignal.request(WelcomeGreeting.NEW)
                                 navigator.clearBackstackAndNavigate(Route.Main.Journal)
+                                if (onboardingCompleted) {
+                                    welcomeSignal.request(WelcomeGreeting.NEW)
+                                } else {
+                                    navigator.navigateToOnboarding(WelcomeGreeting.NEW.name)
+                                }
                             },
                             onNavigateToSignIn = { navigator.navigateToSignIn() }
                         )
@@ -195,7 +221,8 @@ fun NavigationRoot(
                     entry<Route.Main.Insights> {
                         InsightsRoot(
                             onViewFullReflection = { navigator.navigateToWeeklyReflection() },
-                            onNavigateToPaywall = { navigator.navigateToPaywall() }
+                            onNavigateToPaywall = { navigator.navigateToPaywall() },
+                            onNavigateToPlaces = { navigator.navigateToPlaces() }
                         )
                     }
                     entry<Route.Profile> {
@@ -245,6 +272,9 @@ fun NavigationRoot(
                             onBack = navigator::goBack,
                             onOpenMoment = { navigator.navigateToMomentDetail(it) }
                         )
+                    }
+                    entry<Route.Places> {
+                        PlacesRoot(onBack = navigator::goBack)
                     }
                     entry<Route.CreateMoment> {
                         CreateMomentRoot(

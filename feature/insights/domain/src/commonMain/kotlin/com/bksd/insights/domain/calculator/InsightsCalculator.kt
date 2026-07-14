@@ -182,7 +182,6 @@ class InsightsCalculator(
             .groupBy { it.lowercase() }
             .map { (_, names) -> PlaceCount(names.first(), names.size) }
             .sortedByDescending { it.count }
-            .take(4)
             .toList()
 
     private fun stateOf(displayName: String): String? {

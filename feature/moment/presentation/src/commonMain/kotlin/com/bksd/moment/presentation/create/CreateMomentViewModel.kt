@@ -19,6 +19,7 @@ import com.bksd.core.domain.model.MediaType
 import com.bksd.core.domain.model.Moment
 import com.bksd.core.domain.model.PlaybackState
 import com.bksd.core.domain.model.Url
+import com.bksd.core.domain.model.isPendingUpload
 import com.bksd.core.domain.repository.MediaRepository
 import com.bksd.core.domain.storage.AudioPlayer
 import com.bksd.core.domain.storage.VoiceRecorder
@@ -29,12 +30,12 @@ import com.bksd.core.presentation.util.toFormattedTime
 import com.bksd.moment.domain.usecase.SaveMomentUseCase
 import com.bksd.reflection.domain.usecase.RequestEntryAnalysisUseCase
 import kotlinx.coroutines.launch
+import com.bksd.core.presentation.formatMonthDay
 import com.bksd.core.presentation.labelRes
 import com.bksd.moment.presentation.Res
 import com.bksd.moment.presentation.create.mappers.toLocationData
 import com.bksd.moment.presentation.create.mappers.toLocationInfoUiModel
 import com.bksd.moment.presentation.entry_untitled
-import com.bksd.moment.presentation.error_attachment_save_failed
 import com.bksd.moment.presentation.error_audio_permission_required
 import com.bksd.moment.presentation.error_camera_permission_denied
 import com.bksd.moment.presentation.error_file_too_large
@@ -48,7 +49,6 @@ import com.bksd.moment.presentation.error_playback_failed
 import com.bksd.moment.presentation.error_recording_save_failed
 import com.bksd.moment.presentation.error_recording_start_failed
 import com.bksd.moment.presentation.success_moment_saved
-import com.bksd.moment.presentation.success_moment_saved_without_attachment
 import com.bksd.moment.presentation.timestamp_today_format
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -100,11 +100,11 @@ class CreateMomentViewModel(
         launch {
             val formatted = getString(Res.string.timestamp_today_format, now.toFormattedTime())
             val date = now.toLocalDateTime(TimeZone.currentSystemDefault()).date
-            val month = date.month.name.lowercase().replaceFirstChar { it.uppercase() }
+            val headline = formatMonthDay(date)
             updateState {
                 it.copy(
                     timestampFormatted = formatted,
-                    dateHeadline = "$month ${date.day}"
+                    dateHeadline = headline
                 )
             }
         }
@@ -116,16 +116,6 @@ class CreateMomentViewModel(
         launch {
             audioPlayer.playbackState.collect { playbackState ->
                 updateState { it.copy(playbackState = playbackState) }
-            }
-        }
-        launch {
-            audioPlayer.playbackAmplitudes.collect { amplitudes ->
-                updateState { it.copy(playbackAmplitudes = amplitudes.toImmutableList()) }
-            }
-        }
-        launch {
-            audioPlayer.currentPositionMs.collect { positionMs ->
-                updateState { it.copy(playbackPositionFormatted = formatMs(positionMs)) }
             }
         }
         launch {
@@ -465,8 +455,7 @@ class CreateMomentViewModel(
             }
             val momentId = Uuid.random().toString()
 
-            val uploadedAttachments = mutableListOf<Attachment>()
-            var attachmentFailed = false
+            val savedAttachments = mutableListOf<Attachment>()
 
             for (uiModel in attachmentsToSave) {
                 val draft = when (uiModel) {
@@ -495,19 +484,11 @@ class CreateMomentViewModel(
                     )
                 }
 
-                when (val result = mediaRepository.uploadAttachment(draft, userId, momentId)) {
-                    is Result.Success -> uploadedAttachments.add(result.data)
-                    is Result.Error -> attachmentFailed = true
+                val attachment = when (val result = mediaRepository.uploadAttachment(draft, userId, momentId)) {
+                    is Result.Success -> result.data
+                    is Result.Error -> mediaRepository.pendingAttachment(draft)
                 }
-            }
-
-            // Don't discard the written entry when an attachment upload fails (e.g. offline).
-            // Only bail when there is nothing worth keeping — a media-only entry whose media
-            // all failed — so the user can retry it once back online.
-            if (uploadedAttachments.isEmpty() && currentState.body.isBlank()) {
-                updateState { it.copy(isSaving = false) }
-                sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_attachment_save_failed)))
-                return@launch
+                savedAttachments.add(attachment)
             }
 
             val newMoment = Moment(
@@ -517,7 +498,7 @@ class CreateMomentViewModel(
                 createdAt = clock.now(),
                 moods = currentState.selectedMoods.toList(),
                 tags = currentState.tags.toList(),
-                attachments = uploadedAttachments.toList(),
+                attachments = savedAttachments.toList(),
                 location = currentState.location?.toLocationData()
             )
 
@@ -528,7 +509,7 @@ class CreateMomentViewModel(
             when (result) {
                 is Result.Error -> {
                     sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_moment_save_failed)))
-                    cleanupUploaded(uploadedAttachments)
+                    cleanupUploaded(savedAttachments)
                 }
 
                 is Result.Success -> {
@@ -547,12 +528,7 @@ class CreateMomentViewModel(
                             }
                         }
                     }
-                    val savedMessage = if (attachmentFailed) {
-                        Res.string.success_moment_saved_without_attachment
-                    } else {
-                        Res.string.success_moment_saved
-                    }
-                    sendEvent(CreateMomentEvent.ShowSaveSuccess(UiText.Resource(savedMessage)))
+                    sendEvent(CreateMomentEvent.ShowSaveSuccess(UiText.Resource(Res.string.success_moment_saved)))
                     sendEvent(CreateMomentEvent.NavigateBack)
                 }
             }
@@ -560,6 +536,6 @@ class CreateMomentViewModel(
     }
 
     private suspend fun cleanupUploaded(attachments: List<Attachment>) {
-        attachments.forEach { mediaRepository.deleteAttachment(it) }
+        attachments.filterNot { it.isPendingUpload }.forEach { mediaRepository.deleteAttachment(it) }
     }
 }

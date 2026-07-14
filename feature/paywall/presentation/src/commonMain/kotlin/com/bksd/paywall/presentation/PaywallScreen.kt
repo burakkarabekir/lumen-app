@@ -19,6 +19,7 @@ import androidx.compose.material.icons.automirrored.filled.ShowChart
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Image
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -163,6 +164,15 @@ internal fun PaywallScreen(
                     isLoading = state.isLoading,
                     style = AppButtonStyle.PRIMARY
                 )
+            } else if (state.isLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = MaterialTheme.dimens.spacing.xxxl),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+                }
             } else {
                 state.tiers.forEach { tier ->
                     PricingTierCard(
@@ -286,7 +296,8 @@ private fun PaywallScreenPreview() {
                     )
                 ),
                 selectedTier = yearlyTier,
-                isProcessing = false
+                isProcessing = false,
+                isLoading = false
             ),
             onAction = {}
         )

@@ -31,6 +31,8 @@ val ExtendedColors.insightsStreakGradient: List<Color>
     get() = listOf(InsightsStreakGradientStart, InsightsStreakGradientEnd)
 val ExtendedColors.insightsPlacesGradient: List<Color>
     get() = listOf(InsightsPlacesGradientStart, InsightsPlacesGradientEnd)
+val ExtendedColors.insightsPlacesLightGradient: List<Color>
+    get() = listOf(InsightsPlacesLightGradientStart, InsightsPlacesLightGradientEnd)
 val ExtendedColors.insightsWrittenGradient: List<Color>
     get() = listOf(InsightsWrittenGradientStart, InsightsWrittenGradientEnd)
 val ExtendedColors.insightsJournaledGradient: List<Color>

@@ -52,6 +52,10 @@ import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
 import com.bksd.core.design_system.theme.favorite
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
+import com.bksd.journal.presentation.Res
+import com.bksd.journal.presentation.edit
+import com.bksd.journal.presentation.save_changes
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun DetailBottomActionBar(
@@ -156,7 +160,9 @@ fun DetailBottomActionBar(
                                 modifier = Modifier.size(MaterialTheme.dimens.icon.md)
                             )
                             Text(
-                                text = if (editing) "Save Changes" else "Edit",
+                                text = stringResource(
+                                    if (editing) Res.string.save_changes else Res.string.edit
+                                ),
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.ExtraBold,
                                 color = Color.White

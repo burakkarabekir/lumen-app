@@ -3,6 +3,7 @@ package com.bksd.journal.data.remote
 import com.bksd.core.domain.location.LocationData
 import com.bksd.core.domain.mapper.Mapper
 import com.bksd.core.domain.model.Moment
+import com.bksd.core.domain.model.isPendingUpload
 
 class MomentToDtoMapper : Mapper<Moment, MomentDto> {
 
@@ -14,7 +15,9 @@ class MomentToDtoMapper : Mapper<Moment, MomentDto> {
         moods = input.moods.map { it.name },
         tags = input.tags,
         location = input.location?.toDto(),
-        attachments = input.attachments.map { it.toAttachmentDto() },
+        attachments = input.attachments
+            .filterNot { it.isPendingUpload }
+            .map { it.toAttachmentDto() },
         isFavorite = input.isFavorite
     )
 

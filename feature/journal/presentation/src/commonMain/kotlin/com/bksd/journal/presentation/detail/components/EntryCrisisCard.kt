@@ -2,7 +2,6 @@ package com.bksd.journal.presentation.detail.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,6 +30,7 @@ import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
 import com.bksd.journal.presentation.Res
+import com.bksd.journal.presentation.ai_crisis_message
 import com.bksd.journal.presentation.ai_crisis_title
 import com.bksd.reflection.domain.model.EntryAnalysis
 import com.bksd.reflection.domain.model.MomentReflection
@@ -44,10 +44,6 @@ fun EntryCrisisCard(
     modifier: Modifier = Modifier,
 ) {
     val c = MaterialTheme.colorScheme.extended.crisisCard
-    val resources = buildList {
-        add(reflection.emergency)
-        addAll(reflection.crisisLines)
-    }
 
     Column(
         modifier = modifier
@@ -83,7 +79,7 @@ fun EntryCrisisCard(
         }
 
         Text(
-            text = reflection.message,
+            text = stringResource(Res.string.ai_crisis_message),
             fontSize = 14.5.sp,
             lineHeight = 23.5.sp,
             fontWeight = FontWeight.Medium,
@@ -91,19 +87,11 @@ fun EntryCrisisCard(
             modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.lg)
         )
 
-        Column(
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
+        SupportComingSoonNote(
+            textColor = c.title,
+            background = c.rowBg,
             modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.lg)
-        ) {
-            resources.forEach { resource ->
-                SupportResourceRow(
-                    resource = resource,
-                    accent = c.accent,
-                    rowBackground = c.rowBg,
-                    labelColor = c.title
-                )
-            }
-        }
+        )
     }
 }
 

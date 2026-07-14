@@ -129,4 +129,31 @@
         <item>temple</item>
         <item>palace</item>
     </string-array>
+    <string name="places_title">Places</string>
+    <string name="places_search_hint">Search places</string>
+    <string name="places_show_more">Show more</string>
+    <string name="places_empty">No places yet</string>
+    <string name="places_no_results">No matching places</string>
+    <string name="place_last">Last %1$s</string>
+    <string name="month_abbr_jan">Jan</string>
+    <string name="month_abbr_feb">Feb</string>
+    <string name="month_abbr_mar">Mar</string>
+    <string name="month_abbr_apr">Apr</string>
+    <string name="month_abbr_may">May</string>
+    <string name="month_abbr_jun">Jun</string>
+    <string name="month_abbr_jul">Jul</string>
+    <string name="month_abbr_aug">Aug</string>
+    <string name="month_abbr_sep">Sep</string>
+    <string name="month_abbr_oct">Oct</string>
+    <string name="month_abbr_nov">Nov</string>
+    <string name="month_abbr_dec">Dec</string>
+    <plurals name="places_header">
+        <item quantity="one">%1$d PLACE · SORTED BY ENTRIES</item>
+        <item quantity="other">%1$d PLACES · SORTED BY ENTRIES</item>
+    </plurals>
+    <plurals name="place_entry_count">
+        <item quantity="one">%1$d entry</item>
+        <item quantity="other">%1$d entries</item>
+    </plurals>
+    <string name="place_date">%1$s %2$d</string>
 </resources>

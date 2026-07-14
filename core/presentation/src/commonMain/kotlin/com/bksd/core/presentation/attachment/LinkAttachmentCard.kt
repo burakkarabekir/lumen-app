@@ -34,6 +34,9 @@ import com.bksd.core.design_system.theme.attachmentLink
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
+import com.bksd.core.presentation.Res
+import com.bksd.core.presentation.attachment_label_link
+import org.jetbrains.compose.resources.stringResource
 
 private val LinkTileColors = listOf(Color(0xFFA98FD6), Color(0xFF8A6FBF))
 
@@ -85,7 +88,7 @@ fun LinkAttachmentCard(
     AttachmentCardChrome(
         badgeColor = MaterialTheme.colorScheme.extended.attachmentLink,
         badgeIcon = Icons.Default.Link,
-        title = "Link",
+        title = stringResource(Res.string.attachment_label_link),
         onRemove = onRemove,
         modifier = modifier
     ) {

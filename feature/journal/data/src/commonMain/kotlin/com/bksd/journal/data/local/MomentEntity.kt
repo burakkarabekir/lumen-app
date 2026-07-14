@@ -17,5 +17,6 @@ data class MomentEntity(
     val attachments: String,
     val isFavorite: Boolean = false,
     val pendingSync: Boolean = false,
-    val pendingDelete: Boolean = false
+    val pendingDelete: Boolean = false,
+    val pendingUpload: Boolean = false
 )

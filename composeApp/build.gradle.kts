@@ -19,6 +19,8 @@ kotlin {
             implementation(projects.core.presentation)
             implementation(projects.core.designSystem)
 
+            implementation(projects.feature.onboarding.data)
+            implementation(projects.feature.onboarding.domain)
             implementation(projects.feature.onboarding.presentation)
             implementation(projects.feature.auth.data)
             implementation(projects.feature.auth.domain)

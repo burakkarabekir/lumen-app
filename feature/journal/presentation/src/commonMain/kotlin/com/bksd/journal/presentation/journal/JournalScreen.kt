@@ -38,6 +38,7 @@ import com.bksd.journal.presentation.model.MomentUi
 import com.bksd.core.domain.model.PlaybackState
 import com.bksd.core.presentation.link.LinkConfirmationDialog
 import com.bksd.core.presentation.link.toOpenableWebUrl
+import com.bksd.core.presentation.snackbar.SnackbarController
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.journal.presentation.Res
 import com.bksd.journal.presentation.components.DeleteMomentConfirmDialog
@@ -66,6 +67,7 @@ fun JournalRoot(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val formatter = koinInject<MomentFormatter>()
     val timeZone = koinInject<TimeZone>()
+    val snackbarController = koinInject<SnackbarController>()
 
     val listState = rememberLazyListState()
 
@@ -73,9 +75,7 @@ fun JournalRoot(
         when (event) {
             is JournalEvent.NavigateToDetail -> onNavigateToDetail(event.momentId, event.isEditing)
             is JournalEvent.NavigateToProfile -> onNavigateToProfile()
-            is JournalEvent.ShowError -> {
-                println("Journal Error: ${event.error}")
-            }
+            is JournalEvent.ShowError -> snackbarController.show(event.error)
         }
     }
 

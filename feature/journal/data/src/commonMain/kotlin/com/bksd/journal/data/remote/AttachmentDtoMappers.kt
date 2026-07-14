@@ -13,19 +13,25 @@ fun AttachmentDto.toAttachment(): Attachment {
     return when (this) {
         is AttachmentDto.Photo -> PhotoAttachment(
             id = attachmentId,
-            remoteUrl = Url(remoteUrl)
+            remoteUrl = Url(remoteUrl),
+            localUri = localUri,
+            pendingUpload = pendingUpload
         )
 
         is AttachmentDto.Video -> VideoAttachment(
             id = attachmentId,
             remoteUrl = Url(remoteUrl),
-            durationMs = durationMs
+            durationMs = durationMs,
+            localUri = localUri,
+            pendingUpload = pendingUpload
         )
 
         is AttachmentDto.Audio -> AudioAttachment(
             id = attachmentId,
             remoteUrl = Url(remoteUrl),
-            durationMs = durationMs
+            durationMs = durationMs,
+            localUri = localUri,
+            pendingUpload = pendingUpload
         )
 
         is AttachmentDto.Link -> LinkAttachment(
@@ -38,19 +44,25 @@ fun AttachmentDto.toAttachment(): Attachment {
 fun Attachment.toAttachmentDto(): AttachmentDto = when (this) {
     is PhotoAttachment -> AttachmentDto.Photo(
         id = id.value,
-        remoteUrl = remoteUrl.value
+        remoteUrl = remoteUrl.value,
+        localUri = localUri,
+        pendingUpload = pendingUpload
     )
 
     is VideoAttachment -> AttachmentDto.Video(
         id = id.value,
         remoteUrl = remoteUrl.value,
-        durationMs = durationMs
+        durationMs = durationMs,
+        localUri = localUri,
+        pendingUpload = pendingUpload
     )
 
     is AudioAttachment -> AttachmentDto.Audio(
         id = id.value,
         remoteUrl = remoteUrl.value,
-        durationMs = durationMs
+        durationMs = durationMs,
+        localUri = localUri,
+        pendingUpload = pendingUpload
     )
 
     is LinkAttachment -> AttachmentDto.Link(

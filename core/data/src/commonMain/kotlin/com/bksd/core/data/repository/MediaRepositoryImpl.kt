@@ -17,9 +17,11 @@ import com.bksd.core.domain.model.PhotoAttachment
 import com.bksd.core.domain.model.Url
 import com.bksd.core.domain.model.VideoAttachment
 import com.bksd.core.domain.repository.MediaRepository
+import com.bksd.core.data.storage.PlatformFileStorage
 
 class MediaRepositoryImpl(
-    private val storageDataSource: SupabaseStorageDataSource
+    private val storageDataSource: SupabaseStorageDataSource,
+    private val fileStorage: PlatformFileStorage
 ) : MediaRepository {
 
     override suspend fun uploadAttachment(
@@ -47,6 +49,33 @@ class MediaRepositoryImpl(
                 AudioAttachment(id = draft.id, remoteUrl = Url(path), durationMs = draft.durationMs)
             }
         }
+    }
+
+    override suspend fun pendingAttachment(draft: DraftAttachment): Attachment = when (draft) {
+        is DraftLink -> LinkAttachment(id = draft.id, url = draft.url)
+
+        is DraftPhoto -> PhotoAttachment(
+            id = draft.id,
+            remoteUrl = Url(""),
+            localUri = fileStorage.persistToFiles(draft.localUri),
+            pendingUpload = true
+        )
+
+        is DraftVideo -> VideoAttachment(
+            id = draft.id,
+            remoteUrl = Url(""),
+            durationMs = draft.durationMs,
+            localUri = fileStorage.persistToFiles(draft.localUri),
+            pendingUpload = true
+        )
+
+        is DraftAudio -> AudioAttachment(
+            id = draft.id,
+            remoteUrl = Url(""),
+            durationMs = draft.durationMs,
+            localUri = fileStorage.persistToFiles(draft.localUri),
+            pendingUpload = true
+        )
     }
 
     private suspend inline fun uploadAndMap(

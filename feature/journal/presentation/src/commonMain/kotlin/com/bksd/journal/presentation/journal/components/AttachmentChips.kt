@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -20,7 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Link
-import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -55,9 +53,9 @@ import com.bksd.core.domain.model.PhotoAttachment
 import com.bksd.core.domain.model.PlaybackState
 import com.bksd.core.domain.model.Url
 import com.bksd.core.domain.model.VideoAttachment
+import com.bksd.core.presentation.attachment.VoicePlayerPill
 import com.bksd.journal.presentation.util.MomentFormatter
-
-private val WaveformHeights = listOf(7, 12, 17, 10, 14, 8, 11, 16, 9, 7)
+import kotlin.time.Instant
 
 private fun chipLinkHost(url: String): String {
     var s = url.trim()
@@ -81,7 +79,6 @@ fun AttachmentChips(
     if (attachments.isEmpty()) return
     val palette = rememberNewEntryPalette()
     val chipBg = lerp(palette.surface, palette.text, 0.06f)
-    val idleBar = palette.sub.copy(alpha = 0.4f)
     val videoChipColors = MaterialTheme.colorScheme.extended.attachmentChipVideoTile
     val linkChipTileColors = MaterialTheme.colorScheme.extended.attachmentChipLinkTile
     val playIconTint = MaterialTheme.colorScheme.extended.attachmentChipPlayIcon
@@ -138,56 +135,17 @@ fun AttachmentChips(
                     }
                 }
 
-                is AudioAttachment -> {
-                    val isPlaying = playbackState == PlaybackState.PLAYING
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
-                        modifier = Modifier
-                            .height(MaterialTheme.dimens.size.fab)
-                            .clip(RoundedCornerShape(MaterialTheme.dimens.radius.lg))
-                            .background(chipBg)
-                            .padding(start = MaterialTheme.dimens.spacing.sm, end = MaterialTheme.dimens.spacing.lg)
-                    ) {
-                        Box(
-                            contentAlignment = Alignment.Center,
-                            modifier = Modifier
-                                .size(MaterialTheme.dimens.icon.avatar)
-                                .clip(CircleShape)
-                                .background(accentColor)
-                                .clickable { if (isPlaying) onAudioPauseClick() else onAudioPlayClick() }
-                        ) {
-                            Icon(
-                                imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,
-                                contentDescription = null,
-                                tint = Color.White,
-                                modifier = Modifier.size(MaterialTheme.dimens.icon.xs)
-                            )
-                        }
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.xxs)
-                        ) {
-                            WaveformHeights.forEachIndexed { index, h ->
-                                Box(
-                                    modifier = Modifier
-                                        .width(MaterialTheme.dimens.icon.xs)
-                                        .height(h.dp)
-                                        .clip(RoundedCornerShape(MaterialTheme.dimens.radius.xs))
-                                        .background(if (index < 4) accentColor else idleBar)
-                                )
-                            }
-                        }
-                        Text(
-                            text = if (attachment.durationMs > 0) formatter.formatDuration(
-                                attachment.durationMs
-                            ) else "0:00",
-                            fontSize = 11.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = palette.sub
-                        )
-                    }
-                }
+                is AudioAttachment -> VoicePlayerPill(
+                    playbackState = playbackState,
+                    durationFormatted = if (attachment.durationMs > 0) {
+                        formatter.formatDuration(attachment.durationMs)
+                    } else {
+                        "0:00"
+                    },
+                    accentColor = accentColor,
+                    onPlay = onAudioPlayClick,
+                    onPause = onAudioPauseClick
+                )
 
                 is LinkAttachment -> Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -242,7 +200,7 @@ private fun AttachmentChipsPreview() {
                 ),
                 accentColor = AttachmentChipLinkAccent,
                 formatter = object : MomentFormatter {
-                    override fun formatTime(instant: kotlin.time.Instant) = "9:41 AM"
+                    override fun formatTime(instant: Instant) = "9:41 AM"
                     override fun formatDuration(ms: Long) = "0:03"
                 },
                 playbackState = PlaybackState.STOPPED,

@@ -11,6 +11,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun InsightsRoot(
     onViewFullReflection: () -> Unit,
     onNavigateToPaywall: () -> Unit,
+    onNavigateToPlaces: () -> Unit,
 ) {
     val viewModel = koinViewModel<InsightsViewModel>()
     val state by viewModel.state.collectAsState()
@@ -24,6 +25,7 @@ fun InsightsRoot(
     InsightsScreen(
         state = state,
         onAction = viewModel::onAction,
+        onNavigateToPlaces = onNavigateToPlaces,
         reflectionSlot = {
             WeeklyReflectionRoot(
                 onViewFullReflection = onViewFullReflection,

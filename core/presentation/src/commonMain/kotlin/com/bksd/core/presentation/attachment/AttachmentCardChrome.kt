@@ -37,6 +37,9 @@ import com.bksd.core.design_system.theme.attachmentRemove
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
+import com.bksd.core.presentation.Res
+import com.bksd.core.presentation.cd_remove_attachment
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun AttachmentCardChrome(
@@ -97,7 +100,7 @@ internal fun AttachmentCardChrome(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = "Remove attachment",
+                        contentDescription = stringResource(Res.string.cd_remove_attachment),
                         tint = MaterialTheme.colorScheme.extended.attachmentRemove,
                         modifier = Modifier.size(MaterialTheme.dimens.icon.sm)
                     )

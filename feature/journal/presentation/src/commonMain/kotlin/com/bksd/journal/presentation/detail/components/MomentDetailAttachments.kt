@@ -32,17 +32,14 @@ import com.bksd.core.presentation.attachment.VoiceAttachmentCard
 import com.bksd.journal.presentation.Res
 import com.bksd.journal.presentation.attachments_section
 import com.bksd.journal.presentation.util.MomentFormatter
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
+import kotlin.time.Instant
 
 @Composable
 fun MomentDetailAttachments(
     attachments: List<Attachment>,
     audioPlaybackState: PlaybackState,
-    audioCurrentPosition: String,
     audioDuration: String,
-    audioAmplitudes: ImmutableList<Float>,
     onAudioPlayClick: () -> Unit,
     onAudioPauseClick: () -> Unit,
     formatter: MomentFormatter,
@@ -93,8 +90,6 @@ fun MomentDetailAttachments(
 
                 is AudioAttachment -> VoiceAttachmentCard(
                     playbackState = audioPlaybackState,
-                    amplitudes = audioAmplitudes,
-                    positionFormatted = audioCurrentPosition,
                     durationFormatted = if (attachment.durationMs > 0) {
                         formatter.formatDuration(attachment.durationMs)
                     } else audioDuration,
@@ -125,13 +120,11 @@ private fun MomentDetailAttachmentsPreview() {
                     LinkAttachment(AttachmentId("2"), Url("https://www.alltrails.com/trail"))
                 ),
                 audioPlaybackState = PlaybackState.STOPPED,
-                audioCurrentPosition = "0:00",
                 audioDuration = "0:42",
-                audioAmplitudes = persistentListOf(),
                 onAudioPlayClick = {},
                 onAudioPauseClick = {},
                 formatter = object : MomentFormatter {
-                    override fun formatTime(instant: kotlin.time.Instant) = "9:41 AM"
+                    override fun formatTime(instant: Instant) = "9:41 AM"
                     override fun formatDuration(ms: Long) = "0:18"
                 },
                 onRemove = {}

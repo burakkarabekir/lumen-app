@@ -153,4 +153,31 @@
         <item>kilise</item>
         <item>türbe</item>
     </string-array>
+    <string name="places_title">Yerler</string>
+    <string name="places_search_hint">Yer ara</string>
+    <string name="places_show_more">Daha fazla</string>
+    <string name="places_empty">Henüz yer yok</string>
+    <string name="places_no_results">Eşleşen yer yok</string>
+    <string name="place_last">En son %1$s</string>
+    <string name="month_abbr_jan">Oca</string>
+    <string name="month_abbr_feb">Şub</string>
+    <string name="month_abbr_mar">Mar</string>
+    <string name="month_abbr_apr">Nis</string>
+    <string name="month_abbr_may">May</string>
+    <string name="month_abbr_jun">Haz</string>
+    <string name="month_abbr_jul">Tem</string>
+    <string name="month_abbr_aug">Ağu</string>
+    <string name="month_abbr_sep">Eyl</string>
+    <string name="month_abbr_oct">Eki</string>
+    <string name="month_abbr_nov">Kas</string>
+    <string name="month_abbr_dec">Ara</string>
+    <plurals name="places_header">
+        <item quantity="one">%1$d YER · KAYITLARA GÖRE SIRALI</item>
+        <item quantity="other">%1$d YER · KAYITLARA GÖRE SIRALI</item>
+    </plurals>
+    <plurals name="place_entry_count">
+        <item quantity="one">%1$d kayıt</item>
+        <item quantity="other">%1$d kayıt</item>
+    </plurals>
+    <string name="place_date">%2$d %1$s</string>
 </resources>

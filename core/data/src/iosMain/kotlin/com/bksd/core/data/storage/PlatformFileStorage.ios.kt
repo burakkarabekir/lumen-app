@@ -11,9 +11,11 @@ import platform.Foundation.NSData
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager
 import platform.Foundation.NSSearchPathForDirectoriesInDomains
+import platform.Foundation.NSUUID
 import platform.Foundation.NSUserDomainMask
 import platform.Foundation.create
 import platform.Foundation.writeToFile
+import kotlin.coroutines.cancellation.CancellationException
 
 actual class PlatformFileStorage {
     actual suspend fun saveImage(bytes: ByteArray, fileName: String): String {
@@ -42,6 +44,31 @@ actual class PlatformFileStorage {
             }
             nsData.writeToFile(filePath, atomically = true)
             filePath
+        }
+    }
+
+    actual suspend fun persistToFiles(localPath: String): String = withContext(Dispatchers.IO) {
+        try {
+            val fileManager = NSFileManager.defaultManager
+            if (!fileManager.fileExistsAtPath(localPath)) return@withContext localPath
+            val documentsDir = NSSearchPathForDirectoriesInDomains(
+                NSDocumentDirectory,
+                NSUserDomainMask,
+                true
+            ).first() as String
+            val dir = "$documentsDir/pending_media"
+            if (!fileManager.fileExistsAtPath(dir)) {
+                fileManager.createDirectoryAtPath(dir, true, null, null)
+            }
+            val extension = localPath.substringAfterLast('.', "")
+            val name = NSUUID().UUIDString + if (extension.isNotEmpty()) ".$extension" else ""
+            val destination = "$dir/$name"
+            fileManager.copyItemAtPath(localPath, destination, null)
+            destination
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            localPath
         }
     }
 }

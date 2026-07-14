@@ -16,6 +16,9 @@ import com.bksd.core.design_system.theme.attachmentVideo
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
+import com.bksd.core.presentation.Res
+import com.bksd.core.presentation.attachment_label_video
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun VideoAttachmentCard(
@@ -38,7 +41,7 @@ fun VideoAttachmentCard(
     AttachmentCardChrome(
         badgeColor = MaterialTheme.colorScheme.extended.attachmentVideo,
         badgeIcon = Icons.Default.Videocam,
-        title = "Video",
+        title = stringResource(Res.string.attachment_label_video),
         onRemove = onRemove,
         modifier = modifier
     ) {

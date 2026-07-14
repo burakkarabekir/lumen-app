@@ -87,6 +87,9 @@
     <string name="ai_support_title">Un momento de apoyo</string>
     <string name="ai_crisis_title">No estás solo</string>
     <string name="ai_call_resource">Llamar a %1$s</string>
+    <string name="ai_support_coming_soon">Los recursos de apoyo estarán disponibles pronto.</string>
+    <string name="ai_support_message">Parece que ahora mismo sientes que todo pesa, y eso es difícil. No tienes que cargar con esto en soledad: hablar con alguien de confianza o con un profesional de la salud mental puede marcar la diferencia. Sé amable contigo hoy.</string>
+    <string name="ai_crisis_message">Si estás pensando en hacerte daño o no te sientes a salvo, por favor busca ayuda ahora mismo. Mereces apoyo y hay personas dispuestas a escucharte y a acompañarte.</string>
 
     <!-- JournalTopBar -->
     <string name="search_moments_hint">Buscar momentos…</string>

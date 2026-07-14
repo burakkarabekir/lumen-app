@@ -107,6 +107,7 @@ val serializersConfig = SavedStateConfiguration {
             subclass(Route.MomentDetail::class, Route.MomentDetail.serializer())
             subclass(Route.CreateMoment::class, Route.CreateMoment.serializer())
             subclass(Route.WeeklyReflection::class, Route.WeeklyReflection.serializer())
+            subclass(Route.Places::class, Route.Places.serializer())
             subclass(Route.Paywall::class, Route.Paywall.serializer())
             subclass(Route.ManagePremium::class, Route.ManagePremium.serializer())
             subclass(Route.CloudSync::class, Route.CloudSync.serializer())

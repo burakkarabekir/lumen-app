@@ -22,11 +22,14 @@ import com.bksd.core.design_system.theme.rememberNewEntryPalette
 import com.bksd.core.domain.location.LocationData
 import com.bksd.core.domain.model.Moment
 import com.bksd.core.domain.model.Mood
+import com.bksd.core.presentation.snackbar.SnackbarController
 import com.bksd.core.presentation.util.ObserveAsEvents
 import com.bksd.journal.presentation.components.DeleteMomentConfirmDialog
 import com.bksd.journal.presentation.detail.components.DetailBottomActionBar
 import com.bksd.journal.presentation.detail.share.ShareMomentSheet
-import com.bksd.journal.presentation.detail.share.shareCardDateLabel
+import com.bksd.core.presentation.weekdayDateLabel
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import com.bksd.journal.presentation.model.toMomentUi
 import com.bksd.journal.presentation.util.MomentFormatter
 import kotlinx.collections.immutable.persistentListOf
@@ -35,6 +38,7 @@ import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import kotlin.time.Clock
+import kotlin.time.Instant
 
 @Composable
 fun MomentDetailRoot(
@@ -45,6 +49,7 @@ fun MomentDetailRoot(
 ) {
     val viewModel = koinViewModel<MomentDetailViewModel>(parameters = { parametersOf(momentId, isEditing) })
     val formatter = koinInject<MomentFormatter>()
+    val snackbarController = koinInject<SnackbarController>()
     val state by viewModel.state.collectAsState()
     var showShareSheet by remember { mutableStateOf(false) }
     ObserveAsEvents(viewModel.events) { event ->
@@ -52,7 +57,7 @@ fun MomentDetailRoot(
             is MomentDetailEvent.NavigateBack -> onNavigateBack()
             is MomentDetailEvent.ShowShareSheet -> showShareSheet = true
             is MomentDetailEvent.NavigateToPaywall -> onNavigateToPaywall()
-            is MomentDetailEvent.ShowError -> Unit
+            is MomentDetailEvent.ShowError -> snackbarController.show(event.error)
             is MomentDetailEvent.ShowSuccess -> Unit
         }
     }
@@ -82,7 +87,7 @@ fun MomentDetailScreen(
             if (showShareSheet) {
                 ShareMomentSheet(
                     moment = momentUi,
-                    dateLabel = shareCardDateLabel(moment.createdAt),
+                    dateLabel = weekdayDateLabel(moment.createdAt.toLocalDateTime(TimeZone.currentSystemDefault()).date),
                     onDismiss = onDismissShareSheet,
                 )
             }
@@ -205,6 +210,6 @@ private fun MomentDetailScreenEditPreview() {
 }
 
 private object PreviewFormatter : MomentFormatter {
-    override fun formatTime(instant: kotlin.time.Instant): String = "Oct 15, 2023 · 10:42 PM"
+    override fun formatTime(instant: Instant): String = "Oct 15, 2023 · 10:42 PM"
     override fun formatDuration(ms: Long): String = "0:42"
 }

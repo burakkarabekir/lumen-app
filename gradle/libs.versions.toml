@@ -23,7 +23,7 @@ androidDesugarJdkLibs = "2.1.5"
 
 # ==================== Compose ====================
 composeBom = "2026.06.01"
-compose-multiplatform = "1.11.1"
+compose-multiplatform = "1.12.0-beta01"
 compose-material3 = "1.11.0-alpha07"
 compose-icons = "1.7.3"
 
@@ -69,7 +69,7 @@ moko-permissions = "0.20.1"
 kermit = "2.1.0"
 
 # ==================== Monitoring ====================
-sentry = "8.47.0"
+sentry = "8.48.0"
 
 # ==================== Testing ====================
 junit = "4.13.2"
@@ -85,7 +85,7 @@ core = "1.7.0"
 coil = "3.5.0"
 coil-network = "3.5.0"
 
-revenuecat = "3.2.0"
+revenuecat = "3.2.1"
 
 [libraries]
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }

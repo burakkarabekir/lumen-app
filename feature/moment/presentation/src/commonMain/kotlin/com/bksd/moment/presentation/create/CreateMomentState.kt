@@ -42,8 +42,6 @@ data class CreateMomentState(
 
     // Audio playback
     val playbackState: PlaybackState = PlaybackState.STOPPED,
-    val playbackAmplitudes: ImmutableList<Float> = persistentListOf(),
-    val playbackPositionFormatted: String = "0:00",
     val playbackDurationFormatted: String = "0:00"
 ) {
     val allAttachments: PersistentList<AttachmentUiModel>

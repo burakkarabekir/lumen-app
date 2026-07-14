@@ -70,6 +70,8 @@ class Navigator(
 
     fun navigateToWeeklyReflection() = navigate(Route.WeeklyReflection)
 
+    fun navigateToPlaces() = navigate(Route.Places)
+
     // ==================== Auth Navigation ====================
 
     fun navigateToSignIn() = clearBackstackAndNavigate(Route.Auth.SignIn)
@@ -98,7 +100,7 @@ class Navigator(
 
     fun navigateToLegalDocument(url: String, title: String) = navigate(Route.LegalDocument(url, title))
 
-    fun navigateToOnboarding() = navigate(Route.Onboarding)
+    fun navigateToOnboarding(greeting: String) = navigate(Route.Onboarding(greeting))
 
     // ==================== Back Navigation ====================
 
