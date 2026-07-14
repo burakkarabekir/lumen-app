@@ -8,8 +8,7 @@ credentials = "1.6.0"
 googleid = "1.2.0"
 kotlinxCoroutinesPlayServices = "1.11.0"
 playServicesLocation = "21.4.0"
-versionCode = "1"
-versionName = "1.0"
+versionName = "1.0.1"
 
 supabase = "3.6.0"
 
