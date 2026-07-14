@@ -1,8 +1,9 @@
 #!/bin/sh
 set -e
 
+export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_NO_INSTALL_CLEANUP=1
 brew install openjdk@21
-sudo ln -sfn "$(brew --prefix openjdk@21)/libexec/openjdk.jdk" /Library/Java/JavaVirtualMachines/openjdk-21.jdk
 
 : "${SUPABASE_URL:?SUPABASE_URL env var not set}"
 : "${SUPABASE_ANON_KEY:?SUPABASE_ANON_KEY env var not set}"
