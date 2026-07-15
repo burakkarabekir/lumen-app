@@ -3,7 +3,6 @@ package com.bksd.paywall.presentation
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -48,9 +47,8 @@ fun PricingTierCard(
 
     Box(modifier = modifier.fillMaxWidth()) {
         Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { onSelect() },
+            onClick = onSelect,
+            modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(MaterialTheme.dimens.radius.lg),
             border = BorderStroke(
                 width = if (isSelected) 2.dp else 1.dp,
