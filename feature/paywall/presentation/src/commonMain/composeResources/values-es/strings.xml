@@ -13,6 +13,10 @@
     <string name="seven_day_free_trial">PRUEBA GRATIS DE 5 DÍAS</string>
     <string name="standard_access">Acceso estándar</string>
     <string name="per_month_format">%1$s al mes</string>
+    <string name="paywall_feature_media_title">Foto, vídeo y voz</string>
+    <string name="paywall_feature_media_desc">Añade una foto, un vídeo y una nota de voz a cualquier entrada (hasta 25 MB por archivo).</string>
+    <string name="paywall_feature_reflection_title">Reflexiones de IA de tu semana</string>
+    <string name="paywall_feature_reflection_desc">Insights personales y escritos sobre tus temas de los últimos 7 días, que se actualizan a medida que escribes.</string>
     <string name="paywall_pricing_unavailable">Los precios no están disponibles en este momento. Comprueba tu conexión e inténtalo de nuevo.</string>
     <string name="paywall_try_again">Reintentar</string>
     <string name="paywall_restore_none">No hay compras que restaurar.</string>

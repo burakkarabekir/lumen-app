@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.PreviewAppTheme
 import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.presentation.util.UiText
 import com.bksd.paywall.presentation.PaywallFeatureUi
 
 @Composable
@@ -52,7 +53,7 @@ fun FeatureRow(
         Spacer(modifier = Modifier.width(MaterialTheme.dimens.spacing.lg))
         Column {
             Text(
-                text = feature.title,
+                text = feature.title.asString(),
                 style = MaterialTheme.typography.titleSmall.copy(
                     fontWeight = FontWeight.SemiBold
                 ),
@@ -60,7 +61,7 @@ fun FeatureRow(
             )
             Spacer(modifier = Modifier.height(MaterialTheme.dimens.spacing.xxs))
             Text(
-                text = feature.description,
+                text = feature.description.asString(),
                 style = MaterialTheme.typography.bodySmall.copy(
                     lineHeight = 18.sp
                 ),
@@ -76,8 +77,10 @@ private fun FeatureRowPreview() {
     PreviewAppTheme(darkTheme = true) {
         FeatureRow(
             feature = PaywallFeatureUi(
-                title = "AI Weekly Reflections",
-                description = "Personal, written insights on your moods and themes every Sunday.",
+                title = UiText.Dynamic("AI Weekly Reflections"),
+                description = UiText.Dynamic(
+                    "Personal, written insights on your themes from the past week, refreshed as you write."
+                ),
                 icon = Icons.Default.AutoAwesome
             )
         )

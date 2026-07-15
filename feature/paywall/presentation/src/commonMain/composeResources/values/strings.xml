@@ -13,6 +13,10 @@
     <string name="seven_day_free_trial">5-DAY FREE TRIAL</string>
     <string name="standard_access">Standard access</string>
     <string name="per_month_format">%1$s per month</string>
+    <string name="paywall_feature_media_title">Photo, Video &amp; Voice</string>
+    <string name="paywall_feature_media_desc">Add a photo, video, and voice recording to any entry (up to 25 MB each).</string>
+    <string name="paywall_feature_reflection_title">AI Weekly Reflections</string>
+    <string name="paywall_feature_reflection_desc">Personal, written insights on your themes from the past week, refreshed as you write.</string>
     <string name="paywall_pricing_unavailable">Pricing is unavailable right now. Check your connection and try again.</string>
     <string name="paywall_try_again">Try Again</string>
     <string name="paywall_restore_none">No purchases to restore.</string>

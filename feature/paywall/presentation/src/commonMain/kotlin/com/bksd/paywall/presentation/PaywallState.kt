@@ -1,6 +1,8 @@
 package com.bksd.paywall.presentation
 
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.bksd.core.presentation.util.UiText
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -13,9 +15,10 @@ data class PaywallState(
     val loadError: Boolean = false,
 )
 
+@Stable
 data class PaywallFeatureUi(
-    val title: String,
-    val description: String,
+    val title: UiText,
+    val description: UiText,
     val icon: ImageVector
 )
 

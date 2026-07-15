@@ -13,6 +13,10 @@
     <string name="seven_day_free_trial">5 GÜNLÜK ÜCRETSİZ DENEME</string>
     <string name="standard_access">Standart erişim</string>
     <string name="per_month_format">aylık %1$s</string>
+    <string name="paywall_feature_media_title">Fotoğraf, Video ve Sesli Not</string>
+    <string name="paywall_feature_media_desc">Her kayda bir fotoğraf, bir video ve bir sesli not ekle (her biri en fazla 25 MB).</string>
+    <string name="paywall_feature_reflection_title">Son 7 Günün Yapay Zeka Yansımaları</string>
+    <string name="paywall_feature_reflection_desc">Son bir haftadaki kayıtlarında öne çıkan temalar üzerine sana özel yazılmış içgörüler. Sen yazdıkça yenilenir.</string>
     <string name="paywall_pricing_unavailable">Fiyatlandırma şu anda kullanılamıyor. Bağlantını kontrol edip tekrar dene.</string>
     <string name="paywall_try_again">Tekrar Dene</string>
     <string name="paywall_restore_none">Geri yüklenecek satın alma yok.</string>
