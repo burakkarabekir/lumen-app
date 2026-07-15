@@ -74,6 +74,7 @@ import com.bksd.journal.presentation.word_count
 import com.bksd.reflection.domain.model.EntryAnalysis
 import com.bksd.reflection.domain.model.MomentAnalysisState
 import com.bksd.reflection.domain.model.MomentReflection
+import com.bksd.reflection.domain.model.QuotaLimit
 import org.jetbrains.compose.resources.stringResource
 import kotlin.time.Clock
 import kotlin.time.Instant
@@ -209,12 +210,11 @@ fun MomentDetailReadView(
                         }
                     }
 
-                    MomentAnalysisState.QuotaExceeded -> {
+                    is MomentAnalysisState.QuotaExceeded -> {
                         Spacer(Modifier.height(MaterialTheme.dimens.spacing.xxl))
-                        if (state.isPremium) {
-                            EntryDailyLimitCard()
-                        } else {
-                            EntryReflectionUpsellCard(
+                        when (analysis.limit) {
+                            QuotaLimit.DAILY -> EntryDailyLimitCard()
+                            QuotaLimit.FREE -> EntryReflectionUpsellCard(
                                 onUnlock = { onAction(MomentDetailAction.OnUpgradeClick) }
                             )
                         }

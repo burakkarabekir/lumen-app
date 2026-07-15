@@ -1,7 +1,6 @@
 package com.bksd.journal.presentation.detail
 
 import androidx.lifecycle.viewModelScope
-import com.bksd.core.domain.billing.ObserveEntitlementUseCase
 import com.bksd.core.domain.connectivity.NetworkMonitor
 import com.bksd.core.domain.error.Result
 import com.bksd.core.domain.model.PlaybackState
@@ -39,7 +38,6 @@ class MomentDetailViewModel(
     private val updateMomentUseCase: UpdateMomentUseCase,
     private val observeEntryAnalysis: ObserveEntryAnalysisUseCase,
     private val requestEntryAnalysis: RequestEntryAnalysisUseCase,
-    private val observeEntitlement: ObserveEntitlementUseCase,
     private val audioPlayer: AudioPlayer,
     private val networkMonitor: NetworkMonitor,
     private val momentId: String,
@@ -57,7 +55,6 @@ class MomentDetailViewModel(
                 observeAudio()
                 observeAnalysis()
                 observeConnectivity()
-                observePremium()
                 hasLoadedInitialData = true
             }
         }
@@ -146,14 +143,6 @@ class MomentDetailViewModel(
                 if (analysisState == MomentAnalysisState.Pending) {
                     reconcileStalePending()
                 }
-            }
-        }
-    }
-
-    private fun observePremium() {
-        launch {
-            observeEntitlement().collect { entitlement ->
-                _state.update { it.copy(isPremium = entitlement.isPlus) }
             }
         }
     }

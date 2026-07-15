@@ -6,5 +6,7 @@ sealed interface MomentAnalysisState {
     data class Ready(val reflection: MomentReflection) : MomentAnalysisState
     data object Failed : MomentAnalysisState
     data object Offline : MomentAnalysisState
-    data object QuotaExceeded : MomentAnalysisState
+    data class QuotaExceeded(val limit: QuotaLimit) : MomentAnalysisState
 }
+
+enum class QuotaLimit { DAILY, FREE }

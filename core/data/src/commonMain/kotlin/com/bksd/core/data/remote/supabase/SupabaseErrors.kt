@@ -3,6 +3,7 @@ package com.bksd.core.data.remote.supabase
 import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.AuthErrorType
 import com.bksd.core.domain.error.NetworkErrorType
+import com.bksd.core.domain.error.QuotaErrorType
 import com.bksd.core.domain.error.Result
 import io.github.jan.supabase.auth.exception.AuthErrorCode
 import io.github.jan.supabase.auth.exception.AuthRestException
@@ -10,6 +11,10 @@ import io.github.jan.supabase.exceptions.HttpRequestException
 import io.github.jan.supabase.exceptions.RestException
 import io.ktor.client.plugins.HttpRequestTimeoutException
 import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import kotlin.coroutines.cancellation.CancellationException
 
 suspend fun <T> supabaseCall(block: suspend () -> T): Result<T, AppError> = try {
@@ -22,7 +27,7 @@ suspend fun <T> supabaseCall(block: suspend () -> T): Result<T, AppError> = try 
 
 fun mapSupabaseError(e: Throwable): AppError = when (e) {
     is AuthRestException -> mapAuthError(e)
-    is RestException -> mapHttpStatus(e.statusCode)
+    is RestException -> if (e.statusCode == 402) mapQuotaError(e.error) else mapHttpStatus(e.statusCode)
     is HttpRequestTimeoutException -> AppError.Network(NetworkErrorType.REQUEST_TIMEOUT)
     is HttpRequestException -> AppError.Network(NetworkErrorType.NO_INTERNET)
     is SerializationException -> AppError.Network(NetworkErrorType.SERIALIZATION)
@@ -56,6 +61,21 @@ private fun mapAuthError(e: AuthRestException): AppError = when (e.errorCode) {
     AuthErrorCode.SessionNotFound -> AppError.Network(NetworkErrorType.UNAUTHORIZED)
 
     else -> mapHttpStatus(e.statusCode)
+}
+
+private fun mapQuotaError(body: String): AppError {
+    val fields = runCatching {
+        Json.parseToJsonElement(body).jsonObject
+    }.getOrNull()
+    val reason = fields?.get("reason")?.jsonPrimitive?.contentOrNull
+    val error = fields?.get("error")?.jsonPrimitive?.contentOrNull
+    return when {
+        reason == "daily_limit" -> AppError.Quota(QuotaErrorType.DAILY_LIMIT)
+        reason == "weekly_limit" -> AppError.Quota(QuotaErrorType.FREE_LIMIT)
+        reason == "premium_required" -> AppError.Quota(QuotaErrorType.PREMIUM_REQUIRED)
+        error == "quota_check_failed" -> AppError.Quota(QuotaErrorType.CHECK_FAILED)
+        else -> AppError.Quota(QuotaErrorType.FREE_LIMIT)
+    }
 }
 
 private fun mapHttpStatus(status: Int): AppError = when (status) {

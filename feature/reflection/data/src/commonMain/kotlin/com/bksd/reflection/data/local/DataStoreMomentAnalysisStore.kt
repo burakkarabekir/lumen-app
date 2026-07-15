@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.bksd.reflection.domain.model.EntryAnalysis
 import com.bksd.reflection.domain.model.MomentAnalysisState
 import com.bksd.reflection.domain.model.MomentReflection
+import com.bksd.reflection.domain.model.QuotaLimit
 import com.bksd.reflection.domain.repository.MomentAnalysisStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -16,7 +17,7 @@ import kotlinx.serialization.json.Json
 import kotlin.time.Clock
 
 @Serializable
-internal enum class AnalysisStatus { PENDING, READY, FAILED, OFFLINE, QUOTA_EXCEEDED }
+internal enum class AnalysisStatus { PENDING, READY, FAILED, OFFLINE, QUOTA_EXCEEDED, QUOTA_DAILY, QUOTA_FREE }
 
 @Serializable
 internal data class StoredAnalysis(
@@ -40,8 +41,17 @@ class DataStoreMomentAnalysisStore(
     override suspend fun setResult(momentId: String, reflection: MomentReflection) =
         put(momentId, AnalysisStatus.READY, reflection)
 
-    override suspend fun setFailed(momentId: String, quotaExceeded: Boolean) =
-        put(momentId, if (quotaExceeded) AnalysisStatus.QUOTA_EXCEEDED else AnalysisStatus.FAILED, null)
+    override suspend fun setFailed(momentId: String) = put(momentId, AnalysisStatus.FAILED, null)
+
+    override suspend fun setQuotaExceeded(momentId: String, limit: QuotaLimit) =
+        put(
+            momentId,
+            when (limit) {
+                QuotaLimit.DAILY -> AnalysisStatus.QUOTA_DAILY
+                QuotaLimit.FREE -> AnalysisStatus.QUOTA_FREE
+            },
+            null
+        )
 
     override suspend fun setOffline(momentId: String) = put(momentId, AnalysisStatus.OFFLINE, null)
 
@@ -73,7 +83,9 @@ class DataStoreMomentAnalysisStore(
     private fun StoredAnalysis?.toState(): MomentAnalysisState = when {
         this == null -> MomentAnalysisState.None
         status == AnalysisStatus.PENDING -> MomentAnalysisState.Pending
-        status == AnalysisStatus.QUOTA_EXCEEDED -> MomentAnalysisState.QuotaExceeded
+        status == AnalysisStatus.QUOTA_DAILY -> MomentAnalysisState.QuotaExceeded(QuotaLimit.DAILY)
+        status == AnalysisStatus.QUOTA_FREE ||
+            status == AnalysisStatus.QUOTA_EXCEEDED -> MomentAnalysisState.QuotaExceeded(QuotaLimit.FREE)
         status == AnalysisStatus.OFFLINE -> MomentAnalysisState.Offline
         status == AnalysisStatus.FAILED -> MomentAnalysisState.Failed
         reflection != null -> MomentAnalysisState.Ready(reflection)

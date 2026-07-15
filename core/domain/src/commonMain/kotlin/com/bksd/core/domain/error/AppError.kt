@@ -5,7 +5,15 @@ sealed interface AppError {
     data class Auth(val type: AuthErrorType) : AppError
     data class Media(val type: MediaErrorType) : AppError
     data class Location(val type: LocationErrorType) : AppError
+    data class Quota(val type: QuotaErrorType) : AppError
     data class Unknown(val message: String) : AppError
+}
+
+enum class QuotaErrorType {
+    DAILY_LIMIT,
+    FREE_LIMIT,
+    PREMIUM_REQUIRED,
+    CHECK_FAILED
 }
 
 enum class MediaErrorType {
