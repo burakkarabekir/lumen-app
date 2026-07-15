@@ -8,12 +8,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -35,9 +38,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -79,6 +84,8 @@ import org.jetbrains.compose.resources.stringResource
 import kotlin.time.Clock
 import kotlin.time.Instant
 
+private val HeroHeight = 264.dp
+
 @Composable
 fun MomentDetailReadView(
     state: MomentDetailState,
@@ -101,7 +108,7 @@ fun MomentDetailReadView(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(264.dp)
+                    .height(HeroHeight)
                     .background(Brush.linearGradient(MaterialTheme.colorScheme.extended.coverGradient))
             ) {
                 if (coverImageUrl != null) {
@@ -276,6 +283,22 @@ fun MomentDetailReadView(
                 }
             }
         }
+
+        val topBarHeight = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() +
+                MaterialTheme.dimens.icon.tile + MaterialTheme.dimens.spacing.sm * 2
+        val fadeDistancePx = with(LocalDensity.current) {
+            (HeroHeight - topBarHeight).toPx().coerceAtLeast(1f)
+        }
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .fillMaxWidth()
+                .height(topBarHeight)
+                .drawBehind {
+                    val progress = (scrollState.value / fadeDistancePx).coerceIn(0f, 1f)
+                    drawRect(color = palette.pageBg, alpha = progress)
+                }
+        )
 
         Box(
             contentAlignment = Alignment.Center,
