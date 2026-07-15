@@ -130,6 +130,17 @@ def frame(raw_path, caption, w, h):
     return canvas.convert("RGB")
 
 
+ADAPTIVE_ICON = os.path.join(
+    HERE, os.pardir, "androidApp", "src", "main", "res", "mipmap-xxxhdpi")
+
+
+def play_icon(size=512):
+    bg = Image.open(os.path.join(ADAPTIVE_ICON, "ic_launcher_background.png"))
+    fg = Image.open(os.path.join(ADAPTIVE_ICON, "ic_launcher_foreground.png"))
+    icon = Image.alpha_composite(bg.convert("RGBA"), fg.convert("RGBA"))
+    return icon.resize((size, size), Image.LANCZOS)
+
+
 def feature_graphic(w=1024, h=500):
     canvas = gradient(w, h)
     draw = ImageDraw.Draw(canvas)
@@ -189,6 +200,10 @@ def main():
     fg = os.path.join(OUT, "play", "feature-graphic.png")
     feature_graphic().save(fg)
     print(f"feature graphic 1024x500 -> {fg}")
+
+    icon = os.path.join(OUT, "play", "icon-512.png")
+    play_icon().save(icon)
+    print(f"hi-res icon 512x512     -> {icon}")
 
 
 if __name__ == "__main__":
