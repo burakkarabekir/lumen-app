@@ -3,10 +3,14 @@
 Frame raw app captures into store-ready screenshots.
 
 Workflow:
-  1. Capture raw screens (see README.md) into screenshots/raw/<name>.png
+  1. Capture raw screens (see README.md) into screenshots/raw/<platform>/<name>.png
+     iOS:     xcrun simctl io booted screenshot screenshots/raw/ios/<name>.png
+     Android: adb exec-out screencap -p > screenshots/raw/android/<name>.png
+     A bare screenshots/raw/<name>.png is used as a fallback for either platform.
   2. Edit SHOTS below (filename -> headline caption).
   3. python3 screenshots/frame.py
-  4. Framed output lands in screenshots/framed/{ios,android}/.
+  4. Framed output lands in screenshots/framed/{ios,android}/, and the
+     Play feature graphic in screenshots/framed/play/.
 
 No device bezel — a clean caption-over-brand-gradient layout (what most
 top App Store listings use). Brand palette matches the app icon.
@@ -104,14 +108,17 @@ def frame(raw_path, caption, w, h):
         draw.text(((w - tw) / 2, y), line, font=font, fill=(255, 255, 255))
         y += lh
 
-    # screenshot: fit width, rounded + shadow, below the caption
+    # screenshot: fit below the caption, rounded + shadow
     shot = Image.open(raw_path).convert("RGBA")
-    target_w = int(w * 0.80)
-    scale = target_w / shot.width
-    shot = shot.resize((target_w, int(shot.height * scale)), Image.LANCZOS)
+    sy = int(y + h * 0.03)
+    box_w = w * 0.80
+    box_h = h - sy - h * 0.04
+    scale = min(box_w / shot.width, box_h / shot.height)
+    target_w = max(1, int(shot.width * scale))
+    target_h = max(1, int(shot.height * scale))
+    shot = shot.resize((target_w, target_h), Image.LANCZOS)
     shot = rounded(shot, int(target_w * 0.055))
     sx = (w - shot.width) // 2
-    sy = int(y + h * 0.03)
 
     shadow = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
     sh = Image.new("RGBA", shot.size, (0, 0, 0, 150))
@@ -123,18 +130,65 @@ def frame(raw_path, caption, w, h):
     return canvas.convert("RGB")
 
 
+def feature_graphic(w=1024, h=500):
+    canvas = gradient(w, h)
+    draw = ImageDraw.Draw(canvas)
+    safe_w = w * 0.80
+
+    title_font = load_font(int(h * 0.21))
+    tag_font = load_font(int(h * 0.072))
+    title, tag = "Lumen", "Journal your moments. Reflect with AI."
+
+    tw = draw.textlength(title, font=title_font)
+    gw = draw.textlength(tag, font=tag_font)
+    block_h = title_font.size + h * 0.06 + tag_font.size
+    y = (h - block_h) / 2
+
+    draw.text(((w - tw) / 2, y), title, font=title_font, fill=(255, 255, 255))
+    y += title_font.size + h * 0.06
+    draw.text(((w - gw) / 2, y), tag, font=tag_font, fill=(196, 214, 255))
+
+    if max(tw, gw) > safe_w:
+        print(f"  ! feature graphic: text exceeds the central 80% safe area "
+              f"({int(max(tw, gw))}px > {int(safe_w)}px)")
+    return canvas.convert("RGB")
+
+
+def source_for(platform, fname):
+    per_platform = os.path.join(RAW, platform, fname)
+    if os.path.exists(per_platform):
+        return per_platform, True
+    shared = os.path.join(RAW, fname)
+    if os.path.exists(shared):
+        return shared, False
+    return None, False
+
+
 def main():
     made = 0
     for platform, (w, h) in PRESETS.items():
         os.makedirs(os.path.join(OUT, platform), exist_ok=True)
+        missing, borrowed = [], []
         for fname, caption in SHOTS:
-            src = os.path.join(RAW, fname)
-            if not os.path.exists(src):
+            src, native = source_for(platform, fname)
+            if src is None:
+                missing.append(fname)
                 continue
-            frame(src, caption, w, h).save(
-                os.path.join(OUT, platform, fname))
+            if not native:
+                borrowed.append(fname)
+            frame(src, caption, w, h).save(os.path.join(OUT, platform, fname))
             made += 1
-    print(f"framed {made} image(s) -> {OUT}/  (add raw/*.png first if 0)")
+        if borrowed:
+            print(f"  ! {platform}: not captured on {platform}, using shared raw/: "
+                  f"{', '.join(borrowed)}")
+        if missing:
+            print(f"  ! {platform}: no source found, skipped: {', '.join(missing)}")
+    print(f"framed {made} image(s) -> {OUT}/  (add raw/<platform>/*.png first if 0)")
+
+    os.makedirs(os.path.join(OUT, "play"), exist_ok=True)
+    fg = os.path.join(OUT, "play", "feature-graphic.png")
+    feature_graphic().save(fg)
+    print(f"feature graphic 1024x500 -> {fg}")
 
 
 if __name__ == "__main__":
