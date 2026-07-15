@@ -134,11 +134,11 @@
     <string name="month_october">Octobre</string>
     <string name="month_november">Novembre</string>
     <string name="month_december">Décembre</string>
-    <string name="upsell_reflections_title">Tu as utilisé tes réflexions IA gratuites</string>
-    <string name="upsell_reflections_body">Le forfait gratuit inclut 3 réflexions IA par mois. Débloque des réflexions illimitées, des couvertures illustrées et des analyses hebdomadaires avec Lumen Plus.</string>
+    <string name="upsell_reflections_title">Tu as utilisé ta réflexion IA gratuite de la semaine</string>
+    <string name="upsell_reflections_body">Le forfait gratuit inclut 1 réflexion IA par semaine. Avec Lumen Plus, tu en as jusqu&apos;à 7 par jour, ainsi que des couvertures illustrées et des analyses hebdomadaires.</string>
     <string name="upsell_unlock_plus">Débloquer Plus</string>
     <string name="daily_limit_reflections_title">Limite quotidienne de réflexions atteinte</string>
-    <string name="daily_limit_reflections_body">Vous avez atteint votre limite de réflexions IA pour aujourd&apos;hui. Vos réflexions se renouvellent demain.</string>
+    <string name="daily_limit_reflections_body">Tu as atteint ta limite de réflexions IA pour aujourd&apos;hui. De nouvelles réflexions seront bientôt disponibles.</string>
     <string name="detail_changes_saved">Modifications enregistrées</string>
     <string name="detail_moment_deleted">Moment supprimé</string>
 </resources>

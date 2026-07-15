@@ -139,9 +139,9 @@
     <!-- Premium / Manage subscription -->
     <string name="premium_title">Lumen Plus</string>
     <string name="premium_status_plus_title">Tu profites de Lumen Plus</string>
-    <string name="premium_status_plus_subtitle">Merci de soutenir Lumen. Profite des réflexions IA illimitées et de toutes les fonctionnalités premium.</string>
+    <string name="premium_status_plus_subtitle">Merci de soutenir Lumen. Profite de jusqu&apos;à 7 réflexions IA par jour et de toutes les fonctionnalités premium.</string>
     <string name="premium_status_free_title">Tu es sur le forfait Gratuit</string>
-    <string name="premium_status_free_subtitle">Passe à Lumen Plus pour des réflexions IA illimitées, des entrées audio et vidéo, et bien plus.</string>
+    <string name="premium_status_free_subtitle">Passe à Lumen Plus pour jusqu&apos;à 7 réflexions IA par jour, des entrées audio et vidéo, et bien plus.</string>
     <string name="premium_plan">Forfait</string>
     <string name="premium_upgrade">Passer à Plus</string>
     <string name="premium_manage_subscription">Gérer l&apos;abonnement</string>
