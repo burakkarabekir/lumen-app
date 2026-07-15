@@ -135,7 +135,7 @@
     <string name="month_november">November</string>
     <string name="month_december">December</string>
     <string name="upsell_reflections_title">You&apos;ve used this week&apos;s free reflection</string>
-    <string name="upsell_reflections_body">The free plan includes 1 AI reflection a week. Lumen Plus gives you up to 7 a day, plus cover art and weekly insights.</string>
+    <string name="upsell_reflections_body">The free plan includes one AI reflection a week. Lumen Plus gives you up to 7 a day, plus written insights on your themes from the past week.</string>
     <string name="upsell_unlock_plus">Unlock Plus</string>
     <string name="daily_limit_reflections_title">Daily reflection limit reached</string>
     <string name="daily_limit_reflections_body">You&apos;ve reached today&apos;s AI reflection limit. More reflections will be available soon.</string>

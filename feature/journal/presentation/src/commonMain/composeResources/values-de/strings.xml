@@ -135,7 +135,7 @@
     <string name="month_november">November</string>
     <string name="month_december">Dezember</string>
     <string name="upsell_reflections_title">Du hast deine kostenlose Reflexion dieser Woche aufgebraucht</string>
-    <string name="upsell_reflections_body">Der kostenlose Plan enthält 1 KI-Reflexion pro Woche. Mit Lumen Plus bekommst du bis zu 7 pro Tag, dazu Cover-Bilder und wöchentliche Einblicke.</string>
+    <string name="upsell_reflections_body">Der kostenlose Plan enthält ein KI-Reflexion pro Woche. Mit Lumen Plus bekommst du bis zu 7 pro Tag – dazu ausformulierte Einblicke in deine Themen aus den letzten 7 Tagen.</string>
     <string name="upsell_unlock_plus">Plus freischalten</string>
     <string name="daily_limit_reflections_title">Tageslimit für Reflexionen erreicht</string>
     <string name="daily_limit_reflections_body">Du hast dein heutiges KI-Reflexionslimit erreicht. Bald stehen dir wieder neue Reflexionen zur Verfügung.</string>
