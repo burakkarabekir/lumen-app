@@ -25,6 +25,8 @@
 	<string>Lumen saves your shared moment cards to your photo library.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Lumen uses your location to geotag your moments.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Lumen uses your location to geotag your moments while you are using the app.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Lumen uses Face ID to unlock your private journal.</string>
 	<key>GIDClientID</key>
