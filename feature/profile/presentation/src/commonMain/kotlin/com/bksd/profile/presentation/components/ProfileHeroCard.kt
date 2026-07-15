@@ -2,6 +2,7 @@ package com.bksd.profile.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -56,7 +57,10 @@ fun ProfileHeroCard(
             .background(Brush.linearGradient(MaterialTheme.colorScheme.extended.profileHeroGradient))
             .padding(MaterialTheme.dimens.spacing.xl)
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.md)
+        ) {
             AppAvatar(
                 photoUrl = avatarUrl,
                 size = MaterialTheme.dimens.size.topBar,
@@ -65,20 +69,18 @@ fun ProfileHeroCard(
                 showBorder = true,
                 onClick = onAvatarClick
             )
-            Spacer(Modifier.width(MaterialTheme.dimens.spacing.lg))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = name,
-                    fontSize = 21.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.ExtraBold,
                     color = Color.White,
-                    maxLines = 1
                 )
                 if (subtitle.isNotBlank()) {
                     Spacer(Modifier.height(MaterialTheme.dimens.spacing.xxs))
                     Text(
                         text = subtitle,
-                        fontSize = 13.sp,
+                        fontSize = 12.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = Color.White.copy(alpha = 0.8f),
                         maxLines = 1

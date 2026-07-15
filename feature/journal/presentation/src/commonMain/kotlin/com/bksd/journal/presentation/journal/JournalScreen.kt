@@ -34,7 +34,6 @@ import com.bksd.core.design_system.component.layout.AppSurface
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.domain.model.AudioAttachment
-import com.bksd.journal.presentation.model.MomentUi
 import com.bksd.core.domain.model.PlaybackState
 import com.bksd.core.presentation.link.LinkConfirmationDialog
 import com.bksd.core.presentation.link.toOpenableWebUrl
@@ -46,6 +45,7 @@ import com.bksd.journal.presentation.journal.components.JournalSearchField
 import com.bksd.journal.presentation.journal.components.JournalSectionHeader
 import com.bksd.journal.presentation.journal.components.JournalTopBar
 import com.bksd.journal.presentation.journal.components.MomentCard
+import com.bksd.journal.presentation.model.MomentUi
 import com.bksd.journal.presentation.no_moments_day
 import com.bksd.journal.presentation.util.DefaultMomentFormatter
 import com.bksd.journal.presentation.util.MomentFormatter
@@ -178,7 +178,9 @@ fun JournalScreen(
                             stringResource(Res.string.no_moments_day)
                         }
                         Box(
-                            modifier = Modifier.fillParentMaxSize(),
+                            modifier = Modifier
+                                .fillParentMaxSize()
+                                .padding(horizontal = MaterialTheme.dimens.spacing.lg),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
