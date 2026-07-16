@@ -12,6 +12,12 @@ Workflow:
   4. Framed output lands in screenshots/framed/{ios,android}/, and the
      Play feature graphic in screenshots/framed/play/.
 
+Localized listings: capture the app in that language into
+screenshots/raw/<platform>/<locale>/<name>.png and add the locale's
+headlines to HEADLINES. Output goes to screenshots/framed/<platform>/<locale>/.
+A locale with no captures of its own is skipped rather than framed with the
+default-language screenshots underneath a translated headline.
+
 No device bezel — a clean caption-over-brand-gradient layout (what most
 top App Store listings use). Brand palette matches the app icon.
 """
@@ -22,14 +28,33 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 RAW = os.path.join(HERE, "raw")
 OUT = os.path.join(HERE, "framed")
 
-# filename in raw/  ->  marketing headline
 SHOTS = [
-    ("journal.png", "Capture every moment"),
-    ("moment.png", "Reflect with AI insight"),
-    ("insights.png", "See your patterns"),
-    ("lock.png", "Private by design"),
-    ("premium.png", "7 reflections a day"),
+    "journal.png",
+    "moment.png",
+    "insights.png",
+    "lock.png",
+    "premium.png",
 ]
+
+DEFAULT_LOCALE = "en"
+
+# locale -> {filename in raw/ -> marketing headline}
+HEADLINES = {
+    "en": {
+        "journal.png": "Capture every moment",
+        "moment.png": "Reflect with AI insight",
+        "insights.png": "See your patterns",
+        "lock.png": "Private by design",
+        "premium.png": "7 reflections a day",
+    },
+    "tr": {
+        "journal.png": "Her anı yakala",
+        "moment.png": "Yapay zeka yansıması",
+        "insights.png": "Ritmini keşfet",
+        "lock.png": "Yalnızca sana özel",
+        "premium.png": "Günde 7 yansıma hakkı",
+    },
+}
 
 PRESETS = {"ios": (1290, 2796), "android": (1080, 1920)}
 
@@ -165,7 +190,10 @@ def feature_graphic(w=1024, h=500):
     return canvas.convert("RGB")
 
 
-def source_for(platform, fname):
+def source_for(platform, locale, fname):
+    if locale != DEFAULT_LOCALE:
+        localized = os.path.join(RAW, platform, locale, fname)
+        return (localized, True) if os.path.exists(localized) else (None, False)
     per_platform = os.path.join(RAW, platform, fname)
     if os.path.exists(per_platform):
         return per_platform, True
@@ -175,25 +203,34 @@ def source_for(platform, fname):
     return None, False
 
 
+def out_dir(platform, locale):
+    if locale == DEFAULT_LOCALE:
+        return os.path.join(OUT, platform)
+    return os.path.join(OUT, platform, locale)
+
+
 def main():
     made = 0
-    for platform, (w, h) in PRESETS.items():
-        os.makedirs(os.path.join(OUT, platform), exist_ok=True)
-        missing, borrowed = [], []
-        for fname, caption in SHOTS:
-            src, native = source_for(platform, fname)
-            if src is None:
-                missing.append(fname)
-                continue
-            if not native:
-                borrowed.append(fname)
-            frame(src, caption, w, h).save(os.path.join(OUT, platform, fname))
-            made += 1
-        if borrowed:
-            print(f"  ! {platform}: not captured on {platform}, using shared raw/: "
-                  f"{', '.join(borrowed)}")
-        if missing:
-            print(f"  ! {platform}: no source found, skipped: {', '.join(missing)}")
+    for locale, captions in HEADLINES.items():
+        for platform, (w, h) in PRESETS.items():
+            dest = out_dir(platform, locale)
+            missing, borrowed = [], []
+            for fname in SHOTS:
+                src, native = source_for(platform, locale, fname)
+                if src is None:
+                    missing.append(fname)
+                    continue
+                if not native:
+                    borrowed.append(fname)
+                os.makedirs(dest, exist_ok=True)
+                frame(src, captions[fname], w, h).save(os.path.join(dest, fname))
+                made += 1
+            tag = f"{platform}/{locale}"
+            if borrowed:
+                print(f"  ! {tag}: not captured on {platform}, using shared raw/: "
+                      f"{', '.join(borrowed)}")
+            if missing:
+                print(f"  ! {tag}: no source found, skipped: {', '.join(missing)}")
     print(f"framed {made} image(s) -> {OUT}/  (add raw/<platform>/*.png first if 0)")
 
     os.makedirs(os.path.join(OUT, "play"), exist_ok=True)
