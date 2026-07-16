@@ -56,6 +56,12 @@ HEADLINES = {
     },
 }
 
+# locale -> (wordmark, tagline) for the Play feature graphic
+FEATURE_TAGLINES = {
+    "en": ("Lumen", "Journal your moments. Reflect with AI."),
+    "tr": ("Lumen", "Anlarını yaz, yapay zeka yansımalarıyla geri bak."),
+}
+
 PRESETS = {"ios": (1290, 2796), "android": (1080, 1920)}
 
 TOP = (8, 20, 74)      # deep indigo  (brand)
@@ -166,27 +172,33 @@ def play_icon(size=512):
     return icon.resize((size, size), Image.LANCZOS)
 
 
-def feature_graphic(w=1024, h=500):
+def feature_graphic(locale=DEFAULT_LOCALE, w=1024, h=500):
     canvas = gradient(w, h)
     draw = ImageDraw.Draw(canvas)
     safe_w = w * 0.80
 
     title_font = load_font(int(h * 0.21))
     tag_font = load_font(int(h * 0.072))
-    title, tag = "Lumen", "Journal your moments. Reflect with AI."
+    title, tag = FEATURE_TAGLINES[locale]
 
+    tag_lines = wrap(draw, tag, tag_font, safe_w)
+    tag_lh = tag_font.size * 1.3
     tw = draw.textlength(title, font=title_font)
-    gw = draw.textlength(tag, font=tag_font)
-    block_h = title_font.size + h * 0.06 + tag_font.size
+    block_h = title_font.size + h * 0.06 + tag_lh * len(tag_lines)
     y = (h - block_h) / 2
 
     draw.text(((w - tw) / 2, y), title, font=title_font, fill=(255, 255, 255))
     y += title_font.size + h * 0.06
-    draw.text(((w - gw) / 2, y), tag, font=tag_font, fill=(196, 214, 255))
+    widest = tw
+    for line in tag_lines:
+        lw = draw.textlength(line, font=tag_font)
+        draw.text(((w - lw) / 2, y), line, font=tag_font, fill=(196, 214, 255))
+        widest = max(widest, lw)
+        y += tag_lh
 
-    if max(tw, gw) > safe_w:
-        print(f"  ! feature graphic: text exceeds the central 80% safe area "
-              f"({int(max(tw, gw))}px > {int(safe_w)}px)")
+    if widest > safe_w:
+        print(f"  ! feature graphic [{locale}]: text exceeds the central 80% "
+              f"safe area ({int(widest)}px > {int(safe_w)}px)")
     return canvas.convert("RGB")
 
 
@@ -233,10 +245,13 @@ def main():
                 print(f"  ! {tag}: no source found, skipped: {', '.join(missing)}")
     print(f"framed {made} image(s) -> {OUT}/  (add raw/<platform>/*.png first if 0)")
 
-    os.makedirs(os.path.join(OUT, "play"), exist_ok=True)
-    fg = os.path.join(OUT, "play", "feature-graphic.png")
-    feature_graphic().save(fg)
-    print(f"feature graphic 1024x500 -> {fg}")
+    for locale in FEATURE_TAGLINES:
+        dest = os.path.join(OUT, "play") if locale == DEFAULT_LOCALE \
+            else os.path.join(OUT, "play", locale)
+        os.makedirs(dest, exist_ok=True)
+        fg = os.path.join(dest, "feature-graphic.png")
+        feature_graphic(locale).save(fg)
+        print(f"feature graphic 1024x500 [{locale}] -> {fg}")
 
     icon = os.path.join(OUT, "play", "icon-512.png")
     play_icon().save(icon)
