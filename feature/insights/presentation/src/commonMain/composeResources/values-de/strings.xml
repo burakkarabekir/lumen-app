@@ -10,6 +10,8 @@
 
     <!-- Weekly Reflection -->
     <string name="weekly_reflection_title">Wöchentliche Reflexion</string>
+    <string name="weekly_reflection_locked_body">Ein warmherziger KI-Rückblick auf deine Woche – wiederkehrende Themen, die Grundstimmung und behutsame Fragen zum Nachdenken. Mit Lumen Plus freischalten.</string>
+    <string name="weekly_unlock_plus">Plus freischalten</string>
     <string name="weekly_based_on_entries">Basierend auf %1$d %2$s · %3$s</string>
     <string name="weekly_entry_singular">Eintrag</string>
     <string name="weekly_entry_plural">Einträge</string>

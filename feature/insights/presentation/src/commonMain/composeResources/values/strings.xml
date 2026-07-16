@@ -10,6 +10,8 @@
 
     <!-- Weekly Reflection -->
     <string name="weekly_reflection_title">Weekly Reflection</string>
+    <string name="weekly_reflection_locked_body">A warm AI look back at your week — recurring themes, the overall tenor, and gentle questions to sit with. Unlock with Lumen Plus.</string>
+    <string name="weekly_unlock_plus">Unlock Plus</string>
     <string name="weekly_based_on_entries">Based on %1$d %2$s · %3$s</string>
     <string name="weekly_entry_singular">entry</string>
     <string name="weekly_entry_plural">entries</string>
