@@ -2,7 +2,7 @@ package com.bksd.paywall.presentation.mapper
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
-import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Videocam
 import com.bksd.core.presentation.util.UiText
 import com.bksd.paywall.domain.model.PaywallConfig
 import com.bksd.paywall.domain.model.PremiumFeature
@@ -24,7 +24,7 @@ fun PremiumFeature.toUi(): PaywallFeatureUi = when (this) {
     PremiumFeature.MULTIMEDIA -> PaywallFeatureUi(
         title = UiText.Resource(Res.string.paywall_feature_media_title),
         description = UiText.Resource(Res.string.paywall_feature_media_desc),
-        icon = Icons.Default.Image
+        icon = Icons.Default.Videocam
     )
 
     PremiumFeature.AI_REFLECTION -> PaywallFeatureUi(

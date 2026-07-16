@@ -13,8 +13,8 @@
     <string name="seven_day_free_trial">ESSAI GRATUIT DE 7 JOURS</string>
     <string name="standard_access">Accès standard</string>
     <string name="per_month_format">%1$s par mois</string>
-    <string name="paywall_feature_media_title">Photo, vidéo et voix</string>
-    <string name="paywall_feature_media_desc">Ajoutez une photo, une vidéo et une note vocale à chaque entrée (jusqu&apos;à 25 Mo par fichier).</string>
+    <string name="paywall_feature_media_title">Vidéo et voix</string>
+    <string name="paywall_feature_media_desc">Ajoutez une vidéo et une note vocale à chaque entrée (jusqu&apos;à 25 Mo par fichier).</string>
     <string name="paywall_feature_reflection_title">Réflexions IA sur 7 jours</string>
     <string name="paywall_feature_reflection_desc">Un texte personnel sur les thèmes de vos 7 derniers jours, actualisé à mesure que vous écrivez.</string>
     <string name="paywall_pricing_unavailable">Les tarifs sont indisponibles pour le moment. Vérifiez votre connexion et réessayez.</string>

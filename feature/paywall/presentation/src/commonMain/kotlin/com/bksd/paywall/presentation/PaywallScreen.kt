@@ -17,7 +17,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -269,11 +269,11 @@ private fun PaywallScreenPreview() {
             state = PaywallState(
                 features = persistentListOf(
                     PaywallFeatureUi(
-                        title = UiText.Dynamic("Photo, Video & Voice"),
+                        title = UiText.Dynamic("Video & Voice"),
                         description = UiText.Dynamic(
-                            "Add a photo, video, and voice recording to any entry (up to 25 MB each)."
+                            "Add a video and a voice recording to any entry (up to 25 MB each)."
                         ),
-                        icon = Icons.Default.Image
+                        icon = Icons.Default.Videocam
                     ),
                     PaywallFeatureUi(
                         title = UiText.Dynamic("AI Weekly Reflections"),

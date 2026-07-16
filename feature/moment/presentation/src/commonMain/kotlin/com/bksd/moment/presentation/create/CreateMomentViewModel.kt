@@ -245,9 +245,7 @@ class CreateMomentViewModel(
             }
 
             // Media
-            CreateMomentAction.OnCameraClick ->
-                if (isPremium) sendEvent(CreateMomentEvent.RequestCameraPermission)
-                else sendEvent(CreateMomentEvent.NavigateToPaywall)
+            CreateMomentAction.OnCameraClick -> sendEvent(CreateMomentEvent.RequestCameraPermission)
             CreateMomentAction.OnCameraPermissionGranted -> sendEvent(CreateMomentEvent.LaunchCamera)
             CreateMomentAction.OnCameraPermissionDenied -> {
                 sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_camera_permission_denied)))

@@ -13,8 +13,8 @@
     <string name="seven_day_free_trial">7 TAGE KOSTENLOS TESTEN</string>
     <string name="standard_access">Standardzugang</string>
     <string name="per_month_format">%1$s pro Monat</string>
-    <string name="paywall_feature_media_title">Foto, Video &amp; Sprachnotiz</string>
-    <string name="paywall_feature_media_desc">Füge jedem Eintrag ein Foto, ein Video und eine Sprachnotiz hinzu (je bis zu 25 MB).</string>
+    <string name="paywall_feature_media_title">Video &amp; Sprachnotiz</string>
+    <string name="paywall_feature_media_desc">Füge jedem Eintrag ein Video und eine Sprachnotiz hinzu (je bis zu 25 MB).</string>
     <string name="paywall_feature_reflection_title">KI-Reflexionen aus 7 Tagen</string>
     <string name="paywall_feature_reflection_desc">Persönliche, ausformulierte Einblicke in deine Themen aus den letzten 7 Tagen – aktualisiert, sobald du neue Einträge schreibst.</string>
     <string name="paywall_pricing_unavailable">Die Preise sind derzeit nicht verfügbar. Überprüfe deine Verbindung und versuche es erneut.</string>
