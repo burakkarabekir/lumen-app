@@ -3,14 +3,14 @@
     <string name="restore">RESTORE</string>
     <string name="paywall_title">Unlock\nLumen\nPlus</string>
     <string name="paywall_subtitle">Elevate your daily reflection with\nadvanced AI tools and insights.</string>
-    <string name="btn_start_trial">Start 5-Day Free Trial</string>
+    <string name="btn_start_trial">Start 7-Day Free Trial</string>
     <string name="btn_subscribe_now">Subscribe Now</string>
     <string name="legal_text">Payment is charged to your store account at confirmation. Your subscription renews automatically unless you cancel at least 24 hours before the period ends. Manage or cancel anytime in your account settings.</string>
     <string name="terms_of_use">Terms of Use</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="popular_choice">POPULAR</string>
     <string name="best_value">BEST VALUE</string>
-    <string name="seven_day_free_trial">5-DAY FREE TRIAL</string>
+    <string name="seven_day_free_trial">7-DAY FREE TRIAL</string>
     <string name="standard_access">Standard access</string>
     <string name="per_month_format">%1$s per month</string>
     <string name="paywall_feature_media_title">Photo, Video &amp; Voice</string>
@@ -27,7 +27,7 @@
     <string name="tier_period_yearly">per year</string>
     <string name="tier_period_monthly">per month</string>
     <string name="tier_period_weekly">per week</string>
-    <string name="tier_free_trial">5-day free trial</string>
+    <string name="tier_free_trial">7-day free trial</string>
     <string name="tier_billed_annually">Billed annually</string>
     <string name="tier_billed_weekly">Billed weekly</string>
     <string name="tier_billed_monthly">Billed monthly</string>

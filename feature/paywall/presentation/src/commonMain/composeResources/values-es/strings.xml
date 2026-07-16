@@ -3,14 +3,14 @@
     <string name="restore">RESTAURAR</string>
     <string name="paywall_title">Desbloquea\nLumen\nPlus</string>
     <string name="paywall_subtitle">Eleva tu reflexión diaria con\nherramientas de IA avanzadas e insights.</string>
-    <string name="btn_start_trial">Comenzar prueba gratis de 5 días</string>
+    <string name="btn_start_trial">Comenzar prueba gratis de 7 días</string>
     <string name="btn_subscribe_now">Suscríbete ahora</string>
     <string name="legal_text">El pago se cargará a la cuenta de tu tienda al confirmar. Tu suscripción se renueva automáticamente a menos que la canceles al menos 24 horas antes de que termine el periodo. Gestiona o cancela cuando quieras en los ajustes de tu cuenta.</string>
     <string name="terms_of_use">Términos de uso</string>
     <string name="privacy_policy">Política de privacidad</string>
     <string name="popular_choice">POPULAR</string>
     <string name="best_value">MEJOR VALOR</string>
-    <string name="seven_day_free_trial">PRUEBA GRATIS DE 5 DÍAS</string>
+    <string name="seven_day_free_trial">PRUEBA GRATIS DE 7 DÍAS</string>
     <string name="standard_access">Acceso estándar</string>
     <string name="per_month_format">%1$s al mes</string>
     <string name="paywall_feature_media_title">Foto, vídeo y voz</string>
@@ -27,7 +27,7 @@
     <string name="tier_period_yearly">por año</string>
     <string name="tier_period_monthly">por mes</string>
     <string name="tier_period_weekly">por semana</string>
-    <string name="tier_free_trial">5 días de prueba gratis</string>
+    <string name="tier_free_trial">7 días de prueba gratis</string>
     <string name="tier_billed_annually">Facturación anual</string>
     <string name="tier_billed_weekly">Facturación semanal</string>
     <string name="tier_billed_monthly">Facturación mensual</string>
