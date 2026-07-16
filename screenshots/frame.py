@@ -59,7 +59,7 @@ HEADLINES = {
 # locale -> (wordmark, tagline) for the Play feature graphic
 FEATURE_TAGLINES = {
     "en": ("Lumen", "Journal your moments. Reflect with AI."),
-    "tr": ("Lumen", "Anlarını yaz, yapay zeka yansımalarıyla geri bak."),
+    "tr": ("Lumen", "Bugün nasıl geçti? Anlatsana."),
 }
 
 PRESETS = {"ios": (1290, 2796), "android": (1080, 1920)}
