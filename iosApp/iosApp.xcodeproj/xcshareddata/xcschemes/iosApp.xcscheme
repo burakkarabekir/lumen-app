@@ -49,7 +49,7 @@
          </BuildableReference>
       </BuildableProductRunnable>
       <StoreKitConfigurationFileReference
-         identifier = "../../../Lumen.storekit">
+         identifier = "../../../Configuration/Lumen.storekit">
       </StoreKitConfigurationFileReference>
       <LocationScenarioReference
          identifier = "com.apple.dt.IDEFoundation.CurrentLocationScenarioIdentifier"
