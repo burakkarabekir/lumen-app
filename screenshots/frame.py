@@ -62,7 +62,7 @@ FEATURE_TAGLINES = {
     "tr": ("Lumen", "Bugün nasıl geçti? Anlatsana."),
 }
 
-PRESETS = {"ios": (1290, 2796), "android": (1080, 1920)}
+PRESETS = {"ios": (1242, 2688), "android": (1080, 1920)}
 
 TOP = (8, 20, 74)      # deep indigo  (brand)
 BOT = (19, 73, 236)    # brand blue   (#1349EC)
