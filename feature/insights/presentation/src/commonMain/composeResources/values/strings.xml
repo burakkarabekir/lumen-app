@@ -10,6 +10,8 @@
 
     <!-- Weekly Reflection -->
     <string name="weekly_reflection_title">Weekly Reflection</string>
+    <string name="weekly_reflection_locked_body">A warm AI look back at your week — recurring themes, the overall tenor, and gentle questions to sit with. Unlock with Lumen Plus.</string>
+    <string name="weekly_unlock_plus">Unlock Plus</string>
     <string name="weekly_based_on_entries">Based on %1$d %2$s · %3$s</string>
     <string name="weekly_entry_singular">entry</string>
     <string name="weekly_entry_plural">entries</string>
@@ -19,7 +21,7 @@
     <string name="weekly_private_to_you">Private to you</string>
     <string name="weekly_reflecting">Reflecting on your week…</string>
     <string name="weekly_reflection_failed_title">Weekly reflection unavailable</string>
-    <string name="weekly_reflection_failed_caption">We couldn\'t put together your weekly reflection.</string>
+    <string name="weekly_reflection_failed_caption">We couldn't put together your weekly reflection.</string>
     <string name="weekly_reflection_retry">Try again</string>
     <string name="weekly_back">Back</string>
     <string name="weekly_no_reflection">No weekly reflection yet. Write a few entries this week and it&apos;ll appear here.</string>

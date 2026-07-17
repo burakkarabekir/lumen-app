@@ -10,6 +10,8 @@
 
     <!-- Weekly Reflection -->
     <string name="weekly_reflection_title">Haftalık Değerlendirme</string>
+    <string name="weekly_reflection_locked_body">Haftana yapay zekâdan sıcak bir bakış: tekrarlayan temalar, genel hava ve üzerinde düşünülecek nazik sorular. Lumen Plus ile kilidini aç.</string>
+    <string name="weekly_unlock_plus">Plus&apos;ı aç</string>
     <string name="weekly_based_on_entries">%1$d %2$s temel alınarak · %3$s</string>
     <string name="weekly_entry_singular">kayıt</string>
     <string name="weekly_entry_plural">kayıt</string>

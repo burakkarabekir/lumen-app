@@ -8,6 +8,7 @@ import com.bksd.reflection.domain.model.DistressLevel
 import com.bksd.reflection.domain.model.EntryAnalysis
 import com.bksd.reflection.domain.model.MomentAnalysisState
 import com.bksd.reflection.domain.model.MomentReflection
+import com.bksd.reflection.domain.model.QuotaLimit
 import com.bksd.reflection.domain.model.MoodValence
 import com.bksd.reflection.domain.repository.MomentAnalysisStore
 import kotlinx.coroutines.flow.Flow
@@ -42,7 +43,8 @@ class FakeMomentAnalysisStore : MomentAnalysisStore {
         results[momentId] = reflection
     }
 
-    override suspend fun setFailed(momentId: String, quotaExceeded: Boolean) = Unit
+    override suspend fun setFailed(momentId: String) = Unit
+    override suspend fun setQuotaExceeded(momentId: String, limit: QuotaLimit) = Unit
     override suspend fun setOffline(momentId: String) = Unit
     override suspend fun recentAnalyses(limit: Int): List<EntryAnalysis> = emptyList()
     override suspend fun deleteAll() {
@@ -62,4 +64,9 @@ fun analysisWith(distress: DistressLevel): EntryAnalysis = EntryAnalysis(
 )
 
 fun reflectionResponse(distress: DistressLevel, feedback: String?): ReflectionResponse =
-    ReflectionResponse(analysis = analysisWith(distress), feedback = feedback, question = null)
+    ReflectionResponse(
+        analysis = analysisWith(distress),
+        feedback = feedback,
+        question = null,
+        coverImageUrl = null
+    )

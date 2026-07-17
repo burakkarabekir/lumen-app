@@ -139,9 +139,9 @@
     <!-- Premium / Manage subscription -->
     <string name="premium_title">Lumen Plus</string>
     <string name="premium_status_plus_title">Du nutzt Lumen Plus</string>
-    <string name="premium_status_plus_subtitle">Danke, dass du Lumen unterstützt. Genieße unbegrenzte KI-Reflexionen und alle Premium-Funktionen.</string>
+    <string name="premium_status_plus_subtitle">Danke, dass du Lumen unterstützt. Genieße bis zu 7 KI-Reflexionen pro Tag und alle Premium-Funktionen.</string>
     <string name="premium_status_free_title">Du nutzt den kostenlosen Tarif</string>
-    <string name="premium_status_free_subtitle">Wechsle zu Lumen Plus für unbegrenzte KI-Reflexionen, Sprach- &amp; Videoeinträge und mehr.</string>
+    <string name="premium_status_free_subtitle">Wechsle zu Lumen Plus für bis zu 7 KI-Reflexionen pro Tag, Sprach- &amp; Videoeinträge und mehr.</string>
     <string name="premium_plan">Tarif</string>
     <string name="premium_upgrade">Upgrade auf Plus</string>
     <string name="premium_manage_subscription">Abo verwalten</string>

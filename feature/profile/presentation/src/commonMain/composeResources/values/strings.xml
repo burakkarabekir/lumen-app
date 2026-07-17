@@ -139,9 +139,9 @@
     <!-- Premium / Manage subscription -->
     <string name="premium_title">Lumen Plus</string>
     <string name="premium_status_plus_title">You&apos;re on Lumen Plus</string>
-    <string name="premium_status_plus_subtitle">Thanks for supporting Lumen. Enjoy unlimited AI reflections and every premium feature.</string>
+    <string name="premium_status_plus_subtitle">Thanks for supporting Lumen. Enjoy up to 7 AI reflections a day and every premium feature.</string>
     <string name="premium_status_free_title">You&apos;re on the Free plan</string>
-    <string name="premium_status_free_subtitle">Upgrade to Lumen Plus for unlimited AI reflections, voice &amp; video entries, and more.</string>
+    <string name="premium_status_free_subtitle">Upgrade to Lumen Plus for up to 7 AI reflections a day, voice &amp; video entries, and more.</string>
     <string name="premium_plan">Plan</string>
     <string name="premium_upgrade">Upgrade to Plus</string>
     <string name="premium_manage_subscription">Manage subscription</string>

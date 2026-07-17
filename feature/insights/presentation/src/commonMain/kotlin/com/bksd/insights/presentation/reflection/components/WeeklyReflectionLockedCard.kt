@@ -27,6 +27,11 @@ import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.coverGradient
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
+import com.bksd.insights.presentation.Res
+import com.bksd.insights.presentation.weekly_reflection_locked_body
+import com.bksd.insights.presentation.weekly_reflection_title
+import com.bksd.insights.presentation.weekly_unlock_plus
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun WeeklyReflectionLockedCard(
@@ -56,17 +61,17 @@ fun WeeklyReflectionLockedCard(
             )
         }
         Text(
-            text = "Weekly Reflection",
+            text = stringResource(Res.string.weekly_reflection_title),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface,
         )
         Text(
-            text = "A warm AI look back at your week — recurring themes, the overall tenor, and gentle questions to sit with. Unlock with Lumen Plus.",
+            text = stringResource(Res.string.weekly_reflection_locked_body),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         AppButton(
-            text = "Unlock Plus",
+            text = stringResource(Res.string.weekly_unlock_plus),
             onClick = onUnlock,
             modifier = Modifier.fillMaxWidth(),
             style = AppButtonStyle.PRIMARY,

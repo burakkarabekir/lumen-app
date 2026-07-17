@@ -58,7 +58,7 @@ fun MomentDetailRoot(
             is MomentDetailEvent.ShowShareSheet -> showShareSheet = true
             is MomentDetailEvent.NavigateToPaywall -> onNavigateToPaywall()
             is MomentDetailEvent.ShowError -> snackbarController.show(event.error)
-            is MomentDetailEvent.ShowSuccess -> Unit
+            is MomentDetailEvent.ShowSuccess -> snackbarController.show(event.message)
         }
     }
 

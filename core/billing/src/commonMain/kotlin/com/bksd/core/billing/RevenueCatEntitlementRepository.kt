@@ -16,9 +16,12 @@ import com.revenuecat.purchases.kmp.ktx.awaitOfferings
 import com.revenuecat.purchases.kmp.ktx.awaitPurchase
 import com.revenuecat.purchases.kmp.ktx.awaitRestore
 import com.revenuecat.purchases.kmp.models.CustomerInfo
+import com.revenuecat.purchases.kmp.models.DiscountPaymentMode
 import com.revenuecat.purchases.kmp.models.Package
 import com.revenuecat.purchases.kmp.models.PackageType
 import com.revenuecat.purchases.kmp.models.PurchasesTransactionException
+import com.revenuecat.purchases.kmp.models.StoreProduct
+import com.revenuecat.purchases.kmp.models.freePhase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -113,8 +116,12 @@ private fun Package.toBillingProduct(): BillingProduct = BillingProduct(
     title = storeProduct.title,
     priceLabel = storeProduct.price.formatted,
     period = packageType.toBillingPeriod(),
-    hasFreeTrial = false,
+    hasFreeTrial = storeProduct.offersFreeTrial,
 )
+
+private val StoreProduct.offersFreeTrial: Boolean
+    get() = introductoryDiscount?.paymentMode == DiscountPaymentMode.FREE_TRIAL ||
+            defaultOption?.freePhase != null
 
 private fun PackageType.toBillingPeriod(): BillingPeriod = when (this) {
     PackageType.WEEKLY -> BillingPeriod.WEEKLY

@@ -2,7 +2,9 @@ package com.bksd.reflection.domain.usecase
 
 import com.bksd.core.domain.error.AppError
 import com.bksd.core.domain.error.NetworkErrorType
+import com.bksd.core.domain.error.QuotaErrorType
 import com.bksd.core.domain.error.Result
+import com.bksd.reflection.domain.model.QuotaLimit
 import com.bksd.reflection.domain.repository.MomentAnalysisStore
 
 class RequestEntryAnalysisUseCase(
@@ -14,13 +16,18 @@ class RequestEntryAnalysisUseCase(
         when (val result = analyzeAndReflect(entryText, mood)) {
             is Result.Success -> store.setResult(momentId, result.data)
             is Result.Error -> {
-                val err = result.error
-                when {
-                    err is AppError.Network && err.type == NetworkErrorType.QUOTA_EXCEEDED ->
-                        store.setFailed(momentId, quotaExceeded = true)
+                when (val err = result.error) {
+                    is AppError.Quota -> when (err.type) {
+                        QuotaErrorType.DAILY_LIMIT -> store.setQuotaExceeded(momentId, QuotaLimit.DAILY)
+                        QuotaErrorType.FREE_LIMIT,
+                        QuotaErrorType.PREMIUM_REQUIRED -> store.setQuotaExceeded(momentId, QuotaLimit.FREE)
+                        QuotaErrorType.CHECK_FAILED -> store.setFailed(momentId)
+                    }
 
-                    err is AppError.Network && err.type == NetworkErrorType.NO_INTERNET ->
-                        store.setOffline(momentId)
+                    is AppError.Network -> when (err.type) {
+                        NetworkErrorType.NO_INTERNET -> store.setOffline(momentId)
+                        else -> store.setFailed(momentId)
+                    }
 
                     else -> store.setFailed(momentId)
                 }

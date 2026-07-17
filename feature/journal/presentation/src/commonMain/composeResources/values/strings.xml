@@ -69,7 +69,7 @@
     <string name="favorite">Favorite</string>
     <string name="delete">Delete</string>
     <string name="delete_moment_title">Delete this moment?</string>
-    <string name="delete_moment_message">This permanently deletes this entry. This can\'t be undone.</string>
+    <string name="delete_moment_message">This permanently deletes this entry. This can't be undone.</string>
     <string name="content_desc_share">Share</string>
 
     <!-- AI Entry Analysis -->
@@ -134,11 +134,11 @@
     <string name="month_october">October</string>
     <string name="month_november">November</string>
     <string name="month_december">December</string>
-    <string name="upsell_reflections_title">You&apos;ve used your free AI reflections</string>
-    <string name="upsell_reflections_body">The free plan includes 3 AI reflections a month. Unlock unlimited reflections, cover art, and weekly insights with Lumen Plus.</string>
+    <string name="upsell_reflections_title">You&apos;ve used this week&apos;s free reflection</string>
+    <string name="upsell_reflections_body">The free plan includes one AI reflection a week. Lumen Plus gives you up to 7 a day, plus written insights on your themes from the past week.</string>
     <string name="upsell_unlock_plus">Unlock Plus</string>
     <string name="daily_limit_reflections_title">Daily reflection limit reached</string>
-    <string name="daily_limit_reflections_body">You&apos;ve reached today&apos;s AI reflection limit. Your reflections refresh tomorrow.</string>
+    <string name="daily_limit_reflections_body">You&apos;ve reached today&apos;s AI reflection limit. More reflections will be available soon.</string>
     <string name="detail_changes_saved">Changes saved</string>
     <string name="detail_moment_deleted">Moment deleted</string>
 </resources>

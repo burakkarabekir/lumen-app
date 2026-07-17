@@ -15,10 +15,9 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ShowChart
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -44,6 +43,7 @@ import com.bksd.core.design_system.theme.PreviewAppTheme
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.domain.legal.LegalConfig
 import com.bksd.core.presentation.util.ObserveAsEvents
+import com.bksd.core.presentation.util.UiText
 import com.bksd.paywall.presentation.components.FeatureRow
 import com.bksd.paywall.presentation.components.HeroCard
 import kotlinx.collections.immutable.persistentListOf
@@ -269,19 +269,18 @@ private fun PaywallScreenPreview() {
             state = PaywallState(
                 features = persistentListOf(
                     PaywallFeatureUi(
-                        title = "Unlimited Multimedia",
-                        description = "Enrich entries with high-resolution photos, video, and voice recordings.",
-                        icon = Icons.Default.Image
+                        title = UiText.Dynamic("Video & Voice"),
+                        description = UiText.Dynamic(
+                            "Add a video and a voice recording to any entry (up to 25 MB each)."
+                        ),
+                        icon = Icons.Default.Videocam
                     ),
                     PaywallFeatureUi(
-                        title = "AI Weekly Reflections",
-                        description = "Personal, written insights on your moods and themes every Sunday.",
+                        title = UiText.Dynamic("AI Weekly Reflections"),
+                        description = UiText.Dynamic(
+                            "Personal, written insights on your themes from the past week, refreshed as you write."
+                        ),
                         icon = Icons.Default.AutoAwesome
-                    ),
-                    PaywallFeatureUi(
-                        title = "Advanced Analytics",
-                        description = "Visualize your emotional journey and mood trends over time.",
-                        icon = Icons.AutoMirrored.Filled.ShowChart
                     )
                 ),
                 tiers = persistentListOf(

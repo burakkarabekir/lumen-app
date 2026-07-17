@@ -1,13 +1,6 @@
 package com.bksd.paywall.domain.model
 
-data class PremiumFeature(
-    val title: String,
-    val description: String,
-    val icon: FeatureIcon
-)
-
-enum class FeatureIcon {
+enum class PremiumFeature {
     MULTIMEDIA,
-    AI_REFLECTION,
-    ANALYTICS
+    AI_REFLECTION
 }

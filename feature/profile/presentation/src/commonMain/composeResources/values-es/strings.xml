@@ -139,9 +139,9 @@
     <!-- Premium / Manage subscription -->
     <string name="premium_title">Lumen Plus</string>
     <string name="premium_status_plus_title">Tienes Lumen Plus</string>
-    <string name="premium_status_plus_subtitle">Gracias por apoyar a Lumen. Disfruta de reflexiones con IA ilimitadas y de todas las funciones premium.</string>
+    <string name="premium_status_plus_subtitle">Gracias por apoyar a Lumen. Disfruta de hasta 7 reflexiones con IA al día y de todas las funciones premium.</string>
     <string name="premium_status_free_title">Tienes el plan Gratis</string>
-    <string name="premium_status_free_subtitle">Mejora a Lumen Plus para tener reflexiones con IA ilimitadas, entradas de voz y video, y mucho más.</string>
+    <string name="premium_status_free_subtitle">Mejora a Lumen Plus para tener hasta 7 reflexiones con IA al día, entradas de voz y video, y mucho más.</string>
     <string name="premium_plan">Plan</string>
     <string name="premium_upgrade">Mejorar a Plus</string>
     <string name="premium_manage_subscription">Gestionar suscripción</string>

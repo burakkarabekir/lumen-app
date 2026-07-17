@@ -5,6 +5,7 @@ import com.bksd.core.domain.error.AuthErrorType
 import com.bksd.core.domain.error.LocationErrorType
 import com.bksd.core.domain.error.MediaErrorType
 import com.bksd.core.domain.error.NetworkErrorType
+import com.bksd.core.domain.error.QuotaErrorType
 import com.bksd.core.presentation.Res
 import com.bksd.core.presentation.error_auth_account_exists
 import com.bksd.core.presentation.error_auth_invalid_credentials
@@ -42,6 +43,13 @@ private fun AppError.toStringResource(): StringResource = when (this) {
         NetworkErrorType.NO_INTERNET -> Res.string.error_network_no_internet
         NetworkErrorType.SERVER_ERROR -> Res.string.error_network_server
         NetworkErrorType.SERIALIZATION -> Res.string.error_network_serialization
+    }
+
+    is AppError.Quota -> when (type) {
+        QuotaErrorType.DAILY_LIMIT,
+        QuotaErrorType.FREE_LIMIT,
+        QuotaErrorType.PREMIUM_REQUIRED -> Res.string.error_network_too_many_requests
+        QuotaErrorType.CHECK_FAILED -> Res.string.error_network_server
     }
 
     is AppError.Auth -> when (type) {
