@@ -39,6 +39,7 @@ import com.bksd.core.design_system.theme.aiIconGradient
 import com.bksd.core.design_system.theme.extended
 import com.bksd.core.design_system.theme.insightsEntriesGradient
 import com.bksd.core.design_system.theme.insightsStreakGradient
+import com.bksd.core.design_system.theme.onboardingReflectionBarIdle
 
 private val ReflectionBars = listOf(14, 22, 18, 30, 26, 38, 28)
 
@@ -110,7 +111,7 @@ internal fun OnboardingReflectionHero(modifier: Modifier = Modifier) {
                             if (index >= 3) {
                                 Brush.verticalGradient(extended.insightsEntriesGradient)
                             } else {
-                                Brush.verticalGradient(listOf(Color(0x1FFFFFFF), Color(0x1FFFFFFF)))
+                                Brush.verticalGradient(listOf(extended.onboardingReflectionBarIdle, extended.onboardingReflectionBarIdle))
                             },
                         ),
                 )

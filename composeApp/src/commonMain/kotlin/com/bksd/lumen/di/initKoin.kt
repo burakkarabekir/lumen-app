@@ -23,6 +23,9 @@ import com.bksd.profile.domain.di.profileDomainModule
 import com.bksd.profile.presentation.di.profilePresentationModule
 import com.bksd.reflection.data.di.reflectionDataModule
 import com.bksd.reflection.domain.di.reflectionDomainModule
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
 
@@ -57,5 +60,7 @@ fun initKoin(isDebug: Boolean = false, config: KoinAppDeclaration? = null) {
             reflectionDataModule
         )
     }
-    RevenueCatInitializer.configure()
+    CoroutineScope(Dispatchers.Default).launch {
+        RevenueCatInitializer.configure()
+    }
 }

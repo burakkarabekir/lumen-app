@@ -39,6 +39,7 @@
     <string name="error_file_too_large">File exceeds 25 MB limit</string>
     <string name="error_moment_empty">Moment is empty</string>
     <string name="error_mood_required">Please select a mood</string>
+    <string name="error_mood_limit">You can pick up to 5 moods.</string>
     <string name="error_attachment_save_failed">Failed to save attachment.</string>
     <string name="error_moment_save_failed">Failed to save moment</string>
     <string name="success_moment_saved">Moment saved!</string>

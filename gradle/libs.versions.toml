@@ -14,8 +14,8 @@ supabase = "3.6.0"
 
 # ==================== Build Tools ====================
 agp = "9.4.0-alpha05"
-androidTools = "32.2.1"
-kotlin = "2.4.0"
+androidTools = "32.3.0"
+kotlin = "2.4.10"
 ksp = "2.3.7"
 buildkonfig = "0.22.0"
 androidDesugarJdkLibs = "2.1.5"
@@ -27,7 +27,7 @@ compose-material3 = "1.11.0-alpha07"
 compose-icons = "1.7.3"
 
 # ==================== JetBrains Multiplatform ====================
-jetbrains-lifecycle = "2.11.0-rc01"
+jetbrains-lifecycle = "2.11.0"
 jetbrains-navigation = "2.9.2"
 jetbrains-savedstate = "1.4.0"
 jetbrains-core-bundle = "1.0.1"
@@ -39,7 +39,7 @@ androidx-appcompat = "1.7.1"
 androidx-biometric = "1.1.0"
 androidx-fragment = "1.8.9"
 androidx-core = "1.19.0"
-androidx-lifecycle-runtime-compose = "2.11.0-rc01"
+androidx-lifecycle-runtime-compose = "2.11.0"
 androidx-lifecycle = "2.11.0"
 androidx-splashscreen = "1.2.0"
 
@@ -53,7 +53,6 @@ ktor = "3.5.1"
 
 # ==================== Dependency Injection ====================
 koin = "4.2.2"
-kotzilla = "2.3.0"
 
 # ==================== Kotlinx ====================
 kotlinx-serialization = "1.11.0"
@@ -68,7 +67,7 @@ moko-permissions = "0.20.1"
 kermit = "2.1.0"
 
 # ==================== Monitoring ====================
-sentry = "8.48.0"
+sentry = "8.49.0"
 
 # ==================== Testing ====================
 junit = "4.13.2"
@@ -77,14 +76,14 @@ androidx-espresso = "3.7.0"
 androidx-runner = "1.7.0"
 
 navigation3 = "1.1.1"
-navigation3Lifecycle = "2.10.0"
-kotlinStdlib = "2.4.0"
+navigation3Lifecycle = "2.11.0"
+kotlinStdlib = "2.4.10"
 core = "1.7.0"
 
 coil = "3.5.0"
 coil-network = "3.5.0"
 
-revenuecat = "3.2.1"
+revenuecat = "3.3.0"
 
 [libraries]
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
@@ -181,9 +180,6 @@ koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
 koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 koin-androidx-navigation = { group = "io.insert-koin", name = "koin-androidx-navigation", version.ref = "koin" }
-
-# ==================== Kotzilla (Analytics) ====================
-kotzilla-sdk-compose = { group = "io.kotzilla", name = "kotzilla-sdk-compose", version.ref = "kotzilla" }
 
 # ==================== Kotlinx ====================
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
@@ -369,11 +365,6 @@ koin-android = [
 moko-permissions-core = [
     "moko-permissions",
     "moko-permissions-compose"
-]
-
-# ==================== Analytics ====================
-analytics = [
-    "kotzilla-sdk-compose"
 ]
 
 supabase = [

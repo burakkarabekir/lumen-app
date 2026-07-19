@@ -24,7 +24,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.tooling.preview.Preview
@@ -88,6 +90,7 @@ fun JournalRoot(
     )
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun JournalScreen(
     state: JournalState,
@@ -106,6 +109,11 @@ fun JournalScreen(
             if (listState.firstVisibleItemIndex > 0) 1f
             else (listState.firstVisibleItemScrollOffset / collapseThresholdPx).coerceIn(0f, 1f)
         }
+    }
+    val searchIconVisible by remember { derivedStateOf { searchIconAlpha > 0f } }
+
+    BackHandler(enabled = state.isSearchActive) {
+        onAction(JournalAction.OnSearchActiveChange(false))
     }
 
     LaunchedEffect(state.isSearchActive) {
@@ -134,6 +142,7 @@ fun JournalScreen(
                 profilePhotoUrl = state.profilePhotoUrl,
                 isSearchActive = state.isSearchActive,
                 searchIconAlpha = { searchIconAlpha },
+                searchIconVisible = searchIconVisible,
                 onSearchActivate = { onAction(JournalAction.OnSearchActiveChange(true)) },
                 onSearchClose = { onAction(JournalAction.OnSearchActiveChange(false)) },
                 onSearchQueryChange = { onAction(JournalAction.OnSearchQueryChange(it)) },

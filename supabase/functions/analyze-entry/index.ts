@@ -52,7 +52,9 @@ interface EntryAnalysis {
 }
 
 interface AnalyzeRequest {
+  momentId?: string | null
   text: string
+  moods?: string[] | null
   mood?: string | null
   trend?: string | null
   language?: string | null
@@ -149,9 +151,14 @@ async function callGemini(
   return stripFences(text)
 }
 
-async function analyze(text: string, mood?: string | null): Promise<EntryAnalysis> {
-  const user = mood
-    ? `Self-reported mood: ${mood}\n\nEntry:\n${text}`
+async function analyze(
+  text: string,
+  moods?: string[] | null,
+  mood?: string | null,
+): Promise<EntryAnalysis> {
+  const selected = moods && moods.length > 0 ? moods.join(", ") : (mood ?? "")
+  const user = selected
+    ? `Self-reported moods: ${selected}\n\nEntry:\n${text}`
     : `Entry:\n${text}`
   const raw = await callGemini(ANALYSIS_SYSTEM, user, 800, 0.3)
   return JSON.parse(raw) as EntryAnalysis
@@ -270,6 +277,36 @@ function userIdFromJwt(req: Request): string | null {
   }
 }
 
+// Persist the reflection as the cross-device source of truth. Best-effort: a failure here
+// never fails the reflection response — the client still has it locally.
+async function persistReflection(
+  momentId: string,
+  userId: string,
+  response: AnalyzeResponse,
+): Promise<void> {
+  try {
+    const supabase = createClient(SUPABASE_URL!, SERVICE_ROLE_KEY!, { auth: { persistSession: false } })
+    const a = response.analysis
+    const { error } = await supabase.from("entry_reflections").upsert({
+      moment_id: momentId,
+      user_id: userId,
+      summary: a.summary,
+      mood_valence: a.moodValence,
+      mood_confidence: a.moodConfidence,
+      dominant_emotions: a.dominantEmotions,
+      themes: a.themes,
+      distress: a.distress,
+      feedback: response.feedback,
+      question: response.question,
+      cover_image_url: response.coverImageUrl,
+      updated_at: new Date().toISOString(),
+    })
+    if (error) console.error("persistReflection failed:", error.message)
+  } catch (e) {
+    console.error("persistReflection failed:", e instanceof Error ? e.message : String(e))
+  }
+}
+
 // Enforce the free-tier monthly quota (premium bypasses). Fails closed on error to protect cost.
 async function consumeCredit(userId: string, kind: "analyze" | "weekly"): Promise<{ allowed: boolean; info: Record<string, unknown> }> {
   const supabase = createClient(SUPABASE_URL!, SERVICE_ROLE_KEY!, { auth: { persistSession: false } })
@@ -304,7 +341,7 @@ Deno.serve(withSentry("analyze-entry", async (req: Request) => {
   if (!gate.allowed) return json({ error: "quota_exceeded", ...gate.info }, 402)
 
   try {
-    const analysis = await analyze(payload.text, payload.mood)
+    const analysis = await analyze(payload.text, payload.moods, payload.mood)
     const needsSupport = analysis.distress === "ELEVATED" || analysis.distress === "CRISIS"
     const [fb, coverImageUrl] = await Promise.all([
       needsSupport ? Promise.resolve(null) : feedback(analysis, payload.trend, payload.language),
@@ -316,6 +353,7 @@ Deno.serve(withSentry("analyze-entry", async (req: Request) => {
       question: fb?.question ?? null,
       coverImageUrl,
     }
+    if (payload.momentId) await persistReflection(payload.momentId, userId, response)
     return json(response, 200)
   } catch (e) {
     await captureError(e, { function: "analyze-entry" })

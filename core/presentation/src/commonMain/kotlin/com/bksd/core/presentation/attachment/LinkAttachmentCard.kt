@@ -31,14 +31,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.attachmentLink
+import com.bksd.core.design_system.theme.attachmentLinkTileGradient
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 import com.bksd.core.presentation.Res
 import com.bksd.core.presentation.attachment_label_link
 import org.jetbrains.compose.resources.stringResource
-
-private val LinkTileColors = listOf(Color(0xFFA98FD6), Color(0xFF8A6FBF))
 
 private fun linkHost(url: String): String {
     var s = url.trim()
@@ -111,7 +110,7 @@ fun LinkAttachmentCard(
                 modifier = Modifier
                     .size(MaterialTheme.dimens.size.cancelIcon)
                     .clip(RoundedCornerShape(MaterialTheme.dimens.radius.md))
-                    .background(Brush.linearGradient(LinkTileColors))
+                    .background(Brush.linearGradient(MaterialTheme.colorScheme.extended.attachmentLinkTileGradient))
             ) {
                 Icon(
                     imageVector = Icons.Default.Public,

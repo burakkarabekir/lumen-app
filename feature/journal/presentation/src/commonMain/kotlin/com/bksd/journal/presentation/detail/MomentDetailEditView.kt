@@ -56,8 +56,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.coverGradient
+import com.bksd.core.design_system.theme.detailEditingBadgeBg
+import com.bksd.core.design_system.theme.detailLocationChipRemoveBg
+import com.bksd.core.design_system.theme.detailToolbarButtonScrim
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
+import com.bksd.core.design_system.theme.momentDetailCoverScrim
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
 import com.bksd.core.presentation.shortDateLabel
 import com.bksd.core.domain.location.LocationData
@@ -117,7 +121,7 @@ fun MomentDetailEditView(
                     .height(212.dp)
                     .background(Brush.linearGradient(MaterialTheme.colorScheme.extended.coverGradient))
             ) {
-                Box(modifier = Modifier.fillMaxSize().background(Color(0x2E000000)))
+                Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.extended.momentDetailCoverScrim))
                 val locationName = state.editLocation?.displayName
                 if (!locationName.isNullOrBlank()) {
                     Row(
@@ -147,7 +151,7 @@ fun MomentDetailEditView(
                             modifier = Modifier
                                 .size(MaterialTheme.dimens.icon.md)
                                 .clip(CircleShape)
-                                .background(Color(0x47000000))
+                                .background(MaterialTheme.colorScheme.extended.detailLocationChipRemoveBg)
                                 .clickable { onAction(MomentDetailAction.OnLocationRemove) }
                         ) {
                             Icon(
@@ -358,7 +362,7 @@ fun MomentDetailEditView(
                 .padding(start = MaterialTheme.dimens.spacing.xl, top = MaterialTheme.dimens.spacing.sm)
                 .size(MaterialTheme.dimens.icon.tile)
                 .clip(CircleShape)
-                .background(Color(0x57141420))
+                .background(MaterialTheme.colorScheme.extended.detailToolbarButtonScrim)
                 .clickable { onAction(MomentDetailAction.OnNavigateBack) }
         ) {
             Icon(
@@ -377,7 +381,7 @@ fun MomentDetailEditView(
                 .statusBarsPadding()
                 .padding(top = MaterialTheme.dimens.spacing.md)
                 .clip(RoundedCornerShape(MaterialTheme.dimens.radius.lg))
-                .background(Color(0x99141420))
+                .background(MaterialTheme.colorScheme.extended.detailEditingBadgeBg)
                 .padding(horizontal = MaterialTheme.dimens.spacing.md, vertical = MaterialTheme.dimens.spacing.sm)
         ) {
             Box(

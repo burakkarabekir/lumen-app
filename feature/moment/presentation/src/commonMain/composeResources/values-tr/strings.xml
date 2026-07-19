@@ -39,6 +39,7 @@
     <string name="error_file_too_large">Dosya 25 MB sınırını aşıyor</string>
     <string name="error_moment_empty">An boş</string>
     <string name="error_mood_required">Lütfen bir ruh hali seç</string>
+    <string name="error_mood_limit">En fazla 5 ruh hali seçebilirsin.</string>
     <string name="error_attachment_save_failed">Ek kaydedilemedi.</string>
     <string name="error_moment_save_failed">An kaydedilemedi</string>
     <string name="success_moment_saved">An kaydedildi!</string>

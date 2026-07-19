@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bksd.core.data.notification.EXTRA_OPEN_CREATE_MOMENT
 import com.bksd.core.domain.storage.SessionStorage
 import com.bksd.core.domain.theme.ThemeRepository
+import com.bksd.lumen.main.AppReadySignal
 import com.bksd.lumen.reminder.ReminderLaunchSignal
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -21,9 +22,11 @@ import org.koin.android.ext.android.inject
 class MainActivity : FragmentActivity() {
 
     private val reminderLaunchSignal: ReminderLaunchSignal by inject()
+    private val appReadySignal: AppReadySignal by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
+        val splashScreen = installSplashScreen()
+        splashScreen.setKeepOnScreenCondition { !appReadySignal.ready.value }
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 

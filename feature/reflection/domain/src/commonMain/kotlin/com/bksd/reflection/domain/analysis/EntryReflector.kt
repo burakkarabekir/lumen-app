@@ -5,8 +5,9 @@ import com.bksd.core.domain.error.Result
 
 interface EntryReflector {
     suspend fun reflect(
+        momentId: String,
         entryText: String,
-        mood: String?,
+        moods: List<String>,
         trend: String?
     ): Result<ReflectionResponse, AppError>
 }

@@ -33,11 +33,13 @@ import com.bksd.insights.presentation.weekly_entry_count
 import com.bksd.insights.presentation.weekly_entry_plural
 import com.bksd.insights.presentation.weekly_entry_singular
 import com.bksd.reflection.domain.model.ReflectionTheme
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun RecurringThemesCard(
-    themes: List<ReflectionTheme>,
+    themes: ImmutableList<ReflectionTheme>,
     modifier: Modifier = Modifier
 ) {
     val palette = rememberNewEntryPalette()
@@ -121,7 +123,7 @@ private fun RecurringThemesCardPreview() {
                 ReflectionTheme("Gratitude", "#C77FA8", 3),
                 ReflectionTheme("Mornings", "#E0A21A", 3),
                 ReflectionTheme("Rest", "#6E7AD0", 2),
-            ),
+            ).toImmutableList(),
             modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg)
         )
     }

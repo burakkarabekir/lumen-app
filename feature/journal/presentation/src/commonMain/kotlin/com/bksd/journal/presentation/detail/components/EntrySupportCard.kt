@@ -39,7 +39,6 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun EntrySupportCard(
-    reflection: MomentReflection.Support,
     modifier: Modifier = Modifier,
 ) {
     val c = MaterialTheme.colorScheme.extended.supportCard
@@ -99,20 +98,6 @@ fun EntrySupportCard(
 private fun EntrySupportCardPreview() {
     AppTheme {
         EntrySupportCard(
-            reflection = MomentReflection.Support(
-                analysis = EntryAnalysis(
-                    summary = "Heavy day.",
-                    moodValence = MoodValence.LOW,
-                    moodConfidence = 0.7,
-                    dominantEmotions = listOf("overwhelm"),
-                    themes = listOf("stress"),
-                    distress = com.bksd.reflection.domain.model.DistressLevel.ELEVATED,
-                    distressRationale = ""
-                ),
-                message = "It sounds like things feel heavy right now, and that's hard. You don't have " +
-                    "to carry it alone — reaching out to someone you trust can make a difference.",
-                mentalHealthLines = emptyList()
-            ),
             modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg)
         )
     }

@@ -2,7 +2,7 @@
     <string name="content_desc_close">Kapat</string>
     <string name="restore">GERİ YÜKLE</string>
     <string name="paywall_title">Lumen\nPlus&apos;ı\naç</string>
-    <string name="paywall_subtitle">Gelişmiş yapay zeka araçları ve içgörülerle\ngünlük yansımanı zenginleştir.</string>
+    <string name="paywall_subtitle">Gelişmiş yapay zeka araçları ve içgörülerle\ngünlük kayıtlarını zenginleştir.</string>
     <string name="btn_start_trial">7 Günlük Ücretsiz Denemeyi Başlat</string>
     <string name="btn_subscribe_now">Şimdi Abone Ol</string>
     <string name="legal_text">Ödeme, onayladığında mağaza hesabından tahsil edilir. Dönem bitmeden en az 24 saat önce iptal etmezsen aboneliğin otomatik olarak yenilenir. Hesap ayarlarından istediğin zaman yönetebilir veya iptal edebilirsin.</string>
@@ -15,7 +15,7 @@
     <string name="per_month_format">aylık %1$s</string>
     <string name="paywall_feature_media_title">Video ve Sesli Not</string>
     <string name="paywall_feature_media_desc">Her kayda bir video ve bir sesli not ekle (her biri en fazla 25 MB).</string>
-    <string name="paywall_feature_reflection_title">Son 7 Günün Yapay Zeka Yansımaları</string>
+    <string name="paywall_feature_reflection_title">Son 7 Günün Lumen Analizleri</string>
     <string name="paywall_feature_reflection_desc">Son bir haftadaki kayıtlarında öne çıkan temalar üzerine sana özel yazılmış içgörüler. Sen yazdıkça yenilenir.</string>
     <string name="paywall_pricing_unavailable">Fiyatlandırma şu anda kullanılamıyor. Bağlantını kontrol edip tekrar dene.</string>
     <string name="paywall_try_again">Tekrar Dene</string>

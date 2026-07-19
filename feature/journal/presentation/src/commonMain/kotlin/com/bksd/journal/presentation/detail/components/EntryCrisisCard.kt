@@ -40,7 +40,6 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun EntryCrisisCard(
-    reflection: MomentReflection.Crisis,
     modifier: Modifier = Modifier,
 ) {
     val c = MaterialTheme.colorScheme.extended.crisisCard
@@ -100,21 +99,6 @@ fun EntryCrisisCard(
 private fun EntryCrisisCardPreview() {
     AppTheme {
         EntryCrisisCard(
-            reflection = MomentReflection.Crisis(
-                analysis = EntryAnalysis(
-                    summary = "Crisis.",
-                    moodValence = MoodValence.VERY_LOW,
-                    moodConfidence = 0.9,
-                    dominantEmotions = listOf("despair"),
-                    themes = emptyList(),
-                    distress = com.bksd.reflection.domain.model.DistressLevel.CRISIS,
-                    distressRationale = ""
-                ),
-                message = "If you're thinking about harming yourself or feel unsafe, please reach out for " +
-                    "help right now. You deserve support, and people are available to talk with you.",
-                emergency = SupportResource("Emergency", "112"),
-                crisisLines = emptyList()
-            ),
             modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg)
         )
     }

@@ -20,12 +20,17 @@ class FakeEntryReflector(
     var lastTrend: String? = null
         private set
 
+    var lastMoods: List<String>? = null
+        private set
+
     override suspend fun reflect(
+        momentId: String,
         entryText: String,
-        mood: String?,
+        moods: List<String>,
         trend: String?
     ): Result<ReflectionResponse, AppError> {
         lastTrend = trend
+        lastMoods = moods
         return response
     }
 }

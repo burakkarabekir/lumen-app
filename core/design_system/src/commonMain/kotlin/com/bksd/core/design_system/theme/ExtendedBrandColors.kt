@@ -71,3 +71,22 @@ val ExtendedColors.entryToolbarLink: Color get() = EntryToolbarLink
 val ExtendedColors.favorite: Color get() = FavoriteRed
 
 val ExtendedColors.reflectionChipDots: List<Color> get() = ReflectionChipDots
+
+val ExtendedColors.videoThumbnailScrim: Color get() = VideoThumbnailScrim
+val ExtendedColors.videoThumbnailDurationBadgeBg: Color get() = VideoThumbnailDurationBadgeBg
+val ExtendedColors.momentDetailCoverScrim: Color get() = MomentDetailCoverScrim
+val ExtendedColors.detailLocationChipRemoveBg: Color get() = DetailLocationChipRemoveBg
+val ExtendedColors.detailToolbarButtonScrim: Color get() = DetailToolbarButtonScrim
+val ExtendedColors.detailEditingBadgeBg: Color get() = DetailEditingBadgeBg
+val ExtendedColors.attachmentLinkTileGradient: List<Color>
+    get() = listOf(AttachmentLinkTileGradientStart, AttachmentBadgeLink)
+val ExtendedColors.analyzePromptOrbGradient: List<Color>
+    get() = listOf(AnalyzePromptOrbHighlight, AnalyzePromptOrbMid, AnalyzePromptOrbDeep)
+val ExtendedColors.analyzePromptAccent: Color get() = AiIconGradientEnd
+val ExtendedColors.reflectionUpsellGradient: List<Color>
+    get() = listOf(ReflectionUpsellGradientStart, ReflectionUpsellGradientEnd)
+val ExtendedColors.shareStoryGradient: List<Color>
+    get() = listOf(ShareStoryGradientStart, ShareStoryGradientMid, ShareStoryGradientEnd)
+val ExtendedColors.shareSuccessGreen: Color get() = ShareSuccessGreen
+val ExtendedColors.onboardingReflectionBarIdle: Color get() = OnboardingReflectionBarIdle
+val ExtendedColors.insightsPlaceChipPinLight: Color get() = InsightsPlaceChipPinLight

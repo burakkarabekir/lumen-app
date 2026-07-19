@@ -43,11 +43,11 @@
     <string name="content_desc_back">Geri</string>
     <string name="content_desc_edit">Düzenle</string>
     <string name="my_moment_fallback">Anım</string>
-    <string name="add_reflection">Yansıma Ekle</string>
+    <string name="add_reflection">Analiz Ekle</string>
     <string name="content_desc_bookmark">Anı İşaretle</string>
     <string name="export_to_pdf">PDF&apos;e Aktar</string>
     <string name="attachments_section">EKLER</string>
-    <string name="voice_reflection">Sesli Yansıma</string>
+    <string name="voice_reflection">Sesli Kayıt</string>
     <string name="mood_of_the_moment">Anın ruh hali</string>
     <string name="journal_entry_label">GÜNLÜK KAYDI</string>
     <string name="expand">Genişlet</string>
@@ -73,16 +73,16 @@
     <string name="content_desc_share">Paylaş</string>
 
     <!-- AI Entry Analysis -->
-    <string name="ai_analysis_title">Yapay Zeka Analizi</string>
+    <string name="ai_analysis_title">Lumen Analizi</string>
     <string name="ai_generated_on_save">Kaydederken oluşturuldu</string>
     <string name="ai_question_to_sit_with">ÜZERİNDE DÜŞÜNÜLECEK BİR SORU</string>
-    <string name="ai_reflection_disclaimer">Lumen AI hata yapabilir. Yansımalar yalnızca sana özeldir.</string>
+    <string name="ai_reflection_disclaimer">Lumen AI hata yapabilir. Analizler yalnızca sana özeldir.</string>
     <string name="ai_analyzing_title">Kaydın analiz ediliyor…</string>
-    <string name="ai_analyzing_caption">Yansıman birazdan burada görünecek.</string>
-    <string name="ai_analysis_failed_title">Yansıma kullanılamıyor</string>
-    <string name="ai_analysis_failed_caption">Bu an için bir yansıma oluşturamadık.</string>
+    <string name="ai_analyzing_caption">Analizin birazdan burada görünecek.</string>
+    <string name="ai_analysis_failed_title">Analiz kullanılamıyor</string>
+    <string name="ai_analysis_failed_caption">Bu an için bir analiz oluşturamadık.</string>
     <string name="ai_analysis_offline_title">Çevrimdışısın</string>
-    <string name="ai_analysis_offline_caption">Yeniden bağlandığında bir yansıma eklenecek.</string>
+    <string name="ai_analysis_offline_caption">Yeniden bağlandığında analizin eklenecek.</string>
     <string name="ai_analysis_retry">Tekrar dene</string>
     <string name="ai_support_title">Bir destek anı</string>
     <string name="ai_crisis_title">Yalnız değilsin</string>
@@ -134,11 +134,15 @@
     <string name="month_october">Ekim</string>
     <string name="month_november">Kasım</string>
     <string name="month_december">Aralık</string>
-    <string name="upsell_reflections_title">Bu haftaki ücretsiz yansımanı kullandın</string>
-    <string name="upsell_reflections_body">Ücretsiz plan haftada bir yapay zekâ yansıması içerir. Lumen Plus ile günde 7&apos;ye kadar yansımanın yanı sıra son bir haftadaki kayıtlarında öne çıkan temalar üzerine yazılmış içgörüler alırsın.</string>
+    <string name="upsell_reflections_title">Bu haftaki ücretsiz analizini kullandın</string>
+    <string name="upsell_reflections_body">Ücretsiz plan haftada bir Lumen analizi içerir. Lumen Plus ile günde 7&apos;ye kadar analizin yanı sıra son bir haftadaki kayıtlarında öne çıkan temalar üzerine yazılmış içgörüler alırsın.</string>
     <string name="upsell_unlock_plus">Plus'ı aç</string>
-    <string name="daily_limit_reflections_title">Günlük yansıma sınırına ulaşıldı</string>
-    <string name="daily_limit_reflections_body">Bugünkü yapay zekâ yansıma sınırına ulaştın. Yakında yeni yansımalar kullanılabilir olacak.</string>
+    <string name="analyze_prompt_title">Bu kayıt üzerine analiz al</string>
+    <string name="analyze_prompt_body">Yazdıkların üzerine nazik, kişisel bir Lumen analizi al.</string>
+    <string name="analyze_prompt_button">Analiz et</string>
+    <string name="daily_limit_reflections_title">Günlük analiz sınırına ulaşıldı</string>
+    <string name="daily_limit_reflections_body">Bugünkü Lumen analiz sınırına ulaştın. Yakında yeni analizler kullanılabilir olacak.</string>
     <string name="detail_changes_saved">Değişiklikler kaydedildi</string>
     <string name="detail_moment_deleted">An silindi</string>
+    <string name="error_mood_limit">En fazla 5 ruh hali seçebilirsin.</string>
 </resources>

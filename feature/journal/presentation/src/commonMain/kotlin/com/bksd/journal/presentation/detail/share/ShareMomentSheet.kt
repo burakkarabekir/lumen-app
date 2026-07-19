@@ -36,6 +36,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.ShareStyle
 import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.extended
+import com.bksd.core.design_system.theme.shareSuccessGreen
 import com.bksd.core.presentation.share.encodeToPngBytes
 import com.bksd.core.presentation.share.rememberShareImageActions
 import com.bksd.journal.presentation.model.MomentUi
@@ -125,7 +127,7 @@ fun ShareMomentSheet(
                         .background(MaterialTheme.colorScheme.inverseSurface)
                         .padding(horizontal = MaterialTheme.dimens.spacing.xl, vertical = MaterialTheme.dimens.spacing.md)
                 ) {
-                    Icon(Icons.Filled.Check, contentDescription = null, tint = Color(0xFF34C759), modifier = Modifier.size(MaterialTheme.dimens.icon.sm))
+                    Icon(Icons.Filled.Check, contentDescription = null, tint = MaterialTheme.colorScheme.extended.shareSuccessGreen, modifier = Modifier.size(MaterialTheme.dimens.icon.sm))
                     Text(text = message, fontSize = 13.5.sp, fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.inverseOnSurface)
                 }
             }

@@ -11,7 +11,7 @@
     <string name="sign_out">Çıkış Yap</string>
     <string name="delete_account">Hesabı sil</string>
     <string name="delete_account_title">Hesap silinsin mi?</string>
-    <string name="delete_account_message">Bu işlem hesabını ve tüm girdilerini, fotoğraflarını ve yansımalarını kalıcı olarak siler. Bu geri alınamaz.</string>
+    <string name="delete_account_message">Bu işlem hesabını ve tüm girdilerini, fotoğraflarını ve analizlerini kalıcı olarak siler. Bu geri alınamaz.</string>
     <string name="delete_account_confirm">Sil</string>
     <string name="section_data_privacy">Veri &amp; Gizlilik</string>
     <string name="section_support">Destek</string>
@@ -139,9 +139,9 @@
     <!-- Premium / Manage subscription -->
     <string name="premium_title">Lumen Plus</string>
     <string name="premium_status_plus_title">Lumen Plus kullanıyorsun</string>
-    <string name="premium_status_plus_subtitle">Lumen&apos;i desteklediğin için teşekkürler. Günde 7&apos;ye kadar yapay zeka yansımasının ve tüm premium özelliklerin keyfini çıkar.</string>
+    <string name="premium_status_plus_subtitle">Lumen&apos;i desteklediğin için teşekkürler. Günde 7&apos;ye kadar Lumen analizinin ve tüm premium özelliklerin keyfini çıkar.</string>
     <string name="premium_status_free_title">Ücretsiz planı kullanıyorsun</string>
-    <string name="premium_status_free_subtitle">Günde 7&apos;ye kadar yapay zeka yansıması, sesli &amp; video girdileri ve daha fazlası için Lumen Plus&apos;a yükselt.</string>
+    <string name="premium_status_free_subtitle">Günde 7&apos;ye kadar Lumen analizi, sesli &amp; video girdileri ve daha fazlası için Lumen Plus&apos;a yükselt.</string>
     <string name="premium_plan">Plan</string>
     <string name="premium_upgrade">Plus&apos;a yükselt</string>
     <string name="premium_manage_subscription">Aboneliği yönet</string>

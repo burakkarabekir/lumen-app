@@ -40,6 +40,7 @@ import com.bksd.journal.presentation.journal.JournalRoot
 import com.bksd.lumen.connectivity.ConnectivityBanner
 import com.bksd.lumen.consent.ConsentGate
 import com.bksd.lumen.lock.LockGate
+import com.bksd.lumen.main.AppReadySignal
 import com.bksd.lumen.main.MainEvent
 import com.bksd.lumen.main.MainViewModel
 import com.bksd.lumen.navigation.route.Route
@@ -87,6 +88,7 @@ fun NavigationRoot(
     val onboardingRepository = koinInject<OnboardingRepository>()
     val onboardingCompleted by onboardingRepository.observeCompleted().collectAsState(initial = false)
     val reminderLaunchSignal = koinInject<ReminderLaunchSignal>()
+    val appReadySignal = koinInject<AppReadySignal>()
     val snackbarHostState = remember { SnackbarHostState() }
     val snackbarController = koinInject<SnackbarController>()
     val snackbarScope = rememberCoroutineScope()
@@ -107,6 +109,7 @@ fun NavigationRoot(
             navigator.clearBackstackAndNavigate(Route.Auth.SignIn)
         }
         navigationReady = true
+        appReadySignal.markReady()
     }
 
     ObserveAsEvents(mainViewModel.events) { event ->
