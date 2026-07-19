@@ -1,5 +1,6 @@
 package com.bksd.journal.data.local
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -18,5 +19,5 @@ data class MomentEntity(
     val isFavorite: Boolean = false,
     val pendingSync: Boolean = false,
     val pendingDelete: Boolean = false,
-    val pendingUpload: Boolean = false
+    @ColumnInfo(defaultValue = "0") val pendingUpload: Boolean = false
 )

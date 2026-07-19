@@ -8,6 +8,7 @@ import com.bksd.journal.data.local.DomainToEntityMapper
 import com.bksd.journal.data.local.EntityToDomainMapper
 import com.bksd.journal.data.local.JournalDatabase
 import com.bksd.journal.data.local.MIGRATION_3_4
+import com.bksd.journal.data.local.MIGRATION_4_5
 import com.bksd.journal.data.local.MomentDao
 import com.bksd.journal.data.local.getJournalDatabaseBuilder
 import com.bksd.journal.data.remote.MomentDtoMapper
@@ -23,7 +24,7 @@ import org.koin.dsl.module
 val journalDataModule = module {
     single<JournalDatabase> {
         getJournalDatabaseBuilder()
-            .addMigrations(MIGRATION_3_4)
+            .addMigrations(MIGRATION_3_4, MIGRATION_4_5)
             .fallbackToDestructiveMigration(true)
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(Dispatchers.IO)
