@@ -56,6 +56,8 @@ import com.bksd.core.domain.model.VideoAttachment
 import com.bksd.core.presentation.attachment.VoicePlayerPill
 import com.bksd.journal.presentation.util.MomentFormatter
 import kotlin.time.Instant
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 private fun chipLinkHost(url: String): String {
     var s = url.trim()
@@ -67,7 +69,7 @@ private fun chipLinkHost(url: String): String {
 
 @Composable
 fun AttachmentChips(
-    attachments: List<Attachment>,
+    attachments: ImmutableList<Attachment>,
     accentColor: Color,
     formatter: MomentFormatter,
     playbackState: PlaybackState,
@@ -193,7 +195,7 @@ private fun AttachmentChipsPreview() {
         val palette = rememberNewEntryPalette()
         Column(modifier = Modifier.background(palette.surface).padding(vertical = MaterialTheme.dimens.spacing.md)) {
             AttachmentChips(
-                attachments = listOf(
+                attachments = persistentListOf(
                     VideoAttachment(AttachmentId("1"), Url(""), 18_000L),
                     AudioAttachment(AttachmentId("2"), Url(""), 3_000L),
                     LinkAttachment(AttachmentId("3"), Url("https://www.alltrails.com/trail"))

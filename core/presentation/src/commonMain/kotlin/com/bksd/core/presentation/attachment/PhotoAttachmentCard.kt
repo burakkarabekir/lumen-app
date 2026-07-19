@@ -22,7 +22,7 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun PhotoAttachmentCard(
-    imageModel: Any?,
+    imageModel: String?,
     modifier: Modifier = Modifier,
     onRemove: (() -> Unit)? = null,
     compact: Boolean = false
