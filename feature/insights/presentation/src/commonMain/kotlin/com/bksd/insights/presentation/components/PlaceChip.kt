@@ -34,6 +34,7 @@ import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
 import com.bksd.core.design_system.theme.insightsPlaceChipCount
+import com.bksd.core.design_system.theme.insightsPlaceChipPinLight
 import com.bksd.insights.presentation.PlaceKind
 import com.bksd.insights.presentation.VisitedPlace
 
@@ -44,7 +45,7 @@ internal fun PlaceChip(place: VisitedPlace, modifier: Modifier = Modifier) {
     val shape = RoundedCornerShape(MaterialTheme.dimens.radius.cardTight)
     val chipBg = if (dark) Color.White.copy(alpha = 0.07f) else countColor.copy(alpha = 0.08f)
     val nameColor = if (dark) Color.White else MaterialTheme.colorScheme.onSurface
-    val pinColor = if (dark) Color.White else Color(0xFF1E52FF)
+    val pinColor = if (dark) Color.White else MaterialTheme.colorScheme.extended.insightsPlaceChipPinLight
     Row(
         modifier = modifier
             .clip(shape)

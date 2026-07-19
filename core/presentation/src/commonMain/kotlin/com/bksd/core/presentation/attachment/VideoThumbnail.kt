@@ -28,9 +28,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.attachmentChipPlayIcon
+import com.bksd.core.design_system.theme.attachmentChipVideoTile
 import com.bksd.core.design_system.theme.dimens
-
-private val VideoCoverColors = listOf(Color(0xFF3A3F63), Color(0xFF7682D6), Color(0xFFCF8676))
+import com.bksd.core.design_system.theme.extended
+import com.bksd.core.design_system.theme.videoThumbnailDurationBadgeBg
+import com.bksd.core.design_system.theme.videoThumbnailScrim
 
 @Composable
 internal fun VideoThumbnail(
@@ -40,6 +43,7 @@ internal fun VideoThumbnail(
     shape: Shape = RoundedCornerShape(12.dp),
     onClick: (() -> Unit)? = null
 ) {
+    val cover = MaterialTheme.colorScheme.extended.attachmentChipVideoTile
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -47,9 +51,9 @@ internal fun VideoThumbnail(
             .clip(shape)
             .background(
                 Brush.linearGradient(
-                    0f to VideoCoverColors[0],
-                    0.6f to VideoCoverColors[1],
-                    1f to VideoCoverColors[2]
+                    0f to cover[0],
+                    0.6f to cover[1],
+                    1f to cover[2]
                 )
             )
             .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
@@ -61,7 +65,7 @@ internal fun VideoThumbnail(
                     Brush.verticalGradient(
                         0f to Color.Transparent,
                         0.55f to Color.Transparent,
-                        1f to Color(0x52000000)
+                        1f to MaterialTheme.colorScheme.extended.videoThumbnailScrim
                     )
                 )
         )
@@ -76,7 +80,7 @@ internal fun VideoThumbnail(
             Icon(
                 imageVector = Icons.Default.PlayArrow,
                 contentDescription = null,
-                tint = Color(0xFF1C1B1A),
+                tint = MaterialTheme.colorScheme.extended.attachmentChipPlayIcon,
                 modifier = Modifier.size(MaterialTheme.dimens.icon.xl)
             )
         }
@@ -86,7 +90,7 @@ internal fun VideoThumbnail(
                     .align(Alignment.BottomEnd)
                     .padding(MaterialTheme.dimens.spacing.md)
                     .clip(RoundedCornerShape(MaterialTheme.dimens.radius.sm))
-                    .background(Color(0x8C000000))
+                    .background(MaterialTheme.colorScheme.extended.videoThumbnailDurationBadgeBg)
                     .padding(horizontal = MaterialTheme.dimens.spacing.sm, vertical = MaterialTheme.dimens.spacing.xs)
             ) {
                 Text(

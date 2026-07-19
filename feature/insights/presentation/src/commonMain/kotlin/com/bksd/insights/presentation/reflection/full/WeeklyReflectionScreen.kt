@@ -61,6 +61,8 @@ import kotlinx.datetime.DayOfWeek
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableSet
 
 @Composable
 fun WeeklyReflectionDetailRoot(
@@ -171,7 +173,7 @@ private fun WeeklyReflectionScreen(
                     Spacer(Modifier.height(MaterialTheme.dimens.spacing.xxl))
                     WeeklySectionLabel(stringResource(Res.string.weekly_section_themes))
                     Spacer(Modifier.height(MaterialTheme.dimens.spacing.md))
-                    RecurringThemesCard(themes = reflection.themes)
+                    RecurringThemesCard(themes = reflection.themes.toImmutableList())
                 }
 
                 val standout = insights?.standout

@@ -34,14 +34,12 @@ import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
+import com.bksd.core.design_system.theme.reflectionUpsellGradient
 import com.bksd.journal.presentation.Res
 import com.bksd.journal.presentation.upsell_reflections_body
 import com.bksd.journal.presentation.upsell_reflections_title
 import com.bksd.journal.presentation.upsell_unlock_plus
 import org.jetbrains.compose.resources.stringResource
-
-private val UnlockGradientStart = Color(0xFF7C7FE8)
-private val UnlockGradientEnd = Color(0xFF5B4FE0)
 
 @Composable
 fun EntryReflectionUpsellCard(
@@ -109,7 +107,7 @@ fun EntryReflectionUpsellCard(
                 modifier = Modifier
                     .size(48.dp)
                     .clip(RoundedCornerShape(16.dp))
-                    .background(Brush.linearGradient(listOf(UnlockGradientStart, UnlockGradientEnd))),
+                    .background(Brush.linearGradient(MaterialTheme.colorScheme.extended.reflectionUpsellGradient)),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
@@ -143,7 +141,7 @@ fun EntryReflectionUpsellCard(
                 Row(
                     modifier = Modifier
                         .clip(RoundedCornerShape(MaterialTheme.dimens.radius.full))
-                        .background(Brush.linearGradient(listOf(UnlockGradientStart, UnlockGradientEnd)))
+                        .background(Brush.linearGradient(MaterialTheme.colorScheme.extended.reflectionUpsellGradient))
                         .clickable(role = Role.Button, onClick = onUnlock)
                         .padding(
                             horizontal = MaterialTheme.dimens.spacing.xl,

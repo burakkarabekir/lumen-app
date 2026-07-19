@@ -51,6 +51,7 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.SubcomposeAsyncImage
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.coverGradient
+import com.bksd.core.design_system.theme.detailToolbarButtonScrim
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
 import com.bksd.core.design_system.theme.rememberNewEntryPalette
@@ -322,7 +323,7 @@ fun MomentDetailReadView(
                 .padding(start = MaterialTheme.dimens.spacing.xl, top = MaterialTheme.dimens.spacing.sm)
                 .size(MaterialTheme.dimens.icon.tile)
                 .clip(CircleShape)
-                .background(Color(0x57141420))
+                .background(MaterialTheme.colorScheme.extended.detailToolbarButtonScrim)
                 .clickable { onAction(MomentDetailAction.OnNavigateBack) }
         ) {
             Icon(
@@ -341,7 +342,7 @@ fun MomentDetailReadView(
                 .padding(end = MaterialTheme.dimens.spacing.xl, top = MaterialTheme.dimens.spacing.sm)
                 .size(MaterialTheme.dimens.icon.tile)
                 .clip(CircleShape)
-                .background(Color(0x57141420))
+                .background(MaterialTheme.colorScheme.extended.detailToolbarButtonScrim)
                 .clickable { onAction(MomentDetailAction.OnShareClick) }
         ) {
             Icon(

@@ -33,23 +33,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bksd.core.design_system.theme.AppTheme
+import com.bksd.core.design_system.theme.analyzePromptAccent
+import com.bksd.core.design_system.theme.analyzePromptOrbGradient
 import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.extended
 import com.bksd.journal.presentation.Res
 import com.bksd.journal.presentation.analyze_prompt_body
 import com.bksd.journal.presentation.analyze_prompt_button
 import com.bksd.journal.presentation.analyze_prompt_title
 import org.jetbrains.compose.resources.stringResource
 
-private val OrbHighlight = Color(0xFFDCE3FF)
-private val OrbMid = Color(0xFF5B6AD8)
-private val OrbDeep = Color(0xFF33308F)
-private val AnalyzeAccent = Color(0xFFCF6F64)
-
 @Composable
 fun EntryAnalyzePromptCard(
     onAnalyze: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val orb = MaterialTheme.colorScheme.extended.analyzePromptOrbGradient
+    val accent = MaterialTheme.colorScheme.extended.analyzePromptAccent
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -70,9 +70,9 @@ fun EntryAnalyzePromptCard(
                     drawCircle(
                         brush = Brush.radialGradient(
                             colorStops = arrayOf(
-                                0.0f to OrbHighlight,
-                                0.45f to OrbMid,
-                                1.0f to OrbDeep,
+                                0.0f to orb[0],
+                                0.45f to orb[1],
+                                1.0f to orb[2],
                             ),
                             center = Offset(size.width * 0.34f, size.height * 0.30f),
                             radius = size.width * 0.92f,
@@ -104,7 +104,7 @@ fun EntryAnalyzePromptCard(
             Row(
                 modifier = Modifier
                     .clip(RoundedCornerShape(MaterialTheme.dimens.radius.full))
-                    .background(AnalyzeAccent)
+                    .background(accent)
                     .clickable(role = Role.Button, onClick = onAnalyze)
                     .padding(
                         horizontal = MaterialTheme.dimens.spacing.xl,

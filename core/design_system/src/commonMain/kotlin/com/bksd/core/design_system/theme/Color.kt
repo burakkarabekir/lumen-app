@@ -317,6 +317,25 @@ val ShareInkChipBg = Color(0x1FFFFFFF)
 val SharePhotoTop = Color(0xFF8091E6)
 val SharePhotoBottom = Color(0xFFB2BCF2)
 
+val VideoThumbnailScrim = Color(0x52000000)
+val VideoThumbnailDurationBadgeBg = Color(0x8C000000)
+val MomentDetailCoverScrim = Color(0x2E000000)
+val DetailLocationChipRemoveBg = Color(0x47000000)
+val DetailToolbarButtonScrim = Color(0x57141420)
+val DetailEditingBadgeBg = Color(0x99141420)
+val AttachmentLinkTileGradientStart = Color(0xFFA98FD6)
+val AnalyzePromptOrbHighlight = Color(0xFFDCE3FF)
+val AnalyzePromptOrbMid = Color(0xFF5B6AD8)
+val AnalyzePromptOrbDeep = Color(0xFF33308F)
+val ReflectionUpsellGradientStart = Color(0xFF7C7FE8)
+val ReflectionUpsellGradientEnd = Color(0xFF5B4FE0)
+val ShareStoryGradientStart = Color(0xFFF77737)
+val ShareStoryGradientMid = Color(0xFFE1306C)
+val ShareStoryGradientEnd = Color(0xFF833AB4)
+val ShareSuccessGreen = Color(0xFF34C759)
+val OnboardingReflectionBarIdle = Color(0x1FFFFFFF)
+val InsightsPlaceChipPinLight = Color(0xFF1E52FF)
+
 // ==================== Gradient Helpers ====================
 
 val ColorScheme.bgGradient: Brush

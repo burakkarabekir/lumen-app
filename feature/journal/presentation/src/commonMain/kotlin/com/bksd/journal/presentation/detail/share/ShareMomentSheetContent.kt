@@ -39,6 +39,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.bksd.core.design_system.theme.PreviewAppTheme
 import com.bksd.core.design_system.theme.ShareStyle
 import com.bksd.core.design_system.theme.dimens
+import com.bksd.core.design_system.theme.extended
+import com.bksd.core.design_system.theme.shareStoryGradient
+import com.bksd.core.design_system.theme.shareSuccessGreen
 import com.bksd.core.domain.model.Mood
 import com.bksd.journal.presentation.model.MomentUi
 import kotlinx.collections.immutable.persistentListOf
@@ -147,14 +150,14 @@ fun ShareMomentSheetContent(
             ShareActionButton(
                 icon = Icons.Filled.PhotoCamera,
                 label = "Story",
-                background = Brush.linearGradient(listOf(Color(0xFFF77737), Color(0xFFE1306C), Color(0xFF833AB4))),
+                background = Brush.linearGradient(MaterialTheme.colorScheme.extended.shareStoryGradient),
                 contentColor = Color.White,
                 onClick = onSystemShare
             )
             ShareActionButton(
                 icon = Icons.AutoMirrored.Filled.Message,
                 label = "Message",
-                background = SolidColor(Color(0xFF34C759)),
+                background = SolidColor(MaterialTheme.colorScheme.extended.shareSuccessGreen),
                 contentColor = Color.White,
                 onClick = onSystemShare
             )
