@@ -54,7 +54,6 @@ kotlin {
             implementation(libs.bundles.koin.compose)
 
             implementation(libs.jetbrains.kotlinx.collections.immutable)
-            implementation(libs.kotzilla.sdk.compose)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
