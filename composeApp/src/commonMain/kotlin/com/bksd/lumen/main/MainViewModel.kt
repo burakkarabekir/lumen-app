@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withTimeoutOrNull
+import kotlin.time.Duration.Companion.milliseconds
 
 class MainViewModel(
     private val sessionStorage: SessionStorage,
@@ -24,11 +25,7 @@ class MainViewModel(
 
     init {
         launch {
-            // Bound the wait so an offline launch can never hang on a network refresh.
-            withTimeoutOrNull(STARTUP_TIMEOUT_MS) { sessionStorage.awaitReady() }
-
-            // Fall back to the locally-known session so a cached user reaches the app
-            // offline even when the access token can't be refreshed right now.
+            withTimeoutOrNull(STARTUP_TIMEOUT_MS.milliseconds) { sessionStorage.awaitReady() }
             var isLoggedIn = sessionStorage.isLoggedIn() ||
                 sessionStorage.getLocalDataOwner() != null
 
@@ -51,9 +48,6 @@ class MainViewModel(
                     syncRevenueCatUser(true)
                     return@collect
                 }
-                // Not authenticated. Only treat this as a real sign-out/expiry when we're
-                // online — offline it's a transient refresh failure, so keep the cached
-                // session and let the user stay in the app (offline-first).
                 val online = networkMonitor.isOnline.first()
                 if (online && _state.value.isLoggedIn) {
                     _state.update { it.copy(isLoggedIn = false) }
