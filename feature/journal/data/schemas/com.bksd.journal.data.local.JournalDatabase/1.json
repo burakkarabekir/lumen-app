@@ -2,15 +2,21 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "42eec163856b47f551b049f418bc3432",
+    "identityHash": "f6811978b3ea578a8dde083b9dcceb65",
     "entities": [
       {
         "tableName": "moments",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `body` TEXT, `createdAtMs` INTEGER NOT NULL, `mood` TEXT NOT NULL, `tags` TEXT NOT NULL, `locationLatitude` REAL, `locationLongitude` REAL, `locationDisplayName` TEXT, `attachments` TEXT NOT NULL, `pendingSync` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `body` TEXT, `createdAtMs` INTEGER NOT NULL, `moods` TEXT NOT NULL, `tags` TEXT NOT NULL, `locationLatitude` REAL, `locationLongitude` REAL, `locationDisplayName` TEXT, `attachments` TEXT NOT NULL, `isFavorite` INTEGER NOT NULL, `pendingSync` INTEGER NOT NULL, `pendingDelete` INTEGER NOT NULL, `pendingUpload` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -26,8 +32,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "mood",
-            "columnName": "mood",
+            "fieldPath": "moods",
+            "columnName": "moods",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -59,8 +65,26 @@
             "notNull": true
           },
           {
+            "fieldPath": "isFavorite",
+            "columnName": "isFavorite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
             "fieldPath": "pendingSync",
             "columnName": "pendingSync",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pendingDelete",
+            "columnName": "pendingDelete",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pendingUpload",
+            "columnName": "pendingUpload",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -75,7 +99,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '42eec163856b47f551b049f418bc3432')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f6811978b3ea578a8dde083b9dcceb65')"
     ]
   }
 }
