@@ -19,25 +19,25 @@ class DistressBranchingTest {
 
     @Test
     fun noneBranchesToReflection() = runTest {
-        val data = (useCaseFor(DistressLevel.NONE)("a fine day") as Result.Success).data
+        val data = (useCaseFor(DistressLevel.NONE)("m1", "a fine day") as Result.Success).data
         assertIs<MomentReflection.Reflection>(data)
     }
 
     @Test
     fun mildBranchesToReflection() = runTest {
-        val data = (useCaseFor(DistressLevel.MILD)("a bit tired") as Result.Success).data
+        val data = (useCaseFor(DistressLevel.MILD)("m1", "a bit tired") as Result.Success).data
         assertIs<MomentReflection.Reflection>(data)
     }
 
     @Test
     fun elevatedBranchesToSupport() = runTest {
-        val data = (useCaseFor(DistressLevel.ELEVATED)("struggling") as Result.Success).data
+        val data = (useCaseFor(DistressLevel.ELEVATED)("m1", "struggling") as Result.Success).data
         assertIs<MomentReflection.Support>(data)
     }
 
     @Test
     fun crisisBranchesToCrisis() = runTest {
-        val data = (useCaseFor(DistressLevel.CRISIS)("unsafe") as Result.Success).data
+        val data = (useCaseFor(DistressLevel.CRISIS)("m1", "unsafe") as Result.Success).data
         assertIs<MomentReflection.Crisis>(data)
     }
 }

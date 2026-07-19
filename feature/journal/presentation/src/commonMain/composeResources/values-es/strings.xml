@@ -141,4 +141,5 @@
     <string name="daily_limit_reflections_body">Has alcanzado el límite de reflexiones con IA de hoy. Pronto tendrás más reflexiones disponibles.</string>
     <string name="detail_changes_saved">Cambios guardados</string>
     <string name="detail_moment_deleted">Momento eliminado</string>
+    <string name="error_mood_limit">Puedes elegir hasta 5 estados de ánimo.</string>
 </resources>

@@ -44,6 +44,7 @@ import com.bksd.moment.presentation.error_location_permission_denied
 import com.bksd.moment.presentation.error_location_services_disabled
 import com.bksd.moment.presentation.error_moment_empty
 import com.bksd.moment.presentation.error_moment_save_failed
+import com.bksd.moment.presentation.error_mood_limit
 import com.bksd.moment.presentation.error_mood_required
 import com.bksd.moment.presentation.error_playback_failed
 import com.bksd.moment.presentation.error_recording_save_failed
@@ -64,6 +65,8 @@ import org.jetbrains.compose.resources.getString
 import kotlin.time.Clock
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
+
+private const val MAX_MOODS = 5
 
 class CreateMomentViewModel(
     private val saveMomentUseCase: SaveMomentUseCase,
@@ -203,14 +206,18 @@ class CreateMomentViewModel(
             is CreateMomentAction.OnTitleChange -> updateState { it.copy(title = action.title) }
             is CreateMomentAction.OnBodyChange -> updateState { it.copy(body = action.body) }
             is CreateMomentAction.OnMoodSelect -> {
-                updateState { state ->
-                    val currentMoods = state.selectedMoods
-                    val newMoods = if (action.mood in currentMoods) {
-                        (currentMoods - action.mood).toPersistentSet()
-                    } else {
-                        (currentMoods + action.mood).toPersistentSet()
+                val selected = state.value.selectedMoods
+                if (action.mood !in selected && selected.size >= MAX_MOODS) {
+                    sendEvent(CreateMomentEvent.ShowError(UiText.Resource(Res.string.error_mood_limit)))
+                } else {
+                    updateState { state ->
+                        val newMoods = if (action.mood in state.selectedMoods) {
+                            (state.selectedMoods - action.mood).toPersistentSet()
+                        } else {
+                            (state.selectedMoods + action.mood).toPersistentSet()
+                        }
+                        state.copy(selectedMoods = newMoods)
                     }
-                    state.copy(selectedMoods = newMoods)
                 }
             }
             is CreateMomentAction.OnTagAdd -> {
@@ -518,11 +525,9 @@ class CreateMomentViewModel(
                         ).joinToString("\n\n")
                         if (entryText.isNotBlank()) {
                             applicationScope.launch {
-                                val mood = currentState.selectedMoods
+                                val moods = currentState.selectedMoods
                                     .map { getString(it.labelRes()) }
-                                    .joinToString(", ")
-                                    .takeIf { it.isNotBlank() }
-                                requestEntryAnalysis(momentId, entryText, mood)
+                                requestEntryAnalysis(momentId, entryText, moods)
                             }
                         }
                     }

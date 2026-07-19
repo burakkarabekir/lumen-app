@@ -22,7 +22,7 @@ class ModelFeedbackNotShownTest {
 
     @Test
     fun elevatedShowsPrewrittenSupportNotModelWords() = runTest {
-        val data = (useCaseFor(DistressLevel.ELEVATED, MODEL_WORDS)("x") as Result.Success).data
+        val data = (useCaseFor(DistressLevel.ELEVATED, MODEL_WORDS)("m1", "x") as Result.Success).data
         assertIs<MomentReflection.Support>(data)
         assertEquals(SupportConfig.ELEVATED_MESSAGE, data.message)
         assertNotEquals(MODEL_WORDS, data.message)
@@ -30,7 +30,7 @@ class ModelFeedbackNotShownTest {
 
     @Test
     fun crisisShowsPrewrittenCrisisNotModelWords() = runTest {
-        val data = (useCaseFor(DistressLevel.CRISIS, MODEL_WORDS)("x") as Result.Success).data
+        val data = (useCaseFor(DistressLevel.CRISIS, MODEL_WORDS)("m1", "x") as Result.Success).data
         assertIs<MomentReflection.Crisis>(data)
         assertEquals(SupportConfig.CRISIS_MESSAGE, data.message)
         assertNotEquals(MODEL_WORDS, data.message)
@@ -38,7 +38,7 @@ class ModelFeedbackNotShownTest {
 
     @Test
     fun lowDistressShowsModelFeedback() = runTest {
-        val data = (useCaseFor(DistressLevel.NONE, "warm reflection")("x") as Result.Success).data
+        val data = (useCaseFor(DistressLevel.NONE, "warm reflection")("m1", "x") as Result.Success).data
         assertIs<MomentReflection.Reflection>(data)
         assertEquals("warm reflection", data.message)
     }

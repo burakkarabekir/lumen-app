@@ -39,6 +39,7 @@
     <string name="error_file_too_large">Le fichier dépasse la limite de 25 Mo</string>
     <string name="error_moment_empty">Le moment est vide</string>
     <string name="error_mood_required">Sélectionne une humeur</string>
+    <string name="error_mood_limit">Tu peux choisir jusqu&apos;à 5 humeurs.</string>
     <string name="error_attachment_save_failed">Échec de l&apos;enregistrement de la pièce jointe.</string>
     <string name="error_moment_save_failed">Échec de l&apos;enregistrement du moment</string>
     <string name="success_moment_saved">Moment enregistré !</string>

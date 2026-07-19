@@ -2,8 +2,10 @@ package com.bksd.reflection.data.di
 
 import com.bksd.reflection.data.local.DataStoreMomentAnalysisStore
 import com.bksd.reflection.data.local.DataStoreWeeklyReflectionStore
+import com.bksd.reflection.data.remote.SupabaseEntryReflectionSource
 import com.bksd.reflection.data.remote.SupabaseEntryReflector
 import com.bksd.reflection.data.remote.SupabaseWeeklyReflector
+import com.bksd.reflection.domain.analysis.EntryReflectionSource
 import com.bksd.reflection.domain.analysis.EntryReflector
 import com.bksd.reflection.domain.analysis.WeeklyReflector
 import com.bksd.reflection.domain.repository.MomentAnalysisStore
@@ -14,6 +16,7 @@ import org.koin.dsl.module
 
 val reflectionDataModule = module {
     singleOf(::SupabaseEntryReflector) bind EntryReflector::class
+    singleOf(::SupabaseEntryReflectionSource) bind EntryReflectionSource::class
     singleOf(::SupabaseWeeklyReflector) bind WeeklyReflector::class
     single<WeeklyReflectionStore> { DataStoreWeeklyReflectionStore(get()) }
     single<MomentAnalysisStore> { DataStoreMomentAnalysisStore(get(), get()) }

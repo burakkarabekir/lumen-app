@@ -13,6 +13,7 @@ import org.jetbrains.compose.resources.getString
 import com.bksd.journal.domain.usecase.DeleteMomentUseCase
 import com.bksd.journal.domain.usecase.GetPagedMomentsUseCase
 import com.bksd.journal.domain.usecase.SyncMomentsUseCase
+import com.bksd.reflection.domain.usecase.SyncReflectionsUseCase
 import com.bksd.journal.domain.usecase.UpdateMomentUseCase
 import com.bksd.journal.presentation.journal.JournalViewModel.Companion.LOAD_MORE_SIZE
 import com.bksd.journal.presentation.util.groupMomentsByDate
@@ -32,6 +33,7 @@ import kotlin.time.Clock
 class JournalViewModel(
     private val getPagedMomentsUseCase: GetPagedMomentsUseCase,
     private val syncMomentsUseCase: SyncMomentsUseCase,
+    private val syncReflectionsUseCase: SyncReflectionsUseCase,
     private val deleteMomentUseCase: DeleteMomentUseCase,
     private val updateMomentUseCase: UpdateMomentUseCase,
     private val sessionStorage: SessionStorage,
@@ -225,6 +227,7 @@ class JournalViewModel(
 
                 is Result.Success -> {
                     _state.update { it.copy(isSyncing = false) }
+                    syncReflectionsUseCase()
                 }
             }
         }

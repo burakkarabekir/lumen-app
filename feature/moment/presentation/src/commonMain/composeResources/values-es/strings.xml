@@ -39,6 +39,7 @@
     <string name="error_file_too_large">El archivo supera el límite de 25 MB</string>
     <string name="error_moment_empty">El momento está vacío</string>
     <string name="error_mood_required">Selecciona un estado de ánimo</string>
+    <string name="error_mood_limit">Puedes elegir hasta 5 estados de ánimo.</string>
     <string name="error_attachment_save_failed">No se pudo guardar el adjunto.</string>
     <string name="error_moment_save_failed">No se pudo guardar el momento</string>
     <string name="success_moment_saved">¡Momento guardado!</string>

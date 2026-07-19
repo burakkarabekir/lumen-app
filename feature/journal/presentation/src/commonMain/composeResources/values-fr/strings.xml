@@ -141,4 +141,5 @@
     <string name="daily_limit_reflections_body">Tu as atteint ta limite de réflexions IA pour aujourd&apos;hui. De nouvelles réflexions seront bientôt disponibles.</string>
     <string name="detail_changes_saved">Modifications enregistrées</string>
     <string name="detail_moment_deleted">Moment supprimé</string>
+    <string name="error_mood_limit">Tu peux choisir jusqu&apos;à 5 humeurs.</string>
 </resources>

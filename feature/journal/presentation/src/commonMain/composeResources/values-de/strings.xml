@@ -141,4 +141,5 @@
     <string name="daily_limit_reflections_body">Du hast dein heutiges KI-Reflexionslimit erreicht. Bald stehen dir wieder neue Reflexionen zur Verfügung.</string>
     <string name="detail_changes_saved">Änderungen gespeichert</string>
     <string name="detail_moment_deleted">Moment gelöscht</string>
+    <string name="error_mood_limit">Du kannst bis zu 5 Stimmungen auswählen.</string>
 </resources>

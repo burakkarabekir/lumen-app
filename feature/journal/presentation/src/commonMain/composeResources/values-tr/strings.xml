@@ -141,4 +141,5 @@
     <string name="daily_limit_reflections_body">Bugünkü yapay zekâ yansıma sınırına ulaştın. Yakında yeni yansımalar kullanılabilir olacak.</string>
     <string name="detail_changes_saved">Değişiklikler kaydedildi</string>
     <string name="detail_moment_deleted">An silindi</string>
+    <string name="error_mood_limit">En fazla 5 ruh hali seçebilirsin.</string>
 </resources>

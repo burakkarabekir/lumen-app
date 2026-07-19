@@ -141,4 +141,5 @@
     <string name="daily_limit_reflections_body">You&apos;ve reached today&apos;s AI reflection limit. More reflections will be available soon.</string>
     <string name="detail_changes_saved">Changes saved</string>
     <string name="detail_moment_deleted">Moment deleted</string>
+    <string name="error_mood_limit">You can pick up to 5 moods.</string>
 </resources>

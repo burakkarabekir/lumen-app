@@ -15,6 +15,7 @@ import com.bksd.journal.domain.usecase.GetMomentUseCase
 import com.bksd.journal.domain.usecase.UpdateMomentUseCase
 import com.bksd.journal.presentation.Res
 import com.bksd.journal.presentation.detail_changes_saved
+import com.bksd.journal.presentation.error_mood_limit
 import com.bksd.journal.presentation.detail_moment_deleted
 import com.bksd.reflection.domain.model.MomentAnalysisState
 import com.bksd.reflection.domain.usecase.ObserveEntryAnalysisUseCase
@@ -31,6 +32,8 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlin.time.Clock
+
+private const val MAX_MOODS = 5
 
 class MomentDetailViewModel(
     private val getMomentUseCase: GetMomentUseCase,
@@ -257,6 +260,11 @@ class MomentDetailViewModel(
     }
 
     private fun toggleMood(mood: com.bksd.core.domain.model.Mood) {
+        val selected = _state.value.editMoods
+        if (mood !in selected && selected.size >= MAX_MOODS) {
+            sendEvent(MomentDetailEvent.ShowError(UiText.Resource(Res.string.error_mood_limit)))
+            return
+        }
         _state.update { current ->
             val updated = if (mood in current.editMoods) {
                 current.editMoods - mood
@@ -321,11 +329,8 @@ class MomentDetailViewModel(
         if (entryText.isBlank()) return
 
         launch {
-            val mood = moment.moods
-                .map { getString(it.labelRes()) }
-                .joinToString(", ")
-                .takeIf { it.isNotBlank() }
-            requestEntryAnalysis(moment.id, entryText, mood)
+            val moods = moment.moods.map { getString(it.labelRes()) }
+            requestEntryAnalysis(moment.id, entryText, moods)
         }
     }
 

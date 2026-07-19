@@ -11,9 +11,9 @@ class RequestEntryAnalysisUseCase(
     private val analyzeAndReflect: AnalyzeAndReflectUseCase,
     private val store: MomentAnalysisStore,
 ) {
-    suspend operator fun invoke(momentId: String, entryText: String, mood: String?) {
+    suspend operator fun invoke(momentId: String, entryText: String, moods: List<String>) {
         store.setPending(momentId)
-        when (val result = analyzeAndReflect(entryText, mood)) {
+        when (val result = analyzeAndReflect(momentId, entryText, moods)) {
             is Result.Success -> store.setResult(momentId, result.data)
             is Result.Error -> {
                 when (val err = result.error) {

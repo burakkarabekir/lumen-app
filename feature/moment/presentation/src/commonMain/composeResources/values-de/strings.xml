@@ -39,6 +39,7 @@
     <string name="error_file_too_large">Datei überschreitet das Limit von 25 MB</string>
     <string name="error_moment_empty">Moment ist leer</string>
     <string name="error_mood_required">Bitte wähle eine Stimmung</string>
+    <string name="error_mood_limit">Du kannst bis zu 5 Stimmungen auswählen.</string>
     <string name="error_attachment_save_failed">Anhang konnte nicht gespeichert werden.</string>
     <string name="error_moment_save_failed">Moment konnte nicht gespeichert werden</string>
     <string name="success_moment_saved">Moment gespeichert!</string>

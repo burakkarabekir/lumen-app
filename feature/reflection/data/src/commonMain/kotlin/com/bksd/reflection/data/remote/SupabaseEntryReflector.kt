@@ -20,8 +20,9 @@ class SupabaseEntryReflector(
 ) : EntryReflector {
 
     override suspend fun reflect(
+        momentId: String,
         entryText: String,
-        mood: String?,
+        moods: List<String>,
         trend: String?
     ): Result<ReflectionResponse, AppError> = supabaseCall {
         val language = languageRepository.observeLanguage().first().promptLanguageName()
@@ -29,8 +30,10 @@ class SupabaseEntryReflector(
             contentType(ContentType.Application.Json)
             setBody(
                 AnalyzeRequest(
+                    momentId = momentId,
                     text = entryText,
-                    mood = mood,
+                    moods = moods.ifEmpty { null },
+                    mood = moods.joinToString(", ").ifBlank { null },
                     trend = trend,
                     language = language
                 )
