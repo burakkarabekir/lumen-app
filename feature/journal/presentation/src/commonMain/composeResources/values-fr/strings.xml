@@ -73,7 +73,7 @@
     <string name="content_desc_share">Partager</string>
 
     <!-- AI Entry Analysis -->
-    <string name="ai_analysis_title">Analyse IA</string>
+    <string name="ai_analysis_title">Analyse Lumen</string>
     <string name="ai_generated_on_save">Généré à l&apos;enregistrement</string>
     <string name="ai_question_to_sit_with">UNE QUESTION À MÉDITER</string>
     <string name="ai_reflection_disclaimer">L&apos;IA de Lumen peut faire des erreurs. Tes réflexions restent privées.</string>
@@ -134,14 +134,14 @@
     <string name="month_october">Octobre</string>
     <string name="month_november">Novembre</string>
     <string name="month_december">Décembre</string>
-    <string name="upsell_reflections_title">Tu as utilisé ta réflexion IA gratuite de la semaine</string>
-    <string name="upsell_reflections_body">Le forfait gratuit inclut une réflexion IA par semaine. Avec Lumen Plus, tu en as jusqu&apos;à 7 par jour, ainsi qu&apos;un texte personnel sur les thèmes de tes 7 derniers jours.</string>
+    <string name="upsell_reflections_title">Tu as utilisé ton analyse Lumen gratuite de la semaine</string>
+    <string name="upsell_reflections_body">Le forfait gratuit inclut une analyse Lumen par semaine. Avec Lumen Plus, tu en as jusqu&apos;à 7 par jour, ainsi qu&apos;un texte personnel sur les thèmes de tes 7 derniers jours.</string>
     <string name="upsell_unlock_plus">Débloquer Plus</string>
     <string name="analyze_prompt_title">Une réflexion sur cette entrée</string>
-    <string name="analyze_prompt_body">Obtiens une réflexion IA douce et personnelle sur ce que tu as écrit.</string>
+    <string name="analyze_prompt_body">Obtiens une analyse Lumen douce et personnelle sur ce que tu as écrit.</string>
     <string name="analyze_prompt_button">Analyser</string>
-    <string name="daily_limit_reflections_title">Limite quotidienne de réflexions atteinte</string>
-    <string name="daily_limit_reflections_body">Tu as atteint ta limite de réflexions IA pour aujourd&apos;hui. De nouvelles réflexions seront bientôt disponibles.</string>
+    <string name="daily_limit_reflections_title">Limite quotidienne d&apos;analyses atteinte</string>
+    <string name="daily_limit_reflections_body">Tu as atteint ta limite d&apos;analyses Lumen pour aujourd&apos;hui. De nouvelles analyses seront bientôt disponibles.</string>
     <string name="detail_changes_saved">Modifications enregistrées</string>
     <string name="detail_moment_deleted">Moment supprimé</string>
     <string name="error_mood_limit">Tu peux choisir jusqu&apos;à 5 humeurs.</string>

@@ -6,9 +6,9 @@
     <string name="btn_start_journaling">Günlüğe başla</string>
 
     <string name="onboarding_title_1">Lumen&apos;e hoş geldin</string>
-    <string name="onboarding_body_1">Yansıman için sakin bir alan — her seferinde tek bir içten kayıt.</string>
+    <string name="onboarding_body_1">Düşünmen için sakin bir alan — her seferinde tek bir içten kayıt.</string>
     <string name="onboarding_title_2">Anları sakla</string>
     <string name="onboarding_body_2">Fotoğraflar, ses ve kelimeler — günlerini önemli küçük ayrıntılarla yakala.</string>
     <string name="onboarding_title_3">Altındaki örüntüleri gör</string>
-    <string name="onboarding_body_3">Nazik haftalık yansımalar, yazılarındaki temaları ve ruh hâllerini ortaya çıkarır.</string>
+    <string name="onboarding_body_3">Nazik haftalık analizler, yazılarındaki temaları ve ruh hâllerini ortaya çıkarır.</string>
 </resources>

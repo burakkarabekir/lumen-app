@@ -73,7 +73,7 @@
     <string name="content_desc_share">Compartir</string>
 
     <!-- AI Entry Analysis -->
-    <string name="ai_analysis_title">Análisis de IA</string>
+    <string name="ai_analysis_title">Análisis de Lumen</string>
     <string name="ai_generated_on_save">Generado al guardar</string>
     <string name="ai_question_to_sit_with">UNA PREGUNTA PARA REFLEXIONAR</string>
     <string name="ai_reflection_disclaimer">La IA de Lumen puede cometer errores. Las reflexiones son privadas para ti.</string>
@@ -134,14 +134,14 @@
     <string name="month_october">Octubre</string>
     <string name="month_november">Noviembre</string>
     <string name="month_december">Diciembre</string>
-    <string name="upsell_reflections_title">Has usado tu reflexión de IA gratuita de esta semana</string>
-    <string name="upsell_reflections_body">El plan gratuito incluye una reflexión de IA a la semana. Con Lumen Plus tienes hasta 7 al día, además de insights escritos sobre tus temas de los últimos 7 días.</string>
+    <string name="upsell_reflections_title">Has usado tu análisis de Lumen gratuito de esta semana</string>
+    <string name="upsell_reflections_body">El plan gratuito incluye un análisis de Lumen a la semana. Con Lumen Plus tienes hasta 7 al día, además de insights escritos sobre tus temas de los últimos 7 días.</string>
     <string name="upsell_unlock_plus">Desbloquear Plus</string>
     <string name="analyze_prompt_title">Reflexiona sobre esta entrada</string>
-    <string name="analyze_prompt_body">Obtén una reflexión de IA amable y personal sobre lo que escribiste.</string>
+    <string name="analyze_prompt_body">Obtén un análisis de Lumen amable y personal sobre lo que escribiste.</string>
     <string name="analyze_prompt_button">Analizar</string>
-    <string name="daily_limit_reflections_title">Límite diario de reflexiones alcanzado</string>
-    <string name="daily_limit_reflections_body">Has alcanzado el límite de reflexiones con IA de hoy. Pronto tendrás más reflexiones disponibles.</string>
+    <string name="daily_limit_reflections_title">Límite diario de análisis alcanzado</string>
+    <string name="daily_limit_reflections_body">Has alcanzado el límite de análisis de Lumen de hoy. Pronto tendrás más análisis disponibles.</string>
     <string name="detail_changes_saved">Cambios guardados</string>
     <string name="detail_moment_deleted">Momento eliminado</string>
     <string name="error_mood_limit">Puedes elegir hasta 5 estados de ánimo.</string>

@@ -73,7 +73,7 @@
     <string name="content_desc_share">Share</string>
 
     <!-- AI Entry Analysis -->
-    <string name="ai_analysis_title">AI Analysis</string>
+    <string name="ai_analysis_title">Lumen Analysis</string>
     <string name="ai_generated_on_save">Generated on save</string>
     <string name="ai_question_to_sit_with">A QUESTION TO SIT WITH</string>
     <string name="ai_reflection_disclaimer">Lumen AI can make mistakes. Reflections are private to you.</string>
@@ -134,14 +134,14 @@
     <string name="month_october">October</string>
     <string name="month_november">November</string>
     <string name="month_december">December</string>
-    <string name="upsell_reflections_title">You&apos;ve used this week&apos;s free reflection</string>
-    <string name="upsell_reflections_body">The free plan includes one AI reflection a week. Lumen Plus gives you up to 7 a day, plus written insights on your themes from the past week.</string>
+    <string name="upsell_reflections_title">You&apos;ve used this week&apos;s free analysis</string>
+    <string name="upsell_reflections_body">The free plan includes one Lumen analysis a week. Lumen Plus gives you up to 7 a day, plus written insights on your themes from the past week.</string>
     <string name="upsell_unlock_plus">Unlock Plus</string>
     <string name="analyze_prompt_title">Reflect on this entry</string>
-    <string name="analyze_prompt_body">Get a gentle, personal AI reflection on what you wrote.</string>
+    <string name="analyze_prompt_body">Get a gentle, personal Lumen analysis of what you wrote.</string>
     <string name="analyze_prompt_button">Analyze</string>
-    <string name="daily_limit_reflections_title">Daily reflection limit reached</string>
-    <string name="daily_limit_reflections_body">You&apos;ve reached today&apos;s AI reflection limit. More reflections will be available soon.</string>
+    <string name="daily_limit_reflections_title">Daily analysis limit reached</string>
+    <string name="daily_limit_reflections_body">You&apos;ve reached today&apos;s Lumen analysis limit. More analyses will be available soon.</string>
     <string name="detail_changes_saved">Changes saved</string>
     <string name="detail_moment_deleted">Moment deleted</string>
     <string name="error_mood_limit">You can pick up to 5 moods.</string>
