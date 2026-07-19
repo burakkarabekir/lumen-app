@@ -137,6 +137,9 @@
     <string name="upsell_reflections_title">Du hast deine kostenlose Reflexion dieser Woche aufgebraucht</string>
     <string name="upsell_reflections_body">Der kostenlose Plan enthält eine KI-Reflexion pro Woche. Mit Lumen Plus bekommst du bis zu 7 pro Tag – dazu ausformulierte Einblicke in deine Themen aus den letzten 7 Tagen.</string>
     <string name="upsell_unlock_plus">Plus freischalten</string>
+    <string name="analyze_prompt_title">Reflexion zu diesem Eintrag</string>
+    <string name="analyze_prompt_body">Erhalte eine sanfte, persönliche KI-Reflexion zu dem, was du geschrieben hast.</string>
+    <string name="analyze_prompt_button">Analysieren</string>
     <string name="daily_limit_reflections_title">Tageslimit für Reflexionen erreicht</string>
     <string name="daily_limit_reflections_body">Du hast dein heutiges KI-Reflexionslimit erreicht. Bald stehen dir wieder neue Reflexionen zur Verfügung.</string>
     <string name="detail_changes_saved">Änderungen gespeichert</string>

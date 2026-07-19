@@ -1,6 +1,7 @@
 package com.bksd.journal.presentation.detail
 
 import androidx.lifecycle.viewModelScope
+import com.bksd.core.domain.billing.ObserveEntitlementUseCase
 import com.bksd.core.domain.connectivity.NetworkMonitor
 import com.bksd.core.domain.error.Result
 import com.bksd.core.domain.model.PlaybackState
@@ -43,6 +44,7 @@ class MomentDetailViewModel(
     private val requestEntryAnalysis: RequestEntryAnalysisUseCase,
     private val audioPlayer: AudioPlayer,
     private val networkMonitor: NetworkMonitor,
+    private val observeEntitlement: ObserveEntitlementUseCase,
     private val momentId: String,
     private val initialIsEditing: Boolean = false
 ) : BaseViewModel<MomentDetailAction, MomentDetailEvent>() {
@@ -58,6 +60,7 @@ class MomentDetailViewModel(
                 observeAudio()
                 observeAnalysis()
                 observeConnectivity()
+                observePremium()
                 hasLoadedInitialData = true
             }
         }
@@ -80,6 +83,7 @@ class MomentDetailViewModel(
             MomentDetailAction.OnShareClick -> handleShare()
             MomentDetailAction.OnUpgradeClick -> sendEvent(MomentDetailEvent.NavigateToPaywall)
             MomentDetailAction.OnRetryAnalysis -> handleRetryAnalysis()
+            MomentDetailAction.OnAnalyzeClick -> handleRetryAnalysis()
             MomentDetailAction.OnFavoriteToggle -> toggleFavorite()
             MomentDetailAction.OnToggleBodyExpand -> {
                 _state.update { it.copy(isBodyExpanded = !it.isBodyExpanded) }
@@ -164,6 +168,14 @@ class MomentDetailViewModel(
                         handleRetryAnalysis()
                     }
                 }
+        }
+    }
+
+    private fun observePremium() {
+        launch {
+            observeEntitlement().collect { entitlement ->
+                _state.update { it.copy(isPlus = entitlement.isPlus) }
+            }
         }
     }
 

@@ -74,7 +74,7 @@ private fun mapQuotaError(body: String): AppError {
         reason == "weekly_limit" -> AppError.Quota(QuotaErrorType.FREE_LIMIT)
         reason == "premium_required" -> AppError.Quota(QuotaErrorType.PREMIUM_REQUIRED)
         error == "quota_check_failed" -> AppError.Quota(QuotaErrorType.CHECK_FAILED)
-        else -> AppError.Quota(QuotaErrorType.FREE_LIMIT)
+        else -> AppError.Quota(QuotaErrorType.CHECK_FAILED)
     }
 }
 

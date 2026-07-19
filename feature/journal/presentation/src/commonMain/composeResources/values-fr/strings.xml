@@ -137,6 +137,9 @@
     <string name="upsell_reflections_title">Tu as utilisé ta réflexion IA gratuite de la semaine</string>
     <string name="upsell_reflections_body">Le forfait gratuit inclut une réflexion IA par semaine. Avec Lumen Plus, tu en as jusqu&apos;à 7 par jour, ainsi qu&apos;un texte personnel sur les thèmes de tes 7 derniers jours.</string>
     <string name="upsell_unlock_plus">Débloquer Plus</string>
+    <string name="analyze_prompt_title">Une réflexion sur cette entrée</string>
+    <string name="analyze_prompt_body">Obtiens une réflexion IA douce et personnelle sur ce que tu as écrit.</string>
+    <string name="analyze_prompt_button">Analyser</string>
     <string name="daily_limit_reflections_title">Limite quotidienne de réflexions atteinte</string>
     <string name="daily_limit_reflections_body">Tu as atteint ta limite de réflexions IA pour aujourd&apos;hui. De nouvelles réflexions seront bientôt disponibles.</string>
     <string name="detail_changes_saved">Modifications enregistrées</string>

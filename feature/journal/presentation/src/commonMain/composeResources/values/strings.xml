@@ -137,6 +137,9 @@
     <string name="upsell_reflections_title">You&apos;ve used this week&apos;s free reflection</string>
     <string name="upsell_reflections_body">The free plan includes one AI reflection a week. Lumen Plus gives you up to 7 a day, plus written insights on your themes from the past week.</string>
     <string name="upsell_unlock_plus">Unlock Plus</string>
+    <string name="analyze_prompt_title">Reflect on this entry</string>
+    <string name="analyze_prompt_body">Get a gentle, personal AI reflection on what you wrote.</string>
+    <string name="analyze_prompt_button">Analyze</string>
     <string name="daily_limit_reflections_title">Daily reflection limit reached</string>
     <string name="daily_limit_reflections_body">You&apos;ve reached today&apos;s AI reflection limit. More reflections will be available soon.</string>
     <string name="detail_changes_saved">Changes saved</string>

@@ -67,6 +67,7 @@ import com.bksd.journal.presentation.content_desc_share
 import com.bksd.journal.presentation.detail.components.EntryAnalysisCard
 import com.bksd.journal.presentation.detail.components.EntryAnalysisErrorCard
 import com.bksd.journal.presentation.detail.components.EntryAnalysisLoadingCard
+import com.bksd.journal.presentation.detail.components.EntryAnalyzePromptCard
 import com.bksd.journal.presentation.detail.components.EntryCrisisCard
 import com.bksd.journal.presentation.detail.components.EntryDailyLimitCard
 import com.bksd.journal.presentation.detail.components.EntryReflectionUpsellCard
@@ -212,8 +213,8 @@ fun MomentDetailReadView(
                         Spacer(Modifier.height(MaterialTheme.dimens.spacing.xxl))
                         when (val reflection = analysis.reflection) {
                             is MomentReflection.Reflection -> EntryAnalysisCard(reflection)
-                            is MomentReflection.Support -> EntrySupportCard(reflection)
-                            is MomentReflection.Crisis -> EntryCrisisCard(reflection)
+                            is MomentReflection.Support -> EntrySupportCard()
+                            is MomentReflection.Crisis -> EntryCrisisCard()
                         }
                     }
 
@@ -221,9 +222,15 @@ fun MomentDetailReadView(
                         Spacer(Modifier.height(MaterialTheme.dimens.spacing.xxl))
                         when (analysis.limit) {
                             QuotaLimit.DAILY -> EntryDailyLimitCard()
-                            QuotaLimit.FREE -> EntryReflectionUpsellCard(
-                                onUnlock = { onAction(MomentDetailAction.OnUpgradeClick) }
-                            )
+                            QuotaLimit.FREE -> if (state.isPlus) {
+                                EntryAnalyzePromptCard(
+                                    onAnalyze = { onAction(MomentDetailAction.OnAnalyzeClick) }
+                                )
+                            } else {
+                                EntryReflectionUpsellCard(
+                                    onUnlock = { onAction(MomentDetailAction.OnUpgradeClick) }
+                                )
+                            }
                         }
                     }
 
@@ -242,7 +249,14 @@ fun MomentDetailReadView(
                         )
                     }
 
-                    MomentAnalysisState.None -> Unit
+                    MomentAnalysisState.None -> {
+                        if (state.isPlus) {
+                            Spacer(Modifier.height(MaterialTheme.dimens.spacing.xxl))
+                            EntryAnalyzePromptCard(
+                                onAnalyze = { onAction(MomentDetailAction.OnAnalyzeClick) }
+                            )
+                        }
+                    }
                 }
 
                 if (moment.attachments.isNotEmpty()) {

@@ -137,6 +137,9 @@
     <string name="upsell_reflections_title">Bu haftaki ücretsiz yansımanı kullandın</string>
     <string name="upsell_reflections_body">Ücretsiz plan haftada bir yapay zekâ yansıması içerir. Lumen Plus ile günde 7&apos;ye kadar yansımanın yanı sıra son bir haftadaki kayıtlarında öne çıkan temalar üzerine yazılmış içgörüler alırsın.</string>
     <string name="upsell_unlock_plus">Plus'ı aç</string>
+    <string name="analyze_prompt_title">Bu kayıt üzerine yansıma al</string>
+    <string name="analyze_prompt_body">Yazdıkların üzerine nazik, kişisel bir yapay zekâ yansıması al.</string>
+    <string name="analyze_prompt_button">Analiz et</string>
     <string name="daily_limit_reflections_title">Günlük yansıma sınırına ulaşıldı</string>
     <string name="daily_limit_reflections_body">Bugünkü yapay zekâ yansıma sınırına ulaştın. Yakında yeni yansımalar kullanılabilir olacak.</string>
     <string name="detail_changes_saved">Değişiklikler kaydedildi</string>

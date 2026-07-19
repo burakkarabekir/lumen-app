@@ -2,6 +2,7 @@ package com.bksd.journal.presentation.detail.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,11 +12,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CloudOff
-import androidx.compose.material.icons.filled.ErrorOutline
-import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,27 +23,32 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bksd.core.design_system.component.button.AppButton
-import com.bksd.core.design_system.component.button.AppButtonStyle
 import com.bksd.core.design_system.theme.AppTheme
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.journal.presentation.Res
-import com.bksd.journal.presentation.ai_analysis_failed_caption
-import com.bksd.journal.presentation.ai_analysis_failed_title
-import com.bksd.journal.presentation.ai_analysis_offline_caption
-import com.bksd.journal.presentation.ai_analysis_offline_title
-import com.bksd.journal.presentation.ai_analysis_retry
+import com.bksd.journal.presentation.analyze_prompt_body
+import com.bksd.journal.presentation.analyze_prompt_button
+import com.bksd.journal.presentation.analyze_prompt_title
 import org.jetbrains.compose.resources.stringResource
 
+private val OrbHighlight = Color(0xFFDCE3FF)
+private val OrbMid = Color(0xFF5B6AD8)
+private val OrbDeep = Color(0xFF33308F)
+private val AnalyzeAccent = Color(0xFFCF6F64)
+
 @Composable
-fun EntryAnalysisErrorCard(
-    onRetry: () -> Unit,
+fun EntryAnalyzePromptCard(
+    onAnalyze: () -> Unit,
     modifier: Modifier = Modifier,
-    isOffline: Boolean = false,
 ) {
     Column(
         modifier = modifier
@@ -59,22 +64,24 @@ fun EntryAnalysisErrorCard(
     ) {
         Box(
             modifier = Modifier
-                .size(48.dp)
-                .clip(RoundedCornerShape(16.dp))
-                .background(MaterialTheme.colorScheme.error),
-            contentAlignment = Alignment.Center,
-        ) {
-            Icon(
-                imageVector = if (isOffline) Icons.Filled.CloudOff else Icons.Filled.ErrorOutline,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onError,
-                modifier = Modifier.size(MaterialTheme.dimens.icon.xl),
-            )
-        }
+                .size(52.dp)
+                .clip(CircleShape)
+                .drawBehind {
+                    drawCircle(
+                        brush = Brush.radialGradient(
+                            colorStops = arrayOf(
+                                0.0f to OrbHighlight,
+                                0.45f to OrbMid,
+                                1.0f to OrbDeep,
+                            ),
+                            center = Offset(size.width * 0.34f, size.height * 0.30f),
+                            radius = size.width * 0.92f,
+                        ),
+                    )
+                },
+        )
         Text(
-            text = stringResource(
-                if (isOffline) Res.string.ai_analysis_offline_title else Res.string.ai_analysis_failed_title,
-            ),
+            text = stringResource(Res.string.analyze_prompt_title),
             fontSize = 20.sp,
             lineHeight = 25.sp,
             fontWeight = FontWeight.ExtraBold,
@@ -83,9 +90,7 @@ fun EntryAnalysisErrorCard(
             modifier = Modifier.padding(top = MaterialTheme.dimens.spacing.lg),
         )
         Text(
-            text = stringResource(
-                if (isOffline) Res.string.ai_analysis_offline_caption else Res.string.ai_analysis_failed_caption,
-            ),
+            text = stringResource(Res.string.analyze_prompt_body),
             fontSize = 14.sp,
             lineHeight = 20.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -96,29 +101,41 @@ fun EntryAnalysisErrorCard(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End,
         ) {
-            AppButton(
-                text = stringResource(Res.string.ai_analysis_retry),
-                onClick = onRetry,
-                style = AppButtonStyle.SECONDARY,
-                cornerRadius = MaterialTheme.dimens.radius.full,
-                trailingIcon = {
-                    Icon(
-                        imageVector = Icons.Filled.Refresh,
-                        contentDescription = null,
-                        modifier = Modifier.size(MaterialTheme.dimens.icon.sm),
-                    )
-                },
-            )
+            Row(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(MaterialTheme.dimens.radius.full))
+                    .background(AnalyzeAccent)
+                    .clickable(role = Role.Button, onClick = onAnalyze)
+                    .padding(
+                        horizontal = MaterialTheme.dimens.spacing.xl,
+                        vertical = 14.dp,
+                    ),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.spacing.sm),
+            ) {
+                Text(
+                    text = stringResource(Res.string.analyze_prompt_button),
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                )
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier.size(MaterialTheme.dimens.icon.sm),
+                )
+            }
         }
     }
 }
 
 @Preview
 @Composable
-private fun EntryAnalysisErrorCardPreview() {
+private fun EntryAnalyzePromptCardPreview() {
     AppTheme {
-        EntryAnalysisErrorCard(
-            onRetry = {},
+        EntryAnalyzePromptCard(
+            onAnalyze = {},
             modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg),
         )
     }
@@ -126,22 +143,10 @@ private fun EntryAnalysisErrorCardPreview() {
 
 @Preview
 @Composable
-private fun EntryAnalysisErrorCardOfflinePreview() {
-    AppTheme {
-        EntryAnalysisErrorCard(
-            onRetry = {},
-            isOffline = true,
-            modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg),
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun EntryAnalysisErrorCardDarkPreview() {
+private fun EntryAnalyzePromptCardDarkPreview() {
     AppTheme(darkTheme = true) {
-        EntryAnalysisErrorCard(
-            onRetry = {},
+        EntryAnalyzePromptCard(
+            onAnalyze = {},
             modifier = Modifier.padding(MaterialTheme.dimens.spacing.lg),
         )
     }
