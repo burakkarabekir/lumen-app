@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,7 +22,8 @@ import com.bksd.profile.presentation.Res
 import com.bksd.profile.presentation.about_app_name
 import com.bksd.profile.presentation.about_tagline
 import com.bksd.profile.presentation.about_version
-import com.bksd.profile.presentation.logo_blue
+import com.bksd.profile.presentation.logo
+import com.bksd.profile.presentation.logo_dark
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -31,6 +33,7 @@ fun AboutHeader(
     modifier: Modifier = Modifier
 ) {
     val palette = rememberNewEntryPalette()
+    val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -38,7 +41,7 @@ fun AboutHeader(
             .padding(top = MaterialTheme.dimens.spacing.xl, bottom = MaterialTheme.dimens.spacing.xxl)
     ) {
         Image(
-            painter = painterResource(Res.drawable.logo_blue),
+            painter = painterResource(if (isDark) Res.drawable.logo_dark else Res.drawable.logo),
             contentDescription = null,
             modifier = Modifier.size(MaterialTheme.dimens.size.topBar)
         )
@@ -72,6 +75,14 @@ fun AboutHeader(
 @Preview
 @Composable
 private fun AboutHeaderPreview() {
+    PreviewAppTheme {
+        AboutHeader(version = "1.0 (1)")
+    }
+}
+
+@Preview
+@Composable
+private fun AboutHeaderDarkPreview() {
     PreviewAppTheme(darkTheme = true) {
         AboutHeader(version = "1.0 (1)")
     }
