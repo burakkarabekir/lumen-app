@@ -37,6 +37,7 @@ fun JournalTopBar(
     profilePhotoUrl: String?,
     isSearchActive: Boolean,
     searchIconAlpha: () -> Float,
+    searchIconVisible: Boolean,
     onSearchActivate: () -> Unit,
     onSearchClose: () -> Unit,
     onSearchQueryChange: (String) -> Unit,
@@ -71,6 +72,7 @@ fun JournalTopBar(
                     if (searchAvailable) {
                         IconButton(
                             onClick = onSearchActivate,
+                            enabled = searchIconVisible,
                             modifier = Modifier.graphicsLayer { alpha = searchIconAlpha() },
                         ) {
                             Icon(
@@ -102,6 +104,7 @@ private fun PreviewJournalTopBar() {
             profilePhotoUrl = "",
             isSearchActive = false,
             searchIconAlpha = { 1f },
+            searchIconVisible = true,
             onSearchActivate = {},
             onSearchClose = {},
             onSearchQueryChange = {},
@@ -119,6 +122,7 @@ private fun PreviewJournalTopBarSearch() {
             profilePhotoUrl = null,
             isSearchActive = true,
             searchIconAlpha = { 1f },
+            searchIconVisible = true,
             onSearchActivate = {},
             onSearchClose = {},
             onSearchQueryChange = {},
