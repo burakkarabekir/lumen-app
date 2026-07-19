@@ -78,7 +78,7 @@ fun WelcomeScreen(
             )
             if (firstName.isNotBlank()) {
                 Text(
-                    text = firstName,
+                    text = firstName.uppercase(),
                     style = MaterialTheme.typography.displayMedium.copy(
                         brush = Brush.linearGradient(MaterialTheme.colorScheme.extended.coverGradient),
                         fontWeight = FontWeight.Bold,
