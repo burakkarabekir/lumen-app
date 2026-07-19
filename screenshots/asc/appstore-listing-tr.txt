@@ -4,61 +4,39 @@ Lumen: Günlük ve Yansıma
 SUBTITLE (28/30)
 Ruh hali defteri, yapay zeka
 
-PROMOTIONAL_TEXT (151/170)
-Bazı günler anlatacak kimse olmaz. Lumen, günü olduğu gibi bırakabileceğin sakin, özel bir alan — yazdığına dair sana özel bir yapay zeka yansımasıyla.
+PROMOTIONAL_TEXT (161/170)
+Anlarını yakala, bırak yapay zeka onları sana nazikçe yansıtsın. Tasarımı gereği özel; ruh halleri, fotoğraflar ve zamanla eğilimlerini ortaya koyan içgörülerle.
 
-KEYWORDS (90/100)
-anı,duygu,minnet,farkındalık,motivasyon,not,düşünce,hatıra,huzur,seri,mindfulness,wellness
+KEYWORDS (96/100)
+günlük,günce,journaling,ruh,hali,yansıma,yapay,zeka,farkındalık,minnet,wellness,öz,bakım,not,anı
 
-DESCRIPTION (2726/4000)
-Günün bir yere ait olsun.
+DESCRIPTION
+Lumen, hayatının anlarını yakalamana ve kendini daha iyi anlamana yardımcı olan özel bir günlüktür.
 
-Bazı günler anlatacak kimse olmaz. Bazı günler ise anlatmaya kalkınca kelimeler dağılır. Lumen tam da bunun için var: aklından geçeni olduğu gibi bırakabileceğin sakin, özel bir alan. Uzun yaz, kısa yaz ya da tek bir cümle yaz — hepsi sayılır.
+Özgürce yaz, fotoğraf ekle, ruh hallerini etiketle ve Lumen'in yapay zekası kayıtlarını sana nazik, kişisel bir bakışla yansıtsın — asla öğüt değil, yalnızca bir bakış açısı.
 
-Not defterinden bir farkı var: istediğinde yazdığına ikinci bir gözle bakan bir yansıma alırsın.
+HER ANI YAKALA
+• Metin ve fotoğrafla zengin kayıtlar
+• Ruh hali takibi ve etiketler
+• İsteğe bağlı konum, yalnızca sen eklemek istediğinde
 
-Aşağıdaki her şey ücretsiz sürümde var.
+YAPAY ZEKAYLA YANSIT
+• Kayıtlarına özel yapay zeka yansımaları
+• Zaman içinde eğilimlerini gösteren içgörüler ve seriler
+• Yansımaların için yapay zekayla oluşturulmuş kapak görselleri
 
-Yaz ve sakla
-• Başlık ve metinle kayıt oluştur; tarihini ve saatini kendin seç.
-• Nasıl hissettiğini 17 ruh halinden işaretle — Mutlu, Minnettar, Sakin, Odaklı, Nostaljik, Yorgun, Stresli, Melankolik ve diğerleri.
-• Konu ekle, kayıtlarında ara, türe göre filtrele, dönüp bakmak istediklerini favorilere ekle.
+TASARIMI GEREĞİ ÖZEL
+• Günlüğün senindir — biyometrik kilitle korunur
+• Reklam yok, üçüncü taraf reklam izleyicisi yok
+• Kayıtların Avrupa'daki (AB) sunucularda saklanır
+• Günlüğünü istediğin zaman dışa aktar
 
-Anı yanına al
-• Her kayda galerinden ya da kamerandan bir fotoğraf ekle (en fazla 25 MB).
-• Bulunduğun yeri ve bir bağlantı ekle — o günü yıllar sonra geri getiren küçük ayrıntılar.
+LUMEN PLUS
+Daha fazlası için: günde 7 yapay zeka yansımasına kadar hak (haftada 1 yerine), son 7 gününde öne çıkan temaları yakalayan haftalık yansıma ve sesli ile video ekleri. Aylık veya yıllık; yıllık planda 7 günlük ücretsiz deneme.
 
-Yapay zeka yansıması
-• Haftada bir ücretsiz yansıma: yazdığın kayda dair sana özel bir bakış ve üzerinde düşünülecek bir soru.
-• Her yansıma, yapay zekayla oluşturulmuş kendi kapak görseliyle gelir — ücretsiz sürümde de.
-• Hakkın her pazartesi yenilenir.
+Abonelikler, dönem bitiminden en az 24 saat önce iptal edilmediği sürece otomatik olarak yenilenir. App Store hesap ayarlarından istediğin zaman yönetebilir veya iptal edebilirsin.
 
-İçgörüler
-• Serini, toplam kayıt ve kelime sayını gör.
-• Aylık grafikle ne sıklıkla yazdığını takip et.
-Bu ekran ücretsiz ve Plus kullanıcılarında birebir aynıdır.
+Not: Yapay zeka yansımaları hata yapabilir ve yalnızca sana özeldir. Lumen bir ruh sağlığı hizmeti değildir; teşhis ya da tedavi sunmaz.
 
-Günlüğün senin
-• Face ID veya parmak iziyle uygulama kilidi.
-• Bulut senkronizasyonu; kayıtların Avrupa'da barındırılan sunucularda tutulur ve cihazlarının arasında senkronlanır.
-• Günlüğünü PDF olarak dışa aktar, bir kaydı görsel olarak paylaş.
-• Otomatik / Açık / Koyu tema, 5 dil desteği ve istediğin an hesabını silme.
-
-Lumen Plus ne ekliyor
-Plus, ücretsiz sürümün üstüne tam olarak şu üç şeyi ekler:
-1) Günde 7 yapay zeka yansımasına kadar hak — ücretsizdeki haftada 1 yerine.
-2) İçgörüler ekranında son 7 günün yansıması: son yedi gündeki kayıtlarında öne çıkan temalar üzerine sana özel yazılmış bir geri bakış. Belirli bir güne bağlı değil; sen yazdıkça yenilenir.
-3) Video ve sesli kayıt ekleme — kayıt başına birer tane, her biri en fazla 25 MB.
-
-Plus şunları açmaz, çünkü zaten ücretsizde var: fotoğraf ve kamerayla çekim, yansımaların kapak görselleri ve İçgörüler ekranındaki tüm istatistikler.
-
-Yıllık planda 7 günlük ücretsiz deneme sunulur. Fiyatlar uygulama içinde, kendi bölgenin para biriminde görünür. Abonelik dönem sonunda otomatik yenilenir; istediğin zaman yönetebilir veya iptal edebilirsin.
-
-Birkaç not
-• Yapay zeka yansımaları hata yapabilir; yalnızca sana özeldir.
-• Lumen bir ruh sağlığı hizmeti değildir; teşhis ya da tedavi sunmaz.
-• Zor bir dönemden geçiyorsan lütfen güvendiğin birine ya da bir uzmana başvur.
-
-Bugün nasıl geçti? Yazmaya hazır olduğunda Lumen burada.
-
-
+Kullanım Koşulları: https://lumenjournalapp.com/terms
+Gizlilik Politikası: https://lumenjournalapp.com/privacy
