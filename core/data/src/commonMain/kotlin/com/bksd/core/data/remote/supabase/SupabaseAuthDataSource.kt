@@ -93,6 +93,8 @@ class SupabaseAuthDataSource(
 
     fun getDisplayName(): String? = userMetaString("full_name")
 
+    fun getEmail(): String? = auth.currentUserOrNull()?.email
+
     fun getPhotoUrl(): String? = userMetaString("avatar_url")
 
     fun getJoinYear(): String? =

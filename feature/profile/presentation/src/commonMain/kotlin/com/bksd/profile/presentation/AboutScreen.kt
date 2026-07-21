@@ -5,9 +5,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Description
-import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.HorizontalDivider
@@ -28,7 +26,6 @@ import com.bksd.core.design_system.theme.PreviewAppTheme
 import com.bksd.core.design_system.theme.dimens
 import com.bksd.core.design_system.theme.extended
 import com.bksd.core.design_system.theme.profileAccentAmber
-import com.bksd.core.design_system.theme.profileAccentIndigo
 import com.bksd.core.design_system.theme.profileAccentViolet
 import com.bksd.core.domain.appinfo.AppInfoProvider
 import com.bksd.core.domain.legal.LegalConfig
@@ -39,9 +36,6 @@ import com.bksd.profile.presentation.components.SectionHeader
 import com.bksd.profile.presentation.components.SettingsGroup
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
-
-private const val WebsiteUrl = "https://lumenjournalapp.com"
-private const val LicensesUrl = "https://lumenjournalapp.com/licenses"
 
 @Composable
 fun AboutRoot(onBack: () -> Unit) {
@@ -102,16 +96,6 @@ internal fun AboutScreen(
                     accent = MaterialTheme.colorScheme.extended.profileAccentViolet,
                     onClick = { runCatching { uriHandler.openUri(LegalConfig.TERMS_URL) } }
                 )
-                HorizontalDivider(
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
-                    modifier = Modifier.padding(start = MaterialTheme.dimens.spacing.massive)
-                )
-                ProfileSettingsRow(
-                    icon = Icons.Default.Language,
-                    label = stringResource(Res.string.about_website),
-                    accent = MaterialTheme.colorScheme.extended.profileAccentIndigo,
-                    onClick = { runCatching { uriHandler.openUri(WebsiteUrl) } }
-                )
             }
 
             Spacer(Modifier.height(MaterialTheme.dimens.spacing.xl))
@@ -124,16 +108,6 @@ internal fun AboutScreen(
                     label = stringResource(Res.string.about_rate),
                     accent = MaterialTheme.colorScheme.extended.profileAccentAmber,
                     onClick = { runCatching { uriHandler.openUri(rateUrl) } }
-                )
-                HorizontalDivider(
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
-                    modifier = Modifier.padding(start = MaterialTheme.dimens.spacing.massive)
-                )
-                ProfileSettingsRow(
-                    icon = Icons.Default.Code,
-                    label = stringResource(Res.string.about_acknowledgements),
-                    accent = MaterialTheme.colorScheme.extended.profileAccentIndigo,
-                    onClick = { runCatching { uriHandler.openUri(LicensesUrl) } }
                 )
             }
 
