@@ -28,7 +28,10 @@ class ProfileRepositoryImpl(
                 val row = result.data
                 Result.Success(
                     UserProfile(
-                        displayName = row?.displayName ?: authDataSource.getDisplayName().orEmpty(),
+                        displayName = row?.displayName?.takeIf { it.isNotBlank() }
+                            ?: authDataSource.getDisplayName()?.takeIf { it.isNotBlank() }
+                            ?: authDataSource.getEmail()?.substringBefore("@")?.takeIf { it.isNotBlank() }
+                            ?: "",
                         photoUrl = row?.avatarUrl ?: authDataSource.getPhotoUrl(),
                         jobTitle = row?.jobTitle.orEmpty(),
                         joinYear = row?.joinYear?.takeIf { it.isNotBlank() }
